@@ -1,5 +1,7 @@
+'use client'
+
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
@@ -529,16 +531,16 @@ function StepAnimation({ step }) {
 }
 
 const HowItWorks = memo(() => {
-  const location = useLocation();
+  const pathname = usePathname();
   const { currency } = useCurrency();
   const { t } = useTranslation();
 
   // Extraire le serviceId depuis l'URL (pas d'appel API pour éviter CLS)
   const currentServiceId = useMemo(() => {
-    const path = location.pathname || '';
+    const path = pathname || '';
     const serviceMatch = path.match(/^\/services\/([^/]+)/);
     return serviceMatch ? decodeURIComponent(serviceMatch[1]) : null;
-  }, [location.pathname]);
+  }, [pathname]);
 
   const steps = useMemo(() => [
     {
@@ -714,12 +716,12 @@ const HowItWorks = memo(() => {
                   className="primary-cta text-sm md:text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100 whitespace-nowrap flex-shrink-0 justify-center"
                   onClick={() => {
                     loadAnalytics();
-                    safeTrack(trackPlausibleCTAClick, 'how_it_works', currentServiceId, location.pathname, {
+                    safeTrack(trackPlausibleCTAClick, 'how_it_works', currentServiceId, pathname, {
                       ctaText: t('nav.notarizeNow'),
                       destination: getFormUrl(currency, currentServiceId),
                       elementId: 'how_it_works_cta'
                     });
-                    safeTrack(trackCTAClick, 'how_it_works', currentServiceId, location.pathname);
+                    safeTrack(trackCTAClick, 'how_it_works', currentServiceId, pathname);
                   }}
                 >
                   <IconOpenNew className="w-5 h-5" />

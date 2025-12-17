@@ -72,6 +72,8 @@ const getCookie = (name) => {
  * 3. Generate new ID and sync to both
  */
 export const getSharedVisitorId = () => {
+  if (typeof window === 'undefined') return null;
+  
   const COOKIE_NAME = 'mynotary_visitor_id';
   const STORAGE_KEY = 'analytics_visitor_id';
   
@@ -108,6 +110,8 @@ export const getSharedVisitorId = () => {
  * Useful when user visits a new domain for the first time
  */
 export const syncVisitorId = () => {
+  if (typeof window === 'undefined') return;
+  
   const COOKIE_NAME = 'mynotary_visitor_id';
   const STORAGE_KEY = 'analytics_visitor_id';
   

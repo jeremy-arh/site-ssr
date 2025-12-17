@@ -24,20 +24,26 @@ export const getSupabase = async () => {
     try {
       const { createClient } = await import('@supabase/supabase-js');
       
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      // Support Next.js (process.env) et Vite (import.meta.env)
+      const supabaseUrl = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL
+        ? process.env.NEXT_PUBLIC_SUPABASE_URL
+        : (typeof import.meta !== 'undefined' ? import.meta.env.VITE_SUPABASE_URL : null);
+      
+      const supabaseAnonKey = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        : (typeof import.meta !== 'undefined' ? import.meta.env.VITE_SUPABASE_ANON_KEY : null);
 
       if (!supabaseUrl || !supabaseAnonKey) {
         const errorMsg = `
 ⚠️ MISSING SUPABASE ENVIRONMENT VARIABLES ⚠️
 
-Please configure the following environment variables in Cloudflare Pages:
-- VITE_SUPABASE_URL
-- VITE_SUPABASE_ANON_KEY
+Please configure the following environment variables:
+- NEXT_PUBLIC_SUPABASE_URL (pour Next.js) ou VITE_SUPABASE_URL (pour Vite)
+- NEXT_PUBLIC_SUPABASE_ANON_KEY (pour Next.js) ou VITE_SUPABASE_ANON_KEY (pour Vite)
 
 Current status:
-- VITE_SUPABASE_URL: ${supabaseUrl ? '✅ Set' : '❌ Missing'}
-- VITE_SUPABASE_ANON_KEY: ${supabaseAnonKey ? '✅ Set' : '❌ Missing'}
+- SUPABASE_URL: ${supabaseUrl ? '✅ Set' : '❌ Missing'}
+- SUPABASE_ANON_KEY: ${supabaseAnonKey ? '✅ Set' : '❌ Missing'}
         `;
         console.error(errorMsg);
         throw new Error('Supabase environment variables are not configured.');

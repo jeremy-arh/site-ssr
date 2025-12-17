@@ -1,5 +1,7 @@
+'use client'
+
 import { memo, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useTranslation } from '../hooks/useTranslation';
 
 // IMPORT STATIQUE - Les données sont dans le bundle, ZERO fetch !
@@ -76,7 +78,7 @@ const Footer = memo(() => {
               {recentPosts.map((post) => (
                 <li key={post.slug} className="h-5">
                   <Link
-                    to={`/blog/${post.slug}`}
+                    href={`/blog/${post.slug}`}
                     className="text-gray-400 hover:text-white transition-colors duration-200 text-sm line-clamp-1 block h-5 overflow-hidden"
                   >
                     {post.title}
@@ -85,7 +87,7 @@ const Footer = memo(() => {
               ))}
               <li className="h-5">
                 <Link
-                  to="/blog"
+                  href="/blog"
                   className="text-gray-400 hover:text-white transition-colors duration-200 text-sm block h-5"
                 >
                   See all resources &gt;
@@ -99,12 +101,12 @@ const Footer = memo(() => {
             <h3 className="text-sm font-bold text-white mb-4">About</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms-conditions" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                <Link href="/terms-conditions" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
                   Terms &amp; Conditions
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
                   Privacy policy
                 </Link>
               </li>

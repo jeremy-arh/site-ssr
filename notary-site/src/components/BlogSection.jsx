@@ -1,19 +1,29 @@
+'use client'
+
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getSupabase } from '../lib/supabase';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { formatBlogPostsForLanguage } from '../utils/blog';
 
-const BlogSection = () => {
-  const [posts, setPosts] = useState([]);
+const BlogSection = ({ initialPosts = null }) => {
+  const [posts, setPosts] = useState(initialPosts || []);
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
 
   useEffect(() => {
+    // Si on a déjà des posts initiaux (SSR), on les utilise
+    if (initialPosts) {
+      const formattedPosts = formatBlogPostsForLanguage(initialPosts, language);
+      setPosts(formattedPosts);
+      return;
+    }
+
+    // Sinon, récupérer côté client (fallback)
     fetchPosts();
-  }, [language]);
+  }, [language, initialPosts]);
 
   const fetchPosts = async () => {
     try {
@@ -27,7 +37,6 @@ const BlogSection = () => {
 
       if (error) throw error;
       
-      // Formater les posts selon la langue actuelle
       const formattedPosts = formatBlogPostsForLanguage(data || [], language);
       setPosts(formattedPosts);
     } catch (error) {
@@ -71,7 +80,7 @@ const BlogSection = () => {
             {posts.map((post, index) => (
               <Link
                 key={post.id}
-                to={getLocalizedPath(`/blog/${post.slug}`)}
+                href={getLocalizedPath(`/blog/${post.slug}`)}
                 className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 scroll-slide-up"
               >
                 {/* Cover Image */}
@@ -143,7 +152,7 @@ const BlogSection = () => {
         {/* View All Button */}
         {posts.length > 0 && (
           <div className="text-center mt-12 scroll-fade-in">
-            <Link to={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg">
+            <Link href={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg">
               <span className="inline-block">{t('blog.viewAll')}</span>
               <Icon icon="lsicon:open-new-filled" className="w-5 h-5" />
             </Link>

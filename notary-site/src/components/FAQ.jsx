@@ -1,13 +1,16 @@
+'use client'
+
 import { useState, useMemo } from 'react';
 import { fuzzySearchFAQs } from '../utils/fuzzySearch';
 import { useTranslation } from '../hooks/useTranslation';
 
-const FAQ = () => {
+const FAQ = ({ faqsData = null }) => {
   const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [openIndex, setOpenIndex] = useState(null);
   
-  const faqs = [
+  // Fallback FAQs si pas de données SSR
+  const defaultFaqs = [
     {
       question: 'How does the online notarization process work?',
       answer: 'Everything happens in just a few minutes, directly from your browser. You schedule a secure video session with a licensed notary, sign your document remotely, and the notarization is completed in real time. Your notarized document is immediately uploaded and available on the platform, accompanied by its digital certification.'
@@ -29,6 +32,14 @@ const FAQ = () => {
       answer: 'Immediately after the video session, your notarized document is automatically uploaded to your secure dashboard. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.'
     },
   ];
+
+  // Utiliser les données SSR si disponibles, sinon fallback
+  const faqs = faqsData && faqsData.length > 0 
+    ? faqsData.map(faq => ({
+        question: faq[`question_${language}`] || faq.question_en || faq.question,
+        answer: faq[`answer_${language}`] || faq.answer_en || faq.answer,
+      }))
+    : defaultFaqs;
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);

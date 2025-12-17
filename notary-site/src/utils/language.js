@@ -31,9 +31,11 @@ export const detectLanguageFromIP = async () => {
  */
 export const initializeLanguage = async () => {
   // Vérifie d'abord le localStorage
-  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  if (savedLanguage && SUPPORTED_LANGUAGES.includes(savedLanguage)) {
-    return savedLanguage;
+  if (typeof window !== 'undefined') {
+    const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+    if (savedLanguage && SUPPORTED_LANGUAGES.includes(savedLanguage)) {
+      return savedLanguage;
+    }
   }
 
   // Sinon, détecte via IP
@@ -44,6 +46,7 @@ export const initializeLanguage = async () => {
  * Récupère la langue depuis localStorage
  */
 export const getLanguageFromStorage = () => {
+  if (typeof window === 'undefined') return DEFAULT_LANGUAGE;
   const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
   return savedLanguage && SUPPORTED_LANGUAGES.includes(savedLanguage) 
     ? savedLanguage 
@@ -54,6 +57,7 @@ export const getLanguageFromStorage = () => {
  * Sauvegarde la langue dans localStorage
  */
 export const saveLanguageToStorage = (language) => {
+  if (typeof window === 'undefined') return;
   if (SUPPORTED_LANGUAGES.includes(language)) {
     localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
   }

@@ -1,7 +1,9 @@
+'use client'
+
 import { memo, useState, useEffect, useRef } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 
-const Testimonial = memo(() => {
+const Testimonial = memo(({ testimonialsData = null }) => {
   const { t, language } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(0);
@@ -17,8 +19,8 @@ const Testimonial = memo(() => {
     return value === key ? fallback : value;
   };
 
-  // 4 testimonials avec traductions
-  const testimonials = [
+  // Fallback testimonials si pas de données SSR
+  const defaultTestimonials = [
     {
       quote: language === 'en' ? '"A smooth and fully digital experience"' : language === 'fr' ? '"Enfin une solution simple et efficace"' : language === 'es' ? '"Por fin una solución simple y eficaz"' : language === 'de' ? '"Ein reibungsloses und vollständig digitales Erlebnis"' : language === 'it' ? '"Un\'esperienza fluida e completamente digitale"' : '"Uma experiência suave e totalmente digital"',
       text: language === 'en' ? 'My Notary made what used to be a complex process incredibly simple. I was able to sign, certify, and apostille my documents online, fully legally, in just a few minutes. Their team is responsive, reliable, and the platform is extremely intuitive' : language === 'fr' ? 'J\'avais besoin de faire certifier plusieurs documents pour mon entreprise. Avec My Notary, tout s\'est fait en ligne en quelques minutes, sans me déplacer. L\'équipe est réactive, le processus est clair et mes documents sont valides partout. Je recommande vivement !' : language === 'es' ? 'Necesitaba certificar varios documentos para mi empresa. Con My Notary, todo se hizo en línea en pocos minutos, sin desplazarme. El equipo es receptivo, el proceso es claro y mis documentos son válidos en todas partes. ¡Lo recomiendo totalmente!' : language === 'de' ? 'My Notary hat einen Prozess, der früher komplex war, unglaublich einfach gemacht. Ich konnte meine Dokumente online, vollständig legal, in nur wenigen Minuten signieren, zertifizieren und apostillieren. Ihr Team ist reaktionsschnell, zuverlässig und die Plattform ist extrem intuitiv' : language === 'it' ? 'My Notary ha reso incredibilmente semplice quello che era un processo complesso. Ho potuto firmare, certificare e apostillare i miei documenti online, completamente legalmente, in pochi minuti. Il loro team è reattivo, affidabile e la piattaforma è estremamente intuitiva' : 'My Notary tornou incrivelmente simples o que costumava ser um processo complexo. Consegui assinar, certificar e apostilar meus documentos online, totalmente legalmente, em apenas alguns minutos. A equipe deles é responsiva, confiável e a plataforma é extremamente intuitiva',
@@ -44,6 +46,16 @@ const Testimonial = memo(() => {
       role: language === 'en' ? 'Corporate Lawyer' : language === 'fr' ? 'Avocate d\'Entreprise' : language === 'es' ? 'Abogada Corporativa' : language === 'de' ? 'Unternehmensanwältin' : language === 'it' ? 'Avvocato Aziendale' : 'Advogada Corporativa',
     },
   ];
+
+  // Utiliser les données SSR si disponibles, sinon fallback
+  const testimonials = testimonialsData && testimonialsData.length > 0
+    ? testimonialsData.map(testimonial => ({
+        quote: testimonial[`quote_${language}`] || testimonial.quote_en || testimonial.quote,
+        text: testimonial[`text_${language}`] || testimonial.text_en || testimonial.text,
+        author: testimonial.author_name || testimonial.author,
+        role: testimonial[`role_${language}`] || testimonial.role_en || testimonial.role,
+      }))
+    : defaultTestimonials;
 
   // Fonction pour changer d'avis
   const goToNext = () => {

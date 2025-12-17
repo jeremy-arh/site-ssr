@@ -1,10 +1,15 @@
+'use client'
+
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 
 const ScrollToTop = () => {
-  const { pathname, hash } = useLocation();
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Get hash from window.location (Next.js doesn't provide it in usePathname)
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
+    
     // If there's a hash in the URL, scroll to that element
     if (hash) {
       // Scroll to top first
@@ -26,7 +31,7 @@ const ScrollToTop = () => {
       // Otherwise, scroll to top
       window.scrollTo(0, 0);
     }
-  }, [pathname, hash]);
+  }, [pathname]);
 
   return null;
 };

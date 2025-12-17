@@ -42,25 +42,43 @@ export const prefetchForm = (currency = 'EUR', serviceId = null) => {
  * Setup prefetch on link hover
  */
 export const setupLinkPrefetch = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
   // Track prefetched items to avoid duplicate requests
-  const prefetched = new Set();
+  let prefetched;
+  try {
+    prefetched = new Set();
+    if (!prefetched || typeof prefetched.add !== 'function') {
+      console.error('Failed to initialize prefetched Set');
+      return;
+    }
+  } catch (error) {
+    console.error('Error creating prefetched Set:', error);
+    return;
+  }
+  
   let hoverTimeout = null;
 
   const prefetchFromLink = (link) => {
+    if (!link || !prefetched) return;
     const href = link.getAttribute('href') || link.href;
     if (!href) return;
 
     // Form URL (external)
     if (href.includes('app.mynotary.io/form')) {
-      const url = new URL(href);
-      const currency = url.searchParams.get('currency') || 'EUR';
-      const serviceId = url.searchParams.get('service') || null;
-      const cacheKey = `form:${currency}:${serviceId || 'none'}`;
-      if (!prefetched.has(cacheKey)) {
-        prefetched.add(cacheKey);
-        prefetchForm(currency, serviceId);
+      try {
+        const url = new URL(href);
+        const currency = url.searchParams.get('currency') || 'EUR';
+        const serviceId = url.searchParams.get('service') || null;
+        const cacheKey = `form:${currency}:${serviceId || 'none'}`;
+        if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
+          if (typeof prefetched.add === 'function') {
+            prefetched.add(cacheKey);
+          }
+          prefetchForm(currency, serviceId);
+        }
+      } catch (e) {
+        // Invalid URL, skip
       }
     }
     // Blog post
@@ -69,8 +87,10 @@ export const setupLinkPrefetch = () => {
       if (match && match[1]) {
         const slug = decodeURIComponent(match[1]);
         const cacheKey = `blog:${slug}`;
-        if (!prefetched.has(cacheKey)) {
-          prefetched.add(cacheKey);
+        if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
+          if (typeof prefetched.add === 'function') {
+            prefetched.add(cacheKey);
+          }
           prefetchBlogPost(slug);
         }
       }
@@ -81,8 +101,10 @@ export const setupLinkPrefetch = () => {
       if (match && match[1]) {
         const serviceId = decodeURIComponent(match[1]);
         const cacheKey = `service:${serviceId}`;
-        if (!prefetched.has(cacheKey)) {
-          prefetched.add(cacheKey);
+        if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
+          if (typeof prefetched.add === 'function') {
+            prefetched.add(cacheKey);
+          }
           prefetchService(serviceId);
         }
       }

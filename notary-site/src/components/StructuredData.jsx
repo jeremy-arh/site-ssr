@@ -1,5 +1,7 @@
-import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+'use client'
+
+import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getCanonicalUrl } from '../utils/canonicalUrl';
 
@@ -12,7 +14,7 @@ const StructuredData = ({
   data = {},
   additionalData = []
 }) => {
-  const location = useLocation();
+  const pathname = usePathname();
   const { language } = useLanguage();
   const baseUrl = typeof window !== 'undefined' 
     ? `${window.location.protocol}//${window.location.host}`
@@ -129,7 +131,7 @@ const StructuredData = ({
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': getCanonicalUrl(location.pathname),
+            '@id': getCanonicalUrl(pathname),
           },
           ...data,
         },
@@ -164,7 +166,7 @@ const StructuredData = ({
             '@type': 'ListItem',
             position: index + 1,
             name: item.name,
-            item: item.url ? `${baseUrl}${item.url}` : getCanonicalUrl(location.pathname),
+            item: item.url ? `${baseUrl}${item.url}` : getCanonicalUrl(pathname),
           })),
         },
       });
@@ -175,17 +177,38 @@ const StructuredData = ({
 
   const scripts = generateScripts();
 
-  return (
-    <>
-      {scripts.map((script, index) => (
-        <Helmet key={`structured-data-${script.type}-${index}`}>
-          <script type="application/ld+json">
-            {JSON.stringify(script.data)}
-          </script>
-        </Helmet>
-      ))}
-    </>
-  );
+  // Ajouter les scripts JSON-LD dans le head
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const head = document.head;
+    const scriptIds = scripts.map((_, index) => `structured-data-${scripts[index].type}-${index}`);
+
+    // Supprimer les anciens scripts
+    scriptIds.forEach(id => {
+      const existing = document.getElementById(id);
+      if (existing) existing.remove();
+    });
+
+    // Ajouter les nouveaux scripts
+    scripts.forEach((script, index) => {
+      const scriptElement = document.createElement('script');
+      scriptElement.id = scriptIds[index];
+      scriptElement.type = 'application/ld+json';
+      scriptElement.textContent = JSON.stringify(script.data);
+      head.appendChild(scriptElement);
+    });
+
+    // Cleanup
+    return () => {
+      scriptIds.forEach(id => {
+        const existing = document.getElementById(id);
+        if (existing) existing.remove();
+      });
+    };
+  }, [scripts]);
+
+  return null;
 };
 
 export default StructuredData;

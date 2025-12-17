@@ -116,17 +116,19 @@ const getGeoInfo = async () => {
   };
 
   // Utiliser uniquement le cache s'il existe
-  try {
-    const cached = localStorage.getItem(GEO_CACHE_KEY);
-    if (cached) {
-      const { data, timestamp } = JSON.parse(cached);
-      const now = Date.now();
-      if (now - timestamp < GEO_CACHE_DURATION) {
-        return data;
+  if (typeof window !== 'undefined') {
+    try {
+      const cached = localStorage.getItem(GEO_CACHE_KEY);
+      if (cached) {
+        const { data, timestamp } = JSON.parse(cached);
+        const now = Date.now();
+        if (now - timestamp < GEO_CACHE_DURATION) {
+          return data;
+        }
       }
+    } catch (error) {
+      // Cache invalid
     }
-  } catch (error) {
-    // Cache invalid
   }
 
   // PAS d'appel à ip-api.com ou ipapi.co - ces appels causaient 1000ms+ de latence

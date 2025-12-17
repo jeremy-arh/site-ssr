@@ -1,3 +1,5 @@
+'use client'
+
 import { useTranslation } from '../hooks/useTranslation';
 
 // SVG inline pour éviter les requêtes réseau à @iconify (320ms de latence)

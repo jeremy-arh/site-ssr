@@ -1,117 +1,125 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { detectLanguageFromIP, saveLanguageToStorage, getLanguageFromStorage, extractLanguageFromPath, removeLanguageFromPath, addLanguageToPath, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../utils/language';
-import { useLocation, useNavigate } from 'react-router-dom';
+'use client'
+
+import { createContext, useContext, useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { detectLanguageFromIP, saveLanguageToStorage, getLanguageFromStorage, extractLanguageFromPath, removeLanguageFromPath, addLanguageToPath, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../utils/language'
 
 const LanguageContext = createContext({
   language: DEFAULT_LANGUAGE,
   setLanguage: () => {},
   getLocalizedPath: () => {},
   isReady: false,
-});
+})
 
 export const useLanguage = () => {
-  const context = useContext(LanguageContext);
+  const context = useContext(LanguageContext)
   if (!context) {
-    throw new Error('useLanguage must be used within LanguageProvider');
+    throw new Error('useLanguage must be used within LanguageProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const LanguageProvider = ({ children }) => {
-  // Initialiser la langue depuis l'URL ou le storage SYNCHRONEMENT pour éviter le flash
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname()
+  const router = useRouter()
   
   // Fonction d'initialisation synchrone
   const getInitialLanguage = () => {
     // 1) Langue dans l'URL (synchrone)
-    const urlLanguage = extractLanguageFromPath(location.pathname);
-    if (urlLanguage) return urlLanguage;
+    const urlLanguage = extractLanguageFromPath(pathname)
+    if (urlLanguage) return urlLanguage
     
     // 2) Langue sauvegardée (synchrone - localStorage)
-    const savedLanguage = getLanguageFromStorage();
-    if (savedLanguage) return savedLanguage;
+    if (typeof window !== 'undefined') {
+      const savedLanguage = getLanguageFromStorage()
+      if (savedLanguage) return savedLanguage
+    }
     
     // 3) Langue par défaut
-    return DEFAULT_LANGUAGE;
-  };
+    return DEFAULT_LANGUAGE
+  }
   
-  const [language, setLanguageState] = useState(getInitialLanguage);
-  // isReady est TRUE par défaut pour ne pas bloquer le rendu
-  const [isReady, setIsReady] = useState(true);
+  const [language, setLanguageState] = useState(getInitialLanguage)
+  const [isReady, setIsReady] = useState(true)
 
   // Fonction pour obtenir le path localisé
   const getLocalizedPath = (path, lang) => {
-    const targetLang = lang || language;
+    const targetLang = lang || language
     // Retire la langue actuelle du path
-    const cleanPath = removeLanguageFromPath(path);
+    const cleanPath = removeLanguageFromPath(path)
     
     // Ajoute la nouvelle langue si ce n'est pas 'en'
-    return addLanguageToPath(cleanPath, targetLang);
-  };
+    return addLanguageToPath(cleanPath, targetLang)
+  }
 
   // Sauvegarder la langue initiale et détecter par IP si nécessaire
   useEffect(() => {
     // Sauvegarder la langue actuelle
-    saveLanguageToStorage(language);
+    saveLanguageToStorage(language)
     
     // Si on a déjà une langue sauvegardée ou dans l'URL, ne pas détecter par IP
-    const urlLanguage = extractLanguageFromPath(location.pathname);
-    const savedLanguage = getLanguageFromStorage();
+    const urlLanguage = extractLanguageFromPath(pathname)
+    const savedLanguage = typeof window !== 'undefined' ? getLanguageFromStorage() : null
     if (urlLanguage || savedLanguage) {
-      return;
+      return
     }
 
     // Détection IP différée uniquement si rien en cache
     const applyDetectedLanguage = async () => {
       try {
-        const detectedLanguage = await detectLanguageFromIP();
+        const detectedLanguage = await detectLanguageFromIP()
         if (detectedLanguage && detectedLanguage !== language) {
-          setLanguageState(detectedLanguage);
-          saveLanguageToStorage(detectedLanguage);
+          setLanguageState(detectedLanguage)
+          saveLanguageToStorage(detectedLanguage)
           if (detectedLanguage !== DEFAULT_LANGUAGE) {
-            const newPath = getLocalizedPath(location.pathname, detectedLanguage);
-            if (newPath !== location.pathname) {
-              navigate(newPath, { replace: true });
+            const newPath = getLocalizedPath(pathname, detectedLanguage)
+            if (newPath !== pathname) {
+              router.replace(newPath)
             }
           }
         }
       } catch (error) {
-        console.warn('Error detecting language from IP:', error);
+        console.warn('Error detecting language from IP:', error)
       }
-    };
-
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(applyDetectedLanguage, { timeout: 2000 });
-    } else {
-      setTimeout(applyDetectedLanguage, 1500);
     }
-  }, []); // Seulement au montage initial
 
-  // Met à jour la langue quand l'URL change (mais seulement si c'est un changement d'URL, pas un changement de langue manuel)
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(applyDetectedLanguage, { timeout: 2000 })
+      } else {
+        setTimeout(applyDetectedLanguage, 1500)
+      }
+    }
+  }, []) // Seulement au montage initial
+
+  // Met à jour la langue quand l'URL change
   useEffect(() => {
-    const urlLanguage = extractLanguageFromPath(location.pathname);
+    const urlLanguage = extractLanguageFromPath(pathname)
     if (urlLanguage !== language && SUPPORTED_LANGUAGES.includes(urlLanguage)) {
-      setLanguageState(urlLanguage);
-      saveLanguageToStorage(urlLanguage);
+      setLanguageState(urlLanguage)
+      saveLanguageToStorage(urlLanguage)
     }
-  }, [location.pathname]); // Ne pas inclure 'language' dans les dépendances pour éviter les boucles
+  }, [pathname]) // Ne pas inclure 'language' dans les dépendances pour éviter les boucles
 
   // Fonction pour changer la langue
   const setLanguage = (newLanguage) => {
     if (!SUPPORTED_LANGUAGES.includes(newLanguage)) {
-      console.warn(`Language ${newLanguage} is not supported`);
-      return;
+      console.warn(`Language ${newLanguage} is not supported`)
+      return
     }
 
-    setLanguageState(newLanguage);
-    saveLanguageToStorage(newLanguage);
+    setLanguageState(newLanguage)
+    saveLanguageToStorage(newLanguage)
 
     // Met à jour l'URL avec la nouvelle langue
-    const currentPath = removeLanguageFromPath(location.pathname);
-    const newPath = getLocalizedPath(currentPath, newLanguage);
-    navigate(newPath);
-  };
+    const currentPath = removeLanguageFromPath(pathname)
+    const newPath = getLocalizedPath(currentPath, newLanguage)
+    
+    // Utiliser replace au lieu de push pour éviter d'ajouter une entrée dans l'historique
+    if (newPath !== pathname) {
+      router.replace(newPath)
+    }
+  }
 
   return (
     <LanguageContext.Provider value={{
@@ -123,6 +131,5 @@ export const LanguageProvider = ({ children }) => {
     }}>
       {children}
     </LanguageContext.Provider>
-  );
-};
-
+  )
+}

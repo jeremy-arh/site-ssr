@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client'
+
+import Link from 'next/link';
 import { memo } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../hooks/useTranslation';
@@ -105,12 +107,23 @@ const SERVICE_ICONS = {
   'commercial-administrative-documents': IconDocument,
 };
 
-const Services = () => {
-  const { getLocalizedPath } = useLanguage();
+const Services = ({ servicesData = null }) => {
+  const { getLocalizedPath, language } = useLanguage();
   const { t } = useTranslation();
   
-  // Utiliser le hook prebuild au lieu de requêtes Supabase
-  const { services, isLoading } = useServicesList({ showInListOnly: true });
+  // Si on a des données SSR, les utiliser, sinon fallback sur le hook
+  let services, isLoading;
+  if (servicesData) {
+    // Formater les services selon la langue (SSR)
+    const { formatServicesForLanguage } = require('../utils/services');
+    services = formatServicesForLanguage(servicesData.filter(s => s.show_in_list === true), language);
+    isLoading = false;
+  } else {
+    // Fallback sur le hook (pour compatibilité)
+    const hookResult = useServicesList({ showInListOnly: true });
+    services = hookResult.services;
+    isLoading = hookResult.isLoading;
+  }
 
   return (
     <section id="services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
@@ -147,7 +160,7 @@ const Services = () => {
               return (
                 <Link
                   key={service.id}
-                  to={getLocalizedPath(`/services/${service.service_id}`)}
+                  href={getLocalizedPath(`/services/${service.service_id}`)}
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up flex flex-col"
                   onClick={() => {
                     loadAnalytics();

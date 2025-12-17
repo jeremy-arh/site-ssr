@@ -1,5 +1,7 @@
+'use client'
+
 import { useState, useEffect, useCallback, memo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
@@ -109,7 +111,7 @@ const Navbar = memo(() => {
   const [servicePrice, setServicePrice] = useState(null);
   const [formattedPrice, setFormattedPrice] = useState('');
   const [currentServiceId, setCurrentServiceId] = useState(null);
-  const location = useLocation();
+  const pathname = usePathname();
   const { formatPrice, currency } = useCurrency();
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
@@ -139,9 +141,9 @@ const Navbar = memo(() => {
   
   // Helper function to check if we're on a service detail page (with or without language prefix)
   const isServicePage = useCallback(() => {
-    const pathWithoutLang = removeLanguageFromPath(location.pathname);
+    const pathWithoutLang = removeLanguageFromPath(pathname);
     return pathWithoutLang.startsWith('/services/') && pathWithoutLang !== '/services';
-  }, [location.pathname]);
+  }, [pathname]);
   
   // Vérifier si on est sur une page service
   const isOnServicePage = isServicePage();
@@ -236,7 +238,7 @@ const Navbar = memo(() => {
         observer.disconnect();
       }
     };
-  }, [location.pathname]); // Re-observer quand on change de page
+  }, [pathname]); // Re-observer quand on change de page
 
   useEffect(() => {
     window.addEventListener('resize', handleResize, { passive: true });
@@ -261,7 +263,7 @@ const Navbar = memo(() => {
   // Fetch CTA from blog post or service detail page based on pathname
   useEffect(() => {
     const fetchBlogCTA = async () => {
-      const path = location.pathname || '';
+      const path = pathname || '';
 
       // Blog post detail
       const blogMatch = path.match(/^\/blog\/([^/]+)/);
@@ -325,7 +327,7 @@ const Navbar = memo(() => {
     };
 
     fetchBlogCTA();
-  }, [location.pathname, language]);
+  }, [pathname, language]);
 
   useEffect(() => {
     if (servicePrice) {
@@ -397,10 +399,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleNavigationClick, t('nav.services'), `#${sectionId}`, {
                     label: t('nav.services'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, location.pathname);
+                  safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, pathname);
                 }}
               >
                 {t('nav.services')}
@@ -414,10 +416,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleNavigationClick, t('nav.howItWorks'), '#how-it-works', {
                     label: t('nav.howItWorks'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'How it work', '#how-it-works', location.pathname);
+                  safeTrack(trackNavigationClick, 'How it work', '#how-it-works', pathname);
                 }}
               >
                 {t('nav.howItWorks')}
@@ -431,10 +433,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleNavigationClick, t('nav.faq'), '#faq', {
                     label: t('nav.faq'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'FAQ', '#faq', location.pathname);
+                  safeTrack(trackNavigationClick, 'FAQ', '#faq', pathname);
                 }}
               >
                 {t('nav.faq')}
@@ -454,10 +456,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleLoginClick, 'navbar_desktop', {
                     linkText: t('nav.login'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
                   });
-                  safeTrack(trackLoginClick, 'navbar_desktop', location.pathname);
+                  safeTrack(trackLoginClick, 'navbar_desktop', pathname);
                 }}
               >
                 {t('nav.login')}
@@ -470,12 +472,12 @@ const Navbar = memo(() => {
                 className={`${isHeroOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-6 py-3 font-semibold rounded-lg transition-all duration-300`}
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleCTAClick, 'navbar_desktop', currentServiceId, location.pathname, {
+                  safeTrack(trackPlausibleCTAClick, 'navbar_desktop', currentServiceId, pathname, {
                     ctaText: ctaText || t('nav.notarizeNow'),
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_desktop_cta'
                   });
-                  safeTrack(trackCTAClick, 'navbar_desktop', currentServiceId, location.pathname);
+                  safeTrack(trackCTAClick, 'navbar_desktop', currentServiceId, pathname);
                 }}
               >
                 <span className="btn-text inline-block inline-flex items-center gap-2 whitespace-nowrap">
@@ -535,10 +537,10 @@ const Navbar = memo(() => {
                 loadAnalytics();
                 safeTrack(trackPlausibleNavigationClick, t('nav.services'), `#${sectionId}`, {
                   label: t('nav.services'),
-                  pagePath: location.pathname,
+                  pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, location.pathname);
+                safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -553,10 +555,10 @@ const Navbar = memo(() => {
                 loadAnalytics();
                 safeTrack(trackPlausibleNavigationClick, t('nav.howItWorks'), '#how-it-works', {
                   label: t('nav.howItWorks'),
-                  pagePath: location.pathname,
+                  pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'How it work', '#how-it-works', location.pathname);
+                safeTrack(trackNavigationClick, 'How it work', '#how-it-works', pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -571,10 +573,10 @@ const Navbar = memo(() => {
                 loadAnalytics();
                 safeTrack(trackPlausibleNavigationClick, t('nav.faq'), '#faq', {
                   label: t('nav.faq'),
-                  pagePath: location.pathname,
+                  pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'FAQ', '#faq', location.pathname);
+                safeTrack(trackNavigationClick, 'FAQ', '#faq', pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -615,10 +617,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleNavigationClick, t('common.contactUs'), localizedPath, {
                     label: t('common.contactUs'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     section: 'navbar_mobile'
                   });
-                  safeTrack(trackNavigationClick, 'contact', localizedPath, location.pathname);
+                  safeTrack(trackNavigationClick, 'contact', localizedPath, pathname);
                 }}
                 className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
               >
@@ -631,10 +633,10 @@ const Navbar = memo(() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleLoginClick, 'navbar_mobile', {
                     linkText: t('nav.login'),
-                    pagePath: location.pathname,
+                    pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
                   });
-                  safeTrack(trackLoginClick, 'navbar_mobile', location.pathname);
+                  safeTrack(trackLoginClick, 'navbar_mobile', pathname);
                   closeMenu();
                 }}
                 className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
@@ -647,12 +649,12 @@ const Navbar = memo(() => {
                 href={getFormUrl(currency, currentServiceId)}
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleCTAClick, 'navbar_mobile', currentServiceId, location.pathname, {
+                  safeTrack(trackPlausibleCTAClick, 'navbar_mobile', currentServiceId, pathname, {
                     ctaText: ctaText || t('nav.notarizeNow'),
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_mobile_cta'
                   });
-                  safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, location.pathname);
+                  safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, pathname);
                   closeMenu();
                 }}
                 className="block w-full text-center glassy-cta primary-cta text-lg py-4"

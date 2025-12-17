@@ -1,3 +1,5 @@
+'use client'
+
 import { memo } from 'react';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';

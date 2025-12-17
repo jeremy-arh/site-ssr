@@ -33,13 +33,21 @@ export const useScrollAnimation = () => {
     };
 
     const observedElements = new Set();
+    if (!observedElements || typeof observedElements.add !== 'function') {
+      console.error('Failed to initialize observedElements Set');
+      return undefined;
+    }
 
     const intersectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const { target } = entry;
-          target.classList.add('is-visible');
-          observedElements.add(target);
+          if (target && target.classList) {
+            target.classList.add('is-visible');
+          }
+          if (observedElements && typeof observedElements.add === 'function') {
+            observedElements.add(target);
+          }
           intersectionObserver.unobserve(target);
         }
       });

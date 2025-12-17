@@ -1,6 +1,7 @@
+'use client'
+
 import { useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getCanonicalUrl } from '../utils/canonicalUrl';
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, removeLanguageFromPath, addLanguageToPath } from '../utils/language';
@@ -50,18 +51,11 @@ const SEOHead = ({
   nofollow = false
 }) => {
   const { language } = useLanguage();
-  const location = useLocation();
+  const pathname = usePathname();
   
-  // Met à jour l'attribut lang sur <html>
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = language;
-    }
-  }, [language]);
-
   // Génère les URLs hreflang pour toutes les langues
   const generateHreflangUrls = () => {
-    const basePath = canonicalPath || location.pathname;
+    const basePath = canonicalPath || pathname;
     const cleanPath = removeLanguageFromPath(basePath);
     const hreflangUrls = [];
 
@@ -86,7 +80,7 @@ const SEOHead = ({
   };
 
   const hreflangUrls = generateHreflangUrls();
-  const canonicalUrl = getCanonicalUrl(canonicalPath || location.pathname);
+  const canonicalUrl = getCanonicalUrl(canonicalPath || pathname);
   const locale = LANGUAGE_TO_LOCALE[language] || LANGUAGE_TO_LOCALE[DEFAULT_LANGUAGE];
 
   // Génère les meta robots
@@ -96,52 +90,127 @@ const SEOHead = ({
   if (robotsContent.length === 0) robotsContent.push('index', 'follow');
   const robotsMeta = robotsContent.join(', ');
 
-  return (
-    <Helmet>
-      {/* Attribut lang sur html - géré via useEffect mais aussi via Helmet pour SSR */}
-      <html lang={language} />
-      
-      {/* Title */}
-      {title && <title>{title}</title>}
-      
-      {/* Description */}
-      {description && <meta name="description" content={description} />}
-      
-      {/* Robots */}
-      <meta name="robots" content={robotsMeta} />
-      
-      {/* Canonical URL */}
-      <link rel="canonical" href={canonicalUrl} />
-      
-      {/* Hreflang tags pour toutes les langues */}
-      {hreflangUrls.map(({ lang, url }) => (
-        <link key={lang} rel="alternate" hreflang={lang} href={url} />
-      ))}
-      
-      {/* Open Graph */}
-      {ogTitle && <meta property="og:title" content={ogTitle} />}
-      {ogDescription && <meta property="og:description" content={ogDescription} />}
-      {ogImage && <meta property="og:image" content={ogImage} />}
-      <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:type" content="website" />
-      <meta property="og:locale" content={locale} />
-      
-      {/* Open Graph alternate locales */}
-      {SUPPORTED_LANGUAGES.filter(lang => lang !== language).map((lang) => (
-        <meta 
-          key={`og:locale:alternate-${lang}`}
-          property="og:locale:alternate" 
-          content={LANGUAGE_TO_LOCALE[lang]} 
-        />
-      ))}
-      
-      {/* Twitter Card */}
-      {twitterTitle && <meta name="twitter:card" content="summary_large_image" />}
-      {twitterTitle && <meta name="twitter:title" content={twitterTitle} />}
-      {twitterDescription && <meta name="twitter:description" content={twitterDescription} />}
-      {twitterImage && <meta name="twitter:image" content={twitterImage} />}
-    </Helmet>
-  );
+  // Met à jour l'attribut lang sur <html>
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = language;
+    }
+  }, [language]);
+
+  // Met à jour les meta tags dans le head
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const head = document.head;
+    
+    // Title
+    if (title) {
+      let titleElement = document.querySelector('title');
+      if (!titleElement) {
+        titleElement = document.createElement('title');
+        head.appendChild(titleElement);
+      }
+      titleElement.textContent = title;
+    }
+
+    // Description
+    let descMeta = document.querySelector('meta[name="description"]');
+    if (description) {
+      if (!descMeta) {
+        descMeta = document.createElement('meta');
+        descMeta.setAttribute('name', 'description');
+        head.appendChild(descMeta);
+      }
+      descMeta.setAttribute('content', description);
+    } else if (descMeta) {
+      descMeta.remove();
+    }
+
+    // Robots
+    let robotsMetaElement = document.querySelector('meta[name="robots"]');
+    if (!robotsMetaElement) {
+      robotsMetaElement = document.createElement('meta');
+      robotsMetaElement.setAttribute('name', 'robots');
+      head.appendChild(robotsMetaElement);
+    }
+    robotsMetaElement.setAttribute('content', robotsMeta);
+
+    // Canonical
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', canonicalUrl);
+
+    // Hreflang - supprimer les anciens
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(link => link.remove());
+    // Ajouter les nouveaux
+    hreflangUrls.forEach(({ lang, url }) => {
+      const link = document.createElement('link');
+      link.setAttribute('rel', 'alternate');
+      link.setAttribute('hreflang', lang);
+      link.setAttribute('href', url);
+      head.appendChild(link);
+    });
+
+    // Open Graph
+    const setOGMeta = (property, content) => {
+      if (!content) return;
+      let meta = document.querySelector(`meta[property="${property}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('property', property);
+        head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+
+    if (ogTitle) setOGMeta('og:title', ogTitle);
+    if (ogDescription) setOGMeta('og:description', ogDescription);
+    if (ogImage) setOGMeta('og:image', ogImage);
+    setOGMeta('og:url', canonicalUrl);
+    setOGMeta('og:type', 'website');
+    setOGMeta('og:locale', locale);
+
+    // Open Graph alternate locales
+    document.querySelectorAll('meta[property="og:locale:alternate"]').forEach(meta => meta.remove());
+    SUPPORTED_LANGUAGES.filter(lang => lang !== language).forEach((lang) => {
+      const meta = document.createElement('meta');
+      meta.setAttribute('property', 'og:locale:alternate');
+      meta.setAttribute('content', LANGUAGE_TO_LOCALE[lang]);
+      head.appendChild(meta);
+    });
+
+    // Twitter Card
+    const setTwitterMeta = (name, content) => {
+      if (!content) return;
+      let meta = document.querySelector(`meta[name="${name}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', name);
+        head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+
+    if (twitterTitle) {
+      setTwitterMeta('twitter:card', 'summary_large_image');
+      setTwitterMeta('twitter:title', twitterTitle);
+    }
+    if (twitterDescription) setTwitterMeta('twitter:description', twitterDescription);
+    if (twitterImage) setTwitterMeta('twitter:image', twitterImage);
+
+    // Cleanup function
+    return () => {
+      // Ne pas supprimer les meta tags au cleanup car ils sont nécessaires
+      // Ils seront mis à jour au prochain render
+    };
+  }, [title, description, robotsMeta, canonicalUrl, hreflangUrls, ogTitle, ogDescription, ogImage, locale, language, twitterTitle, twitterDescription, twitterImage]);
+
+  // Le composant ne retourne rien car tout est géré via useEffect
+  return null;
 };
 
 export default SEOHead;

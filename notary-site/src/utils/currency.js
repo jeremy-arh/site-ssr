@@ -51,6 +51,7 @@ const DEFAULT_CURRENCY = 'EUR';
  * Get currency from cache
  */
 export const getCachedCurrency = () => {
+  if (typeof window === 'undefined') return null;
   try {
     const cached = localStorage.getItem(CURRENCY_CACHE_KEY);
     if (cached) {
@@ -69,6 +70,7 @@ export const getCachedCurrency = () => {
  * Save currency to cache
  */
 const saveCurrencyToCache = (currency) => {
+  if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(CURRENCY_CACHE_KEY, JSON.stringify({
       currency,
@@ -83,6 +85,7 @@ const saveCurrencyToCache = (currency) => {
  * Get exchange rates from cache
  */
 const getCachedExchangeRates = () => {
+  if (typeof window === 'undefined') return null;
   try {
     const cached = localStorage.getItem(EXCHANGE_RATE_CACHE_KEY);
     if (cached) {
@@ -101,6 +104,7 @@ const getCachedExchangeRates = () => {
  * Save exchange rates to cache
  */
 const saveExchangeRatesToCache = (rates) => {
+  if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(EXCHANGE_RATE_CACHE_KEY, JSON.stringify({
       rates,

@@ -1,5 +1,7 @@
+'use client'
+
 import { useState, useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useService } from '../hooks/useServices';
@@ -43,15 +45,15 @@ const IconOpenNew = () => (
 const CTAPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [ctaPrice, setCtaPrice] = useState('');
-  const location = useLocation();
+  const pathname = usePathname();
   const { currency, formatPrice } = useCurrency();
   const { t } = useTranslation();
 
   // Detect serviceId from URL if on a service page
   const serviceId = useMemo(() => {
-    const serviceMatch = location.pathname.match(/^\/services\/([^/]+)/);
+    const serviceMatch = pathname.match(/^\/services\/([^/]+)/);
     return serviceMatch ? decodeURIComponent(serviceMatch[1]) : null;
-  }, [location.pathname]);
+  }, [pathname]);
   
   const isServicePage = !!serviceId;
 
@@ -85,7 +87,7 @@ const CTAPopup = () => {
 
   const handleContactClick = () => {
     loadAnalytics();
-    safeTrack(trackPlausibleCTAClick, 'popup_contact', serviceId, location.pathname, {
+    safeTrack(trackPlausibleCTAClick, 'popup_contact', serviceId, pathname, {
       ctaText: t('ctaPopup.contact'),
       destination: 'crisp_chat',
       ctaType: 'contact',
@@ -110,12 +112,12 @@ const CTAPopup = () => {
     const formUrl = getFormUrl(currency, serviceId);
 
     loadAnalytics();
-    safeTrack(trackPlausibleCTAClick, 'popup_cta', serviceId, location.pathname, {
+    safeTrack(trackPlausibleCTAClick, 'popup_cta', serviceId, pathname, {
       ctaText: label,
       destination: formUrl,
       elementId: 'popup_primary'
     });
-    safeTrack(trackCTAClick, 'popup_cta', serviceId, location.pathname);
+    safeTrack(trackCTAClick, 'popup_cta', serviceId, pathname);
     window.location.href = formUrl;
   };
 
