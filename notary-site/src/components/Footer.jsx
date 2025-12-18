@@ -2,6 +2,7 @@
 
 import { memo, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslation } from '../hooks/useTranslation';
 
 // IMPORT STATIQUE - Les données sont dans le bundle, ZERO fetch !
@@ -38,13 +39,12 @@ const Footer = memo(() => {
           {/* Logo */}
           <div className="md:col-span-1">
             <a href="/" className="inline-block">
-              <img
-                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=20,f=webp"
+              <Image
+                src="/images/logo.webp"
                 alt="Logo"
-                width="120"
-                height="32"
+                width={120}
+                height={32}
                 className="h-8 w-auto"
-                style={{ aspectRatio: '120/32' }}
               />
             </a>
           </div>

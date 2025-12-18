@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, memo } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
@@ -370,19 +371,19 @@ const Navbar = memo(() => {
             >
             {/* Logo */}
             <a href="/" className="flex-shrink-0 relative z-[60]">
-              <img
+              <Image
                 src={
                   isMobile && !isMenuOpen 
-                    ? 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=20,f=webp' 
+                    ? '/images/logo.webp'
                     : (!isMobile && isAtTop && isOnServicePage)
-                      ? 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=20,f=webp'
-                      : 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=20,f=webp'
+                      ? '/images/logo.webp'
+                      : '/images/logo-dark.webp'
                 }
                 alt="Logo"
+                width={130}
+                height={32}
                 className={`${isMobile ? 'h-6' : 'h-8'} w-auto`}
-                width="130"
-                height="32"
-                style={{ aspectRatio: '130/32' }}
+                priority
               />
             </a>
 

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
@@ -63,12 +64,9 @@ const IconOpenNew = memo(() => (
   </svg>
 ))
 
-// Image Hero - Desktop et Mobile
-const HERO_IMG_DESKTOP = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/q=20,f=webp'
-const HERO_IMG_MOBILE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=800,q=20,f=webp'
-// Image Pricing - Desktop et Mobile
-const PRICING_IMG_DESKTOP = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/q=20,f=webp'
-const PRICING_IMG_MOBILE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=800,q=20,f=webp'
+// Images locales
+const HERO_IMG = '/images/hero-service.webp'
+const PRICING_IMG = '/images/pricing.webp'
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {
@@ -253,19 +251,16 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero avec dimensions fixes pour éviter CLS - w=800 sur mobile */}
-        <picture>
-          <source media="(max-width: 768px)" srcSet={HERO_IMG_MOBILE} />
-          <img
-            src={HERO_IMG_DESKTOP}
-            alt=""
-            width="1920"
-            height="1080"
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            style={{ aspectRatio: '16/9' }}
-            fetchPriority="high"
-          />
-        </picture>
+        {/* Image Hero optimisée avec next/image */}
+        <Image
+          src={HERO_IMG}
+          alt="Service background"
+          fill
+          priority
+          quality={80}
+          sizes="100vw"
+          className="object-cover object-top"
+        />
         
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
@@ -337,20 +332,17 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       >
         <div className="max-w-[1300px] w-full mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Left Side - Image - w=800 sur mobile */}
+            {/* Left Side - Image optimisée avec next/image */}
             <div className="lg:w-2/5 flex items-center justify-center">
-              <picture>
-                <source media="(max-width: 768px)" srcSet={PRICING_IMG_MOBILE} />
-                <img
-                  src={PRICING_IMG_DESKTOP}
-                  alt={service.name}
-                  className="w-full h-auto rounded-2xl object-cover"
-                  loading="lazy"
-                  width="520"
-                  height="650"
-                  style={{ maxHeight: '800px', aspectRatio: '4 / 5' }}
-                />
-              </picture>
+              <Image
+                src={PRICING_IMG}
+                alt={service.name}
+                width={520}
+                height={650}
+                quality={80}
+                className="w-full h-auto rounded-2xl object-cover"
+                style={{ maxHeight: '800px' }}
+              />
             </div>
 
             {/* Right Side - Pricing Block */}
