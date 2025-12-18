@@ -12,13 +12,16 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 export default function NotFound() {
-  // Prevent SSR issues by only rendering on client
+  // Hooks doivent être appelés en premier, toujours dans le même ordre
   const [mounted, setMounted] = useState(false)
+  const { t } = useTranslation()
+  const { getLocalizedPath } = useLanguage()
   
   useEffect(() => {
     setMounted(true)
   }, [])
   
+  // Fallback simple pendant le SSR pour éviter l'erreur Supabase auth
   if (!mounted) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -28,8 +31,6 @@ export default function NotFound() {
       </div>
     )
   }
-  const { t } = useTranslation()
-  const { getLocalizedPath } = useLanguage()
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
