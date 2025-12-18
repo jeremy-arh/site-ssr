@@ -1,6 +1,6 @@
-import Script from 'next/script'
 import { Playfair_Display } from 'next/font/google'
 import Providers from '@/components/Providers'
+import AnalyticsLoader from '@/components/AnalyticsLoader'
 import '@/index.css'
 
 // Optimisation Google Fonts avec next/font (pas de blocage du rendu)
@@ -56,10 +56,7 @@ export default function RootLayout({ children }) {
           media="(max-width: 767px)"
         />
         
-        {/* DNS prefetch pour scripts tiers (chargés en lazy) */}
-        <link rel="dns-prefetch" href="https://plausible.io" />
-        <link rel="dns-prefetch" href="https://client.crisp.chat" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        {/* DNS prefetch supprimé pour scripts tiers - chargés uniquement après interaction */}
         
         {/* Favicons */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -70,6 +67,7 @@ export default function RootLayout({ children }) {
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       </head>
       <body suppressHydrationWarning style={{ margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', backgroundColor: '#ffffff', color: '#111827' }}>
+        {/* Noscript GTM - seulement pour navigateurs sans JS, ne charge rien */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MR7JDNSD"
@@ -82,106 +80,8 @@ export default function RootLayout({ children }) {
           {children}
         </Providers>
 
-        {/* GTM - Chargé uniquement après interaction utilisateur (scroll/click) pour ne pas bloquer */}
-        <Script id="gtm-loader" strategy="afterInteractive">
-          {`
-            (function(){
-              let gtmLoaded = false;
-              function loadGTM() {
-                if (gtmLoaded) return;
-                gtmLoaded = true;
-                window.dataLayer = window.dataLayer || [];
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-MR7JDNSD');
-              }
-              // Charger après scroll ou après 3 secondes
-              let scrolled = false;
-              let timeout = setTimeout(loadGTM, 3000);
-              window.addEventListener('scroll', function() {
-                if (!scrolled) {
-                  scrolled = true;
-                  clearTimeout(timeout);
-                  setTimeout(loadGTM, 500);
-                }
-              }, { once: true, passive: true });
-              window.addEventListener('click', function() {
-                if (!scrolled) {
-                  scrolled = true;
-                  clearTimeout(timeout);
-                  loadGTM();
-                }
-              }, { once: true, passive: true });
-            })();
-          `}
-        </Script>
-
-        {/* Plausible - Chargé après scroll pour ne pas bloquer */}
-        <Script id="plausible-loader" strategy="afterInteractive">
-          {`
-            (function(){
-              let plausibleLoaded = false;
-              function loadPlausible() {
-                if (plausibleLoaded) return;
-                plausibleLoaded = true;
-                var script = document.createElement('script');
-                script.src = 'https://plausible.io/js/script.js';
-                script.setAttribute('data-domain', 'mynotary.io');
-                script.defer = true;
-                document.head.appendChild(script);
-              }
-              // Charger après scroll ou après 2 secondes
-              let scrolled = false;
-              let timeout = setTimeout(loadPlausible, 2000);
-              window.addEventListener('scroll', function() {
-                if (!scrolled) {
-                  scrolled = true;
-                  clearTimeout(timeout);
-                  setTimeout(loadPlausible, 300);
-                }
-              }, { once: true, passive: true });
-            })();
-          `}
-        </Script>
-
-        {/* Crisp - Chargé après interaction utilisateur */}
-        <Script id="crisp-loader" strategy="afterInteractive">
-          {`
-            (function(){
-              let crispLoaded = false;
-              function loadCrisp() {
-                if (crispLoaded) return;
-                crispLoaded = true;
-                window.$crisp=[];
-                window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
-                var d=document;
-                var s=d.createElement("script");
-                s.src="https://client.crisp.chat/l.js";
-                s.async=1;
-                d.getElementsByTagName("head")[0].appendChild(s);
-              }
-              // Charger après scroll ou après 5 secondes
-              let scrolled = false;
-              let timeout = setTimeout(loadCrisp, 5000);
-              window.addEventListener('scroll', function() {
-                if (!scrolled) {
-                  scrolled = true;
-                  clearTimeout(timeout);
-                  setTimeout(loadCrisp, 1000);
-                }
-              }, { once: true, passive: true });
-              window.addEventListener('click', function() {
-                if (!scrolled) {
-                  scrolled = true;
-                  clearTimeout(timeout);
-                  setTimeout(loadCrisp, 500);
-                }
-              }, { once: true, passive: true });
-            })();
-          `}
-        </Script>
+        {/* Analytics Loader - Charge UNIQUEMENT après interaction utilisateur, ZERO chargement initial */}
+        <AnalyticsLoader />
       </body>
     </html>
   )
