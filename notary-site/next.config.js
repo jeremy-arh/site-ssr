@@ -31,9 +31,6 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   
-  // Optimiser les exports pour réduire la taille du bundle
-  swcMinify: true,
-  
   // Webpack optimisations légères (Next.js gère déjà bien le code splitting)
   webpack: (config, { isServer }) => {
     // Optimiser les modules externes

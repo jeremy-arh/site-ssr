@@ -69,22 +69,19 @@ const scrollToSection = (sectionId) => {
   }
 };
 
-// Cacher les dimensions pour éviter les forced layouts répétés
-let cachedWindowWidth = typeof window !== 'undefined' ? 0 : 1200; // Valeur par défaut SSR-safe
+// Cacher le scroll pour éviter les forced layouts répétés
 let cachedScrollY = 0;
 let dimensionsCached = false;
 
-// Initialiser les dimensions de façon différée pour ne pas bloquer le rendu initial
+// Initialiser le scroll de façon différée pour ne pas bloquer le rendu initial
 if (typeof window !== 'undefined') {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {
-      cachedWindowWidth = window.innerWidth;
       cachedScrollY = window.scrollY;
       dimensionsCached = true;
     }, { timeout: 100 });
   } else {
     setTimeout(() => {
-      cachedWindowWidth = window.innerWidth;
       cachedScrollY = window.scrollY;
       dimensionsCached = true;
     }, 50);
