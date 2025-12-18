@@ -54,6 +54,7 @@ Current status:
       }
 
       supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+      // eslint-disable-next-line no-undef
       if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
         console.log('✅ Supabase client initialized successfully (lazy loaded)');
       }

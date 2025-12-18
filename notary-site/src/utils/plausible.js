@@ -59,6 +59,7 @@ export const trackPageView = async (_pageName = null, pagePath = null) => {
     u: fullUrl
   });
   
+  // eslint-disable-next-line no-undef
   if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
     console.log('Plausible pageview tracked:', fullUrl);
   }
