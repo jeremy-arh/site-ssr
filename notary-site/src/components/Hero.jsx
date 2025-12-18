@@ -65,13 +65,13 @@ const Hero = memo(() => {
         style={{ backgroundColor: '#1f2937' }}
       >
         {/* Image Hero Cloudflare optimisée */}
-        <img
+          <img
           src={HERO_IMG_CLOUDFLARE}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
           decoding="async"
-        />
+          />
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
