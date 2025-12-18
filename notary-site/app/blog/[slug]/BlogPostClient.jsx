@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { Icon } from '@iconify/react'
@@ -257,15 +258,16 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
       {/* CTA Section */}
       <section className="px-[30px] pb-20">
         <div className="max-w-[1400px] mx-auto">
-          <div 
-            className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl"
-            style={{
-              backgroundImage: `url(/images/cta-background.webp)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          >
+          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl">
+            {/* Background image optimisé avec next/image */}
+            <Image
+              src="/images/cta-background.webp"
+              alt=""
+              fill
+              quality={80}
+              sizes="(max-width: 1400px) 100vw, 1400px"
+              className="object-cover object-center"
+            />
             {/* Dark overlay for better text readability */}
             <div className="absolute inset-0 bg-black/60"></div>
             {/* Decorative elements */}

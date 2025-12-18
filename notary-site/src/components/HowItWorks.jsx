@@ -2,6 +2,7 @@
 
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
@@ -688,15 +689,16 @@ const HowItWorks = memo(() => {
 
         {/* Bottom CTA (blog-detail style) */}
         <div className="px-2 md:px-0 mt-16 md:mt-32 animate-fade-in animation-delay-1000">
-          <div 
-            className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl"
-            style={{
-              backgroundImage: `url(/images/cta-background.webp)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          >
+          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl">
+            {/* Background image optimisé avec next/image */}
+            <Image
+              src="/images/cta-background.webp"
+              alt=""
+              fill
+              quality={80}
+              sizes="(max-width: 1300px) 100vw, 1300px"
+              className="object-cover object-center"
+            />
             {/* Dark overlay for better text readability */}
             <div className="absolute inset-0 bg-black/60"></div>
             {/* Decorative elements */}
