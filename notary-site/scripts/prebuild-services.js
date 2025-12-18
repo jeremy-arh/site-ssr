@@ -6,9 +6,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Supabase config - utiliser les variables d'environnement ou les valeurs par défaut
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || 'https://jlizwheftlnhoifbqeex.supabase.co';
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsaXp3aGVmdGxuaG9pZmJxZWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0ODY4NjIsImV4cCI6MjA0NjA2Mjg2Mn0.5Q9ND0aFIhAz4yHdEbJ95OQ-qkFSGKPLHWPH7SuLxdQ';
+// Supabase config - utiliser les variables d'environnement Next.js ou Vite (pour compatibilité)
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || 'https://jlizwheftlnhoifbqeex.supabase.co';
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpsaXp3aGVmdGxuaG9pZmJxZWV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0ODY4NjIsImV4cCI6MjA0NjA2Mjg2Mn0.5Q9ND0aFIhAz4yHdEbJ95OQ-qkFSGKPLHWPH7SuLxdQ';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -81,7 +81,7 @@ async function fetchBlogPosts() {
   const { data, error } = await supabase
     .from('blog_posts')
     .select('*')
-    .eq('is_published', true)
+    .eq('status', 'published')
     .order('published_at', { ascending: false });
   
   if (error) {
@@ -107,7 +107,7 @@ async function main() {
     // Ne pas écraser les fichiers existants si Supabase a échoué
     if (services.length === 0) {
       console.log('⚠️  No services fetched - keeping existing files');
-      console.log('   Make sure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set');
+      console.log('   Make sure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set');
       return;
     }
     

@@ -1,33 +1,33 @@
-'use client'
-
-import { useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { getService, getServices } from '@/lib/supabase-server'
+import { notFound, redirect } from 'next/navigation'
+import ServiceDetailClient from '@/app/services/[serviceId]/ServiceDetailClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
-// Import du contenu de ServiceDetail directement
-import ServiceDetailContent from '@/app/services/[serviceId]/page'
 
-export default function LangServiceDetail() {
-  const params = useParams()
-  const router = useRouter()
-  const lang = params.lang
-  const serviceId = params.serviceId
-
-  useEffect(() => {
-    if (!SUPPORTED_LANGUAGES.includes(lang)) {
-      router.replace(`/services/${serviceId}`)
-      return
-    }
-
-    if (lang === DEFAULT_LANGUAGE) {
-      router.replace(`/services/${serviceId}`)
-      return
-    }
-  }, [lang, serviceId, router])
+export default async function LangServiceDetail({ params }) {
+  const { lang, serviceId } = await params
 
   if (!SUPPORTED_LANGUAGES.includes(lang) || lang === DEFAULT_LANGUAGE) {
-    return null
+    redirect(`/services/${serviceId}`)
   }
 
-  return <ServiceDetailContent />
-}
+  const [serviceData, allServicesData] = await Promise.all([
+    getService(serviceId),
+    getServices(),
+  ])
 
+  if (!serviceData) {
+    notFound()
+  }
+
+  const relatedServices = allServicesData
+    .filter(s => s.service_id !== serviceId && s.show_in_list === true)
+    .slice(0, 3)
+
+  return (
+    <ServiceDetailClient
+      serviceData={serviceData}
+      relatedServicesData={relatedServices}
+      serviceId={serviceId}
+    />
+  )
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import SEOHead from '@/components/SEOHead'
@@ -88,6 +88,24 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
     }
   }, [slug, post, postData])
 
+  const computedReadTime = useMemo(() => {
+    if (!post) return null
+    if (post.read_time_minutes) return post.read_time_minutes
+
+    if (!post.content || typeof DOMParser === 'undefined') {
+      return null
+    }
+
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(post.content, 'text/html')
+    const textContent = doc.body?.textContent || ''
+    const words = textContent.trim().split(/\s+/).filter(Boolean)
+
+    if (words.length === 0) return null
+
+    return Math.max(1, Math.round(words.length / 200))
+  }, [post])
+
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
@@ -100,192 +118,276 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
 
   if (!post) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-600">{t('blog.loading') || 'Loading...'}</p>
+      <div className="min-h-screen flex flex-col items-center justify-center px-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-4 md:mb-6 leading-tight">Article Not Found</h1>
+        <p className="text-gray-600 mb-8">The article you're looking for doesn't exist.</p>
+        <Link href="/" className="primary-cta text-lg px-8 py-4 inline-flex items-center gap-2">
+          <Icon icon="tabler:arrow-left" className="w-5 h-5" />
+          <span className="btn-text inline-block">Back to Home</span>
+        </Link>
       </div>
     )
   }
 
+  // Breadcrumbs pour données structurées
+  const breadcrumbItems = [
+    { name: t('common.home') || 'Home', url: '/' },
+    { name: t('blog.title') || 'Blog', url: '/blog' },
+    { name: post.title, url: pathname },
+  ]
+
   const formUrl = getFormUrl(currency, null)
-  const canonicalUrl = getCanonicalUrl(pathname)
 
   return (
     <div className="min-h-screen">
       <SEOHead
-        title={post.seo_title || post.title}
-        description={post.seo_description || post.excerpt}
-        ogTitle={post.og_title || post.title}
-        ogDescription={post.og_description || post.excerpt}
-        ogImage={post.og_image || post.cover_image_url}
-        twitterTitle={post.twitter_title || post.title}
-        twitterDescription={post.twitter_description || post.excerpt}
-        twitterImage={post.twitter_image || post.cover_image_url}
+        title={post.meta_title || post.title || 'Blog Post'}
+        description={post.meta_description || post.excerpt || ''}
+        ogTitle={post.meta_title || post.title || 'Blog Post'}
+        ogDescription={post.meta_description || post.excerpt || ''}
+        twitterTitle={post.meta_title || post.title || 'Blog Post'}
+        twitterDescription={post.meta_description || post.excerpt || ''}
         canonicalPath={pathname}
       />
       <StructuredData
         type="Article"
         data={{
           headline: post.title,
-          description: post.excerpt,
-          image: post.cover_image_url,
-          datePublished: post.published_at,
-          dateModified: post.updated_at || post.published_at,
-          author: {
-            '@type': 'Organization',
-            name: 'My notary',
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'My notary',
-            logo: {
-              '@type': 'ImageObject',
-              url: `${canonicalUrl.split('/')[0]}//${canonicalUrl.split('/')[2]}/logo.png`,
+          description: post.meta_description || post.excerpt || '',
+          image: post.cover_image_url || '',
+          datePublished: post.published_at || new Date().toISOString(),
+          dateModified: post.updated_at || post.published_at || new Date().toISOString(),
+        }}
+        additionalData={[
+          {
+            type: 'BreadcrumbList',
+            data: {
+              items: breadcrumbItems,
             },
           },
-        }}
+        ]}
       />
-
       {/* Hero Section */}
-      <section className="pt-32 pb-16 px-[30px] bg-gray-50">
-        <div className="max-w-[1100px] mx-auto">
-          {post.category && (
-            <div className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold mb-6">
-              {post.category}
-            </div>
-          )}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-            {post.title}
-          </h1>
-          {post.excerpt && (
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              {post.excerpt}
-            </p>
-          )}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-500">
-            {post.published_at && (
-              <div className="flex items-center gap-2">
-                <Icon icon="tabler:calendar" className="w-5 h-5" />
-                <span>{formatDate(post.published_at)}</span>
-              </div>
-            )}
-            {post.read_time_minutes && (
-              <div className="flex items-center gap-2">
-                <Icon icon="tabler:clock" className="w-5 h-5" />
-                <span>{post.read_time_minutes} {t('blog.minRead')}</span>
-              </div>
-            )}
-            {post.views_count > 0 && (
-              <div className="flex items-center gap-2">
-                <Icon icon="tabler:eye" className="w-5 h-5" />
-                <span>{post.views_count} {t('blog.views') || 'views'}</span>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Cover Image */}
-      {post.cover_image_url && (
-        <section className="px-[30px] mb-12">
-          <div className="max-w-[1100px] mx-auto">
-            <img
-              src={post.cover_image_url}
-              alt={post.cover_image_alt || post.title}
-              className="w-full h-auto rounded-2xl shadow-xl"
-              loading="eager"
-            />
-          </div>
-        </section>
-      )}
-
-      {/* Content Section */}
-      <section className="py-12 px-[30px]">
-        <div className="max-w-[1100px] mx-auto">
-          <div className="flex flex-col lg:flex-row gap-12">
-            {/* Main Content */}
-            <div className="flex-1">
-              <div
-                ref={contentRef}
-                className="prose prose-lg max-w-none blog-content"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
-
-              {/* CTA Section */}
-              <div className="mt-12 p-8 bg-gray-50 rounded-2xl border border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t('blog.ctaTitle') || 'Ready to get started?'}
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  {t('blog.ctaDescription') || 'Book your notarization appointment today and get your documents certified in minutes.'}
-                </p>
-                <Link
-                  href={formUrl}
-                  className="primary-cta inline-flex items-center gap-3"
-                >
-                  <span className="btn-text inline-block">{t('blog.ctaButton') || 'Start Notarization'}</span>
-                  <Icon icon="tabler:arrow-right" className="w-5 h-5" />
+      <section className="pt-32 pb-20 px-[30px] bg-gray-50">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-8">
+              {/* Breadcrumb */}
+              <nav className="flex items-center gap-2 text-sm mb-6 animate-fade-in overflow-hidden">
+                <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0">
+                  {t('common.home') || 'Home'}
                 </Link>
-              </div>
-            </div>
+                <span className="text-gray-400 flex-shrink-0">/</span>
+                <Link href={getLocalizedPath('/blog')} className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0">
+                  {t('blog.title') || 'Blog'}
+                </Link>
+                <span className="text-gray-400 flex-shrink-0">/</span>
+                <span className="text-gray-900 font-medium truncate min-w-0">{post.title}</span>
+              </nav>
 
-            {/* Sidebar */}
-            <aside className="lg:w-80 flex-shrink-0">
-              {hasHeadings && (
-                <div className="sticky top-24">
-                  <TableOfContents />
+              {/* Category Badge */}
+              {post.category && (
+                <div className="mb-4 animate-fade-in animation-delay-100">
+                  <span className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold">
+                    {post.category}
+                  </span>
                 </div>
               )}
-            </aside>
+
+              {/* Title */}
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl text-gray-900 mb-4 md:mb-6 leading-tight animate-fade-in animation-delay-200">
+                {post.title}
+              </h1>
+
+              {/* Meta Info */}
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-8 animate-fade-in animation-delay-300">
+                <span>{formatDate(post.published_at)}</span>
+                {computedReadTime && (
+                  <>
+                    <span>•</span>
+                    <span>{computedReadTime} {t('blog.minRead') || 'min read'}</span>
+                  </>
+                )}
+                {post.views_count > 0 && (
+                  <>
+                    <span>•</span>
+                    <span>{post.views_count} {t('common.views') || 'views'}</span>
+                  </>
+                )}
+              </div>
+
+              {/* Tags */}
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-8 animate-fade-in animation-delay-400">
+                  {post.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm font-medium"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Related Posts */}
-      {relatedPosts.length > 0 && (
-        <section className="py-20 px-[30px] bg-gray-50">
-          <div className="max-w-[1100px] mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              {t('blog.relatedPosts') || 'Related Articles'}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Content with Table of Contents */}
+      <article className="px-[30px] pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-12">
+            {/* Table of Contents - Mobile first, then right side on desktop */}
+            <div className="lg:col-span-4 lg:order-2">
+              {hasHeadings && post.content && <TableOfContents content={post.content} />}
+            </div>
+
+            {/* Main Content */}
+            <div className="lg:col-span-8 lg:order-1">
+              <div
+                ref={contentRef}
+                className="blog-content animate-fade-in animation-delay-600"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      {/* CTA Section */}
+      <section className="px-[30px] pb-20">
+        <div className="max-w-[1400px] mx-auto">
+          <div 
+            className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl"
+            style={{
+              backgroundImage: `url(https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d84aca7a-998a-4ff6-1862-7676557ab400/q=20,f=webp)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+            {/* Dark overlay for better text readability */}
+            <div className="absolute inset-0 bg-black/60"></div>
+            {/* Decorative elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                {t('howItWorks.ctaTitle') || 'Ready to Get Started?'}
+              </h3>
+              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                {t('howItWorks.ctaDescription') || 'Notarize your documents online in just a few minutes. Secure, legally valid, and recognized internationally.'}
+              </p>
+              <a
+                href={formUrl}
+                className="primary-cta text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100"
+              >
+                <Icon icon="stash:check-solid" className="w-5 h-5" />
+                <span className="btn-text inline-block">{post.cta || t('nav.notarizeNow')}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Posts Section */}
+      <section className="px-[30px] py-20 bg-gray-50">
+        <div className="max-w-[1400px] mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center">
+            {t('blog.latestArticles') || 'Latest Articles'}
+          </h2>
+          {relatedPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost) => (
                 <Link
                   key={relatedPost.id}
                   href={getLocalizedPath(`/blog/${relatedPost.slug}`)}
-                  className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-xl transition-all"
+                  className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                 >
-                  {relatedPost.cover_image_url && (
-                    <div className="relative h-40 overflow-hidden">
+                  {/* Cover Image */}
+                  {relatedPost.cover_image_url ? (
+                    <div className="relative h-48 overflow-hidden bg-gray-100">
                       <img
                         src={relatedPost.cover_image_url}
                         alt={relatedPost.cover_image_alt || relatedPost.title}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                       />
+                      {relatedPost.category && (
+                        <span className="absolute top-4 left-4 px-3 py-1 bg-black text-white text-xs font-semibold rounded-full">
+                          {relatedPost.category}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                      </svg>
+                      {relatedPost.category && (
+                        <span className="absolute top-4 left-4 px-3 py-1 bg-black text-white text-xs font-semibold rounded-full">
+                          {relatedPost.category}
+                        </span>
+                      )}
                     </div>
                   )}
+
+                  {/* Content */}
                   <div className="p-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-gray-700">
+                    {/* Meta Info */}
+                    {relatedPost.read_time_minutes && (
+                      <div className="flex items-center gap-4 mb-3 text-sm text-gray-500">
+                        <span>{relatedPost.read_time_minutes} min read</span>
+                      </div>
+                    )}
+
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-gray-700 transition-colors">
                       {relatedPost.title}
                     </h3>
+
+                    {/* Excerpt */}
                     {relatedPost.excerpt && (
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-4">
+                      <p className="text-gray-600 mb-4 line-clamp-3">
                         {relatedPost.excerpt}
                       </p>
                     )}
-                    <div className="flex items-center gap-2 text-black font-medium text-sm">
-                      {t('blog.readMore')}
-                      <Icon icon="lsicon:open-new-filled" className="w-4 h-4" />
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                      <span className="text-sm text-gray-500">
+                        {formatDate(relatedPost.published_at)}
+                      </span>
+                      <div className="flex items-center gap-2 text-black font-medium text-sm group-hover:gap-3 transition-all">
+                        {t('blog.readMore') || 'Read more'}
+                        <Icon icon="lsicon:open-new-filled" className="w-4 h-4" />
+                      </div>
                     </div>
                   </div>
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
-      )}
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600 text-lg">{t('blog.noArticles') || 'No other articles available at the moment.'}</p>
+            </div>
+          )}
+        </div>
+      </section>
 
-      <MobileCTA />
+      {/* Back to Blog */}
+      <section className="px-[30px] pb-20">
+        <div className="max-w-[1400px] mx-auto text-center">
+          <Link href={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black transition-colors font-medium">
+            <Icon icon="tabler:arrow-left" className="w-5 h-5" />
+            <span className="inline-block">{t('blog.backToBlog') || 'Back to Blog'}</span>
+          </Link>
+        </div>
+      </section>
+      <MobileCTA ctaText={post?.cta || t('nav.notarizeNow')} />
     </div>
   )
 }
-
