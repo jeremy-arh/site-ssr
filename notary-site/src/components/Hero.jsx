@@ -1,13 +1,12 @@
 'use client'
 
 import { memo } from 'react';
-import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
-// URL Cloudflare de base (Next.js optimisera automatiquement)
-const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/public';
+// URL Cloudflare optimisée avec paramètres
+const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=auto,q=auto,f=avif';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -64,15 +63,13 @@ const Hero = memo(() => {
       <div
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
-        {/* Image Hero Cloudflare optimisée avec next/image */}
-        <Image
+        {/* Image Hero Cloudflare optimisée */}
+        <img
           src={HERO_IMG_CLOUDFLARE}
           alt=""
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={85}
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          decoding="async"
         />
 
         {/* Dark Overlay for better text readability */}
