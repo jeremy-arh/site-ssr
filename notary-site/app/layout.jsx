@@ -1,6 +1,17 @@
 import Script from 'next/script'
+import { Playfair_Display } from 'next/font/google'
 import Providers from '@/components/Providers'
 import '@/index.css'
+
+// Optimisation Google Fonts avec next/font (pas de blocage du rendu)
+const playfairDisplay = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  display: 'swap',
+  preload: true,
+  fallback: ['Georgia', 'Times New Roman', 'serif'],
+  variable: '--font-playfair',
+})
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata = {
@@ -10,7 +21,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={playfairDisplay.variable}>
       <head>
         {/* Preconnect à Supabase (données) et Cloudflare Images (LCP) */}
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
@@ -36,12 +47,6 @@ export default function RootLayout({ children }) {
         {/* Meta */}
         <meta name="theme-color" content="#000000" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        
-        {/* Fonts: System fonts en fallback, Google Fonts en display=swap pour ne pas bloquer */}
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" 
-          rel="stylesheet" 
-        />
       </head>
       <body suppressHydrationWarning>
         <noscript>
