@@ -98,6 +98,10 @@ export async function getFAQs() {
       .order('order', { ascending: true })
 
     if (error) {
+      // Table n'existe pas encore - retourner un tableau vide silencieusement
+      if (error.message && error.message.includes('Could not find the table')) {
+        return []
+      }
       console.error('Error fetching FAQs:', error.message || error)
       return []
     }
@@ -127,6 +131,10 @@ export async function getTestimonials() {
       .order('created_at', { ascending: false })
 
     if (error) {
+      // Table n'existe pas encore - retourner un tableau vide silencieusement
+      if (error.message && error.message.includes('Could not find the table')) {
+        return []
+      }
       console.error('Error fetching testimonials:', error.message || error)
       return []
     }

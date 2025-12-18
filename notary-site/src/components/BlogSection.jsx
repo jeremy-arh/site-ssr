@@ -13,18 +13,6 @@ const BlogSection = ({ initialPosts = null }) => {
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
 
-  useEffect(() => {
-    // Si on a déjà des posts initiaux (SSR), on les utilise
-    if (initialPosts) {
-      const formattedPosts = formatBlogPostsForLanguage(initialPosts, language);
-      setPosts(formattedPosts);
-      return;
-    }
-
-    // Sinon, récupérer côté client (fallback)
-    fetchPosts();
-  }, [language, initialPosts, fetchPosts]);
-
   const fetchPosts = useCallback(async () => {
     try {
       const supabase = await getSupabase();
@@ -43,6 +31,18 @@ const BlogSection = ({ initialPosts = null }) => {
       console.error('Error fetching blog posts:', error);
     }
   }, [language]);
+
+  useEffect(() => {
+    // Si on a déjà des posts initiaux (SSR), on les utilise
+    if (initialPosts) {
+      const formattedPosts = formatBlogPostsForLanguage(initialPosts, language);
+      setPosts(formattedPosts);
+      return;
+    }
+
+    // Sinon, récupérer côté client (fallback)
+    fetchPosts();
+  }, [language, initialPosts, fetchPosts]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
