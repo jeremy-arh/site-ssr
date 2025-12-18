@@ -58,9 +58,9 @@ const getInitialCurrency = (searchParams) => {
   
   // 3) Cache (uniquement côté client)
   if (typeof window !== 'undefined') {
-    const cached = getCachedCurrency()
-    if (cached && SUPPORTED_CURRENCIES.includes(cached)) {
-      return cached
+  const cached = getCachedCurrency()
+  if (cached && SUPPORTED_CURRENCIES.includes(cached)) {
+    return cached
     }
   }
   

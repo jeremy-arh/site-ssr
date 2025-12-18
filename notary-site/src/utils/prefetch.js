@@ -67,15 +67,15 @@ export const setupLinkPrefetch = () => {
     // Form URL (external)
     if (href.includes('app.mynotary.io/form')) {
       try {
-        const url = new URL(href);
-        const currency = url.searchParams.get('currency') || 'EUR';
-        const serviceId = url.searchParams.get('service') || null;
-        const cacheKey = `form:${currency}:${serviceId || 'none'}`;
+      const url = new URL(href);
+      const currency = url.searchParams.get('currency') || 'EUR';
+      const serviceId = url.searchParams.get('service') || null;
+      const cacheKey = `form:${currency}:${serviceId || 'none'}`;
         if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
           if (typeof prefetched.add === 'function') {
-            prefetched.add(cacheKey);
+        prefetched.add(cacheKey);
           }
-          prefetchForm(currency, serviceId);
+        prefetchForm(currency, serviceId);
         }
       } catch (e) {
         // Invalid URL, skip
@@ -89,7 +89,7 @@ export const setupLinkPrefetch = () => {
         const cacheKey = `blog:${slug}`;
         if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
           if (typeof prefetched.add === 'function') {
-            prefetched.add(cacheKey);
+          prefetched.add(cacheKey);
           }
           prefetchBlogPost(slug);
         }
@@ -103,7 +103,7 @@ export const setupLinkPrefetch = () => {
         const cacheKey = `service:${serviceId}`;
         if (prefetched && typeof prefetched.has === 'function' && !prefetched.has(cacheKey)) {
           if (typeof prefetched.add === 'function') {
-            prefetched.add(cacheKey);
+          prefetched.add(cacheKey);
           }
           prefetchService(serviceId);
         }
