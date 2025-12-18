@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import StructuredData from '../components/StructuredData';
@@ -8,7 +8,6 @@ import { cache } from '../utils/cache';
 import { trackBlogPostView } from '../utils/plausible';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
-import { getCanonicalUrl } from '../utils/canonicalUrl';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { formatBlogPostForLanguage, formatBlogPostsForLanguage } from '../utils/blog';
@@ -31,7 +30,7 @@ const BlogPost = () => {
   useEffect(() => {
     setIsLoading(true);
     fetchPost();
-  }, [slug, language]);
+  }, [fetchPost]);
 
   useEffect(() => {
     if (post) {
@@ -73,7 +72,7 @@ const BlogPost = () => {
   }, [post]);
 
 
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     setError(null);
     setPost(null);
     setIsLoading(true);
@@ -129,7 +128,7 @@ const BlogPost = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [slug, language]);
 
   const fetchRelatedPosts = async () => {
     if (!slug) return;

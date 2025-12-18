@@ -10,6 +10,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { formatServiceForLanguage, getServiceFields } from '../utils/services';
 import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
+import { getSupabase } from '../lib/supabase';
 
 // ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
 let trackPlausibleCTAClick = null;
@@ -38,7 +39,7 @@ const loadAnalytics = () => {
 // Helper pour tracker de manière non-bloquante
 const safeTrack = (fn, ...args) => {
   if (fn) {
-    try { fn(...args); } catch (e) { /* ignore */ }
+    try { fn(...args); } catch (_e) { /* ignore */ }
   }
 };
 
@@ -100,7 +101,6 @@ if (typeof window !== 'undefined') {
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   // Utiliser une valeur par défaut qui ne cause pas de flash (assume desktop)
   const [isMobile, setIsMobile] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -109,7 +109,6 @@ const Navbar = memo(() => {
   const [isHeroOutOfView, setIsHeroOutOfView] = useState(false);
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
-  const [formattedPrice, setFormattedPrice] = useState('');
   const [currentServiceId, setCurrentServiceId] = useState(null);
   const pathname = usePathname();
   const { formatPrice, currency } = useCurrency();
@@ -264,6 +263,7 @@ const Navbar = memo(() => {
   useEffect(() => {
     const fetchBlogCTA = async () => {
       const path = pathname || '';
+      const supabase = await getSupabase();
 
       // Blog post detail
       const blogMatch = path.match(/^\/blog\/([^/]+)/);

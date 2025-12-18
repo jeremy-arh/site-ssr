@@ -35,11 +35,11 @@ const waitForPlausible = () => {
  * @param {string} pageName - Page name (optional)
  * @param {string} pagePath - Page path (optional, defaults to current path)
  */
-export const trackPageView = async (pageName = null, pagePath = null) => {
+export const trackPageView = async (_pageName = null, pagePath = null) => {
   await waitForPlausible();
   
   if (!isPlausibleLoaded()) {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.warn('Plausible not loaded, skipping pageview');
     }
     return;
@@ -57,7 +57,7 @@ export const trackPageView = async (pageName = null, pagePath = null) => {
     u: fullUrl
   });
   
-  if (process.env.NODE_ENV === 'development') {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
     console.log('Plausible pageview tracked:', fullUrl);
   }
 };
@@ -71,7 +71,7 @@ export const trackEvent = async (eventName, props = {}) => {
   await waitForPlausible();
   
   if (!isPlausibleLoaded()) {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.warn('Plausible not loaded, skipping event:', eventName);
     }
     return;
@@ -110,7 +110,7 @@ export const trackCTAClick = (location, serviceId = null, pagePath = null, metad
     service_id: serviceId || undefined,
     page_path: pagePath || undefined
   }).catch(err => {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Plausible trackCTAClick error:', err);
     }
   });
@@ -128,7 +128,7 @@ export const trackServiceClick = (serviceId, serviceName, location) => {
     service_name: serviceName,
     click_location: location
   }).catch(err => {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Plausible trackServiceClick error:', err);
     }
   });
@@ -147,7 +147,7 @@ export const trackLoginClick = (location, metadata = {}) => {
     destination: destination || 'https://app.mynotary.io/login',
     page_path: pagePath || undefined
   }).catch(err => {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Plausible trackLoginClick error:', err);
     }
   });
@@ -168,7 +168,7 @@ export const trackNavigationClick = (linkText, destination, metadata = {}) => {
     page_path: pagePath || undefined,
     nav_section: section || undefined,
   }).catch(err => {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Plausible trackNavigationClick error:', err);
     }
   });
@@ -184,7 +184,7 @@ export const trackBlogPostView = (postSlug, postTitle) => {
     post_slug: postSlug,
     post_title: postTitle
   }).catch(err => {
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Plausible trackBlogPostView error:', err);
     }
   });
@@ -198,7 +198,7 @@ export const initPlausible = () => {
   if (typeof window !== 'undefined') {
     // Send initial pageview
     trackPageView().catch(err => {
-      if (process.env.NODE_ENV === 'development') {
+      if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
         console.error('Plausible initPlausible error:', err);
       }
     });

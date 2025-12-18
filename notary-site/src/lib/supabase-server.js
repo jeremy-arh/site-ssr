@@ -228,3 +228,34 @@ export async function getRelatedBlogPosts(currentSlug, limit = 3) {
   }
 }
 
+/**
+ * Récupère les catégories de blog depuis Supabase (SSR)
+ */
+export async function getBlogCategories() {
+  try {
+    const supabase = createServerClient()
+    if (!supabase) {
+      console.warn('⚠️ Supabase client not initialized, returning empty blog categories array')
+      return []
+    }
+
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .select('category')
+      .eq('status', 'published')
+      .not('category', 'is', null)
+
+    if (error) {
+      console.error('Error fetching blog categories:', error.message || error)
+      return []
+    }
+
+    // Extraire les catégories uniques
+    const uniqueCategories = [...new Set(data.map(post => post.category).filter(Boolean))]
+    return uniqueCategories
+  } catch (error) {
+    console.error('Error in getBlogCategories:', error.message || error)
+    return []
+  }
+}
+

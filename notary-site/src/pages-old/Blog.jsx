@@ -5,7 +5,7 @@ import SEOHead from '../components/SEOHead';
 import { getSupabase } from '../lib/supabase';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
-import { formatBlogPostsForLanguage, getLocalizedBlogValue } from '../utils/blog';
+import { formatBlogPostsForLanguage } from '../utils/blog';
 import MobileCTA from '../components/MobileCTA';
 
 const Blog = () => {
@@ -16,12 +16,7 @@ const Blog = () => {
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
 
-  useEffect(() => {
-    fetchPosts();
-    fetchCategories();
-  }, [selectedCategory, language]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const supabase = await getSupabase();
       let query = supabase
@@ -49,9 +44,9 @@ const Blog = () => {
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     }
-  };
+  }, [selectedCategory, language]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -68,7 +63,12 @@ const Blog = () => {
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
-  };
+  }, [language]);
+
+  useEffect(() => {
+    fetchPosts();
+    fetchCategories();
+  }, [fetchPosts, fetchCategories]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';

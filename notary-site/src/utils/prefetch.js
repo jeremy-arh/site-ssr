@@ -30,9 +30,9 @@ export const prefetchForm = (currency = 'EUR', serviceId = null) => {
     link.as = 'document';
     // Note: crossOrigin is not needed for prefetch, browser handles it automatically
     document.head.appendChild(link);
-  } catch (error) {
+  } catch (_error) {
     // Silently fail - prefetch is best effort
-    if (process.env.NODE_ENV === 'development') {
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.warn('Form prefetch error:', error);
     }
   }
@@ -77,7 +77,7 @@ export const setupLinkPrefetch = () => {
           }
         prefetchForm(currency, serviceId);
         }
-      } catch (e) {
+      } catch (_e) {
         // Invalid URL, skip
       }
     }
@@ -154,7 +154,7 @@ export const prefetchVisibleLinks = () => {
             const currency = url.searchParams.get('currency') || 'EUR';
             const serviceId = url.searchParams.get('service') || null;
             prefetchForm(currency, serviceId);
-          } catch (e) {
+          } catch (_e) {
             // Invalid URL, skip
           }
         }

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, memo, useCallback } from 'react';
+import { useEffect, useState, useMemo, memo } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import SEOHead from '../components/SEOHead';
 import StructuredData from '../components/StructuredData';
@@ -135,10 +135,9 @@ import MobileCTA from '../components/MobileCTA';
 import ChatCTA from '../components/ChatCTA';
 
 // Other Services Section Component - memoized pour éviter re-renders
-const OtherServicesSection = memo(({ currentServiceId }) => {
+const OtherServicesSection = memo(() => {
   const { t } = useTranslation();
   const { getLocalizedPath } = useLanguage();
-  const location = useLocation();
 
   // Utiliser le hook prebuild au lieu de requêtes Supabase
   const { services, isLoading } = useServicesList({

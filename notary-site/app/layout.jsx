@@ -1,6 +1,7 @@
 import Providers from '@/components/Providers'
 import '@/index.css'
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const metadata = {
   title: 'My notary - Notarize and Apostille Your Documents 100% Online',
   description: 'Notarize and apostille your documents 100% online. Secure, legally valid, and recognized internationally through the Hague Convention. Book your appointment in minutes.',

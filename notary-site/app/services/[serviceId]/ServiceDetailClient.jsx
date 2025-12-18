@@ -118,7 +118,7 @@ const WhatIsContent = memo(({ service, t }) => {
 })
 
 // Other Services Section Component - memoized pour éviter re-renders
-const OtherServicesSection = memo(({ currentServiceId, relatedServicesData, language }) => {
+const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   const { t } = useTranslation()
   const { getLocalizedPath } = useLanguage()
 
@@ -210,9 +210,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   ]
 
   const formUrl = getFormUrl(currency, service?.service_id || serviceId)
-  const serviceTitle = service[`name_${language}`] || service.name_en || service.name
-  const serviceDescription = service[`description_${language}`] || service.description_en || service.description
-  const serviceShortDescription = service[`short_description_${language}`] || service.short_description_en || service.short_description
 
   const faqItems = useMemo(() => {
     if (!service?.faq) return []
@@ -492,7 +489,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <HowItWorks />
 
       {/* Other Services Section */}
-      <OtherServicesSection currentServiceId={service.service_id} relatedServicesData={relatedServicesData} language={language} />
+      <OtherServicesSection relatedServicesData={relatedServicesData} language={language} />
 
       {/* FAQ Section */}
       {faqItems.length > 0 && <FAQ faqsData={faqItems} />}

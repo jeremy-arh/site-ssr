@@ -43,7 +43,7 @@ export const pushGTMEvent = (eventName, eventData = {}) => {
   window.dataLayer.push(eventPayload);
   
   // Debug log in development
-  if (process.env.NODE_ENV === 'development') {
+  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
     console.log('GTM Event pushed:', eventName, eventPayload);
   }
 };

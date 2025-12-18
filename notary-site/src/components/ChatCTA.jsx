@@ -10,7 +10,7 @@ const IconChat = () => (
 );
 
 const ChatCTA = () => {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
 
   // Ouvrir le chat Crisp
   const openCrispChat = () => {

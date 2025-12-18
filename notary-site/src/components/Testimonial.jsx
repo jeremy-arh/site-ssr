@@ -13,11 +13,6 @@ const Testimonial = memo(({ testimonialsData = null }) => {
   const mouseEndX = useRef(0);
   const isMouseDown = useRef(false);
 
-  // Helper pour fallback si la traduction manque (évite d'afficher la clé)
-  const tt = (key, fallback) => {
-    const value = t(key);
-    return value === key ? fallback : value;
-  };
 
   // Fallback testimonials si pas de données SSR
   const defaultTestimonials = [
@@ -137,9 +132,7 @@ const Testimonial = memo(({ testimonialsData = null }) => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [testimonials.length]);
-
-  const currentTestimonial = testimonials[currentIndex];
+  }, [testimonials.length, goToNext]);
 
   return (
     <section className="pt-16 md:pt-24 pb-10 md:pb-16 px-4 sm:px-[30px] bg-white overflow-hidden scroll-mt-28 md:scroll-mt-32">

@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { useServicesList } from '../hooks/useServices';
+import { formatServicesForLanguage } from '../utils/services';
 import PriceDisplay from './PriceDisplay';
 
 // ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
@@ -111,19 +112,14 @@ const Services = ({ servicesData = null }) => {
   const { getLocalizedPath, language } = useLanguage();
   const { t } = useTranslation();
   
+  // Toujours utiliser le hook pour garantir l'ordre des hooks
+  const hookResult = useServicesList({ showInListOnly: true });
+  
   // Si on a des données SSR, les utiliser, sinon fallback sur le hook
-  let services, isLoading;
-  if (servicesData) {
-    // Formater les services selon la langue (SSR)
-    const { formatServicesForLanguage } = require('../utils/services');
-    services = formatServicesForLanguage(servicesData.filter(s => s.show_in_list === true), language);
-    isLoading = false;
-  } else {
-    // Fallback sur le hook (pour compatibilité)
-    const hookResult = useServicesList({ showInListOnly: true });
-    services = hookResult.services;
-    isLoading = hookResult.isLoading;
-  }
+  const services = servicesData 
+    ? formatServicesForLanguage(servicesData.filter(s => s.show_in_list === true), language)
+    : hookResult.services;
+  const isLoading = servicesData ? false : hookResult.isLoading;
 
   return (
     <section id="services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
@@ -159,7 +155,7 @@ const Services = ({ servicesData = null }) => {
               const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck;
               return (
                 <Link
-                  key={service.id}
+                  key={service.id || service.service_id}
                   href={getLocalizedPath(`/services/${service.service_id}`)}
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up flex flex-col"
                   onClick={() => {

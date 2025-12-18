@@ -11,6 +11,7 @@ const LanguageContext = createContext({
   isReady: false,
 })
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useLanguage = () => {
   const context = useContext(LanguageContext)
   if (!context) {
@@ -40,7 +41,7 @@ export const LanguageProvider = ({ children }) => {
   }
   
   const [language, setLanguageState] = useState(getInitialLanguage)
-  const [isReady, setIsReady] = useState(true)
+  const [isReady] = useState(true)
 
   // Fonction pour obtenir le path localisé
   const getLocalizedPath = (path, lang) => {
@@ -90,7 +91,7 @@ export const LanguageProvider = ({ children }) => {
         setTimeout(applyDetectedLanguage, 1500)
       }
     }
-  }, []) // Seulement au montage initial
+  }, [getLocalizedPath, language, pathname, router]) // Seulement au montage initial
 
   // Met à jour la langue quand l'URL change
   useEffect(() => {
@@ -99,7 +100,7 @@ export const LanguageProvider = ({ children }) => {
       setLanguageState(urlLanguage)
       saveLanguageToStorage(urlLanguage)
     }
-  }, [pathname]) // Ne pas inclure 'language' dans les dépendances pour éviter les boucles
+  }, [pathname, language]) // Inclure language pour éviter les warnings
 
   // Fonction pour changer la langue
   const setLanguage = (newLanguage) => {

@@ -126,7 +126,7 @@ const getGeoInfo = async () => {
           return data;
         }
       }
-    } catch (error) {
+    } catch (_error) {
       // Cache invalid
     }
   }
@@ -216,7 +216,7 @@ export const trackEvent = async (eventType, pagePath = null, metadata = {}) => {
         .insert([eventData])
         .then(() => {})
         .catch(() => {});
-    } catch (error) {
+    } catch (_error) {
       // Silencieux - ne jamais bloquer pour des erreurs analytics
     }
   }, 0);

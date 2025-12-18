@@ -84,6 +84,7 @@ const saveCurrencyToCache = (currency) => {
 /**
  * Get exchange rates from cache
  */
+// eslint-disable-next-line no-unused-vars
 const getCachedExchangeRates = () => {
   if (typeof window === 'undefined') return null;
   try {
@@ -103,6 +104,7 @@ const getCachedExchangeRates = () => {
 /**
  * Save exchange rates to cache
  */
+// eslint-disable-next-line no-unused-vars
 const saveExchangeRatesToCache = (rates) => {
   if (typeof window === 'undefined') return;
   try {

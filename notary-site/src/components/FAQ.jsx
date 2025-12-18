@@ -58,7 +58,7 @@ const FAQ = ({ faqsData = null }) => {
     }
     // Fallback sur les FAQs par défaut si la traduction n'est pas disponible
     return faqs;
-  }, [language]);
+  }, [faqs, t, language]);
 
   // Recherche floue dans les FAQs
   const filteredFAQs = useMemo(() => {

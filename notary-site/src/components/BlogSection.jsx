@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { getSupabase } from '../lib/supabase';
@@ -23,9 +23,9 @@ const BlogSection = ({ initialPosts = null }) => {
 
     // Sinon, récupérer côté client (fallback)
     fetchPosts();
-  }, [language, initialPosts]);
+  }, [language, initialPosts, fetchPosts]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       const supabase = await getSupabase();
       const { data, error } = await supabase
@@ -42,7 +42,7 @@ const BlogSection = ({ initialPosts = null }) => {
     } catch (error) {
       console.error('Error fetching blog posts:', error);
     }
-  };
+  }, [language]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -77,7 +77,7 @@ const BlogSection = ({ initialPosts = null }) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post, index) => (
+            {posts.map((post) => (
               <Link
                 key={post.id}
                 href={getLocalizedPath(`/blog/${post.slug}`)}

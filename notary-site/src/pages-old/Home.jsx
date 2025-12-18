@@ -11,7 +11,7 @@ import MobileCTA from '../components/MobileCTA'
 import ChatCTA from '../components/ChatCTA'
 
 function Home() {
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
   
   // Données structurées pour la FAQ
   const faqItems = [

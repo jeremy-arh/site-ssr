@@ -1,7 +1,7 @@
 import { useEffect, Suspense } from 'react';
 import { Routes, Route, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { extractLanguageFromPath, removeLanguageFromPath, addLanguageToPath, DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from '../utils/language';
+import { removeLanguageFromPath, addLanguageToPath, SUPPORTED_LANGUAGES } from '../utils/language';
 
 // Lazy load pages
 import { lazy } from 'react';
@@ -45,9 +45,7 @@ const ValidatedLanguageRoute = ({ element }) => {
  * Composant qui gère les redirections de langue et les routes localisées
  */
 const LanguageRouter = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { language, isReady } = useLanguage();
+  const { isReady } = useLanguage();
 
   // Ne pas rediriger automatiquement - laisser LanguageContext gérer la synchronisation
   // Cela évite les boucles de redirection sur les pages de blog

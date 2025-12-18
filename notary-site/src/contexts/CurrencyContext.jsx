@@ -10,6 +10,7 @@ const CurrencyContext = createContext({
   setCurrency: () => {},
 })
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useCurrency = () => {
   const context = useContext(CurrencyContext)
   if (!context) {
