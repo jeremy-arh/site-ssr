@@ -109,7 +109,7 @@ export default function ServicesClient({ servicesData }) {
       <section className="relative overflow-hidden h-[60vh] min-h-[500px] flex items-center px-[30px]" data-hero style={{ backgroundColor: '#1f2937' }}>
         {/* Image Hero Cloudflare optimisée */}
         <img
-          src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif"
+          src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/165f7d09-facd-47ad-dd30-db71400aaf00/w=auto,q=auto,f=avif"
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-center"
           fetchPriority="high"

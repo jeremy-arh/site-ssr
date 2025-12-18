@@ -6,7 +6,7 @@ import Link from 'next/link'
 import SEOHead from '@/components/SEOHead'
 
 // URLs Cloudflare optimisées avec paramètres
-const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif'
+const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/165f7d09-facd-47ad-dd30-db71400aaf00/w=auto,q=auto,f=avif'
 const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=auto,q=auto,f=avif'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
