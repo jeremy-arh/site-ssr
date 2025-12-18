@@ -106,16 +106,28 @@ export default function ServicesClient({ servicesData }) {
         canonicalPath={pathname}
       />
       
-      <section className="pt-32 pb-16 px-[30px] bg-gray-50" data-hero>
-        <div className="max-w-[1300px] mx-auto text-center">
+      <section className="relative overflow-hidden h-[60vh] min-h-[500px] flex items-center px-[30px]" data-hero>
+        {/* Image Hero Cloudflare optimisée */}
+        <img
+          src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          fetchPriority="high"
+          decoding="async"
+        />
+        
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/60"></div>
+        
+        <div className="relative z-10 max-w-[1300px] mx-auto text-center w-full">
           <div className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold mb-4 animate-fade-in">
             {t('services.title')}
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight animate-fade-in animation-delay-100">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight animate-fade-in animation-delay-100">
             {t('services.heading')}<br />
-            <span className="gradient-text">{t('services.headingHighlight')}</span>
+            <span>{t('services.headingHighlight')}</span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto animate-fade-in animation-delay-200">
+          <p className="text-lg text-white/90 max-w-3xl mx-auto animate-fade-in animation-delay-200">
             {t('services.subtitle')}
           </p>
         </div>
