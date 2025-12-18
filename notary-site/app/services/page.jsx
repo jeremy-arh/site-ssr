@@ -3,7 +3,7 @@ import { getServices } from '@/lib/supabase-server'
 import { createTranslator, getLocalizedPath, DEFAULT_LANGUAGE } from '@/lib/translations-server'
 import { formatServicesForLanguage } from '@/utils/services'
 import PriceDisplayServer from '@/components/PriceDisplayServer'
-import InteractiveElements from '@/components/InteractiveElements'
+import { MobileCTA } from '@/components/InteractiveElements'
 
 // Forcer le rendu dynamique (SSR)
 export const dynamic = 'force-dynamic'
@@ -161,7 +161,7 @@ export default async function Services() {
       </section>
       
       {/* Mobile CTA */}
-      <InteractiveElements.MobileCTA ctaText={t('nav.notarizeNow')} />
+      <MobileCTA ctaText={t('nav.notarizeNow')} />
     </div>
   )
 }

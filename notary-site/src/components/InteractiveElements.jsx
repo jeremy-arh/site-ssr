@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 
 // FAQ Accordion - seule partie interactive
-function FAQAccordion({ items }) {
+export function FAQAccordion({ items }) {
   const [openIndex, setOpenIndex] = useState(null)
 
   return (
@@ -36,7 +36,7 @@ function FAQAccordion({ items }) {
 }
 
 // Mobile CTA - bouton flottant
-function MobileCTA({ ctaText }) {
+export function MobileCTA({ ctaText }) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function MobileCTA({ ctaText }) {
 }
 
 // Testimonial Carousel
-function TestimonialCarousel({ items, translations }) {
+export function TestimonialCarousel({ items, translations }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
@@ -125,7 +125,7 @@ function TestimonialCarousel({ items, translations }) {
 }
 
 // Category Filter pour Blog
-function CategoryFilter({ categories, selectedCategory, onSelect, allText }) {
+export function CategoryFilter({ categories, selectedCategory, onSelect, allText }) {
   return (
     <div className="flex flex-wrap gap-3 justify-center">
       <button
@@ -154,14 +154,3 @@ function CategoryFilter({ categories, selectedCategory, onSelect, allText }) {
     </div>
   )
 }
-
-// Export groupé
-const InteractiveElements = {
-  FAQAccordion,
-  MobileCTA,
-  TestimonialCarousel,
-  CategoryFilter,
-}
-
-export default InteractiveElements
-

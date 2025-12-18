@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { getLocalizedPath as getLocalizedPathClient } from '@/lib/translations-server'
-import InteractiveElements from '@/components/InteractiveElements'
+import { CategoryFilter, MobileCTA } from '@/components/InteractiveElements'
 
 const IconOpenNew = () => (
   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -56,7 +56,7 @@ export default function BlogContent({ language, translations, initialPosts, cate
       {categories.length > 0 && (
         <section className="px-[30px] py-8 bg-white border-b border-gray-200">
           <div className="max-w-[1300px] mx-auto">
-            <InteractiveElements.CategoryFilter
+            <CategoryFilter
               categories={categories}
               selectedCategory={selectedCategory}
               onSelect={setSelectedCategory}
@@ -144,7 +144,7 @@ export default function BlogContent({ language, translations, initialPosts, cate
       </section>
 
       {/* Mobile CTA */}
-      <InteractiveElements.MobileCTA ctaText={t.notarizeNow} />
+      <MobileCTA ctaText={t.notarizeNow} />
     </div>
   )
 }

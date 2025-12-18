@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { getLocalizedPath } from '@/lib/translations-server'
-import InteractiveElements from '@/components/InteractiveElements'
+import { FAQAccordion, MobileCTA } from '@/components/InteractiveElements'
 import PriceDisplayServer from '@/components/PriceDisplayServer'
 
 // Images optimisées
@@ -223,7 +223,7 @@ export default function HomeContent({ language, translations, services, blogPost
             </h2>
           </div>
           
-          <InteractiveElements.FAQAccordion items={t.faq.items} />
+          <FAQAccordion items={t.faq.items} />
         </div>
       </section>
 
@@ -278,7 +278,7 @@ export default function HomeContent({ language, translations, services, blogPost
       )}
 
       {/* Mobile CTA - Client Component pour interactivité */}
-      <InteractiveElements.MobileCTA ctaText={t.nav.notarizeNow} />
+      <MobileCTA ctaText={t.nav.notarizeNow} />
     </>
   )
 }

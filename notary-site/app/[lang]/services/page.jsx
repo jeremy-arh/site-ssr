@@ -5,7 +5,7 @@ import { createTranslator, getLocalizedPath } from '@/lib/translations-server'
 import { formatServicesForLanguage } from '@/utils/services'
 import { redirect } from 'next/navigation'
 import PriceDisplayServer from '@/components/PriceDisplayServer'
-import InteractiveElements from '@/components/InteractiveElements'
+import { MobileCTA } from '@/components/InteractiveElements'
 
 // Forcer le rendu dynamique (SSR)
 export const dynamic = 'force-dynamic'
@@ -171,7 +171,7 @@ export default async function LangServices({ params }) {
       </section>
       
       {/* Mobile CTA */}
-      <InteractiveElements.MobileCTA ctaText={t('nav.notarizeNow')} />
+      <MobileCTA ctaText={t('nav.notarizeNow')} />
     </div>
   )
 }
