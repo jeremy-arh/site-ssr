@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import Providers from '@/components/Providers'
 import '@/index.css'
 
@@ -27,38 +28,6 @@ export default function RootLayout({ children }) {
         <link rel="preload" as="image" href="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=800,q=20,f=webp" fetchPriority="high" media="(max-width: 768px)" />
         <link rel="preload" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=optional" as="style" />
         <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=optional" rel="stylesheet" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-MR7JDNSD');
-            `,
-          }}
-        />
-        <script
-          defer
-          data-domain="mynotary.io"
-          src="https://plausible.io/js/script.js"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.$crisp=[];
-              window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
-              (function(){
-                var d=document;
-                var s=d.createElement("script");
-                s.src="https://client.crisp.chat/l.js";
-                s.async=1;
-                d.getElementsByTagName("head")[0].appendChild(s);
-              })();
-            `,
-          }}
-        />
       </head>
       <body>
         <noscript>
@@ -72,8 +41,41 @@ export default function RootLayout({ children }) {
         <Providers>
           {children}
         </Providers>
+
+        {/* GTM */}
+        <Script id="gtm" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-MR7JDNSD');
+          `}
+        </Script>
+
+        {/* Plausible */}
+        <Script
+          src="https://plausible.io/js/script.js"
+          data-domain="mynotary.io"
+          strategy="afterInteractive"
+        />
+
+        {/* Crisp */}
+        <Script id="crisp" strategy="afterInteractive">
+          {`
+            window.$crisp=[];
+            window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
+            (function(){
+              var d=document;
+              var s=d.createElement("script");
+              s.src="https://client.crisp.chat/l.js";
+              s.async=1;
+              d.getElementsByTagName("head")[0].appendChild(s);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   )
 }
-
