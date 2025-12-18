@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter as Router, useLocation } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { CurrencyProvider } from './contexts/CurrencyContext'
+import { CurrencyProvider, useCurrency } from './contexts/CurrencyContext'
 import { LanguageProvider } from './contexts/LanguageContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'

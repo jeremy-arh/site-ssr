@@ -135,7 +135,7 @@ import MobileCTA from '../components/MobileCTA';
 import ChatCTA from '../components/ChatCTA';
 
 // Other Services Section Component - memoized pour éviter re-renders
-const OtherServicesSection = memo(() => {
+const OtherServicesSection = memo(({ currentServiceId }) => {
   const { t } = useTranslation();
   const { getLocalizedPath } = useLanguage();
 

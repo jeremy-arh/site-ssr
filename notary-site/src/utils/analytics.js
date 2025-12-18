@@ -126,6 +126,7 @@ const getGeoInfo = async () => {
           return data;
         }
       }
+    // eslint-disable-next-line no-unused-vars
     } catch (_error) {
       // Cache invalid
     }
@@ -214,8 +215,9 @@ export const trackEvent = async (eventType, pagePath = null, metadata = {}) => {
       supabase
         .from('analytics_events')
         .insert([eventData])
-        .then(() => {})
-        .catch(() => {});
+      .then(() => {})
+      .catch(() => {});
+    // eslint-disable-next-line no-unused-vars
     } catch (_error) {
       // Silencieux - ne jamais bloquer pour des erreurs analytics
     }

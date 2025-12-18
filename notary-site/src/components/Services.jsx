@@ -27,7 +27,7 @@ const loadAnalytics = () => {
 // Helper pour tracker de manière non-bloquante
 const safeTrack = (fn, ...args) => {
   if (fn) {
-    try { fn(...args); } catch (e) { /* ignore */ }
+    try { fn(...args); } catch (_e) { /* ignore */ }
   }
 };
 
@@ -151,7 +151,7 @@ const Services = ({ servicesData = null }) => {
           </div>
         ) : (
           <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => {
+            {services.map((service) => {
               const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck;
               return (
                 <Link

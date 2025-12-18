@@ -189,6 +189,28 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
     }
   }, [service, serviceId])
 
+  // Breadcrumbs pour données structurées
+  const breadcrumbItems = useMemo(() => {
+    if (!service) return []
+    return [
+      { name: t('common.home') || 'Home', url: '/' },
+      { name: t('services.title') || 'Services', url: '/services' },
+      { name: service.name, url: pathname },
+    ]
+  }, [service, t, pathname])
+
+  const formUrl = useMemo(() => {
+    return getFormUrl(currency, service?.service_id || serviceId)
+  }, [currency, service?.service_id, serviceId])
+
+  const faqItems = useMemo(() => {
+    if (!service?.faq) return []
+    return service.faq.map((item) => ({
+      question: item[`question_${language}`] || item.question_en,
+      answer: item[`answer_${language}`] || item.answer_en,
+    }))
+  }, [service, language])
+
   if (!service) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
@@ -201,23 +223,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       </div>
     )
   }
-
-  // Breadcrumbs pour données structurées
-  const breadcrumbItems = [
-    { name: t('common.home') || 'Home', url: '/' },
-    { name: t('services.title') || 'Services', url: '/services' },
-    { name: service.name, url: pathname },
-  ]
-
-  const formUrl = getFormUrl(currency, service?.service_id || serviceId)
-
-  const faqItems = useMemo(() => {
-    if (!service?.faq) return []
-    return service.faq.map((item) => ({
-      question: item[`question_${language}`] || item.question_en,
-      answer: item[`answer_${language}`] || item.answer_en,
-    }))
-  }, [service, language])
 
   return (
     <div className="min-h-screen">

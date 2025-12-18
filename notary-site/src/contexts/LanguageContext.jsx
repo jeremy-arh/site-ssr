@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { detectLanguageFromIP, saveLanguageToStorage, getLanguageFromStorage, extractLanguageFromPath, removeLanguageFromPath, addLanguageToPath, SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../utils/language'
 
@@ -44,14 +44,14 @@ export const LanguageProvider = ({ children }) => {
   const [isReady] = useState(true)
 
   // Fonction pour obtenir le path localisé
-  const getLocalizedPath = (path, lang) => {
+  const getLocalizedPath = useCallback((path, lang) => {
     const targetLang = lang || language
     // Retire la langue actuelle du path
     const cleanPath = removeLanguageFromPath(path)
     
     // Ajoute la nouvelle langue si ce n'est pas 'en'
     return addLanguageToPath(cleanPath, targetLang)
-  }
+  }, [language])
 
   // Sauvegarder la langue initiale et détecter par IP si nécessaire
   useEffect(() => {

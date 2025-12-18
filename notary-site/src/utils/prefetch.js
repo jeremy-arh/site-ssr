@@ -30,10 +30,11 @@ export const prefetchForm = (currency = 'EUR', serviceId = null) => {
     link.as = 'document';
     // Note: crossOrigin is not needed for prefetch, browser handles it automatically
     document.head.appendChild(link);
+  // eslint-disable-next-line no-unused-vars
   } catch (_error) {
     // Silently fail - prefetch is best effort
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
-      console.warn('Form prefetch error:', error);
+      console.warn('Form prefetch error:', _error);
     }
   }
 };
@@ -77,6 +78,7 @@ export const setupLinkPrefetch = () => {
           }
         prefetchForm(currency, serviceId);
         }
+      // eslint-disable-next-line no-unused-vars
       } catch (_e) {
         // Invalid URL, skip
       }
@@ -154,6 +156,7 @@ export const prefetchVisibleLinks = () => {
             const currency = url.searchParams.get('currency') || 'EUR';
             const serviceId = url.searchParams.get('service') || null;
             prefetchForm(currency, serviceId);
+          // eslint-disable-next-line no-unused-vars
           } catch (_e) {
             // Invalid URL, skip
           }

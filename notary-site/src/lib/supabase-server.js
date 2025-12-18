@@ -8,8 +8,8 @@ import { createClient } from '@supabase/supabase-js'
  * Utilise les variables d'environnement Next.js
  */
 export function createServerClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  const supabaseUrl = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : null
+  const supabaseAnonKey = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null
 
   if (!supabaseUrl || !supabaseAnonKey) {
     // Retourner null au lieu de throw pour permettre un fallback gracieux

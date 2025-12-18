@@ -50,7 +50,7 @@ Current status:
       }
 
       supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
-      if (process.env.NODE_ENV === 'development') {
+      if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
         console.log('✅ Supabase client initialized successfully (lazy loaded)');
       }
       return supabaseClient;

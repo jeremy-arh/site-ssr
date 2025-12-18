@@ -1,10 +1,10 @@
 'use client'
 
-import { memo, useState, useEffect, useRef } from 'react';
+import { memo, useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 
 const Testimonial = memo(({ testimonialsData = null }) => {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -53,9 +53,9 @@ const Testimonial = memo(({ testimonialsData = null }) => {
     : defaultTestimonials;
 
   // Fonction pour changer d'avis
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
-  };
+  }, [testimonials.length]);
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
