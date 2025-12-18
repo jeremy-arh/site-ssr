@@ -63,10 +63,9 @@ const IconOpenNew = memo(() => (
   </svg>
 ))
 
-// Images Cloudflare optimisées (WebP, qualité adaptée)
-const HERO_IMG_MOBILE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=640,q=75,f=webp'
-const HERO_IMG_DESKTOP = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=1536,q=80,f=webp'
-const PRICING_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=520,q=80,f=webp'
+// Images Cloudflare optimisées (AVIF, qualité et taille auto)
+const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif'
+const PRICING_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=auto,q=auto,f=avif'
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {
@@ -251,28 +250,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero optimisée - Mobile: 640px ~25KB, Desktop: 1536px ~70KB */}
-        <picture>
-          <source 
-            media="(max-width: 768px)" 
-            srcSet={HERO_IMG_MOBILE}
-            type="image/webp"
-          />
-          <source 
-            media="(min-width: 769px)" 
-            srcSet={HERO_IMG_DESKTOP}
-            type="image/webp"
-          />
-          <img
-            src={HERO_IMG_DESKTOP}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-top"
-            fetchPriority="high"
-            decoding="async"
-            width={1536}
-            height={1024}
-          />
-        </picture>
+        {/* Image Hero optimisée AVIF auto */}
+        <img
+          src={HERO_IMG}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-top"
+          fetchPriority="high"
+          decoding="async"
+        />
         
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
