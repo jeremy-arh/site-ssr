@@ -16,11 +16,14 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { formatServiceForLanguage, formatServicesForLanguage } from '@/utils/services'
 import PriceDisplay from '@/components/PriceDisplay'
-import HowItWorks from '@/components/HowItWorks'
-import Testimonial from '@/components/Testimonial'
-import FAQ from '@/components/FAQ'
-import MobileCTA from '@/components/MobileCTA'
-import ChatCTA from '@/components/ChatCTA'
+import dynamic from 'next/dynamic'
+
+// Différer les composants non-critiques pour réduire le JS initial
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
+const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
+const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
+const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 
 // ANALYTICS : Plausible uniquement (léger, ~1KB)
 const trackWithPlausible = (type, ...args) => {

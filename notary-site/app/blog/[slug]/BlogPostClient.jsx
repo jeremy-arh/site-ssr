@@ -1,13 +1,29 @@
 'use client'
 
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
-import { Icon } from '@iconify/react'
 import { getSupabase } from '@/lib/supabase'
+
+// SVG Icons inline pour éviter @iconify/react
+const IconArrowLeft = memo(() => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+));
+const IconCheck = memo(() => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+  </svg>
+));
+const IconOpenNew = memo(() => (
+  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
+  </svg>
+));
 import { trackBlogPostView } from '@/utils/plausible'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
@@ -122,7 +138,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
         <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-4 md:mb-6 leading-tight">Article Not Found</h1>
         <p className="text-gray-600 mb-8">The article you're looking for doesn't exist.</p>
         <Link href="/" className="primary-cta text-lg px-8 py-4 inline-flex items-center gap-2">
-          <Icon icon="tabler:arrow-left" className="w-5 h-5" />
+          <IconArrowLeft />
           <span className="btn-text inline-block">Back to Home</span>
         </Link>
       </div>
@@ -285,7 +301,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
                 href={formUrl}
                 className="primary-cta text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100"
               >
-                <Icon icon="stash:check-solid" className="w-5 h-5" />
+                <IconCheck />
                 <span className="btn-text inline-block">{post.cta || t('nav.notarizeNow')}</span>
               </a>
             </div>
@@ -364,7 +380,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
                       </span>
                       <div className="flex items-center gap-2 text-black font-medium text-sm group-hover:gap-3 transition-all">
                         {t('blog.readMore') || 'Read more'}
-                        <Icon icon="lsicon:open-new-filled" className="w-4 h-4" />
+                        <IconOpenNew />
                       </div>
                     </div>
                   </div>
@@ -383,7 +399,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
       <section className="px-[30px] pb-20">
         <div className="max-w-[1400px] mx-auto text-center">
           <Link href={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black transition-colors font-medium">
-            <Icon icon="tabler:arrow-left" className="w-5 h-5" />
+            <IconArrowLeft />
             <span className="inline-block">{t('blog.backToBlog') || 'Back to Blog'}</span>
           </Link>
         </div>

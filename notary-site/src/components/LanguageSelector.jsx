@@ -13,20 +13,71 @@ const LANGUAGE_NAMES = {
   pt: 'Português',
 };
 
-// Codes pays pour les drapeaux (ISO 3166-1 alpha-2)
-const LANGUAGE_COUNTRIES = {
-  en: 'gb', // Royaume-Uni
-  fr: 'fr', // France
-  es: 'es', // Espagne
-  de: 'de', // Allemagne
-  it: 'it', // Italie
-  pt: 'pt', // Portugal
+// SVG Flags inline pour éviter les requêtes externes (flagcdn.com)
+const FlagGB = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <defs><clipPath id="gb"><path fillOpacity=".7" d="M-85.3 0h682.6v512h-682.6z"/></clipPath></defs>
+    <g clipPath="url(#gb)" transform="translate(80) scale(.94)">
+      <g strokeWidth="1pt">
+        <path fill="#006" d="M-256 0H768v512H-256z"/>
+        <path fill="#fff" d="m-256 0 582.3 198.4L768 0v198.4L-256 512V0z" transform="scale(1.3)"/>
+        <path fill="#fff" d="M768 0v512L-256 313.6V0z" transform="scale(1.3)"/>
+        <path fill="#c00" d="M-256 0v512L768 198.4V0z" transform="scale(1.3)"/>
+        <path fill="#c00" d="M768 0v198.4L-256 512V313.6z" transform="scale(1.3)"/>
+      </g>
+    </g>
+  </svg>
+);
+const FlagFR = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <g fillRule="evenodd" strokeWidth="1pt">
+      <path fill="#fff" d="M0 0h640v480H0z"/>
+      <path fill="#00267f" d="M0 0h213.3v480H0z"/>
+      <path fill="#f31830" d="M426.7 0H640v480H426.7z"/>
+    </g>
+  </svg>
+);
+const FlagES = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#aa151b" d="M0 0h640v480H0z"/>
+    <path fill="#f1bf00" d="M0 120h640v120H0z"/>
+  </svg>
+);
+const FlagDE = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#000" d="M0 0h640v160H0z"/>
+    <path fill="#dd0000" d="M0 160h640v160H0z"/>
+    <path fill="#ffce00" d="M0 320h640v160H0z"/>
+  </svg>
+);
+const FlagIT = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <g fillRule="evenodd" strokeWidth="1pt">
+      <path fill="#fff" d="M0 0h640v480H0z"/>
+      <path fill="#009246" d="M0 0h213.3v480H0z"/>
+      <path fill="#ce2b37" d="M426.7 0H640v480H426.7z"/>
+    </g>
+  </svg>
+);
+const FlagPT = () => (
+  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#060" d="M0 0h640v480H0z"/>
+    <path fill="#ff0000" d="M0 0h256v256H0z"/>
+    <circle cx="128" cy="128" r="64" fill="#ff0"/>
+  </svg>
+);
+
+const FLAG_COMPONENTS = {
+  en: FlagGB,
+  fr: FlagFR,
+  es: FlagES,
+  de: FlagDE,
+  it: FlagIT,
+  pt: FlagPT,
 };
 
-// Fonction pour obtenir l'URL de l'image du drapeau
-const getFlagUrl = (lang) => {
-  const countryCode = LANGUAGE_COUNTRIES[lang] || 'gb';
-  return `https://flagcdn.com/w20/${countryCode}.png`;
+const getFlagComponent = (lang) => {
+  return FLAG_COMPONENTS[lang] || FlagGB;
 };
 
 const LanguageSelector = ({ isWhite = false }) => {
@@ -90,16 +141,10 @@ const LanguageSelector = ({ isWhite = false }) => {
         aria-label="Select language"
         aria-expanded={isOpen}
       >
-        <img
-          src={getFlagUrl(language)}
-          alt={`Flag of ${LANGUAGE_NAMES[language] || language}`}
-          className="w-5 h-4 object-cover rounded"
-          onError={(e) => {
-            e.target.style.display = 'none';
-            e.target.nextSibling.style.display = 'inline';
-          }}
-        />
-        <span className="text-lg hidden">🌐</span>
+        {(() => {
+          const FlagComponent = getFlagComponent(language);
+          return <FlagComponent />;
+        })()}
         <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -128,17 +173,10 @@ const LanguageSelector = ({ isWhite = false }) => {
                 language === lang ? 'bg-gray-50 font-semibold' : ''
               }`}
             >
-              <img
-                src={getFlagUrl(lang)}
-                alt={`Flag of ${LANGUAGE_NAMES[lang]}`}
-                className="w-5 h-4 object-cover rounded"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  const fallback = e.target.nextSibling;
-                  if (fallback) fallback.style.display = 'inline';
-                }}
-              />
-              <span className="text-lg hidden">🌐</span>
+              {(() => {
+                const FlagComponent = getFlagComponent(lang);
+                return <FlagComponent />;
+              })()}
               <span>{LANGUAGE_NAMES[lang]}</span>
               {language === lang && (
                 <svg

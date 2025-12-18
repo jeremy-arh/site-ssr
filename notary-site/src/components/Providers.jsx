@@ -1,6 +1,5 @@
 'use client'
 
-import { Suspense } from 'react'
 import { CurrencyProvider } from '@/contexts/CurrencyContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
@@ -29,13 +28,11 @@ function ProvidersContent({ children }) {
 
 export default function Providers({ children }) {
   return (
-    <Suspense fallback={<div className="min-h-screen flex flex-col"><Navbar /><main className="flex-1">{children}</main><Footer /></div>}>
-      <CurrencyProvider>
-        <LanguageProvider>
-          <ProvidersContent>{children}</ProvidersContent>
-        </LanguageProvider>
-      </CurrencyProvider>
-    </Suspense>
+    <CurrencyProvider>
+      <LanguageProvider>
+        <ProvidersContent>{children}</ProvidersContent>
+      </LanguageProvider>
+    </CurrencyProvider>
   )
 }
 

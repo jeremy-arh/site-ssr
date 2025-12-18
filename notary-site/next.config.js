@@ -31,6 +31,24 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   
+  // Optimiser les exports pour réduire la taille du bundle
+  swcMinify: true,
+  
+  // Webpack optimisations légères (Next.js gère déjà bien le code splitting)
+  webpack: (config, { isServer }) => {
+    // Optimiser les modules externes
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    
+    return config;
+  },
+  
   // Headers de cache pour les assets statiques
   async headers() {
     return [

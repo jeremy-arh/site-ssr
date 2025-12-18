@@ -7,6 +7,44 @@ import { createClient } from '@supabase/supabase-js'
 // Cache le client pour éviter de le recréer à chaque appel
 let serverClient = null
 
+// Cache pour les données (durée: 60 secondes)
+const CACHE_DURATION = 60 * 1000 // 60 secondes
+const dataCache = new Map()
+
+/**
+ * Nettoie le cache expiré
+ */
+function cleanExpiredCache() {
+  const now = Date.now()
+  for (const [key, value] of dataCache.entries()) {
+    if (now - value.timestamp > CACHE_DURATION) {
+      dataCache.delete(key)
+    }
+  }
+}
+
+/**
+ * Récupère une valeur du cache si elle existe et n'est pas expirée
+ */
+function getCachedData(key) {
+  cleanExpiredCache()
+  const cached = dataCache.get(key)
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data
+  }
+  return null
+}
+
+/**
+ * Met une valeur en cache
+ */
+function setCachedData(key, data) {
+  dataCache.set(key, {
+    data,
+    timestamp: Date.now()
+  })
+}
+
 /**
  * Crée un client Supabase pour les Server Components
  * Utilise les variables d'environnement Next.js
@@ -41,9 +79,15 @@ export function createServerClient() {
 }
 
 /**
- * Récupère les services depuis Supabase (SSR)
+ * Récupère les services depuis Supabase (SSR) avec cache
  */
 export async function getServices() {
+  const cacheKey = 'services'
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -62,7 +106,9 @@ export async function getServices() {
       return []
     }
 
-    return data || []
+    const result = data || []
+    setCachedData(cacheKey, result)
+    return result
   } catch (error) {
     console.error('Error in getServices:', error.message || error)
     return []
@@ -70,9 +116,15 @@ export async function getServices() {
 }
 
 /**
- * Récupère un service par ID depuis Supabase (SSR)
+ * Récupère un service par ID depuis Supabase (SSR) avec cache
  */
 export async function getService(serviceId) {
+  const cacheKey = `service:${serviceId}`
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -92,6 +144,9 @@ export async function getService(serviceId) {
       return null
     }
 
+    if (data) {
+      setCachedData(cacheKey, data)
+    }
     return data
   } catch (error) {
     console.error('Error in getService:', error.message || error)
@@ -100,9 +155,15 @@ export async function getService(serviceId) {
 }
 
 /**
- * Récupère les FAQs depuis Supabase (SSR)
+ * Récupère les FAQs depuis Supabase (SSR) avec cache
  */
 export async function getFAQs() {
+  const cacheKey = 'faqs'
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -124,7 +185,9 @@ export async function getFAQs() {
       return []
     }
 
-    return data || []
+    const result = data || []
+    setCachedData(cacheKey, result)
+    return result
   } catch (error) {
     console.error('Error in getFAQs:', error.message || error)
     return []
@@ -132,9 +195,15 @@ export async function getFAQs() {
 }
 
 /**
- * Récupère les témoignages depuis Supabase (SSR)
+ * Récupère les témoignages depuis Supabase (SSR) avec cache
  */
 export async function getTestimonials() {
+  const cacheKey = 'testimonials'
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -157,7 +226,9 @@ export async function getTestimonials() {
       return []
     }
 
-    return data || []
+    const result = data || []
+    setCachedData(cacheKey, result)
+    return result
   } catch (error) {
     console.error('Error in getTestimonials:', error.message || error)
     return []
@@ -165,9 +236,15 @@ export async function getTestimonials() {
 }
 
 /**
- * Récupère les articles de blog depuis Supabase (SSR)
+ * Récupère les articles de blog depuis Supabase (SSR) avec cache
  */
 export async function getBlogPosts() {
+  const cacheKey = 'blog_posts'
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -186,7 +263,9 @@ export async function getBlogPosts() {
       return []
     }
 
-    return data || []
+    const result = data || []
+    setCachedData(cacheKey, result)
+    return result
   } catch (error) {
     console.error('Error in getBlogPosts:', error.message || error)
     return []
@@ -194,9 +273,15 @@ export async function getBlogPosts() {
 }
 
 /**
- * Récupère un article de blog par slug (SSR)
+ * Récupère un article de blog par slug (SSR) avec cache
  */
 export async function getBlogPost(slug) {
+  const cacheKey = `blog_post:${slug}`
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -216,6 +301,9 @@ export async function getBlogPost(slug) {
       return null
     }
 
+    if (data) {
+      setCachedData(cacheKey, data)
+    }
     return data
   } catch (error) {
     console.error('Error in getBlogPost:', error.message || error)
@@ -224,9 +312,15 @@ export async function getBlogPost(slug) {
 }
 
 /**
- * Récupère les articles de blog liés (SSR)
+ * Récupère les articles de blog liés (SSR) avec cache
  */
 export async function getRelatedBlogPosts(currentSlug, limit = 3) {
+  const cacheKey = `related_blog_posts:${currentSlug}:${limit}`
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -247,7 +341,9 @@ export async function getRelatedBlogPosts(currentSlug, limit = 3) {
       return []
     }
 
-    return data || []
+    const result = data || []
+    setCachedData(cacheKey, result)
+    return result
   } catch (error) {
     console.error('Error in getRelatedBlogPosts:', error.message || error)
     return []
@@ -255,9 +351,15 @@ export async function getRelatedBlogPosts(currentSlug, limit = 3) {
 }
 
 /**
- * Récupère les catégories de blog depuis Supabase (SSR)
+ * Récupère les catégories de blog depuis Supabase (SSR) avec cache
  */
 export async function getBlogCategories() {
+  const cacheKey = 'blog_categories'
+  const cached = getCachedData(cacheKey)
+  if (cached) {
+    return cached
+  }
+
   try {
     const supabase = createServerClient()
     if (!supabase) {
@@ -278,6 +380,7 @@ export async function getBlogCategories() {
 
     // Extraire les catégories uniques
     const uniqueCategories = [...new Set(data.map(post => post.category).filter(Boolean))]
+    setCachedData(cacheKey, uniqueCategories)
     return uniqueCategories
   } catch (error) {
     console.error('Error in getBlogCategories:', error.message || error)
