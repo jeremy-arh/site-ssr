@@ -7,19 +7,14 @@ import { getFormUrl } from '../utils/formUrl';
 import { useService } from '../hooks/useServices';
 import { useTranslation } from '../hooks/useTranslation';
 
-// ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
+// ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
-let trackCTAClick = null;
 
-// Charger les analytics de manière non-bloquante
+// Charger Plausible de manière non-bloquante
 const loadAnalytics = () => {
   if (trackPlausibleCTAClick) return;
-  Promise.all([
-    import('../utils/plausible'),
-    import('../utils/analytics')
-  ]).then(([plausible, analytics]) => {
+  import('../utils/plausible').then((plausible) => {
     trackPlausibleCTAClick = plausible.trackCTAClick;
-    trackCTAClick = analytics.trackCTAClick;
   }).catch(() => {});
 };
 
@@ -117,7 +112,6 @@ const CTAPopup = () => {
       destination: formUrl,
       elementId: 'popup_primary'
     });
-    safeTrack(trackCTAClick, 'popup_cta', serviceId, pathname);
     window.location.href = formUrl;
   };
 

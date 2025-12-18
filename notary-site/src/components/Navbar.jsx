@@ -12,27 +12,18 @@ import { formatServiceForLanguage, getServiceFields } from '../utils/services';
 import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
 import { getSupabase } from '../lib/supabase';
 
-// ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
+// ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
 let trackPlausibleLoginClick = null;
 let trackPlausibleNavigationClick = null;
-let trackCTAClick = null;
-let trackLoginClick = null;
-let trackNavigationClick = null;
 
-// Charger les analytics de manière non-bloquante
+// Charger Plausible de manière non-bloquante
 const loadAnalytics = () => {
   if (trackPlausibleCTAClick) return;
-  Promise.all([
-    import('../utils/plausible'),
-    import('../utils/analytics')
-  ]).then(([plausible, analytics]) => {
+  import('../utils/plausible').then((plausible) => {
     trackPlausibleCTAClick = plausible.trackCTAClick;
     trackPlausibleLoginClick = plausible.trackLoginClick;
     trackPlausibleNavigationClick = plausible.trackNavigationClick;
-    trackCTAClick = analytics.trackCTAClick;
-    trackLoginClick = analytics.trackLoginClick;
-    trackNavigationClick = analytics.trackNavigationClick;
   }).catch(() => {});
 };
 
@@ -403,7 +394,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, pathname);
                 }}
               >
                 {t('nav.services')}
@@ -420,7 +410,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'How it work', '#how-it-works', pathname);
                 }}
               >
                 {t('nav.howItWorks')}
@@ -437,7 +426,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     section: 'navbar_desktop'
                   });
-                  safeTrack(trackNavigationClick, 'FAQ', '#faq', pathname);
                 }}
               >
                 {t('nav.faq')}
@@ -460,7 +448,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
                   });
-                  safeTrack(trackLoginClick, 'navbar_desktop', pathname);
                 }}
               >
                 {t('nav.login')}
@@ -478,7 +465,6 @@ const Navbar = memo(() => {
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_desktop_cta'
                   });
-                  safeTrack(trackCTAClick, 'navbar_desktop', currentServiceId, pathname);
                 }}
               >
                 <span className="btn-text inline-block inline-flex items-center gap-2 whitespace-nowrap">
@@ -541,7 +527,6 @@ const Navbar = memo(() => {
                   pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'Our services', `#${sectionId}`, pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -559,7 +544,6 @@ const Navbar = memo(() => {
                   pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'How it work', '#how-it-works', pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -577,7 +561,6 @@ const Navbar = memo(() => {
                   pagePath: pathname,
                   section: 'navbar_mobile'
                 });
-                safeTrack(trackNavigationClick, 'FAQ', '#faq', pathname);
               }}
               className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
             >
@@ -621,7 +604,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     section: 'navbar_mobile'
                   });
-                  safeTrack(trackNavigationClick, 'contact', localizedPath, pathname);
                 }}
                 className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
               >
@@ -637,7 +619,6 @@ const Navbar = memo(() => {
                     pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
                   });
-                  safeTrack(trackLoginClick, 'navbar_mobile', pathname);
                   closeMenu();
                 }}
                 className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
@@ -655,7 +636,6 @@ const Navbar = memo(() => {
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_mobile_cta'
                   });
-                  safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, pathname);
                   closeMenu();
                 }}
                 className="block w-full text-center glassy-cta primary-cta text-lg py-4"

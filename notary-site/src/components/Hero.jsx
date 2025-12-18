@@ -5,19 +5,14 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
-// ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
+// ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
-let trackCTAClick = null;
 
-// Charger les analytics de manière non-bloquante
+// Charger Plausible de manière non-bloquante
 const loadAnalytics = () => {
   if (trackPlausibleCTAClick) return;
-  Promise.all([
-    import('../utils/plausible'),
-    import('../utils/analytics')
-  ]).then(([plausible, analytics]) => {
+  import('../utils/plausible').then((plausible) => {
     trackPlausibleCTAClick = plausible.trackCTAClick;
-    trackCTAClick = analytics.trackCTAClick;
   }).catch(() => {});
 };
 
@@ -100,7 +95,6 @@ const Hero = memo(() => {
                   destination: getFormUrl(currency),
                   elementId: 'hero_primary'
                 });
-                safeTrack(trackCTAClick, 'hero', null, window.location.pathname);
               }}
             >
               <IconOpenNew />

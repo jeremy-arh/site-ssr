@@ -8,19 +8,14 @@ import { useServicesList } from '../hooks/useServices';
 import { formatServicesForLanguage } from '../utils/services';
 import PriceDisplay from './PriceDisplay';
 
-// ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
+// ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleServiceClick = null;
-let trackServiceClick = null;
 
-// Charger les analytics de manière non-bloquante
+// Charger Plausible de manière non-bloquante
 const loadAnalytics = () => {
   if (trackPlausibleServiceClick) return;
-  Promise.all([
-    import('../utils/plausible'),
-    import('../utils/analytics')
-  ]).then(([plausible, analytics]) => {
+  import('../utils/plausible').then((plausible) => {
     trackPlausibleServiceClick = plausible.trackServiceClick;
-    trackServiceClick = analytics.trackServiceClick;
   }).catch(() => {});
 };
 
@@ -161,7 +156,6 @@ const Services = ({ servicesData = null }) => {
                   onClick={() => {
                     loadAnalytics();
                     safeTrack(trackPlausibleServiceClick, service.service_id, service.name, 'homepage_services');
-                    safeTrack(trackServiceClick, service.service_id, service.name, 'homepage_services', window.location.pathname);
                   }}
                 >
                   <div className="flex items-center gap-3 mb-4">
