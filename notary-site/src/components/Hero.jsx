@@ -62,6 +62,7 @@ const Hero = memo(() => {
       {/* Hero Block with Background Image - LCP Element */}
       <div
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
+        style={{ backgroundColor: '#1f2937' }}
       >
         {/* Image Hero Cloudflare optimisée */}
         <img

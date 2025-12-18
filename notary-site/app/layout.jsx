@@ -23,16 +23,37 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className={playfairDisplay.variable}>
       <head>
+        {/* CSS Critique inline pour éviter le FOUC */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+            html{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+            body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow-x:hidden;background:#ffffff;color:#111827}
+            h1,h2{font-family:var(--font-playfair,Georgia,'Times New Roman',serif);font-weight:500}
+            [data-hero]{min-height:100vh;position:relative}
+            .fixed{position:fixed;top:0;left:0;right:0;z-index:50}
+            img{max-width:100%;height:auto;display:block}
+          `
+        }} />
+        
         {/* Preconnect à Supabase (données) et Cloudflare Images (LCP) */}
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://imagedelivery.net" crossOrigin="anonymous" />
         
-        {/* Preload image hero LCP (page d'accueil) - optimisé pour le LCP */}
+        {/* Preload image hero LCP - version optimisée pour chargement rapide */}
         <link
           rel="preload"
           as="image"
-          href="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=auto,q=auto,f=avif"
+          href="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=1200,q=75,f=avif"
           fetchPriority="high"
+          media="(min-width: 768px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=800,q=75,f=avif"
+          fetchPriority="high"
+          media="(max-width: 767px)"
         />
         
         {/* DNS prefetch pour scripts tiers (chargés en lazy) */}
@@ -48,7 +69,7 @@ export default function RootLayout({ children }) {
         <meta name="theme-color" content="#000000" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
       </head>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning style={{ margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', backgroundColor: '#ffffff', color: '#111827' }}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MR7JDNSD"

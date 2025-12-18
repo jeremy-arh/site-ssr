@@ -106,7 +106,7 @@ export default function ServicesClient({ servicesData }) {
         canonicalPath={pathname}
       />
       
-      <section className="relative overflow-hidden h-[60vh] min-h-[500px] flex items-center px-[30px]" data-hero>
+      <section className="relative overflow-hidden h-[60vh] min-h-[500px] flex items-center px-[30px]" data-hero style={{ backgroundColor: '#1f2937' }}>
         {/* Image Hero Cloudflare optimisée */}
         <img
           src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif"
