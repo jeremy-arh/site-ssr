@@ -39,7 +39,7 @@ const Footer = memo(() => {
           <div className="md:col-span-1">
             <a href="/" className="inline-block">
               <img
-                src="/images/logo.svg"
+                src="/images/logo.avif"
                 alt="Logo"
                 width="120"
                 height="32"

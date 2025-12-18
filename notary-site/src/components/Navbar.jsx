@@ -333,10 +333,10 @@ const Navbar = memo(() => {
               <img
                 src={
                   isMobile && !isMenuOpen 
-                    ? '/images/logo.svg'
+                    ? '/images/logo.avif'
                     : (!isMobile && isAtTop && isOnServicePage)
-                      ? '/images/logo.svg'
-                      : '/images/logo-dark.svg'
+                      ? '/images/logo.avif'
+                      : '/images/logo-dark.avif'
                 }
                 alt="Logo"
                 width="130"
