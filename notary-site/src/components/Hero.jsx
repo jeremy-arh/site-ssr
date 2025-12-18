@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
-import heroHomeAvif from '../../public/images/hero-home.avif';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -64,7 +63,7 @@ const Hero = memo(() => {
       >
         {/* Image Hero optimisée AVIF avec next/image */}
         <Image
-          src={heroHomeAvif}
+          src="/images/hero-home.avif"
           alt=""
           fill
           priority

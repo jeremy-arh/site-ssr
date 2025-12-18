@@ -4,8 +4,6 @@ import { useState, useEffect, useCallback, memo } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
-import logoAvif from '../../public/images/logo.avif';
-import logoDarkAvif from '../../public/images/logo-dark.avif';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
 import { getFormUrl } from '../utils/formUrl';
@@ -336,10 +334,10 @@ const Navbar = memo(() => {
               <Image
                 src={
                   isMobile && !isMenuOpen 
-                    ? logoAvif
+                    ? '/images/logo.avif'
                     : (!isMobile && isAtTop && isOnServicePage)
-                      ? logoAvif
-                      : logoDarkAvif
+                      ? '/images/logo.avif'
+                      : '/images/logo-dark.avif'
                 }
                 alt="Logo"
                 width={130}

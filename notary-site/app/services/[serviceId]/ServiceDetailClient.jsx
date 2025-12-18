@@ -5,8 +5,6 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
-import heroServiceAvif from '../../../../public/images/hero-service.avif'
-import pricingAvif from '../../../../public/images/pricing.avif'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
@@ -252,7 +250,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
         {/* Image Hero optimisée AVIF avec next/image */}
         <Image
-          src={heroServiceAvif}
+          src="/images/hero-service.avif"
           alt=""
           fill
           priority
@@ -333,7 +331,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             {/* Left Side - Image SVG */}
             <div className="lg:w-2/5 flex items-center justify-center relative h-[650px]">
               <Image
-                src={pricingAvif}
+                src="/images/pricing.avif"
                 alt={service.name}
                 fill
                 className="object-cover rounded-2xl"
