@@ -1,20 +1,53 @@
 import { getBlogPosts } from '@/lib/supabase-server'
+import { createTranslator, getLocalizedPath, DEFAULT_LANGUAGE } from '@/lib/translations-server'
 import { formatBlogPostsForLanguage } from '@/utils/blog'
-import BlogClient from './BlogClient'
+import BlogContent from './BlogContent'
 
-// Forcer le rendu dynamique (SSR) - pas de prerendering statique
+// Forcer le rendu dynamique (SSR)
 export const dynamic = 'force-dynamic'
 
-// Cette page est un Server Component qui récupère les données côté serveur
+// Générer les métadonnées côté serveur
+export async function generateMetadata() {
+  const t = createTranslator(DEFAULT_LANGUAGE)
+  return {
+    title: t('seo.blogTitle'),
+    description: t('seo.blogDescription'),
+    openGraph: {
+      title: t('seo.blogTitle'),
+      description: t('seo.blogDescription'),
+    },
+  }
+}
+
 export default async function Blog() {
-  // Récupérer les données côté serveur (SSR)
+  const language = DEFAULT_LANGUAGE
+  const t = createTranslator(language)
+
+  // Récupérer et formater les données côté serveur
   const postsData = await getBlogPosts()
+  const posts = formatBlogPostsForLanguage(postsData, language)
+  
+  // Extraire les catégories uniques côté serveur
+  const categories = [...new Set(posts.map(post => post.category).filter(Boolean))]
 
-  // Formater les posts pour la langue par défaut (sera ajusté côté client selon la langue sélectionnée)
-  const formattedPosts = formatBlogPostsForLanguage(postsData, 'en')
+  // Pré-calculer les traductions côté serveur
+  const translations = {
+    badge: t('blog.badge'),
+    title: t('blog.title'),
+    description: t('blog.description'),
+    allArticles: t('blog.allArticles'),
+    noArticlesCategory: t('blog.noArticlesCategory'),
+    readMore: t('blog.readMore'),
+    minRead: t('blog.minRead'),
+    notarizeNow: t('nav.notarizeNow'),
+  }
 
-  // Extraire les catégories uniques
-  const categories = [...new Set(formattedPosts.map(post => post.category).filter(Boolean))]
-
-  return <BlogClient initialPosts={formattedPosts} initialCategories={categories} postsData={postsData} />
+  return (
+    <BlogContent
+      language={language}
+      translations={translations}
+      initialPosts={posts}
+      categories={categories}
+    />
+  )
 }
