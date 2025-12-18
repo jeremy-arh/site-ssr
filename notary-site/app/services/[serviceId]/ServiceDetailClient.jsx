@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
+import heroServiceAvif from '../../../../public/images/hero-service.avif'
+import pricingAvif from '../../../../public/images/pricing.avif'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
@@ -63,9 +66,6 @@ const IconOpenNew = memo(() => (
   </svg>
 ))
 
-// Images AVIF locales optimisées
-const HERO_IMG = '/images/hero-service.avif'
-const PRICING_IMG = '/images/pricing.avif'
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {
@@ -250,13 +250,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero optimisée AVIF auto */}
-        <img
-          src={HERO_IMG}
+        {/* Image Hero optimisée AVIF avec next/image */}
+        <Image
+          src={heroServiceAvif}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          fetchPriority="high"
-          decoding="async"
+          fill
+          priority
+          className="object-cover object-top"
+          sizes="100vw"
         />
         
         {/* Dark Overlay */}
@@ -330,14 +331,13 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         <div className="max-w-[1300px] w-full mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Left Side - Image SVG */}
-            <div className="lg:w-2/5 flex items-center justify-center">
-              <img
-                src={PRICING_IMG}
+            <div className="lg:w-2/5 flex items-center justify-center relative h-[650px]">
+              <Image
+                src={pricingAvif}
                 alt={service.name}
-                width="520"
-                height="650"
-                className="w-full h-auto rounded-2xl object-cover"
-                style={{ maxHeight: '800px' }}
+                fill
+                className="object-cover rounded-2xl"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
 

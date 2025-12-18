@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
+import heroHomeAvif from '../../public/images/hero-home.avif';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -51,9 +52,6 @@ const IconOpenNew = memo(() => (
   </svg>
 ));
 
-// Image AVIF locale optimisée
-const HERO_IMG = '/images/hero-home.avif';
-
 const Hero = memo(() => {
   const { currency } = useCurrency();
   const { t } = useTranslation();
@@ -64,14 +62,15 @@ const Hero = memo(() => {
       <div
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
-        {/* Image Hero optimisée AVIF auto */}
-          <img
-          src={HERO_IMG}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            fetchPriority="high"
-          decoding="async"
-          />
+        {/* Image Hero optimisée AVIF avec next/image */}
+        <Image
+          src={heroHomeAvif}
+          alt=""
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
