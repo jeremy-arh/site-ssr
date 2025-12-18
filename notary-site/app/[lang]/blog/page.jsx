@@ -1,4 +1,4 @@
-import { getBlogPosts, getBlogCategories } from '@/lib/supabase-server'
+import { getBlogPostsFromFiles } from '@/lib/data-loader'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import BlogClient from '../../blog/BlogClient'
@@ -10,10 +10,10 @@ export default async function LangBlog({ params }) {
     redirect('/blog')
   }
 
-  const [blogPostsData, categoriesData] = await Promise.all([
-    getBlogPosts(),
-    getBlogCategories(),
-  ])
+  const blogPostsData = getBlogPostsFromFiles()
+  
+  // Extraire les catégories uniques
+  const categoriesData = [...new Set(blogPostsData.map(post => post.category).filter(Boolean))]
 
   return (
     <BlogClient initialPosts={blogPostsData} initialCategories={categoriesData} postsData={blogPostsData} />

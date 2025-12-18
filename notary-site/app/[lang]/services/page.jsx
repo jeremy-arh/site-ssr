@@ -1,4 +1,4 @@
-import { getServices } from '@/lib/supabase-server'
+import { getServicesFromFiles } from '@/lib/data-loader'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import ServicesClient from '../../services/ServicesClient'
@@ -10,7 +10,7 @@ export default async function LangServices({ params }) {
     redirect('/services')
   }
 
-  const servicesData = await getServices()
+  const servicesData = getServicesFromFiles()
 
   return (
     <ServicesClient servicesData={servicesData} />

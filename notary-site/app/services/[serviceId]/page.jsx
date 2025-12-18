@@ -1,16 +1,14 @@
-import { getService, getServices } from '@/lib/supabase-server'
+import { getServiceFromFiles, getServicesFromFiles } from '@/lib/data-loader'
 import { notFound } from 'next/navigation'
 import ServiceDetailClient from './ServiceDetailClient'
 
-// Cette page est un Server Component qui récupère les données côté serveur (SSR)
+// Cette page est un Server Component qui récupère les données depuis les fichiers JSON pré-générés
 export default async function ServiceDetail({ params }) {
   const { serviceId } = await params
 
-  // Récupérer le service et tous les services (pour les suggestions) côté serveur
-  const [serviceData, allServicesData] = await Promise.all([
-    getService(serviceId),
-    getServices(),
-  ])
+  // Récupérer le service et tous les services depuis les fichiers JSON (générés par prebuild)
+  const serviceData = getServiceFromFiles(serviceId)
+  const allServicesData = getServicesFromFiles()
 
   if (!serviceData) {
     notFound()

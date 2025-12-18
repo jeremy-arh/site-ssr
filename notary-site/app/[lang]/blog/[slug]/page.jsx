@@ -1,4 +1,4 @@
-import { getBlogPost, getRelatedBlogPosts } from '@/lib/supabase-server'
+import { getBlogPostFromFiles, getRelatedBlogPostsFromFiles } from '@/lib/data-loader'
 import { notFound, redirect } from 'next/navigation'
 import BlogPostClient from '../../../blog/[slug]/BlogPostClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
@@ -10,10 +10,8 @@ export default async function LangBlogPost({ params }) {
     redirect(`/blog/${slug}`)
   }
 
-  const [blogPostData, relatedBlogPostsData] = await Promise.all([
-    getBlogPost(slug),
-    getRelatedBlogPosts(slug),
-  ])
+  const blogPostData = getBlogPostFromFiles(slug)
+  const relatedBlogPostsData = getRelatedBlogPostsFromFiles(slug)
 
   if (!blogPostData) {
     notFound()
