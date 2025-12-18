@@ -90,35 +90,13 @@ export default function RootLayout({ children }) {
             __html: `
               window.$crisp=[];
               window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
-              var crispLoaded = false;
-              function loadCrisp(){
-                if (crispLoaded) return;
-                crispLoaded = true;
+              (function(){
                 var d=document;
                 var s=d.createElement("script");
                 s.src="https://client.crisp.chat/l.js";
                 s.async=1;
                 d.getElementsByTagName("head")[0].appendChild(s);
-              }
-              var interactionEvents = ['scroll', 'click', 'keydown', 'touchstart', 'mousedown'];
-              var hasInteracted = false;
-              var loadCrispOnInteraction = function() {
-                if (!hasInteracted) {
-                  hasInteracted = true;
-                  loadCrisp();
-                  interactionEvents.forEach(function(event) {
-                    document.removeEventListener(event, loadCrispOnInteraction, { passive: true });
-                  });
-                }
-              };
-              interactionEvents.forEach(function(event) {
-                document.addEventListener(event, loadCrispOnInteraction, { passive: true, once: true });
-              });
-              setTimeout(function() {
-                if (!crispLoaded) {
-                  loadCrisp();
-                }
-              }, 15000);
+              })();
             `,
           }}
         />
