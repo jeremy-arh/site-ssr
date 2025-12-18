@@ -1,16 +1,19 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { useTranslation } from '@/hooks/useTranslation'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
-import HowItWorks from '@/components/HowItWorks'
-import Testimonial from '@/components/Testimonial'
-import FAQ from '@/components/FAQ'
-import BlogSection from '@/components/BlogSection'
-import MobileCTA from '@/components/MobileCTA'
-import ChatCTA from '@/components/ChatCTA'
+
+// Lazy load composants below-the-fold pour réduire le JS initial
+const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
+const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
+const BlogSection = dynamic(() => import('@/components/BlogSection'), { ssr: true })
+const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 
 export default function HomeClient({ blogPostsData, servicesData, faqsData, testimonialsData }) {
   const { t } = useTranslation()

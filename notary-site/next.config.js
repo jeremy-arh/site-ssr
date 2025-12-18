@@ -4,6 +4,16 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 31536000, // 1 an de cache
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'imagedelivery.net',
+      },
+      {
+        protocol: 'https',
+        hostname: 'jlizwheftlnhoifbqeex.supabase.co',
+      },
+    ],
   },
   // Optimisations
   compress: true,

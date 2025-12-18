@@ -12,20 +12,27 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://imagedelivery.net" crossOrigin="anonymous" />
+        {/* Preconnect uniquement à Supabase (données) */}
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://api.iconify.design" crossOrigin="anonymous" />
+        
+        {/* DNS prefetch pour scripts tiers (chargés en lazy) */}
         <link rel="dns-prefetch" href="https://plausible.io" />
         <link rel="dns-prefetch" href="https://client.crisp.chat" />
-        <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
-        <link rel="apple-touch-icon" href="/src/assets/favicon.svg" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        
+        {/* Favicons */}
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+        
+        {/* Meta */}
         <meta name="theme-color" content="#000000" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=optional" as="style" />
-        <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=optional" rel="stylesheet" />
+        
+        {/* Fonts: System fonts en fallback, Google Fonts en display=swap pour ne pas bloquer */}
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&display=swap" 
+          rel="stylesheet" 
+        />
       </head>
       <body>
         <noscript>

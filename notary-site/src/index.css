@@ -9,26 +9,31 @@
     box-sizing: border-box;
   }
 
-  /* ANTI-CLS: Font fallback avec métriques similaires pour éviter les shifts */
+  /* PERF: Fonts système pour ne pas bloquer le rendu */
   body {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    /* Réserver l'espace pour éviter les layout shifts */
-    font-size-adjust: from-font;
   }
 
   h1, h2 {
     font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
     font-weight: 500;
-    /* ANTI-CLS: éviter le flash de polices */
-    font-synthesis: none;
   }
 
   h3, h4, h5, h6 {
-    font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 500;
+  }
+  
+  /* PERF: Désactiver animations sur mobile si préférence reduce-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* ANTI-CLS: Footer avec hauteur fixe */
