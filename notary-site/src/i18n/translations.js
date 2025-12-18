@@ -63,6 +63,7 @@ export const translations = {
       showLess: 'Show less',
       readMore: 'Read more',
       backToServices: 'Back to all services',
+      relatedServices: 'Other Services You Might Need',
       pricing: {
         availableNow: 'Available Now',
         noHiddenFee: 'No hidden fee',
@@ -471,6 +472,7 @@ export const translations = {
       showLess: 'Afficher moins',
       readMore: 'Lire la suite',
       backToServices: 'Retour à tous les services',
+      relatedServices: 'Autres Services Dont Vous Pourriez Avoir Besoin',
       pricing: {
         availableNow: 'Disponible maintenant',
         noHiddenFee: 'Aucun frais caché',
@@ -738,6 +740,7 @@ export const translations = {
       showLess: 'Mostrar menos',
       readMore: 'Leer más',
       backToServices: 'Volver a todos los servicios',
+      relatedServices: 'Otros Servicios Que Podría Necesitar',
       pricing: {
         availableNow: 'Disponible ahora',
         noHiddenFee: 'Sin costos ocultos',
@@ -1007,6 +1010,7 @@ export const translations = {
       showLess: 'Weniger anzeigen',
       readMore: 'Mehr lesen',
       backToServices: 'Zurück zu allen Dienstleistungen',
+      relatedServices: 'Weitere Dienste, Die Sie Benötigen Könnten',
       pricing: {
         availableNow: 'Jetzt verfügbar',
         noHiddenFee: 'Keine versteckten Gebühren',
@@ -1276,6 +1280,7 @@ export const translations = {
       showLess: 'Mostra meno',
       readMore: 'Leggi di più',
       backToServices: 'Torna a tutti i servizi',
+      relatedServices: 'Altri Servizi Di Cui Potresti Aver Bisogno',
       pricing: {
         availableNow: 'Disponibile ora',
         noHiddenFee: 'Nessun costo nascosto',
@@ -1545,6 +1550,7 @@ export const translations = {
       showLess: 'Mostrar menos',
       readMore: 'Ler mais',
       backToServices: 'Voltar para todos os serviços',
+      relatedServices: 'Outros Serviços Que Você Pode Precisar',
       pricing: {
         availableNow: 'Disponível agora',
         noHiddenFee: 'Sem taxas ocultas',
