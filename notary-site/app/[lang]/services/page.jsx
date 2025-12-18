@@ -1,7 +1,7 @@
 import { getServices } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
-import ServicesClient from '@/app/services/ServicesClient'
+import ServicesClient from '../../services/ServicesClient'
 
 export default async function LangServices({ params }) {
   const { lang } = await params

@@ -14,6 +14,16 @@ const nextConfig = {
   poweredByHeader: false,
   // Support des fichiers statiques
   trailingSlash: false,
+  // Exclure les anciens fichiers src/pages/ du build
+  webpack: (config, { webpack }) => {
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/.*$/,
+        contextRegExp: /src\/pages$/,
+      })
+    );
+    return config;
+  },
 }
 
 export default nextConfig

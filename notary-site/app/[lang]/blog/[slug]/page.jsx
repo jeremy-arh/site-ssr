@@ -1,6 +1,6 @@
 import { getBlogPost, getRelatedBlogPosts } from '@/lib/supabase-server'
 import { notFound, redirect } from 'next/navigation'
-import BlogPostClient from '@/app/blog/[slug]/BlogPostClient'
+import BlogPostClient from '../../../blog/[slug]/BlogPostClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 
 export default async function LangBlogPost({ params }) {

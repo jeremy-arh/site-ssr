@@ -1,6 +1,6 @@
 import { getService, getServices } from '@/lib/supabase-server'
 import { notFound, redirect } from 'next/navigation'
-import ServiceDetailClient from '@/app/services/[serviceId]/ServiceDetailClient'
+import ServiceDetailClient from '../../../services/[serviceId]/ServiceDetailClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 
 export default async function LangServiceDetail({ params }) {

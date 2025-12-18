@@ -1,7 +1,7 @@
 import { getBlogPosts, getBlogCategories } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
-import BlogClient from '@/app/blog/BlogClient'
+import BlogClient from '../../blog/BlogClient'
 
 export default async function LangBlog({ params }) {
   const { lang } = await params
