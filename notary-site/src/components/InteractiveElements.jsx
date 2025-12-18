@@ -67,7 +67,7 @@ export function MobileCTA({ ctaText }) {
 }
 
 // Testimonial Carousel
-export function TestimonialCarousel({ items, translations }) {
+export function TestimonialCarousel({ items }) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
