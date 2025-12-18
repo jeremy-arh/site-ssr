@@ -82,36 +82,103 @@ export default function RootLayout({ children }) {
           {children}
         </Providers>
 
-        {/* GTM - Chargé après interaction pour ne pas bloquer le LCP */}
-        <Script id="gtm" strategy="lazyOnload">
+        {/* GTM - Chargé uniquement après interaction utilisateur (scroll/click) pour ne pas bloquer */}
+        <Script id="gtm-loader" strategy="afterInteractive">
           {`
-            window.dataLayer = window.dataLayer || [];
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-MR7JDNSD');
+            (function(){
+              let gtmLoaded = false;
+              function loadGTM() {
+                if (gtmLoaded) return;
+                gtmLoaded = true;
+                window.dataLayer = window.dataLayer || [];
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-MR7JDNSD');
+              }
+              // Charger après scroll ou après 3 secondes
+              let scrolled = false;
+              let timeout = setTimeout(loadGTM, 3000);
+              window.addEventListener('scroll', function() {
+                if (!scrolled) {
+                  scrolled = true;
+                  clearTimeout(timeout);
+                  setTimeout(loadGTM, 500);
+                }
+              }, { once: true, passive: true });
+              window.addEventListener('click', function() {
+                if (!scrolled) {
+                  scrolled = true;
+                  clearTimeout(timeout);
+                  loadGTM();
+                }
+              }, { once: true, passive: true });
+            })();
           `}
         </Script>
 
-        {/* Plausible - Chargé en lazy pour ne pas bloquer */}
-        <Script
-          src="https://plausible.io/js/script.js"
-          data-domain="mynotary.io"
-          strategy="lazyOnload"
-        />
-
-        {/* Crisp - Chargé après interaction */}
-        <Script id="crisp" strategy="lazyOnload">
+        {/* Plausible - Chargé après scroll pour ne pas bloquer */}
+        <Script id="plausible-loader" strategy="afterInteractive">
           {`
-            window.$crisp=[];
-            window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
             (function(){
-              var d=document;
-              var s=d.createElement("script");
-              s.src="https://client.crisp.chat/l.js";
-              s.async=1;
-              d.getElementsByTagName("head")[0].appendChild(s);
+              let plausibleLoaded = false;
+              function loadPlausible() {
+                if (plausibleLoaded) return;
+                plausibleLoaded = true;
+                var script = document.createElement('script');
+                script.src = 'https://plausible.io/js/script.js';
+                script.setAttribute('data-domain', 'mynotary.io');
+                script.defer = true;
+                document.head.appendChild(script);
+              }
+              // Charger après scroll ou après 2 secondes
+              let scrolled = false;
+              let timeout = setTimeout(loadPlausible, 2000);
+              window.addEventListener('scroll', function() {
+                if (!scrolled) {
+                  scrolled = true;
+                  clearTimeout(timeout);
+                  setTimeout(loadPlausible, 300);
+                }
+              }, { once: true, passive: true });
+            })();
+          `}
+        </Script>
+
+        {/* Crisp - Chargé après interaction utilisateur */}
+        <Script id="crisp-loader" strategy="afterInteractive">
+          {`
+            (function(){
+              let crispLoaded = false;
+              function loadCrisp() {
+                if (crispLoaded) return;
+                crispLoaded = true;
+                window.$crisp=[];
+                window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
+                var d=document;
+                var s=d.createElement("script");
+                s.src="https://client.crisp.chat/l.js";
+                s.async=1;
+                d.getElementsByTagName("head")[0].appendChild(s);
+              }
+              // Charger après scroll ou après 5 secondes
+              let scrolled = false;
+              let timeout = setTimeout(loadCrisp, 5000);
+              window.addEventListener('scroll', function() {
+                if (!scrolled) {
+                  scrolled = true;
+                  clearTimeout(timeout);
+                  setTimeout(loadCrisp, 1000);
+                }
+              }, { once: true, passive: true });
+              window.addEventListener('click', function() {
+                if (!scrolled) {
+                  scrolled = true;
+                  clearTimeout(timeout);
+                  setTimeout(loadCrisp, 500);
+                }
+              }, { once: true, passive: true });
             })();
           `}
         </Script>
