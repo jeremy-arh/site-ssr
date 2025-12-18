@@ -255,40 +255,40 @@ const Navbar = memo(() => {
 
   // Récupérer le CTA depuis les données locales (pas de Supabase côté client)
   useEffect(() => {
-    const path = pathname || '';
+      const path = pathname || '';
 
     // Blog post detail - pas de CTA spécifique côté client
-    const blogMatch = path.match(/^\/blog\/([^/]+)/);
-    if (blogMatch && blogMatch[1]) {
+      const blogMatch = path.match(/^\/blog\/([^/]+)/);
+      if (blogMatch && blogMatch[1]) {
       setCurrentServiceId(null);
       setCtaText(''); // CTA par défaut pour les blogs
       return;
-    }
+        }
 
-    // Service detail (with or without language prefix)
-    const pathWithoutLang = removeLanguageFromPath(path);
-    const serviceMatch = pathWithoutLang.match(/^\/services\/([^/]+)/);
-    if (serviceMatch && serviceMatch[1]) {
-      const serviceId = decodeURIComponent(serviceMatch[1]);
+        // Service detail (with or without language prefix)
+        const pathWithoutLang = removeLanguageFromPath(path);
+        const serviceMatch = pathWithoutLang.match(/^\/services\/([^/]+)/);
+        if (serviceMatch && serviceMatch[1]) {
+          const serviceId = decodeURIComponent(serviceMatch[1]);
       setCurrentServiceId(serviceId);
       
       // Chercher dans les données locales (SYNCHRONE - pas de fetch!)
       const serviceData = servicesData.find(s => s.service_id === serviceId);
       if (serviceData) {
         const formattedService = formatServiceForLanguage(serviceData, language);
-        setCtaText(formattedService.cta || '');
-        const price = formattedService.base_price;
-        setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
-      } else {
-        setCtaText('');
-        setServicePrice(null);
-      }
-    } else {
-      // Reset to default if not on blog/service detail page
-      setCtaText('');
-      setServicePrice(null);
+              setCtaText(formattedService.cta || '');
+              const price = formattedService.base_price;
+              setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
+            } else {
+            setCtaText('');
+            setServicePrice(null);
+          }
+        } else {
+          // Reset to default if not on blog/service detail page
+          setCtaText('');
+          setServicePrice(null);
       setCurrentServiceId(null);
-    }
+      }
   }, [pathname, language]);
 
   useEffect(() => {

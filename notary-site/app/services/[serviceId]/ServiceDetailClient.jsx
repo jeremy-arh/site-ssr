@@ -63,9 +63,9 @@ const IconOpenNew = memo(() => (
   </svg>
 ))
 
-// Images Cloudflare optimisées (AVIF, qualité et taille auto)
-const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif'
-const PRICING_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=auto,q=auto,f=avif'
+// Images AVIF locales optimisées
+const HERO_IMG = '/images/hero-service.avif'
+const PRICING_IMG = '/images/pricing.avif'
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {

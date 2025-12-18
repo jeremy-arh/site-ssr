@@ -51,8 +51,8 @@ const IconOpenNew = memo(() => (
   </svg>
 ));
 
-// URL Cloudflare optimisée (AVIF, qualité et taille auto)
-const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=auto,q=auto,f=avif';
+// Image AVIF locale optimisée
+const HERO_IMG = '/images/hero-home.avif';
 
 const Hero = memo(() => {
   const { currency } = useCurrency();
@@ -65,13 +65,13 @@ const Hero = memo(() => {
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
         {/* Image Hero optimisée AVIF auto */}
-        <img
+          <img
           src={HERO_IMG}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
           decoding="async"
-        />
+          />
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
