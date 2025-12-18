@@ -83,6 +83,9 @@ export const extractLanguageFromPath = (pathname) => {
  * Exemples: '/fr/services' -> '/services', '/services' -> '/services'
  */
 export const removeLanguageFromPath = (pathname) => {
+  // Protection contre les valeurs nulles/undefined
+  if (!pathname) return '/';
+  
   const segments = pathname.split('/').filter(Boolean);
   const firstSegment = segments[0];
   
@@ -98,6 +101,9 @@ export const removeLanguageFromPath = (pathname) => {
  * Exemples: '/services', 'fr' -> '/fr/services', '/services', 'en' -> '/services'
  */
 export const addLanguageToPath = (pathname, language) => {
+  // Protection contre les valeurs nulles/undefined
+  if (!pathname) return '/';
+  
   if (language === DEFAULT_LANGUAGE) {
     return pathname;
   }

@@ -7,7 +7,7 @@ import { detectLanguageFromIP, saveLanguageToStorage, getLanguageFromStorage, ex
 const LanguageContext = createContext({
   language: DEFAULT_LANGUAGE,
   setLanguage: () => {},
-  getLocalizedPath: () => {},
+  getLocalizedPath: (path) => path, // Retourne le path par défaut
   isReady: false,
 })
 
