@@ -15,7 +15,11 @@ const BlogSection = ({ initialPosts = null }) => {
 
   const fetchPosts = useCallback(async () => {
     try {
-      const supabase = await getSupabase();
+      const supabase = await getSupabase().catch(() => null);
+      if (!supabase) {
+        console.warn('Supabase client not available');
+        return;
+      }
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')

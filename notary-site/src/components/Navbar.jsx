@@ -256,7 +256,6 @@ const Navbar = memo(() => {
   useEffect(() => {
     const fetchBlogCTA = async () => {
       const path = pathname || '';
-      const supabase = await getSupabase();
 
       // Blog post detail
       const blogMatch = path.match(/^\/blog\/([^/]+)/);
@@ -264,6 +263,11 @@ const Navbar = memo(() => {
         const slug = decodeURIComponent(blogMatch[1]);
         setCurrentServiceId(null); // Reset serviceId on blog pages
         try {
+          const supabase = await getSupabase().catch(() => null);
+          if (!supabase) {
+            setCtaText('');
+            return;
+          }
           const { data, error } = await supabase
             .from('blog_posts')
             .select('cta')
@@ -288,6 +292,12 @@ const Navbar = memo(() => {
           const serviceId = decodeURIComponent(serviceMatch[1]);
           setCurrentServiceId(serviceId); // Set serviceId for service pages
           try {
+            const supabase = await getSupabase().catch(() => null);
+            if (!supabase) {
+              setCtaText('');
+              setServicePrice(null);
+              return;
+            }
             const { data, error } = await supabase
               .from('services')
               .select(getServiceFields())
