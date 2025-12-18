@@ -12,8 +12,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Preconnect uniquement à Supabase (données) */}
+        {/* Preconnect à Supabase (données) et Cloudflare Images (LCP) */}
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://imagedelivery.net" crossOrigin="anonymous" />
+        
+        {/* Preload image hero LCP (page d'accueil) - optimisé pour le LCP */}
+        <link
+          rel="preload"
+          as="image"
+          href="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=auto,q=auto,f=avif"
+          fetchPriority="high"
+        />
         
         {/* DNS prefetch pour scripts tiers (chargés en lazy) */}
         <link rel="dns-prefetch" href="https://plausible.io" />

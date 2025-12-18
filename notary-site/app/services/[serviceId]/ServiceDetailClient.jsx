@@ -3,7 +3,12 @@
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
+
+// URLs Cloudflare optimisées (AVIF auto, qualité auto)
+const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/763a76aa-aa08-47d4-436f-ca7bea56e900/w=auto,q=auto,f=avif'
+const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ab3815ee-dd67-4351-09f2-f661ee7d1000/w=auto,q=auto,f=avif'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
@@ -247,13 +252,15 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero AVIF statique */}
-        <img
-          src="/images/hero-service.avif"
+        {/* Image Hero Cloudflare optimisée avec next/image */}
+        <Image
+          src={HERO_IMG_CLOUDFLARE}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          fetchPriority="high"
-          decoding="async"
+          fill
+          priority
+          className="object-cover object-top"
+          sizes="100vw"
+          quality={85}
         />
         
         {/* Dark Overlay */}
@@ -327,14 +334,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         <div className="max-w-[1300px] w-full mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Left Side - Image SVG */}
-            <div className="lg:w-2/5 flex items-center justify-center">
-              <img
-                src="/images/pricing.avif"
+            <div className="lg:w-2/5 flex items-center justify-center relative h-[650px]">
+              <Image
+                src={PRICING_IMG_CLOUDFLARE}
                 alt={service.name}
-                className="w-full h-auto rounded-2xl object-cover"
-                style={{ maxHeight: '800px' }}
-                loading="lazy"
-                decoding="async"
+                fill
+                className="object-cover rounded-2xl"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={85}
               />
             </div>
 
