@@ -14,6 +14,10 @@ const nextConfig = {
   poweredByHeader: false,
   // Support des fichiers statiques
   trailingSlash: false,
+  // Exclure not-found du prerendering
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
+  },
 }
 
 export default nextConfig

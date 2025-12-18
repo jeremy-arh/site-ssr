@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Icon } from '@iconify/react'
 import MobileCTA from '@/components/MobileCTA'
@@ -8,8 +9,25 @@ import { useLanguage } from '@/contexts/LanguageContext'
 
 // Force dynamic rendering to avoid prerendering issues
 export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default function NotFound() {
+  // Prevent SSR issues by only rendering on client
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-gray-900">404</h1>
+        </div>
+      </div>
+    )
+  }
   const { t } = useTranslation()
   const { getLocalizedPath } = useLanguage()
   
