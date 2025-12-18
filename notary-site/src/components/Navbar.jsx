@@ -309,6 +309,7 @@ const Navbar = memo(() => {
             >
             {/* Logo */}
             <a href="/" className="flex-shrink-0 relative z-[60]">
+              {/* Logo Mobile */}
               <img
                 src={
                   !isMenuOpen && (isAtTop && isOnServicePage)
@@ -322,19 +323,7 @@ const Navbar = memo(() => {
                 loading="eager"
                 decoding="async"
               />
-              <img
-                src={
-                  isAtTop && isOnServicePage
-                    ? 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/w=auto,q=auto,f=avif'
-                    : 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/w=auto,q=auto,f=avif'
-                }
-                alt="Logo"
-                width="130"
-                height="32"
-                className="hidden md:block h-8 w-auto"
-                loading="eager"
-                decoding="async"
-              />
+              {/* Logo Desktop */}
               <img
                 src={
                   isAtTop && isOnServicePage
