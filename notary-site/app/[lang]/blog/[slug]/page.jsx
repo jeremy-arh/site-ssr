@@ -1,7 +1,10 @@
-import { getBlogPostFromFiles, getRelatedBlogPostsFromFiles } from '@/lib/data-loader'
+import { getBlogPost, getRelatedBlogPosts } from '@/lib/supabase-server'
 import { notFound, redirect } from 'next/navigation'
 import BlogPostClient from '../../../blog/[slug]/BlogPostClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
+
+// Forcer le rendu dynamique (SSR) - pas de prerendering statique
+export const dynamic = 'force-dynamic'
 
 export default async function LangBlogPost({ params }) {
   const { lang, slug } = await params
@@ -10,8 +13,10 @@ export default async function LangBlogPost({ params }) {
     redirect(`/blog/${slug}`)
   }
 
-  const blogPostData = getBlogPostFromFiles(slug)
-  const relatedBlogPostsData = getRelatedBlogPostsFromFiles(slug)
+  const [blogPostData, relatedBlogPostsData] = await Promise.all([
+    getBlogPost(slug),
+    getRelatedBlogPosts(slug),
+  ])
 
   if (!blogPostData) {
     notFound()

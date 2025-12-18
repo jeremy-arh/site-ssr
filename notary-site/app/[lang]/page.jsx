@@ -1,7 +1,10 @@
-import { getBlogPostsFromFiles, getServicesFromFiles, getFAQsFromFiles, getTestimonialsFromFiles } from '@/lib/data-loader'
+import { getBlogPosts, getServices, getFAQs, getTestimonials } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import HomeClient from '../HomeClient'
+
+// Forcer le rendu dynamique (SSR) - pas de prerendering statique
+export const dynamic = 'force-dynamic'
 
 export default async function LangHome({ params }) {
   const { lang } = await params
@@ -10,10 +13,12 @@ export default async function LangHome({ params }) {
     redirect('/')
   }
 
-  const blogPostsData = getBlogPostsFromFiles()
-  const servicesData = getServicesFromFiles()
-  const faqsData = getFAQsFromFiles()
-  const testimonialsData = getTestimonialsFromFiles()
+  const [blogPostsData, servicesData, faqsData, testimonialsData] = await Promise.all([
+    getBlogPosts(),
+    getServices(),
+    getFAQs(),
+    getTestimonials(),
+  ])
 
   const recentPosts = blogPostsData.slice(0, 3) // Prendre les 3 plus récents
 

@@ -1,21 +1,24 @@
-import { getBlogPostFromFiles, getRelatedBlogPostsFromFiles } from '@/lib/data-loader'
+import { getBlogPost, getRelatedBlogPosts } from '@/lib/supabase-server'
 import { formatBlogPostForLanguage, formatBlogPostsForLanguage } from '@/utils/blog'
 import BlogPostClient from './BlogPostClient'
 import { notFound } from 'next/navigation'
 
-// Cette page est un Server Component qui récupère les données depuis les fichiers JSON pré-générés
+// Forcer le rendu dynamique (SSR) - pas de prerendering statique
+export const dynamic = 'force-dynamic'
+
+// Cette page est un Server Component qui récupère les données côté serveur
 export default async function BlogPost({ params }) {
   const { slug } = await params
 
-  // Récupérer l'article depuis les fichiers JSON (générés par prebuild)
-  const postData = getBlogPostFromFiles(slug)
+  // Récupérer l'article côté serveur (SSR)
+  const postData = await getBlogPost(slug)
 
   if (!postData) {
     notFound()
   }
 
-  // Récupérer les articles liés depuis les fichiers JSON
-  const relatedPostsData = getRelatedBlogPostsFromFiles(slug, 3)
+  // Récupérer les articles liés côté serveur
+  const relatedPostsData = await getRelatedBlogPosts(slug, 3)
 
   // Formater pour la langue par défaut (sera ajusté côté client)
   const formattedPost = formatBlogPostForLanguage(postData, 'en')
