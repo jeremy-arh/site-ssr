@@ -6,7 +6,7 @@ import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
 // URL Cloudflare optimisée avec paramètres
-const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d0f6bfc4-a8db-41e1-87e2-7c7e0b7a1c00/w=auto,q=auto,f=avif';
+const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/q=20';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
