@@ -12,10 +12,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://imagedelivery.net" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://api.iconify.design" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://plausible.io" />
         <link rel="dns-prefetch" href="https://client.crisp.chat" />
         <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
@@ -39,56 +40,37 @@ export default function RootLayout({ children }) {
           {children}
         </Providers>
 
-        {/* Script de chargement différé des analytics - après interaction ou 3s */}
-        <Script id="deferred-analytics" strategy="lazyOnload">
+        {/* GTM - Chargé après interaction pour ne pas bloquer le LCP */}
+        <Script id="gtm" strategy="lazyOnload">
           {`
-            (function() {
-              var loaded = false;
-              function loadAnalytics() {
-                if (loaded) return;
-                loaded = true;
-                
-                // GTM
-                window.dataLayer = window.dataLayer || [];
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','GTM-MR7JDNSD');
-                
-                // Plausible
-                var p = document.createElement('script');
-                p.defer = true;
-                p.dataset.domain = 'mynotary.io';
-                p.src = 'https://plausible.io/js/script.js';
-                document.head.appendChild(p);
-              }
-              
-              // Charger après 3 secondes ou à la première interaction
-              var timer = setTimeout(loadAnalytics, 3000);
-              ['scroll', 'click', 'touchstart', 'mousemove', 'keydown'].forEach(function(evt) {
-                window.addEventListener(evt, function handler() {
-                  clearTimeout(timer);
-                  loadAnalytics();
-                  window.removeEventListener(evt, handler);
-                }, { once: true, passive: true });
-              });
-            })();
+            window.dataLayer = window.dataLayer || [];
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-MR7JDNSD');
           `}
         </Script>
 
-        {/* Crisp - chargé séparément car widget visible */}
+        {/* Plausible - Chargé en lazy pour ne pas bloquer */}
+        <Script
+          src="https://plausible.io/js/script.js"
+          data-domain="mynotary.io"
+          strategy="lazyOnload"
+        />
+
+        {/* Crisp - Chargé après interaction */}
         <Script id="crisp" strategy="lazyOnload">
           {`
-            setTimeout(function() {
-              window.$crisp=[];
-              window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
+            window.$crisp=[];
+            window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
+            (function(){
               var d=document;
               var s=d.createElement("script");
               s.src="https://client.crisp.chat/l.js";
               s.async=1;
-              d.head.appendChild(s);
-            }, 2000);
+              d.getElementsByTagName("head")[0].appendChild(s);
+            })();
           `}
         </Script>
       </body>

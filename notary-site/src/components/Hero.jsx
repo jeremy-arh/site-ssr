@@ -69,12 +69,12 @@ const Hero = memo(() => {
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
         {/* Image Hero SVG */}
-        <img
+          <img
           src="/images/hero-home.svg"
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          fetchPriority="high"
-        />
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
+          />
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
