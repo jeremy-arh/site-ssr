@@ -111,10 +111,13 @@ export default function BlogClient({ initialPosts, initialCategories, postsData 
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
+              {posts.filter(p => p && p.slug).map((post) => {
+                const postPath = `/blog/${post.slug}`
+                const localizedHref = getLocalizedPath ? getLocalizedPath(postPath) : postPath
+                return (
                 <Link
                   key={post.id}
-                  href={getLocalizedPath(`/blog/${post.slug}`)}
+                  href={localizedHref || postPath}
                   className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
                 >
                   {post.cover_image_url ? (
@@ -173,7 +176,8 @@ export default function BlogClient({ initialPosts, initialCategories, postsData 
                     </div>
                   </div>
                 </Link>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

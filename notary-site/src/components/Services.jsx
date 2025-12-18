@@ -146,12 +146,14 @@ const Services = ({ servicesData = null }) => {
           </div>
         ) : (
           <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => {
+            {services.filter(s => s && s.service_id).map((service) => {
               const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck;
+              const servicePath = `/services/${service.service_id}`;
+              const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath;
               return (
                 <Link
                   key={service.id || service.service_id}
-                  href={getLocalizedPath(`/services/${service.service_id}`)}
+                  href={localizedPath || servicePath}
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up flex flex-col"
                   onClick={() => {
                     loadAnalytics();

@@ -54,10 +54,13 @@ const BlogSection = ({ initialPosts = null }) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+            {posts.filter(p => p && p.slug).map((post) => {
+              const postPath = `/blog/${post.slug}`;
+              const localizedPath = getLocalizedPath ? getLocalizedPath(postPath) : postPath;
+              return (
               <Link
                 key={post.id}
-                href={getLocalizedPath(`/blog/${post.slug}`)}
+                href={localizedPath || postPath}
                 className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 scroll-slide-up"
               >
                 {/* Cover Image */}
@@ -122,14 +125,15 @@ const BlogSection = ({ initialPosts = null }) => {
                   </div>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
 
         {/* View All Button */}
         {posts.length > 0 && (
           <div className="text-center mt-12 scroll-fade-in">
-            <Link href={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg">
+            <Link href={getLocalizedPath ? getLocalizedPath('/blog') : '/blog'} className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg">
               <span className="inline-block">{t('blog.viewAll')}</span>
               <Icon icon="lsicon:open-new-filled" className="w-5 h-5" />
             </Link>
