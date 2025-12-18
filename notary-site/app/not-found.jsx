@@ -6,6 +6,9 @@ import MobileCTA from '@/components/MobileCTA'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
 
+// Force dynamic rendering to avoid prerendering issues
+export const dynamic = 'force-dynamic'
+
 export default function NotFound() {
   const { t } = useTranslation()
   const { getLocalizedPath } = useLanguage()
