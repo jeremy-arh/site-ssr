@@ -8,9 +8,10 @@ import LanguageSelector from './LanguageSelector';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
-import { formatServiceForLanguage, getServiceFields } from '../utils/services';
+import { formatServiceForLanguage } from '../utils/services';
 import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
-import { getSupabase } from '../lib/supabase';
+// NOTE: Ne plus utiliser Supabase côté client - utiliser les données SSR
+import servicesData from '../../public/data/services.json';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -252,84 +253,42 @@ const Navbar = memo(() => {
     };
   }, [isMenuOpen]);
 
-  // Fetch CTA from blog post or service detail page based on pathname
+  // Récupérer le CTA depuis les données locales (pas de Supabase côté client)
   useEffect(() => {
-    const fetchBlogCTA = async () => {
-      const path = pathname || '';
+    const path = pathname || '';
 
-      // Blog post detail
-      const blogMatch = path.match(/^\/blog\/([^/]+)/);
-      if (blogMatch && blogMatch[1]) {
-        const slug = decodeURIComponent(blogMatch[1]);
-        setCurrentServiceId(null); // Reset serviceId on blog pages
-        try {
-          const supabase = await getSupabase().catch(() => null);
-          if (!supabase) {
-            setCtaText('');
-            return;
-          }
-          const { data, error } = await supabase
-            .from('blog_posts')
-            .select('cta')
-            .eq('slug', slug)
-            .eq('status', 'published')
-            .single();
+    // Blog post detail - pas de CTA spécifique côté client
+    const blogMatch = path.match(/^\/blog\/([^/]+)/);
+    if (blogMatch && blogMatch[1]) {
+      setCurrentServiceId(null);
+      setCtaText(''); // CTA par défaut pour les blogs
+      return;
+    }
 
-          if (!error && data?.cta) {
-            setCtaText(data.cta);
-          } else {
-            setCtaText('');
-          }
-        } catch (error) {
-          console.error('Error fetching blog CTA:', error);
-          setCtaText('');
-        }
+    // Service detail (with or without language prefix)
+    const pathWithoutLang = removeLanguageFromPath(path);
+    const serviceMatch = pathWithoutLang.match(/^\/services\/([^/]+)/);
+    if (serviceMatch && serviceMatch[1]) {
+      const serviceId = decodeURIComponent(serviceMatch[1]);
+      setCurrentServiceId(serviceId);
+      
+      // Chercher dans les données locales (SYNCHRONE - pas de fetch!)
+      const serviceData = servicesData.find(s => s.service_id === serviceId);
+      if (serviceData) {
+        const formattedService = formatServiceForLanguage(serviceData, language);
+        setCtaText(formattedService.cta || '');
+        const price = formattedService.base_price;
+        setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
       } else {
-        // Service detail (with or without language prefix)
-        const pathWithoutLang = removeLanguageFromPath(path);
-        const serviceMatch = pathWithoutLang.match(/^\/services\/([^/]+)/);
-        if (serviceMatch && serviceMatch[1]) {
-          const serviceId = decodeURIComponent(serviceMatch[1]);
-          setCurrentServiceId(serviceId); // Set serviceId for service pages
-          try {
-            const supabase = await getSupabase().catch(() => null);
-            if (!supabase) {
-              setCtaText('');
-              setServicePrice(null);
-              return;
-            }
-            const { data, error } = await supabase
-              .from('services')
-              .select(getServiceFields())
-              .eq('service_id', serviceId)
-              .single();
-
-            if (!error && data) {
-              // Formater le service selon la langue actuelle
-              const formattedService = formatServiceForLanguage(data, language);
-              setCtaText(formattedService.cta || '');
-              // Set price only if it exists and is not empty/null
-              const price = formattedService.base_price;
-              setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
-            } else {
-              setCtaText('');
-              setServicePrice(null);
-            }
-          } catch (error) {
-            console.error('Error fetching service CTA:', error);
-            setCtaText('');
-            setServicePrice(null);
-          }
-        } else {
-          // Reset to default if not on blog/service detail page
-          setCtaText('');
-          setServicePrice(null);
-          setCurrentServiceId(null); // Reset serviceId on other pages
-        }
+        setCtaText('');
+        setServicePrice(null);
       }
-    };
-
-    fetchBlogCTA();
+    } else {
+      // Reset to default if not on blog/service detail page
+      setCtaText('');
+      setServicePrice(null);
+      setCurrentServiceId(null);
+    }
   }, [pathname, language]);
 
   useEffect(() => {

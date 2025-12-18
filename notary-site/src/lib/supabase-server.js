@@ -1,13 +1,22 @@
 // Client Supabase pour Server Components (SSR)
 // Cette version est utilisée uniquement côté serveur
+// IMPORTANT: Ne pas importer ce fichier dans les Client Components !
 
 import { createClient } from '@supabase/supabase-js'
+
+// Cache le client pour éviter de le recréer à chaque appel
+let serverClient = null
 
 /**
  * Crée un client Supabase pour les Server Components
  * Utilise les variables d'environnement Next.js
  */
 export function createServerClient() {
+  // Si déjà créé, retourner le cache
+  if (serverClient) {
+    return serverClient
+  }
+
   // eslint-disable-next-line no-undef
   const supabaseUrl = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : null
   // eslint-disable-next-line no-undef
@@ -21,7 +30,14 @@ export function createServerClient() {
     return null
   }
 
-  return createClient(supabaseUrl, supabaseAnonKey)
+  serverClient = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    },
+  })
+  
+  return serverClient
 }
 
 /**

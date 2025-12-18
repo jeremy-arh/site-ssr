@@ -1,52 +1,25 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { getSupabase } from '../lib/supabase';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { formatBlogPostsForLanguage } from '../utils/blog';
 
+// NOTE: Plus de Supabase côté client - utiliser uniquement les données SSR
 const BlogSection = ({ initialPosts = null }) => {
   const [posts, setPosts] = useState(initialPosts || []);
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
 
-  const fetchPosts = useCallback(async () => {
-    try {
-      const supabase = await getSupabase().catch(() => null);
-      if (!supabase) {
-        console.warn('Supabase client not available');
-        return;
-      }
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('status', 'published')
-        .order('published_at', { ascending: false })
-        .limit(3);
-
-      if (error) throw error;
-      
-      const formattedPosts = formatBlogPostsForLanguage(data || [], language);
-      setPosts(formattedPosts);
-    } catch (error) {
-      console.error('Error fetching blog posts:', error);
-    }
-  }, [language]);
-
   useEffect(() => {
-    // Si on a déjà des posts initiaux (SSR), on les utilise
-    if (initialPosts) {
+    // Utiliser les posts initiaux (SSR) formatés selon la langue
+    if (initialPosts && initialPosts.length > 0) {
       const formattedPosts = formatBlogPostsForLanguage(initialPosts, language);
       setPosts(formattedPosts);
-      return;
     }
-
-    // Sinon, récupérer côté client (fallback)
-    fetchPosts();
-  }, [language, initialPosts, fetchPosts]);
+  }, [language, initialPosts]);
 
   const formatDate = (dateString) => {
     if (!dateString) return '';
