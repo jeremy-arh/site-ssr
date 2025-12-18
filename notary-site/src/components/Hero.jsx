@@ -1,13 +1,9 @@
 'use client'
 
 import { memo } from 'react';
-import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
-
-// Image locale
-import heroImage from '../../public/images/hero-home.webp';
 
 // ANALYTICS DIFFÉRÉS - Ne pas importer au top level (évite forced layouts de 78ms)
 let trackPlausibleCTAClick = null;
@@ -72,16 +68,12 @@ const Hero = memo(() => {
       <div
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
-        {/* Image Hero optimisée avec next/image */}
-        <Image
-          src={heroImage}
-          alt="Hero background"
-          fill
-          priority
-          quality={80}
-          sizes="100vw"
-          className="object-cover"
-          placeholder="blur"
+        {/* Image Hero SVG */}
+        <img
+          src="/images/hero-home.svg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
         />
 
         {/* Dark Overlay for better text readability */}

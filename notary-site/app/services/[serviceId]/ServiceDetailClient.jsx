@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
@@ -64,9 +63,9 @@ const IconOpenNew = memo(() => (
   </svg>
 ))
 
-// Images locales
-const HERO_IMG = '/images/hero-service.webp'
-const PRICING_IMG = '/images/pricing.webp'
+// Images locales SVG
+const HERO_IMG = '/images/hero-service.svg'
+const PRICING_IMG = '/images/pricing.svg'
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {
@@ -251,15 +250,12 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero optimisée avec next/image */}
-        <Image
+        {/* Image Hero SVG */}
+        <img
           src={HERO_IMG}
-          alt="Service background"
-          fill
-          priority
-          quality={80}
-          sizes="100vw"
-          className="object-cover object-top"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-top"
+          fetchPriority="high"
         />
         
         {/* Dark Overlay */}
@@ -332,14 +328,13 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       >
         <div className="max-w-[1300px] w-full mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-            {/* Left Side - Image optimisée avec next/image */}
+            {/* Left Side - Image SVG */}
             <div className="lg:w-2/5 flex items-center justify-center">
-              <Image
+              <img
                 src={PRICING_IMG}
                 alt={service.name}
-                width={520}
-                height={650}
-                quality={80}
+                width="520"
+                height="650"
                 className="w-full h-auto rounded-2xl object-cover"
                 style={{ maxHeight: '800px' }}
               />
