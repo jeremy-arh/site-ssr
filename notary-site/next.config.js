@@ -31,8 +31,8 @@ const nextConfig = {
   poweredByHeader: false,
   trailingSlash: false,
   
-  // Webpack optimisations légères (Next.js gère déjà bien le code splitting)
-  webpack: (config, { isServer }) => {
+  // Webpack optimisations pour différer le chargement des chunks
+  webpack: (config, { isServer, dev }) => {
     // Optimiser les modules externes
     if (!isServer) {
       config.resolve.fallback = {
@@ -41,6 +41,49 @@ const nextConfig = {
         net: false,
         tls: false,
       };
+      
+      // Optimiser le code splitting pour différer les chunks non critiques
+      if (!dev) {
+        config.optimization = {
+          ...config.optimization,
+          splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+              // Chunk framework (React, Next.js) - chargé en priorité
+              framework: {
+                name: 'framework',
+                test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|next)[\\/]/,
+                priority: 40,
+                enforce: true,
+              },
+              // Chunk libs - peut être différé
+              lib: {
+                test: /[\\/]node_modules[\\/]/,
+                name(module) {
+                  const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)?.[1];
+                  return `lib-${packageName?.replace('@', '')}`;
+                },
+                priority: 30,
+                minChunks: 1,
+                reuseExistingChunk: true,
+              },
+              // Chunks communs - différés
+              commons: {
+                name: 'commons',
+                minChunks: 2,
+                priority: 20,
+                reuseExistingChunk: true,
+              },
+              // Chunks par défaut
+              default: {
+                minChunks: 2,
+                priority: 10,
+                reuseExistingChunk: true,
+              },
+            },
+          },
+        };
+      }
     }
     
     return config;

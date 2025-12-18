@@ -6,14 +6,35 @@ import StructuredData from '@/components/StructuredData'
 import { useTranslation } from '@/hooks/useTranslation'
 import Hero from '@/components/Hero'
 import Services from '@/components/Services'
+import LazyLoad from '@/components/LazyLoad'
 
-// Lazy load composants below-the-fold pour réduire le JS initial
-const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
-const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
-const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
-const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
-const BlogSection = dynamic(() => import('@/components/BlogSection'), { ssr: true })
-const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
+// Lazy load composants below-the-fold avec chargement différé
+// ssr: false pour éviter le chargement côté serveur des chunks non critiques
+// loading: composant de fallback minimal
+const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { 
+  ssr: false,
+  loading: () => null 
+})
+const Testimonial = dynamic(() => import('@/components/Testimonial'), { 
+  ssr: false,
+  loading: () => null 
+})
+const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { 
+  ssr: false,
+  loading: () => null 
+})
+const FAQ = dynamic(() => import('@/components/FAQ'), { 
+  ssr: false,
+  loading: () => null 
+})
+const BlogSection = dynamic(() => import('@/components/BlogSection'), { 
+  ssr: false,
+  loading: () => null 
+})
+const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { 
+  ssr: false,
+  loading: () => null 
+})
 
 export default function HomeClient({ blogPostsData, servicesData, faqsData, testimonialsData }) {
   const { t } = useTranslation()
@@ -66,12 +87,31 @@ export default function HomeClient({ blogPostsData, servicesData, faqsData, test
       />
       <Hero />
       <Services servicesData={servicesData} />
-      <ChatCTA />
-      <Testimonial testimonialsData={testimonialsData} />
-      <HowItWorks />
-      <FAQ faqsData={faqsData} />
-      <BlogSection initialPosts={blogPostsData} />
-      <MobileCTA />
+      
+      {/* Composants chargés uniquement quand ils deviennent visibles */}
+      <LazyLoad rootMargin="300px">
+        <ChatCTA />
+      </LazyLoad>
+      
+      <LazyLoad rootMargin="300px">
+        <Testimonial testimonialsData={testimonialsData} />
+      </LazyLoad>
+      
+      <LazyLoad rootMargin="300px">
+        <HowItWorks />
+      </LazyLoad>
+      
+      <LazyLoad rootMargin="300px">
+        <FAQ faqsData={faqsData} />
+      </LazyLoad>
+      
+      <LazyLoad rootMargin="300px">
+        <BlogSection initialPosts={blogPostsData} />
+      </LazyLoad>
+      
+      <LazyLoad rootMargin="200px">
+        <MobileCTA />
+      </LazyLoad>
     </>
   )
 }
