@@ -51,7 +51,12 @@ async function fetchFAQs() {
     .order('order', { ascending: true });
   
   if (error) {
-    console.error('❌ Error fetching FAQs:', error.message);
+    // Table might not exist yet - this is OK, just use empty array
+    if (error.message.includes('schema cache') || error.message.includes('does not exist')) {
+      console.log('⚠️  FAQs table not found - using empty array (this is OK)');
+    } else {
+      console.error('❌ Error fetching FAQs:', error.message);
+    }
     return [];
   }
   
@@ -68,7 +73,12 @@ async function fetchTestimonials() {
     .order('created_at', { ascending: false });
   
   if (error) {
-    console.error('❌ Error fetching testimonials:', error.message);
+    // Table might not exist yet - this is OK, just use empty array
+    if (error.message.includes('schema cache') || error.message.includes('does not exist')) {
+      console.log('⚠️  Testimonials table not found - using empty array (this is OK)');
+    } else {
+      console.error('❌ Error fetching testimonials:', error.message);
+    }
     return [];
   }
   
