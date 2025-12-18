@@ -7,9 +7,7 @@ import MobileCTA from '@/components/MobileCTA'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
 
-// Force dynamic rendering to avoid prerendering issues
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// NOTE: dynamic et revalidate ne peuvent pas être utilisés avec 'use client'
 
 export default function NotFound() {
   // Hooks doivent être appelés en premier, toujours dans le même ordre
