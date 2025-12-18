@@ -8,7 +8,9 @@ import { createClient } from '@supabase/supabase-js'
  * Utilise les variables d'environnement Next.js
  */
 export function createServerClient() {
+  // eslint-disable-next-line no-undef
   const supabaseUrl = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_URL : null
+  // eslint-disable-next-line no-undef
   const supabaseAnonKey = typeof process !== 'undefined' ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : null
 
   if (!supabaseUrl || !supabaseAnonKey) {

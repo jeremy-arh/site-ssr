@@ -25,11 +25,15 @@ export const getSupabase = async () => {
       const { createClient } = await import('@supabase/supabase-js');
       
       // Support Next.js (process.env) et Vite (import.meta.env)
+      // eslint-disable-next-line no-undef
       const supabaseUrl = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL
+        // eslint-disable-next-line no-undef
         ? process.env.NEXT_PUBLIC_SUPABASE_URL
         : (typeof import.meta !== 'undefined' ? import.meta.env.VITE_SUPABASE_URL : null);
       
+      // eslint-disable-next-line no-undef
       const supabaseAnonKey = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        // eslint-disable-next-line no-undef
         ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
         : (typeof import.meta !== 'undefined' ? import.meta.env.VITE_SUPABASE_ANON_KEY : null);
 

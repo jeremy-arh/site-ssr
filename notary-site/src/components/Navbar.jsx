@@ -37,10 +37,9 @@ const loadAnalytics = () => {
 };
 
 // Helper pour tracker de manière non-bloquante
-// eslint-disable-next-line no-unused-vars
 const safeTrack = (fn, ...args) => {
   if (fn) {
-    try { fn(...args); } catch (_e) { /* ignore */ }
+    try { fn(...args); } catch { /* ignore */ }
   }
 };
 
@@ -102,7 +101,7 @@ if (typeof window !== 'undefined') {
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [_isScrolled, setIsScrolled] = useState(false);
   // Utiliser une valeur par défaut qui ne cause pas de flash (assume desktop)
   const [isMobile, setIsMobile] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -111,7 +110,7 @@ const Navbar = memo(() => {
   const [isHeroOutOfView, setIsHeroOutOfView] = useState(false);
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
-  const [formattedPrice, setFormattedPrice] = useState('');
+  const [_formattedPrice, setFormattedPrice] = useState('');
   const [currentServiceId, setCurrentServiceId] = useState(null);
   const pathname = usePathname();
   const { formatPrice, currency } = useCurrency();

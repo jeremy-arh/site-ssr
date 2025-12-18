@@ -23,10 +23,9 @@ const loadAnalytics = () => {
 };
 
 // Helper pour tracker de manière non-bloquante
-// eslint-disable-next-line no-unused-vars
 const safeTrack = (fn, ...args) => {
   if (fn) {
-    try { fn(...args); } catch (_e) { /* ignore */ }
+    try { fn(...args); } catch { /* ignore */ }
   }
 };
 

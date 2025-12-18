@@ -30,9 +30,9 @@ export const prefetchForm = (currency = 'EUR', serviceId = null) => {
     link.as = 'document';
     // Note: crossOrigin is not needed for prefetch, browser handles it automatically
     document.head.appendChild(link);
-  // eslint-disable-next-line no-unused-vars
   } catch (_error) {
     // Silently fail - prefetch is best effort
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.warn('Form prefetch error:', _error);
     }

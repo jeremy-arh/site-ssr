@@ -43,6 +43,7 @@ export const pushGTMEvent = (eventName, eventData = {}) => {
   window.dataLayer.push(eventPayload);
   
   // Debug log in development
+  // eslint-disable-next-line no-undef
   if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
     console.log('GTM Event pushed:', eventName, eventPayload);
   }
