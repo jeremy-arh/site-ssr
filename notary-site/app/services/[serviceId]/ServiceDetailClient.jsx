@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
@@ -248,14 +247,13 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       />
       {/* Hero Section - hauteur fixe pour éviter CLS */}
       <section data-hero className="relative overflow-hidden h-screen flex items-center">
-        {/* Image Hero optimisée AVIF avec next/image */}
-        <Image
+        {/* Image Hero AVIF statique */}
+        <img
           src="/images/hero-service.avif"
           alt=""
-          fill
-          priority
-          className="object-cover object-top"
-          sizes="100vw"
+          className="absolute inset-0 w-full h-full object-cover object-top"
+          fetchPriority="high"
+          decoding="async"
         />
         
         {/* Dark Overlay */}
@@ -329,13 +327,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         <div className="max-w-[1300px] w-full mx-auto">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
             {/* Left Side - Image SVG */}
-            <div className="lg:w-2/5 flex items-center justify-center relative h-[650px]">
-              <Image
+            <div className="lg:w-2/5 flex items-center justify-center">
+              <img
                 src="/images/pricing.avif"
                 alt={service.name}
-                fill
-                className="object-cover rounded-2xl"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                className="w-full h-auto rounded-2xl object-cover"
+                style={{ maxHeight: '800px' }}
+                loading="lazy"
+                decoding="async"
               />
             </div>
 

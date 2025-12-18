@@ -51,10 +51,6 @@ const nextConfig = {
     return 'build-' + Date.now()
   },
   
-  // Cibler les navigateurs modernes uniquement (évite les polyfills)
-  experimental: {
-    browsersListForSwc: true,
-  },
 }
 
 export default nextConfig

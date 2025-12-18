@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, memo } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
@@ -331,7 +330,7 @@ const Navbar = memo(() => {
             >
             {/* Logo */}
             <a href="/" className="flex-shrink-0 relative z-[60]">
-              <Image
+              <img
                 src={
                   isMobile && !isMenuOpen 
                     ? '/images/logo.avif'
@@ -340,10 +339,11 @@ const Navbar = memo(() => {
                       : '/images/logo-dark.avif'
                 }
                 alt="Logo"
-                width={130}
-                height={32}
+                width="130"
+                height="32"
                 className={`${isMobile ? 'h-6' : 'h-8'} w-auto`}
-                priority
+                loading="eager"
+                decoding="async"
               />
             </a>
 

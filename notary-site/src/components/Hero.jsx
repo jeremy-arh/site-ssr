@@ -1,7 +1,6 @@
 'use client'
 
 import { memo } from 'react';
-import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
@@ -61,14 +60,13 @@ const Hero = memo(() => {
       <div
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
       >
-        {/* Image Hero optimisée AVIF avec next/image */}
-        <Image
+        {/* Image Hero AVIF statique */}
+        <img
           src="/images/hero-home.avif"
           alt=""
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
+          className="absolute inset-0 w-full h-full object-cover"
+          fetchPriority="high"
+          decoding="async"
         />
 
         {/* Dark Overlay for better text readability */}
