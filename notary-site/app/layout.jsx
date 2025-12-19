@@ -135,6 +135,39 @@ export default function RootLayout({ children }) {
           `
         }} />
         
+        {/* Script pour rendre le CSS non-bloquant (print media trick) */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function(){
+              // Observer les nouveaux link[rel=stylesheet] ajoutés par Next.js
+              var defined = false;
+              function makeNonBlocking(link) {
+                if (link.getAttribute('data-non-blocking')) return;
+                link.setAttribute('data-non-blocking', 'true');
+                var media = link.media;
+                link.media = 'print';
+                link.onload = function() {
+                  link.media = media || 'all';
+                };
+              }
+              // Traiter les links existants
+              document.querySelectorAll('link[rel="stylesheet"]').forEach(makeNonBlocking);
+              // Observer les nouveaux links
+              if (typeof MutationObserver !== 'undefined') {
+                new MutationObserver(function(mutations) {
+                  mutations.forEach(function(m) {
+                    m.addedNodes.forEach(function(node) {
+                      if (node.tagName === 'LINK' && node.rel === 'stylesheet') {
+                        makeNonBlocking(node);
+                      }
+                    });
+                  });
+                }).observe(document.head, { childList: true });
+              }
+            })();
+          `
+        }} />
+        
         {/* Preconnect à Supabase (données) et Cloudflare Images (LCP) */}
         <link rel="preconnect" href="https://jlizwheftlnhoifbqeex.supabase.co" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://imagedelivery.net" crossOrigin="anonymous" />
