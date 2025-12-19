@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { CurrencyProvider } from '@/contexts/CurrencyContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
@@ -38,7 +39,49 @@ function ProvidersContent({ children }) {
 // NOTE: Les scripts analytics (GTM, Plausible, Crisp) sont maintenant chargés
 // via Partytown dans layout.jsx avec strategy="worker" pour exécution dans un Web Worker
 
+// Service Worker pour cache des images - enregistrement différé
+function useServiceWorker() {
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return
+
+    // Enregistrer après le chargement complet de la page (ne pas bloquer le LCP)
+    const registerSW = () => {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then((registration) => {
+          // Mise à jour automatique en arrière-plan
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing
+            if (newWorker) {
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Nouvelle version disponible - activer au prochain refresh
+                  console.log('[SW] Nouvelle version disponible')
+                }
+              })
+            }
+          })
+        })
+        .catch((error) => {
+          console.warn('[SW] Erreur d\'enregistrement:', error)
+        })
+    }
+
+    // Attendre que la page soit complètement chargée
+    if (document.readyState === 'complete') {
+      // Différer encore plus pour ne pas impacter les métriques
+      requestIdleCallback ? requestIdleCallback(registerSW) : setTimeout(registerSW, 3000)
+    } else {
+      window.addEventListener('load', () => {
+        requestIdleCallback ? requestIdleCallback(registerSW) : setTimeout(registerSW, 3000)
+      }, { once: true })
+    }
+  }, [])
+}
+
 export default function Providers({ children }) {
+  // Enregistrer le Service Worker pour cache des images
+  useServiceWorker()
+
   return (
     <CurrencyProvider>
       <LanguageProvider>
