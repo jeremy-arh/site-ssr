@@ -1,15 +1,13 @@
 'use client'
 
 import { memo } from 'react';
+import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
-// URLs Cloudflare optimisées par device
-// Mobile: image plus petite (width=750), qualité 70, format auto (WebP/AVIF)
-const HERO_IMG_MOBILE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/w=750,q=70,f=auto';
-// Desktop: image full (width=1920), qualité 80
-const HERO_IMG_DESKTOP = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/w=1920,q=80,f=auto';
+// URL Cloudflare - Next.js Image gère automatiquement le responsive
+const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/public';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -67,31 +65,18 @@ const Hero = memo(() => {
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
         style={{ backgroundColor: '#1f2937' }}
       >
-        {/* Image Hero Cloudflare optimisée - responsive avec picture */}
-        <picture>
-          {/* Mobile: image optimisée petite taille */}
-          <source 
-            media="(max-width: 767px)" 
-            srcSet={HERO_IMG_MOBILE}
-            type="image/webp"
-          />
-          {/* Desktop: image haute qualité */}
-          <source 
-            media="(min-width: 768px)" 
-            srcSet={HERO_IMG_DESKTOP}
-            type="image/webp"
-          />
-          <img
-            src={HERO_IMG_MOBILE}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            width={750}
-            height={1000}
-            fetchPriority="high"
-            decoding="async"
-            loading="eager"
-          />
-        </picture>
+        {/* Image Hero LCP - next/image avec priority pour preload automatique */}
+        <Image
+          src={HERO_IMG}
+          alt="Notary services background"
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          quality={80}
+          className="object-cover"
+          placeholder="empty"
+        />
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
