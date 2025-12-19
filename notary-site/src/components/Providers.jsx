@@ -1,13 +1,22 @@
 'use client'
 
 import { useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { CurrencyProvider } from '@/contexts/CurrencyContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
-import CTAPopup from '@/components/CTAPopup'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+
+// Lazy load composants non-critiques pour réduire le TBT
+// Footer est toujours below-the-fold
+const Footer = dynamic(() => import('@/components/Footer'), { 
+  ssr: true, // Garder SSR pour SEO
+  loading: () => <footer className="bg-gray-900 min-h-[300px]" /> // Placeholder pour éviter CLS
+})
+
+// Ces composants ne sont jamais visibles au premier rendu
+const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
+const CTAPopup = dynamic(() => import('@/components/CTAPopup'), { ssr: false })
 
 function ProvidersContent({ children }) {
   useScrollAnimation()
@@ -17,7 +26,7 @@ function ProvidersContent({ children }) {
       <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-1">
+        <main className="flex-1" style={{ contain: 'content' }}>
           {children}
         </main>
         <Footer />
