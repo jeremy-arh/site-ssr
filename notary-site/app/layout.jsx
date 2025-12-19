@@ -1,5 +1,8 @@
 import { Playfair_Display } from 'next/font/google'
+import Script from 'next/script'
+import { Partytown } from '@builder.io/partytown/react'
 import Providers from '@/components/Providers'
+import PartytownScripts from '@/components/PartytownScripts'
 import '@/index.css'
 
 // Optimisation Google Fonts - charger uniquement le poids 500 pour réduire la taille
@@ -74,9 +77,15 @@ export default function RootLayout({ children }) {
         {/* Meta */}
         <meta name="theme-color" content="#000000" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        
+        {/* Partytown - Déplace les scripts tiers vers un Web Worker */}
+        <Partytown
+          debug={false}
+          forward={['dataLayer.push', 'gtag', '$crisp.push']}
+        />
       </head>
       <body suppressHydrationWarning style={{ margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', backgroundColor: '#ffffff', color: '#111827' }}>
-        {/* Noscript GTM - seulement pour navigateurs sans JS, ne charge rien */}
+        {/* Noscript GTM - fallback pour navigateurs sans JS */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-MR7JDNSD"
@@ -85,6 +94,10 @@ export default function RootLayout({ children }) {
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        
+        {/* Scripts tiers via Partytown (Web Worker) - ZERO impact sur le thread principal */}
+        <PartytownScripts />
+        
         <Providers>
           {children}
         </Providers>

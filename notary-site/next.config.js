@@ -1,3 +1,13 @@
+import { copyLibFiles } from '@builder.io/partytown/utils';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Copier les fichiers Partytown vers public/~partytown au build
+copyLibFiles(join(__dirname, 'public', '~partytown'));
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
