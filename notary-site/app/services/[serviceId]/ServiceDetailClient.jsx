@@ -280,7 +280,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
               <a 
                 href={formUrl} 
-                className="primary-cta text-base lg:text-lg inline-flex items-center gap-2 text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700"
+                className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
+                style={{ 
+                  display: 'inline-flex', 
+                  flexDirection: 'row', 
+                  alignItems: 'center', 
+                  gap: '8px',
+                  whiteSpace: 'nowrap'
+                }}
                 onClick={() => {
                   const ctaCopy = service.cta || t('nav.notarizeNow')
                   const destination = formUrl
@@ -293,7 +300,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 }}
               >
                 <IconOpenNew />
-                <span className="btn-text inline-block">
+                <span style={{ whiteSpace: 'nowrap' }}>
                   {service.cta || t('nav.notarizeNow')}
                 </span>
               </a>

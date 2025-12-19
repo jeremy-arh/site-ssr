@@ -59,7 +59,7 @@ const scrollToSection = (sectionId) => {
   if (element) {
     // Utiliser requestAnimationFrame pour grouper les lectures de layout
     requestAnimationFrame(() => {
-      const navbarHeight = typeof window !== 'undefined' && window.innerWidth < 768 ? 70 : 90;
+      const navbarHeight = typeof window !== 'undefined' && window.innerWidth < 768 ? 70 : 100;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - navbarHeight,
@@ -91,11 +91,12 @@ if (typeof window !== 'undefined') {
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [_isScrolled, setIsScrolled] = useState(false);
-  // Plus besoin de isMobile - utilisation de CSS media queries uniquement
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
   const [isHeroOutOfView, setIsHeroOutOfView] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
   const [_formattedPrice, setFormattedPrice] = useState('');
@@ -105,8 +106,20 @@ const Navbar = memo(() => {
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
   
+  // Marquer comme monté et détecter desktop pour éviter les différences d'hydratation
+  useEffect(() => {
+    setIsMounted(true);
+    // Détecter si on est sur desktop
+    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
+
   // Initialiser isAtTop au montage (seulement pour le scroll)
   useEffect(() => {
+    if (!isMounted) return;
+    
     if (dimensionsCached) {
       setIsAtTop(cachedScrollY === 0);
     } else {
@@ -121,7 +134,7 @@ const Navbar = memo(() => {
         setTimeout(checkDimensions, 50);
       }
     }
-  }, []);
+  }, [isMounted]);
   // Note: Navbar is outside specific Route elements, so useParams is not reliable here
   
   // Helper function to check if we're on a service detail page (with or without language prefix)
@@ -166,6 +179,8 @@ const Navbar = memo(() => {
   }, []);
 
   useEffect(() => {
+    // Appeler handleScroll immédiatement pour détecter la position initiale
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
@@ -282,40 +297,21 @@ const Navbar = memo(() => {
     }
   }, [servicePrice, formatPrice]);
 
+  // Sur page service et en haut = header transparent avec texte blanc
+  // Note: on utilise isOnServicePage directement (pas isMounted) pour éviter le flash au premier rendu
+  const isTransparentHeader = isOnServicePage && isAtTop;
+  
   return (
     <>
-      <nav className={`fixed w-full top-0 z-50 overflow-visible shadow-sm transition-transform duration-300 px-[10px] pt-[10px] md:px-0 md:pt-0 ${
-        !isHeaderVisible && !isMenuOpen ? '-translate-y-full' : 'translate-y-0'
-      } ${isAtTop && isOnServicePage ? 'md:shadow-none' : ''}`}>
-        <div
-          className={`transition-all duration-300 rounded-2xl md:rounded-none overflow-visible ${
-            isMenuOpen 
-              ? 'bg-transparent shadow-none backdrop-blur-none' 
-              : 'bg-black/26 shadow-lg backdrop-blur-md'
-          } ${
-            isAtTop && isOnServicePage 
-              ? 'md:bg-transparent md:shadow-none' 
-              : 'md:bg-[#FEFEFE] md:shadow-sm'
-          }`}
-          style={isMenuOpen ? {
-            borderRadius: '16px',
-          } : {
-            borderRadius: '16px',
-          }}
-        >
-          <div className="max-w-[1300px] mx-auto overflow-visible px-[20px] md:px-[30px]">
-            <div 
-              className="flex items-center justify-between overflow-visible h-14 md:h-20"
-            >
+      <nav className="navbar-container">
+        <div className={`navbar-inner ${isMenuOpen ? 'navbar-inner-menu-open' : ''} ${isTransparentHeader ? 'navbar-inner-transparent' : ''}`}>
+          <div className="max-w-[1300px] mx-auto w-full px-[20px] md:px-[30px]">
+            <div className="flex items-center justify-between w-full">
             {/* Logo */}
             <a href="/" className="flex-shrink-0 relative z-[60]">
-              {/* Logo Mobile */}
+              {/* Logo Mobile - toujours blanc car fond sombre sur mobile */}
               <img
-                src={
-                  !isMenuOpen && (isAtTop && isOnServicePage)
-                    ? 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/5aed88bc-be6b-4c21-b205-c1c8fdcf8600/q=20'
-                    : 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/bde6e91a-e989-4eb4-a918-72c4ff2d1f00/q=20'
-                }
+                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
                 alt="Logo"
                 width="130"
                 height="32"
@@ -323,12 +319,11 @@ const Navbar = memo(() => {
                 loading="eager"
                 decoding="async"
               />
-              {/* Logo Desktop */}
+              {/* Logo Desktop - blanc si transparent, noir sinon */}
               <img
-                src={
-                  isAtTop && isOnServicePage
-                    ? 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/5aed88bc-be6b-4c21-b205-c1c8fdcf8600/q=20'
-                    : 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/bde6e91a-e989-4eb4-a918-72c4ff2d1f00/q=20'
+                src={isTransparentHeader 
+                  ? "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
+                  : "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
                 }
                 alt="Logo"
                 width="130"
@@ -341,12 +336,12 @@ const Navbar = memo(() => {
 
             {/* Desktop Navigation + CTA - Right aligned */}
             <div 
-              className="hidden md:flex items-center gap-8 flex-shrink-0 overflow-visible"
+              className="navbar-desktop hidden md:flex items-center gap-8 flex-shrink-0 overflow-visible"
               style={{ marginLeft: 'auto' }}
             >
               <a 
                 href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
-                className={`nav-link text-base whitespace-nowrap ${isAtTop && isOnServicePage ? 'text-white hover:text-white hover:underline' : ''}`}
+                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   const sectionId = isServicePage() ? 'other-services' : 'services';
@@ -363,7 +358,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
-                className={`nav-link text-base whitespace-nowrap ${isAtTop && isOnServicePage ? 'text-white hover:text-white hover:underline' : ''}`}
+                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('how-it-works');
@@ -379,7 +374,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
-                className={`nav-link text-base whitespace-nowrap ${isAtTop && isOnServicePage ? 'text-white hover:text-white hover:underline' : ''}`}
+                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('faq');
@@ -394,16 +389,16 @@ const Navbar = memo(() => {
                 {t('nav.faq')}
               </a>
 
-              <div className={`w-px h-6 flex-shrink-0 ${isAtTop && isOnServicePage ? 'bg-white/30' : 'bg-gray-300'}`}></div>
+              <div className={`w-px h-6 flex-shrink-0 ${isTransparentHeader ? 'bg-white/30' : 'bg-gray-300'}`}></div>
 
               <div className="flex items-center gap-4 flex-shrink-0">
-                <LanguageSelector isWhite={isAtTop && isOnServicePage} />
-                <CurrencySelector isWhite={isAtTop && isOnServicePage} />
+                <LanguageSelector isWhite={isTransparentHeader} />
+                <CurrencySelector isWhite={isTransparentHeader} />
               </div>
 
               <a 
                 href="https://app.mynotary.io/login" 
-                className={`nav-link text-base font-semibold whitespace-nowrap flex-shrink-0 ${isAtTop && isOnServicePage ? 'text-white hover:text-white hover:underline' : ''}`}
+                className={`nav-link text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleLoginClick, 'navbar_desktop', {
@@ -416,11 +411,10 @@ const Navbar = memo(() => {
                 {t('nav.login')}
               </a>
 
-              {/* CTA Button */}
-              {(isAtTop && isOnServicePage) ? null : (
+              {/* CTA Button - toujours visible */}
               <a 
                 href={getFormUrl(currency, currentServiceId)} 
-                className={`${isHeroOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-6 py-3 font-semibold rounded-lg transition-all duration-300`}
+                className="glassy-cta text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-6 py-3 font-semibold rounded-lg transition-all duration-300"
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleCTAClick, 'navbar_desktop', currentServiceId, pathname, {
@@ -435,13 +429,12 @@ const Navbar = memo(() => {
                   <span className="whitespace-nowrap">{ctaText || t('nav.notarizeNow')}</span>
                 </span>
               </a>
-              )}
             </div>
 
-            {/* Animated Hamburger Menu Button */}
+            {/* Animated Hamburger Menu Button - MOBILE ONLY (hidden on md+) */}
             <button
               onClick={toggleMenu}
-              className="md:hidden relative z-[60] w-10 h-10 flex flex-col items-center justify-center focus:outline-none overflow-visible"
+              className="navbar-burger flex md:hidden relative z-[60] w-10 h-10 flex-col items-center justify-center focus:outline-none overflow-visible"
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center relative">

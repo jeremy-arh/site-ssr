@@ -8,6 +8,11 @@ import { useEffect } from 'react'
  */
 export default function AnalyticsLoader() {
   useEffect(() => {
+    // Vérifier que nous sommes côté client
+    if (typeof window === 'undefined') {
+      return
+    }
+
     // Ne rien charger au montage - attendre l'interaction utilisateur
     
     let gtmLoaded = false

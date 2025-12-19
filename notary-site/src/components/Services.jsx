@@ -145,7 +145,7 @@ const Services = ({ servicesData = null }) => {
             <p className="text-gray-600 text-lg">{t('services.noServices')}</p>
           </div>
         ) : (
-          <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.filter(s => s && s.service_id).map((service) => {
               const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck;
               const servicePath = `/services/${service.service_id}`;

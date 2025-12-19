@@ -1,36 +1,21 @@
 'use client'
 
-import { useEffect } from 'react'
-import { CurrencyProvider } from '@/contexts/CurrencyContext'
-import { LanguageProvider } from '@/contexts/LanguageContext'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
-import CTAPopup from '@/components/CTAPopup'
-import { useScrollAnimation } from '@/hooks/useScrollAnimation'
+import { useEffect, useState } from 'react'
 
-function ProvidersContent({ children }) {
-  useScrollAnimation()
+/**
+ * Composant pour charger les scripts analytics UNIQUEMENT après interaction utilisateur
+ * Ne charge RIEN au chargement initial de la page
+ */
+export default function AnalyticsLoaderWrapper() {
+  const [mounted, setMounted] = useState(false)
 
-  return (
-    <>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <CTAPopup />
-      </div>
-    </>
-  )
-}
-
-function AnalyticsLoader() {
   useEffect(() => {
-    // Vérifier que nous sommes côté client
-    if (typeof window === 'undefined') {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    // Ne rien faire si le composant n'est pas monté côté client
+    if (!mounted || typeof window === 'undefined') {
       return
     }
 
@@ -132,20 +117,12 @@ function AnalyticsLoader() {
         window.removeEventListener(event, onInteraction)
       })
     }
-  }, [])
+  }, [mounted])
 
-  return null
+  // Ne rien rendre jusqu'à ce que le composant soit monté côté client
+  if (!mounted) {
+    return null
+  }
+
+  return null // Ce composant ne rend rien visuellement
 }
-
-export default function Providers({ children }) {
-  return (
-    <CurrencyProvider>
-      <LanguageProvider>
-        <ProvidersContent>{children}</ProvidersContent>
-        {/* Analytics Loader - Charge UNIQUEMENT après interaction utilisateur, ZERO chargement initial */}
-        <AnalyticsLoader />
-      </LanguageProvider>
-    </CurrencyProvider>
-  )
-}
-

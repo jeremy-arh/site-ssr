@@ -42,67 +42,60 @@ const getCurrencyFromURL = (searchParams) => {
 }
 
 // Fonction d'initialisation synchrone de la devise
-const getInitialCurrency = (searchParams) => {
-  // 1) PRIORITÉ: Paramètre URL ?currency=XXX
-  const urlCurrency = getCurrencyFromURL(searchParams)
-  if (urlCurrency) {
-    return urlCurrency
-  }
-  
-  // 2) Choix utilisateur stocké
-  if (typeof window !== 'undefined') {
-    const savedCurrency = localStorage.getItem(USER_CURRENCY_KEY)
-    if (savedCurrency && SUPPORTED_CURRENCIES.includes(savedCurrency)) {
-      return savedCurrency
-    }
-  }
-  
-  // 3) Cache (uniquement côté client)
-  if (typeof window !== 'undefined') {
-  const cached = getCachedCurrency()
-  if (cached && SUPPORTED_CURRENCIES.includes(cached)) {
-    return cached
-    }
-  }
-  
-  // 4) Défaut
+// IMPORTANT: Retourne TOUJOURS 'EUR' pour éviter les erreurs d'hydratation
+// La vraie devise sera chargée après le montage du composant
+const getInitialCurrency = () => {
+  // Toujours retourner EUR pour le rendu initial (SSR et premier rendu client)
+  // Cela évite les différences d'hydratation
   return 'EUR'
 }
 
 function CurrencyProviderInner({ children }) {
   const searchParams = useSearchParams()
-  // Initialisation SYNCHRONE pour éviter le CLS
-  const [currency, setCurrencyState] = useState(() => getInitialCurrency(searchParams))
+  // Toujours initialiser à EUR pour éviter les erreurs d'hydratation
+  const [currency, setCurrencyState] = useState('EUR')
   const [conversionCache, setConversionCache] = useState({})
 
-  // Sauvegarder la devise si elle vient de l'URL
+  // Charger la vraie devise APRÈS le montage (évite les erreurs d'hydratation)
   useEffect(() => {
+    // 1) PRIORITÉ: Paramètre URL ?currency=XXX
     const urlCurrency = getCurrencyFromURL(searchParams)
     if (urlCurrency) {
-      // Sauvegarder pour les prochaines visites
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(USER_CURRENCY_KEY, urlCurrency)
-      }
+      setCurrencyState(urlCurrency)
+      localStorage.setItem(USER_CURRENCY_KEY, urlCurrency)
+      return
     }
     
-    // Détection différée uniquement si pas de devise définie
-    if (!urlCurrency && typeof window !== 'undefined' && !localStorage.getItem(USER_CURRENCY_KEY)) {
-      const runDetection = async () => {
-        try {
-          const detectedCurrency = await initializeCurrency()
-          if (detectedCurrency && SUPPORTED_CURRENCIES.includes(detectedCurrency)) {
-            setCurrencyState(detectedCurrency)
-          }
-        } catch (error) {
-          console.warn('Error initializing currency:', error)
+    // 2) Choix utilisateur stocké
+    const savedCurrency = localStorage.getItem(USER_CURRENCY_KEY)
+    if (savedCurrency && SUPPORTED_CURRENCIES.includes(savedCurrency)) {
+      setCurrencyState(savedCurrency)
+      return
+    }
+    
+    // 3) Cache
+    const cached = getCachedCurrency()
+    if (cached && SUPPORTED_CURRENCIES.includes(cached)) {
+      setCurrencyState(cached)
+      return
+    }
+    
+    // 4) Détection automatique différée
+    const runDetection = async () => {
+      try {
+        const detectedCurrency = await initializeCurrency()
+        if (detectedCurrency && SUPPORTED_CURRENCIES.includes(detectedCurrency)) {
+          setCurrencyState(detectedCurrency)
         }
+      } catch (error) {
+        console.warn('Error initializing currency:', error)
       }
+    }
 
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(runDetection, { timeout: 2000 })
-      } else {
-        setTimeout(runDetection, 1500)
-      }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(runDetection, { timeout: 2000 })
+    } else {
+      setTimeout(runDetection, 1500)
     }
   }, [searchParams])
 

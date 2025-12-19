@@ -26,6 +26,71 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 500;
   }
+
+  /* Navbar styles - statiques pour éviter les erreurs d'hydratation */
+  /* Mobile : arrondi avec margin */
+  .navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 10px 10px 0 10px;
+    background-color: transparent;
+  }
+
+  .navbar-inner {
+    border-radius: 16px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.26);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(12px);
+  }
+
+  /* Mobile : pas de fond quand le menu est ouvert */
+  .navbar-inner-menu-open {
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Desktop : header transparent sur pages service en haut */
+  @media (min-width: 768px) {
+    .navbar-inner-transparent {
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+  }
+
+  /* Desktop : collé en haut, pas arrondi, 80px */
+  @media (min-width: 768px) {
+    .navbar-container {
+      padding: 0;
+    }
+
+    .navbar-inner {
+      border-radius: 0;
+      height: 80px;
+      background: #FEFEFE;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      backdrop-filter: none;
+    }
+
+    /* Forcer le burger menu caché sur desktop */
+    .navbar-burger {
+      display: none !important;
+    }
+
+    /* Forcer la navigation desktop visible */
+    .navbar-desktop {
+      display: flex !important;
+    }
+  }
+
+  /* Responsive navigation - utiliser les classes Tailwind md:hidden et md:flex */
   
   /* PERF: Désactiver animations sur mobile si préférence reduce-motion */
   @media (prefers-reduced-motion: reduce) {
@@ -75,8 +140,14 @@
 
 @layer components {
   .primary-cta {
-    @apply inline-block px-6 py-3 bg-black text-white font-medium rounded-lg cursor-pointer;
+    @apply px-6 py-3 bg-black text-white font-medium rounded-lg cursor-pointer;
     transition: all 0.3s ease;
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+    white-space: nowrap !important;
   }
 
   .primary-cta:hover {
@@ -565,38 +636,59 @@
   }
 
   /* 
-   * PERFORMANCE: Désactiver les animations transform sur mobile
-   * Les transforms déclenchent des repaints coûteux sur mobile
+   * PERFORMANCE MOBILE: Désactiver TOUTES les animations coûteuses
+   * Crucial pour atteindre 90+ sur mobile
    */
   @media (max-width: 768px) {
+    /* Désactiver toutes les animations sur mobile pour performance maximale */
     .animate-fade-in,
-    .animate-slide-up {
-      animation-duration: 0.3s;
+    .animate-slide-up,
+    .animate-float,
+    .animate-pulse-glow,
+    .animate-scroll-infinite {
+      animation: none !important;
     }
 
     .scroll-slide-up,
     .scroll-slide-left,
-    .scroll-slide-right {
+    .scroll-slide-right,
+    .scroll-fade-in {
       transform: none !important;
-      transition: opacity 0.3s ease-out !important;
-    }
-
-    .scroll-slide-up.is-visible,
-    .scroll-slide-left.is-visible,
-    .scroll-slide-right.is-visible {
-      opacity: 1;
-      transform: none !important;
+      transition: none !important;
+      opacity: 1 !important;
     }
 
     /* Désactiver hover-scale sur mobile (pas de hover sur touch) */
     .hover-scale {
       transform: none !important;
+      transition: none !important;
     }
 
-    /* Réduire les animations infinies sur mobile */
-    .animate-float,
-    .animate-pulse-glow {
+    /* Désactiver backdrop-filter (très coûteux sur mobile) */
+    .backdrop-blur-md,
+    .backdrop-blur-lg,
+    .backdrop-blur-xl,
+    [class*="backdrop-filter"],
+    [class*="backdrop-blur"] {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    /* Désactiver box-shadow complexes */
+    .glassy-cta,
+    .glassy-cta-blue {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
       animation: none !important;
+    }
+
+    .glassy-cta::before,
+    .glassy-cta-blue::before {
+      display: none !important;
+    }
+
+    /* Contain pour isolation */
+    section {
+      contain: content;
     }
   }
 

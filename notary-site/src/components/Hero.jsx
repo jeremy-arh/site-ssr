@@ -5,8 +5,11 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
-// URL Cloudflare optimisée avec paramètres
-const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/q=20';
+// URLs Cloudflare optimisées par device
+// Mobile: image plus petite (width=750), qualité 70, format auto (WebP/AVIF)
+const HERO_IMG_MOBILE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/w=750,q=70,f=auto';
+// Desktop: image full (width=1920), qualité 80
+const HERO_IMG_DESKTOP = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/w=1920,q=80,f=auto';
 
 // ANALYTICS DIFFÉRÉS - Uniquement Plausible
 let trackPlausibleCTAClick = null;
@@ -64,14 +67,31 @@ const Hero = memo(() => {
         className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
         style={{ backgroundColor: '#1f2937' }}
       >
-        {/* Image Hero Cloudflare optimisée */}
+        {/* Image Hero Cloudflare optimisée - responsive avec picture */}
+        <picture>
+          {/* Mobile: image optimisée petite taille */}
+          <source 
+            media="(max-width: 767px)" 
+            srcSet={HERO_IMG_MOBILE}
+            type="image/webp"
+          />
+          {/* Desktop: image haute qualité */}
+          <source 
+            media="(min-width: 768px)" 
+            srcSet={HERO_IMG_DESKTOP}
+            type="image/webp"
+          />
           <img
-          src={HERO_IMG_CLOUDFLARE}
+            src={HERO_IMG_MOBILE}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
+            width={750}
+            height={1000}
             fetchPriority="high"
-          decoding="async"
+            decoding="async"
+            loading="eager"
           />
+        </picture>
 
         {/* Dark Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/60"></div>
@@ -89,7 +109,14 @@ const Hero = memo(() => {
 
             <a 
               href={getFormUrl(currency)} 
-              className="primary-cta text-base lg:text-lg inline-flex items-center gap-2 mb-8 lg:mb-12 text-white bg-blue-600 hover:bg-blue-700"
+              className="text-base lg:text-lg mb-8 lg:mb-12 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
+              style={{ 
+                display: 'inline-flex', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                gap: '8px',
+                whiteSpace: 'nowrap'
+              }}
               onClick={() => {
                 loadAnalytics();
                 safeTrack(trackPlausibleCTAClick, 'hero', null, window.location.pathname, {
@@ -100,7 +127,7 @@ const Hero = memo(() => {
               }}
             >
               <IconOpenNew />
-              <span className="btn-text inline-block">{t('nav.notarizeNow')}</span>
+              <span style={{ whiteSpace: 'nowrap' }}>{t('nav.notarizeNow')}</span>
             </a>
 
             {/* Features - CSS responsive uniquement */}

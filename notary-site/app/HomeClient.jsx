@@ -5,8 +5,19 @@ import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
 import { useTranslation } from '@/hooks/useTranslation'
 import Hero from '@/components/Hero'
-import Services from '@/components/Services'
 import LazyLoad from '@/components/LazyLoad'
+
+// Services est below-the-fold sur mobile - lazy load pour améliorer LCP
+const Services = dynamic(() => import('@/components/Services'), { 
+  ssr: true, // Garder SSR pour SEO
+  loading: () => (
+    <section className="py-20 px-4 sm:px-[30px] bg-white">
+      <div className="max-w-[1300px] mx-auto">
+        <div className="h-[400px] animate-pulse bg-gray-100 rounded-2xl" />
+      </div>
+    </section>
+  )
+})
 
 // Lazy load composants below-the-fold avec chargement différé
 // ssr: false pour éviter le chargement côté serveur des chunks non critiques
