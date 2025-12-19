@@ -91,12 +91,12 @@ if (typeof window !== 'undefined') {
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [_isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [_isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
-  const [isHeroOutOfView, setIsHeroOutOfView] = useState(false);
+  const [_isHeroOutOfView, setIsHeroOutOfView] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
+  const [_isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
   const [_formattedPrice, setFormattedPrice] = useState('');
