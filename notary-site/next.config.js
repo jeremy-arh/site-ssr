@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  
+  // EXPERIMENTAL: Optimisation CSS critique avec Critters
+  // Extrait le CSS above-the-fold et l'inline dans le HTML
+  experimental: {
+    optimizeCss: true,
+  },
+  
   images: {
     // Formats optimisés : AVIF en priorité (30% plus léger que WebP)
     formats: ['image/avif', 'image/webp'],
