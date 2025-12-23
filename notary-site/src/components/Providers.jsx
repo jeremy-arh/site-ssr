@@ -17,6 +17,7 @@ const Footer = dynamic(() => import('@/components/Footer'), {
 // Ces composants ne sont jamais visibles au premier rendu
 const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 const CTAPopup = dynamic(() => import('@/components/CTAPopup'), { ssr: false })
+const GclidTracker = dynamic(() => import('@/components/GclidTracker'), { ssr: false })
 
 function ProvidersContent({ children }) {
   useScrollAnimation()
@@ -24,6 +25,7 @@ function ProvidersContent({ children }) {
   return (
     <>
       <ScrollToTop />
+      <GclidTracker />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
