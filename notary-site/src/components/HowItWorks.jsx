@@ -104,7 +104,7 @@ const STEP_ANIMATION_STYLES = `
   margin-top: 12px;
   background: linear-gradient(180deg, #f8f9fb 0%, #e9edf3 100%);
   border-radius: 14px;
-  padding: 14px 16px 28px;
+  padding: 0;
   overflow: hidden;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
 }

@@ -426,7 +426,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         style={{ backgroundColor: '#F7F5F2' }}
       >
         <div className="max-w-[1300px] w-full mx-auto">
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-start">
             {/* Left Side - Image SVG */}
             <div className="lg:w-2/5 flex items-center justify-center">
               <img
