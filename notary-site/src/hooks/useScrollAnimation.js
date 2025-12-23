@@ -16,77 +16,87 @@ export const useScrollAnimation = () => {
       return undefined;
     }
 
-    const getAnimatedElements = () =>
-      document.querySelectorAll(ANIMATED_SELECTOR);
+    // Attendre que React finisse l'hydratation avant de modifier le DOM
+    const initAfterHydration = () => {
+      const getAnimatedElements = () =>
+        document.querySelectorAll(ANIMATED_SELECTOR);
 
-    if (
-      typeof IntersectionObserver === 'undefined' ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      revealImmediately(getAnimatedElements());
-      return undefined;
-    }
+      if (
+        typeof IntersectionObserver === 'undefined' ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ) {
+        revealImmediately(getAnimatedElements());
+        return undefined;
+      }
 
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observedElements = new Set();
-    if (!observedElements || typeof observedElements.add !== 'function') {
-      console.error('Failed to initialize observedElements Set');
-      return undefined;
-    }
-
-    const intersectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const { target } = entry;
-          if (target && target.classList) {
-            target.classList.add('is-visible');
-          }
-          if (observedElements && typeof observedElements.add === 'function') {
-            observedElements.add(target);
-          }
-          intersectionObserver.unobserve(target);
-        }
-      });
-    }, observerOptions);
-
-    const observeAnimatedElements = () => {
-      const observe = () => {
-        getAnimatedElements().forEach((element) => {
-          if (!element.dataset.scrollObserved) {
-            element.dataset.scrollObserved = 'true';
-            intersectionObserver.observe(element);
-          }
-        });
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
       };
 
-      if (typeof window.requestAnimationFrame === 'function') {
-        window.requestAnimationFrame(observe);
-      } else {
-        observe();
+      const observedElements = new Set();
+      if (!observedElements || typeof observedElements.add !== 'function') {
+        console.error('Failed to initialize observedElements Set');
+        return undefined;
       }
+
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const { target } = entry;
+            if (target && target.classList) {
+              target.classList.add('is-visible');
+            }
+            if (observedElements && typeof observedElements.add === 'function') {
+              observedElements.add(target);
+            }
+            intersectionObserver.unobserve(target);
+          }
+        });
+      }, observerOptions);
+
+      const observeAnimatedElements = () => {
+        const observe = () => {
+          getAnimatedElements().forEach((element) => {
+            if (!element.dataset.scrollObserved) {
+              element.dataset.scrollObserved = 'true';
+              intersectionObserver.observe(element);
+            }
+          });
+        };
+
+        if (typeof window.requestAnimationFrame === 'function') {
+          window.requestAnimationFrame(observe);
+        } else {
+          observe();
+        }
+      };
+
+      observeAnimatedElements();
+
+      const mutationObserver = new MutationObserver(() => {
+        observeAnimatedElements();
+      });
+
+      mutationObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+
+      return () => {
+        intersectionObserver.disconnect();
+        mutationObserver.disconnect();
+        observedElements.forEach((element) => {
+          delete element.dataset.scrollObserved;
+        });
+      };
     };
 
-    observeAnimatedElements();
-
-    const mutationObserver = new MutationObserver(() => {
-      observeAnimatedElements();
-    });
-
-    mutationObserver.observe(document.body, {
-      childList: true,
-      subtree: true
-    });
+    // Utiliser setTimeout pour s'assurer que l'hydratation est terminée
+    const timeoutId = setTimeout(initAfterHydration, 0);
 
     return () => {
-      intersectionObserver.disconnect();
-      mutationObserver.disconnect();
-      observedElements.forEach((element) => {
-        delete element.dataset.scrollObserved;
-      });
+      clearTimeout(timeoutId);
     };
   }, []);
 };

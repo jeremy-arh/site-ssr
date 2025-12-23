@@ -154,8 +154,7 @@ const Services = ({ servicesData = null }) => {
                 <Link
                   key={service.id || service.service_id}
                   href={localizedPath || servicePath}
-                  className="group bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up grid"
-                  style={{ gridTemplateRows: 'auto 1fr auto' }}
+                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
                   onClick={() => {
                     loadAnalytics();
                     safeTrack(trackPlausibleServiceClick, service.service_id, service.name, 'homepage_services');
@@ -168,9 +167,9 @@ const Services = ({ servicesData = null }) => {
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
                   </div>
 
-                  <p className="text-gray-600 mb-6 leading-relaxed self-start">{service.short_description || service.description}</p>
+                  <p className="text-gray-600 mb-6 min-h-[60px] leading-relaxed flex-1">{service.short_description || service.description}</p>
 
-                  <div className="flex flex-col gap-3 items-center pt-4 border-t border-gray-200 self-end">
+                  <div className="flex flex-col gap-3 mt-auto items-center pt-4 border-t border-gray-200">
                     <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
                       <span className="btn-text inline-block">{t('services.learnMore')}</span>
                       <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
