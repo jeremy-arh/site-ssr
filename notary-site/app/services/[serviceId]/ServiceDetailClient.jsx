@@ -242,7 +242,7 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   )
 })
 
-export default function ServiceDetailClient({ serviceData, relatedServicesData, serviceId }) {
+export default function ServiceDetailClient({ serviceData, relatedServicesData, serviceId, faqsData }) {
   const pathname = usePathname()
   const { t } = useTranslation()
   const { language, getLocalizedPath } = useLanguage()
@@ -291,13 +291,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
     return getFormUrl(currency, service?.service_id || serviceId)
   }, [currency, service?.service_id, serviceId])
 
-  const faqItems = useMemo(() => {
-    if (!service?.faq) return []
-    return service.faq.map((item) => ({
-      question: item[`question_${language}`] || item.question_en,
-      answer: item[`answer_${language}`] || item.answer_en,
-    }))
-  }, [service, language])
 
   if (!service) {
     return (
@@ -583,7 +576,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <OtherServicesSection relatedServicesData={relatedServicesData} language={language} />
 
       {/* FAQ Section */}
-      {faqItems.length > 0 && <FAQ faqsData={faqItems} />}
+      <FAQ faqsData={faqsData} />
 
       {/* Back to Services */}
       <section className="px-[30px] py-12">

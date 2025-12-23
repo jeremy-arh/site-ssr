@@ -1,4 +1,4 @@
-import { getService, getServices } from '@/lib/supabase-server'
+import { getService, getServices, getFAQs } from '@/lib/supabase-server'
 import { notFound } from 'next/navigation'
 import ServiceDetailClient from './ServiceDetailClient'
 
@@ -9,10 +9,11 @@ export const dynamic = 'force-dynamic'
 export default async function ServiceDetail({ params }) {
   const { serviceId } = await params
 
-  // Récupérer le service et tous les services (pour les suggestions) côté serveur
-  const [serviceData, allServicesData] = await Promise.all([
+  // Récupérer le service, tous les services (pour les suggestions) et les FAQs côté serveur
+  const [serviceData, allServicesData, faqsData] = await Promise.all([
     getService(serviceId),
     getServices(),
+    getFAQs(),
   ])
 
   if (!serviceData) {
@@ -28,6 +29,7 @@ export default async function ServiceDetail({ params }) {
       serviceData={serviceData}
       relatedServicesData={relatedServices}
       serviceId={serviceId}
+      faqsData={faqsData}
     />
   )
 }

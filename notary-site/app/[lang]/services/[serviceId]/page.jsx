@@ -1,4 +1,4 @@
-import { getService, getServices } from '@/lib/supabase-server'
+import { getService, getServices, getFAQs } from '@/lib/supabase-server'
 import { notFound, redirect } from 'next/navigation'
 import ServiceDetailClient from '../../../services/[serviceId]/ServiceDetailClient'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
@@ -13,9 +13,10 @@ export default async function LangServiceDetail({ params }) {
     redirect(`/services/${serviceId}`)
   }
 
-  const [serviceData, allServicesData] = await Promise.all([
+  const [serviceData, allServicesData, faqsData] = await Promise.all([
     getService(serviceId),
     getServices(),
+    getFAQs(),
   ])
 
   if (!serviceData) {
@@ -30,6 +31,7 @@ export default async function LangServiceDetail({ params }) {
       serviceData={serviceData}
       relatedServicesData={relatedServices}
       serviceId={serviceId}
+      faqsData={faqsData}
     />
   )
 }
