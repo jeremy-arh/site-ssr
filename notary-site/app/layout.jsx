@@ -106,6 +106,8 @@ export default function RootLayout({ children }) {
               .navbar-container{padding:0}
               .navbar-inner{border-radius:0;height:80px;background:#FEFEFE;box-shadow:0 1px 2px 0 rgba(0,0,0,0.05)}
               .navbar-inner-transparent{background:transparent!important;box-shadow:none!important}
+              .navbar-inner-transparent .nav-link{color:#fff!important}
+              .navbar-inner-transparent .nav-link:hover{color:rgba(255,255,255,0.8)!important}
               .navbar-burger{display:none!important}
               .navbar-desktop{display:flex!important}
               .md\\:hidden{display:none!important}

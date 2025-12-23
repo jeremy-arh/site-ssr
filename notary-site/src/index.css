@@ -401,6 +401,13 @@
     @apply text-gray-700 hover:text-black transition-colors duration-200 font-medium;
   }
 
+  /* Desktop : liens blancs quand le header est transparent (pages service en haut) */
+  @media (min-width: 768px) {
+    .navbar-inner-transparent .nav-link {
+      @apply text-white hover:text-white/80;
+    }
+  }
+
   .gradient-text {
     background: linear-gradient(135deg, #491AE9 0%, #D414E5 33%, #FC03A1 66%, #FF7715 100%);
     -webkit-background-clip: text;

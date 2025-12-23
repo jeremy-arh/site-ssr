@@ -19,10 +19,9 @@ export default async function ServiceDetail({ params }) {
     notFound()
   }
 
-  // Filtrer les services similaires (exclure le service actuel)
+  // Filtrer les services (exclure le service actuel, garder tous les autres)
   const relatedServices = allServicesData
     .filter(s => s.service_id !== serviceId && s.show_in_list === true)
-    .slice(0, 3)
 
   return (
     <ServiceDetailClient

@@ -24,7 +24,6 @@ export default async function LangServiceDetail({ params }) {
 
   const relatedServices = allServicesData
     .filter(s => s.service_id !== serviceId && s.show_in_list === true)
-    .slice(0, 3)
 
   return (
     <ServiceDetailClient

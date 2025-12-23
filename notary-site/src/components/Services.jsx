@@ -154,28 +154,29 @@ const Services = ({ servicesData = null }) => {
                 <Link
                   key={service.id || service.service_id}
                   href={localizedPath || servicePath}
-                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up flex flex-col"
+                  className="group bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up grid"
+                  style={{ gridTemplateRows: 'auto 1fr auto' }}
                   onClick={() => {
                     loadAnalytics();
                     safeTrack(trackPlausibleServiceClick, service.service_id, service.name, 'homepage_services');
                   }}
                 >
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
+                    <div className="w-12 h-12 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 flex-shrink-0">
                       <ServiceIcon />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
                   </div>
 
-                  <p className="text-gray-600 mb-6 min-h-[60px] leading-relaxed flex-1">{service.short_description || service.description}</p>
+                  <p className="text-gray-600 mb-6 leading-relaxed self-start">{service.short_description || service.description}</p>
 
-                  <div className="flex flex-col gap-3 mt-auto items-center">
-                  <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
-                    <span className="btn-text inline-block">{t('services.learnMore')}</span>
-                    <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </div>
+                  <div className="flex flex-col gap-3 items-center pt-4 border-t border-gray-200 self-end">
+                    <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
+                      <span className="btn-text inline-block">{t('services.learnMore')}</span>
+                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </div>
                     {service.base_price && (
                       <div className="flex items-center gap-2 justify-center">
                         <PriceDisplay price={service.base_price} showFrom className="text-lg font-bold text-gray-900" />

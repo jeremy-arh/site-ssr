@@ -710,7 +710,7 @@ const HowItWorks = memo(() => {
               <div className="flex flex-row flex-wrap items-center justify-center gap-3 md:flex-col md:items-center md:gap-2">
                 <a
                   href={getFormUrl(currency, currentServiceId)}
-                  className="primary-cta text-sm md:text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100 whitespace-nowrap flex-shrink-0 justify-center"
+                  className="text-sm md:text-lg inline-flex items-center gap-3 px-6 py-3 rounded-lg font-medium bg-white text-black hover:bg-blue-600 hover:text-white whitespace-nowrap flex-shrink-0 justify-center transition-colors duration-200"
                   onClick={() => {
                     loadAnalytics();
                     safeTrack(trackPlausibleCTAClick, 'how_it_works', currentServiceId, pathname, {
