@@ -11,7 +11,9 @@ Cette fonctionnalité capture automatiquement le paramètre `gclid` de Google Ad
 Le middleware (`middleware.js`) intercepte toutes les requêtes et vérifie la présence du paramètre `gclid` dans l'URL. Si présent, il crée automatiquement un cookie avec les caractéristiques suivantes :
 
 - **Nom** : `gclid`
-- **Domaine** : `.mynotary.io` (partagé sur tous les sous-domaines)
+- **Domaine** : 
+  - `.mynotary.io` (partagé sur tous les sous-domaines) si le site est hébergé sur mynotary.io
+  - Domaine actuel (sans partage) pour les autres environnements (Vercel, localhost, etc.)
 - **Durée** : 90 jours (standard Google Ads)
 - **Path** : `/` (disponible sur toutes les pages)
 - **SameSite** : `Lax`

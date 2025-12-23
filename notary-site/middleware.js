@@ -4,7 +4,7 @@ const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'de', 'it', 'pt']
 const DEFAULT_LANGUAGE = 'en'
 
 export function middleware(request) {
-  const { pathname, searchParams } = request.nextUrl
+  const { pathname, searchParams, hostname } = request.nextUrl
   
   // Créer la réponse
   let response = NextResponse.next()
@@ -13,17 +13,25 @@ export function middleware(request) {
   const gclid = searchParams.get('gclid')
   
   if (gclid) {
+    // Déterminer le domaine pour le cookie
+    // Pour mynotary.io et ses sous-domaines : .mynotary.io
+    // Pour les autres domaines (Vercel, localhost, etc.) : pas de domaine spécifié
+    let cookieDomain = ''
+    if (hostname.includes('mynotary.io')) {
+      cookieDomain = 'Domain=.mynotary.io'
+    }
+    
     // Définir le cookie avec le gclid
-    // Le cookie sera partagé sur tous les sous-domaines de mynotary.io
+    // Le cookie sera partagé sur tous les sous-domaines si applicable
     // Durée de vie : 90 jours (standard pour les paramètres de tracking Google)
     const cookieOptions = [
       `gclid=${gclid}`,
-      'Domain=.mynotary.io', // Le point initial permet le partage entre sous-domaines
+      cookieDomain, // Domaine dynamique selon l'environnement
       'Path=/',
       `Max-Age=${90 * 24 * 60 * 60}`, // 90 jours en secondes
       'SameSite=Lax',
       'Secure' // HTTPS uniquement
-    ].join('; ')
+    ].filter(Boolean).join('; ') // filter(Boolean) enlève les chaînes vides
     
     response.headers.set('Set-Cookie', cookieOptions)
   }

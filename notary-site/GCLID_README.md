@@ -39,24 +39,15 @@ Tous les fichiers ont déjà été créés et intégrés dans votre projet. Aucu
 
 ### 2. Configuration du domaine
 
-Le cookie est configuré pour le domaine `.mynotary.io`. Si vous utilisez un autre domaine, modifiez :
+✅ **Le domaine est détecté automatiquement !**
 
-**Dans `middleware.js`** :
-```javascript
-'Domain=.mynotary.io', // Changez ici
-```
+Le système détecte automatiquement le domaine du site :
+- Sur `mynotary.io` ou ses sous-domaines → Cookie partagé avec `.mynotary.io`
+- Sur Vercel (`vercel.app`) → Cookie lié au domaine Vercel
+- Sur localhost → Cookie lié à localhost
+- Sur tout autre domaine → Cookie lié au domaine actuel
 
-**Dans `src/utils/cookies.js`** :
-```javascript
-export function setCookie(name, value, days = 90, domain = '.mynotary.io') {
-  // Changez ici
-}
-```
-
-**Dans `src/hooks/useGclid.js`** :
-```javascript
-setCookie('gclid', gclidValue, 90, '.mynotary.io') // Changez ici
-```
+**Aucune configuration manuelle n'est nécessaire !** Le système s'adapte automatiquement à l'environnement.
 
 ## 📖 Utilisation Rapide
 
@@ -168,7 +159,7 @@ await supabase.from('bookings').insert({
 - **Secure** : ✅ Uniquement HTTPS
 - **SameSite** : ✅ Lax (protection CSRF)
 - **HttpOnly** : ❌ Non (doit être accessible par JavaScript)
-- **Domain** : ✅ `.mynotary.io` (partagé entre sous-domaines)
+- **Domain** : ✅ Auto-détecté (`.mynotary.io` sur production, domaine actuel ailleurs)
 - **Max-Age** : ✅ 90 jours (7,776,000 secondes)
 
 ### RGPD

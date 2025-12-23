@@ -35,15 +35,25 @@ export function getGclid() {
  * @param {string} name - Le nom du cookie
  * @param {string} value - La valeur du cookie
  * @param {number} days - Nombre de jours avant expiration
- * @param {string} domain - Le domaine du cookie (optionnel)
+ * @param {string} domain - Le domaine du cookie (optionnel, auto-détecté si non spécifié)
  */
-export function setCookie(name, value, days = 90, domain = '.mynotary.io') {
+export function setCookie(name, value, days = 90, domain = null) {
   if (typeof document === 'undefined') {
     return
   }
 
   const expires = new Date()
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
+  
+  // Détection automatique du domaine si non spécifié
+  if (domain === null && typeof window !== 'undefined') {
+    const hostname = window.location.hostname
+    // Utiliser .mynotary.io seulement si on est sur ce domaine
+    if (hostname.includes('mynotary.io')) {
+      domain = '.mynotary.io'
+    }
+    // Sinon, pas de domaine spécifié (cookie lié au domaine actuel uniquement)
+  }
   
   const cookieParts = [
     `${name}=${value}`,
@@ -56,7 +66,7 @@ export function setCookie(name, value, days = 90, domain = '.mynotary.io') {
     cookieParts.push(`domain=${domain}`)
   }
 
-  if (window.location.protocol === 'https:') {
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
     cookieParts.push('Secure')
   }
 

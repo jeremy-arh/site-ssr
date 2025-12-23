@@ -24,8 +24,9 @@ export function useGclid() {
       gclidValue = urlParams.get('gclid')
 
       // Si trouvé dans l'URL, le stocker dans un cookie
+      // Le domaine sera auto-détecté par setCookie
       if (gclidValue) {
-        setCookie('gclid', gclidValue, 90, '.mynotary.io')
+        setCookie('gclid', gclidValue, 90)
       }
     }
 
