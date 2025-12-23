@@ -21,7 +21,7 @@ import dynamic from 'next/dynamic'
 // Différer les composants non-critiques pour réduire le JS initial
 const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
-const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: false })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 
@@ -248,6 +248,13 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   const { language, getLocalizedPath } = useLanguage()
   const { currency, formatPrice } = useCurrency()
   const [ctaPrice, setCtaPrice] = useState('')
+
+  // Debug: vérifier que faqsData est bien passé
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('FAQ Data:', faqsData)
+    }
+  }, [faqsData])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -576,7 +583,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <OtherServicesSection relatedServicesData={relatedServicesData} language={language} />
 
       {/* FAQ Section */}
-      <FAQ faqsData={faqsData} />
+      <FAQ faqsData={faqsData || null} />
 
       {/* Back to Services */}
       <section className="px-[30px] py-12">
