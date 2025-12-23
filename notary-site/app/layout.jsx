@@ -51,7 +51,9 @@ export default function RootLayout({ children }) {
             .mx-auto{margin-left:auto;margin-right:auto}
             .relative{position:relative}.absolute{position:absolute}.fixed{position:fixed}
             .inset-0{top:0;right:0;bottom:0;left:0}.z-10{z-index:10}.z-50{z-index:50}.z-60{z-index:60}
-            .top-0{top:0}.left-0{left:0}.right-0{right:0}
+            .top-0{top:0}.left-0{left:0}.right-0{right:0}.bottom-0{bottom:0}
+            .translate-y-0{transform:translateY(0)}.translate-y-full{transform:translateY(100%)}
+            .transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4,0,0.2,1)}.duration-300{transition-duration:300ms}
             .overflow-hidden{overflow:hidden}.overflow-visible{overflow:visible}
             
             /* Spacing */
@@ -113,6 +115,7 @@ export default function RootLayout({ children }) {
               .md\\:hidden{display:none!important}
               .md\\:flex{display:flex!important}
               .md\\:block{display:block!important}
+              .md\\:grid{display:grid!important}
             }
             
             /* CTA Button */
