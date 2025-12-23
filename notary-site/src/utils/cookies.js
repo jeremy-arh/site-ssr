@@ -31,29 +31,43 @@ export function getGclid() {
 }
 
 /**
+ * Détermine le domaine du cookie selon l'environnement
+ * @returns {string|null} Le domaine du cookie ou null pour le domaine actuel
+ */
+function getCookieDomain() {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  const hostname = window.location.hostname
+  
+  // Si c'est mynotary.io ou un sous-domaine, utiliser .mynotary.io pour le partage
+  if (hostname.endsWith('.mynotary.io') || hostname === 'mynotary.io') {
+    return '.mynotary.io'
+  }
+  
+  // Pour Vercel, localhost, etc., ne pas spécifier de domaine
+  // Le cookie sera limité au domaine exact
+  return null
+}
+
+/**
  * Définit un cookie
  * @param {string} name - Le nom du cookie
  * @param {string} value - La valeur du cookie
  * @param {number} days - Nombre de jours avant expiration
- * @param {string} domain - Le domaine du cookie (optionnel, auto-détecté si non spécifié)
+ * @param {string|null} domain - Le domaine du cookie (optionnel, null = auto-détection)
  */
 export function setCookie(name, value, days = 90, domain = null) {
   if (typeof document === 'undefined') {
     return
   }
 
+  // Auto-détection du domaine si non spécifié
+  const cookieDomain = domain !== null ? domain : getCookieDomain()
+
   const expires = new Date()
   expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000)
-  
-  // Détection automatique du domaine si non spécifié
-  if (domain === null && typeof window !== 'undefined') {
-    const hostname = window.location.hostname
-    // Utiliser .mynotary.io seulement si on est sur ce domaine
-    if (hostname.includes('mynotary.io')) {
-      domain = '.mynotary.io'
-    }
-    // Sinon, pas de domaine spécifié (cookie lié au domaine actuel uniquement)
-  }
   
   const cookieParts = [
     `${name}=${value}`,
@@ -62,11 +76,11 @@ export function setCookie(name, value, days = 90, domain = null) {
     'SameSite=Lax'
   ]
 
-  if (domain) {
-    cookieParts.push(`domain=${domain}`)
+  if (cookieDomain) {
+    cookieParts.push(`domain=${cookieDomain}`)
   }
 
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
+  if (window.location.protocol === 'https:') {
     cookieParts.push('Secure')
   }
 

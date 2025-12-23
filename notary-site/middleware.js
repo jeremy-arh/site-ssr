@@ -13,25 +13,26 @@ export function middleware(request) {
   const gclid = searchParams.get('gclid')
   
   if (gclid) {
-    // Déterminer le domaine pour le cookie
-    // Pour mynotary.io et ses sous-domaines : .mynotary.io
-    // Pour les autres domaines (Vercel, localhost, etc.) : pas de domaine spécifié
+    // Déterminer le domaine du cookie dynamiquement
+    // Si c'est mynotary.io ou un sous-domaine, utiliser .mynotary.io pour le partage
+    // Sinon (Vercel, localhost, etc.), ne pas spécifier de domaine (cookie limité au domaine exact)
     let cookieDomain = ''
-    if (hostname.includes('mynotary.io')) {
+    if (hostname.endsWith('.mynotary.io') || hostname === 'mynotary.io') {
       cookieDomain = 'Domain=.mynotary.io'
     }
+    // Pour Vercel et autres domaines, on ne spécifie pas de domaine
+    // Le cookie sera limité au domaine exact (ce qui est correct pour les previews Vercel)
     
     // Définir le cookie avec le gclid
-    // Le cookie sera partagé sur tous les sous-domaines si applicable
     // Durée de vie : 90 jours (standard pour les paramètres de tracking Google)
     const cookieOptions = [
       `gclid=${gclid}`,
-      cookieDomain, // Domaine dynamique selon l'environnement
+      cookieDomain, // Vide pour Vercel/localhost, .mynotary.io pour production
       'Path=/',
       `Max-Age=${90 * 24 * 60 * 60}`, // 90 jours en secondes
       'SameSite=Lax',
       'Secure' // HTTPS uniquement
-    ].filter(Boolean).join('; ') // filter(Boolean) enlève les chaînes vides
+    ].filter(Boolean).join('; ') // filter(Boolean) retire les chaînes vides
     
     response.headers.set('Set-Cookie', cookieOptions)
   }
