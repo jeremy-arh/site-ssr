@@ -127,8 +127,7 @@ export default function RootLayout({ children }) {
             .nav-link{color:#374151;font-weight:500;transition:color 0.2s}
             .nav-link:hover{color:#000}
             
-            /* Performance: contain */
-            .fixed{contain:layout style paint}
+            /* Performance: contain - Note: ne pas appliquer contain sur .fixed car cela casse position:fixed */
             nav{contain:layout}
             footer{contain:layout style;min-height:380px}
             
