@@ -88,8 +88,15 @@ const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
 
   useEffect(() => {
     const shouldShow = hasHero ? !heroInView : scrolledEnough;
-    setIsVisible(shouldShow && !isMenuOpen);
-  }, [hasHero, heroInView, scrolledEnough, isMenuOpen]);
+    setIsVisible(shouldShow);
+  }, [hasHero, heroInView, scrolledEnough]);
+  
+  // Masquer uniquement quand le menu est ouvert
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsVisible(false);
+    }
+  }, [isMenuOpen]);
 
   useEffect(() => {
     // Check initial state
