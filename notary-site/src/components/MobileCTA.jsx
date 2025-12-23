@@ -112,9 +112,16 @@ const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 md:hidden transition-transform duration-300 ${
-        isVisible && !isMenuOpen ? 'translate-y-0' : 'translate-y-full'
-      }`}
+      className="md:hidden"
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9999,
+        transform: isVisible && !isMenuOpen ? 'translateY(0)' : 'translateY(100%)',
+        transition: 'transform 0.3s ease-out',
+      }}
     >
       <div className="bg-white border-t border-gray-200 shadow-2xl">
         <div className="px-4 py-3">
