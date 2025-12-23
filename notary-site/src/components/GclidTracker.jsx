@@ -22,8 +22,8 @@ export default function GclidTracker() {
         })
       }
 
-      // Log en développement
-      if (process.env.NODE_ENV === 'development') {
+      // Log en développement (vérifie si on est en localhost)
+      if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
         console.log('GCLID capturé:', gclid)
       }
     }
