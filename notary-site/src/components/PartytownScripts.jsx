@@ -3,9 +3,9 @@
 import Script from 'next/script'
 
 /**
- * Scripts tiers chargés via Partytown (Web Worker)
- * - Libère le thread principal pour de meilleures performances
- * - strategy="worker" déplace l'exécution vers un Web Worker
+ * Scripts tiers optimisés pour les performances
+ * - GTM et Plausible via Partytown (Web Worker) pour ne pas bloquer le thread principal
+ * - Crisp chargé directement après interaction (ne fonctionne pas avec Partytown car besoin d'accès au DOM)
  */
 export default function PartytownScripts() {
   return (
@@ -13,7 +13,7 @@ export default function PartytownScripts() {
       {/* Google Tag Manager - via Partytown */}
       <Script
         id="gtm-script"
-        strategy="worker"
+        type="text/partytown"
         dangerouslySetInnerHTML={{
           __html: `
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -27,16 +27,15 @@ export default function PartytownScripts() {
 
       {/* Plausible Analytics - via Partytown */}
       <Script
-        id="plausible-script"
-        strategy="worker"
+        type="text/partytown"
         src="https://plausible.io/js/script.js"
         data-domain="mynotary.io"
       />
 
-      {/* Crisp Chat - via Partytown */}
+      {/* Crisp Chat - chargé directement après interaction (pas via Partytown car besoin d'accès direct au DOM) */}
       <Script
         id="crisp-script"
-        strategy="worker"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.$crisp=[];

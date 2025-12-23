@@ -15,17 +15,13 @@ const LANGUAGE_NAMES = {
 
 // SVG Flags inline pour éviter les requêtes externes (flagcdn.com)
 const FlagGB = () => (
-  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
-    <defs><clipPath id="gb"><path fillOpacity=".7" d="M-85.3 0h682.6v512h-682.6z"/></clipPath></defs>
-    <g clipPath="url(#gb)" transform="translate(80) scale(.94)">
-      <g strokeWidth="1pt">
-        <path fill="#006" d="M-256 0H768v512H-256z"/>
-        <path fill="#fff" d="m-256 0 582.3 198.4L768 0v198.4L-256 512V0z" transform="scale(1.3)"/>
-        <path fill="#fff" d="M768 0v512L-256 313.6V0z" transform="scale(1.3)"/>
-        <path fill="#c00" d="M-256 0v512L768 198.4V0z" transform="scale(1.3)"/>
-        <path fill="#c00" d="M768 0v198.4L-256 512V313.6z" transform="scale(1.3)"/>
-      </g>
-    </g>
+  <svg className="w-5 h-4" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+    <clipPath id="t"><path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z"/></clipPath>
+    <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+    <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#t)" stroke="#C8102E" strokeWidth="4"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10"/>
+    <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6"/>
   </svg>
 );
 const FlagFR = () => (
@@ -60,10 +56,12 @@ const FlagIT = () => (
   </svg>
 );
 const FlagPT = () => (
-  <svg className="w-5 h-4" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
-    <path fill="#060" d="M0 0h640v480H0z"/>
-    <path fill="#ff0000" d="M0 0h256v256H0z"/>
-    <circle cx="128" cy="128" r="64" fill="#ff0"/>
+  <svg className="w-5 h-4" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+    <rect width="600" height="400" fill="#060"/>
+    <rect width="240" height="400" fill="#FF0000"/>
+    <circle cx="240" cy="200" r="80" fill="#FFFF00" stroke="#000" strokeWidth="4"/>
+    <circle cx="240" cy="200" r="60" fill="none" stroke="#000" strokeWidth="8"/>
+    <path d="M 240 140 v 40 M 240 220 v 40 M 200 200 h 40 M 280 200 h 40" stroke="#000" strokeWidth="6"/>
   </svg>
 );
 

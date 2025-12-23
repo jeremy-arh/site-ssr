@@ -93,6 +93,7 @@ const Hero = memo(() => {
             </p>
 
             <a 
+              id="hero-cta"
               href={getFormUrl(currency)} 
               className="text-base lg:text-lg mb-8 lg:mb-12 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
               style={{ 

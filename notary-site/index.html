@@ -8,8 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.iconify.design" crossorigin />
-    <link rel="dns-prefetch" href="https://plausible.io" />
-    <link rel="dns-prefetch" href="https://client.crisp.chat" />
     
     <link rel="icon" type="image/svg+xml" href="/src/assets/favicon.svg" />
     <link rel="apple-touch-icon" href="/src/assets/favicon.svg" />
@@ -45,49 +43,7 @@
       h1, h2 { font-family: Georgia, 'Times New Roman', serif; }
     </style>
     
-    <!-- Google Tag Manager - Chargé UNIQUEMENT après interaction utilisateur pour optimiser les performances -->
-    <!-- GTM chargera automatiquement gtag.js et autres scripts via son conteneur -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      var gtmLoaded = false;
-      
-      function loadGTM() {
-        if (gtmLoaded) return;
-        gtmLoaded = true;
-        
-        // Charger uniquement gtm.js - GTM gérera les autres scripts (gtag.js, etc.) via son conteneur
-        var gtm = document.createElement('script');
-        gtm.async = true;
-        gtm.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-MR7JDNSD';
-        document.head.appendChild(gtm);
-      }
-      
-      // Charger GTM uniquement après interaction utilisateur (scroll, clic, ou après 10s pour les robots)
-      var interactionEvents = ['scroll', 'click', 'keydown', 'touchstart', 'mousedown'];
-      var hasInteracted = false;
-      var loadGTMOnInteraction = function() {
-        if (!hasInteracted) {
-          hasInteracted = true;
-          loadGTM();
-          // Retirer les listeners après le premier chargement
-          interactionEvents.forEach(function(event) {
-            document.removeEventListener(event, loadGTMOnInteraction, { passive: true });
-          });
-        }
-      };
-      
-      // Écouter les interactions utilisateur avec once:true pour ne charger qu'une fois
-      interactionEvents.forEach(function(event) {
-        document.addEventListener(event, loadGTMOnInteraction, { passive: true, once: true });
-      });
-      
-      // Fallback : charger après 10 secondes si aucune interaction (pour les robots/crawlers)
-      setTimeout(function() {
-        if (!gtmLoaded) {
-          loadGTM();
-        }
-      }, 10000);
-    </script>
+    <!-- Analytics scripts sont gérés via PartytownScripts.jsx dans Next.js App Router -->
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -107,67 +63,5 @@
     </div>
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Plausible Analytics - Chargé après le rendu initial pour éviter la variation de performance -->
-    <script>
-      // Charger Plausible après le rendu pour ne pas impacter le score de performance de manière variable
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(function() {
-          var script = document.createElement('script');
-          script.defer = true;
-          script.setAttribute('data-domain', 'mynotary.io');
-          script.src = 'https://plausible.io/js/script.js';
-          document.head.appendChild(script);
-        }, { timeout: 3000 });
-      } else {
-        setTimeout(function() {
-          var script = document.createElement('script');
-          script.defer = true;
-          script.setAttribute('data-domain', 'mynotary.io');
-          script.src = 'https://plausible.io/js/script.js';
-          document.head.appendChild(script);
-        }, 2000);
-      }
-    </script>
-
-    <!-- Crisp Chat - chargé uniquement après interaction utilisateur pour éviter la variation -->
-    <script type="text/javascript">
-      window.$crisp=[];
-      window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
-      var crispLoaded = false;
-      
-      function loadCrisp(){
-        if (crispLoaded) return;
-        crispLoaded = true;
-        var d=document;
-        var s=d.createElement("script");
-        s.src="https://client.crisp.chat/l.js";
-        s.async=1;
-        d.getElementsByTagName("head")[0].appendChild(s);
-      }
-      
-      // Charger Crisp uniquement après interaction utilisateur (comme GTM) pour éviter la variation
-      var interactionEvents = ['scroll', 'click', 'keydown', 'touchstart', 'mousedown'];
-      var hasInteracted = false;
-      var loadCrispOnInteraction = function() {
-        if (!hasInteracted) {
-          hasInteracted = true;
-          loadCrisp();
-          interactionEvents.forEach(function(event) {
-            document.removeEventListener(event, loadCrispOnInteraction, { passive: true });
-          });
-        }
-      };
-      
-      interactionEvents.forEach(function(event) {
-        document.addEventListener(event, loadCrispOnInteraction, { passive: true, once: true });
-      });
-      
-      // Fallback : charger après 15 secondes si aucune interaction (plus tard que GTM pour ne pas bloquer)
-      setTimeout(function() {
-        if (!crispLoaded) {
-          loadCrisp();
-        }
-      }, 15000);
-    </script>
   </body>
 </html>

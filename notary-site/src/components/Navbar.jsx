@@ -94,7 +94,7 @@ const Navbar = memo(() => {
   const [_isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
-  const [_isHeroOutOfView, setIsHeroOutOfView] = useState(false);
+  const [isHeroCTAOutOfView, setIsHeroCTAOutOfView] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [_isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
   const [ctaText, setCtaText] = useState('');
@@ -185,9 +185,9 @@ const Navbar = memo(() => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  // Observer pour détecter quand le hero sort complètement de l'écran
+  // Observer pour détecter quand le CTA du hero sort complètement de l'écran
   useEffect(() => {
-    setIsHeroOutOfView(false);
+    setIsHeroCTAOutOfView(false);
 
     let observer = null;
     let retryTimeout = null;
@@ -195,12 +195,13 @@ const Navbar = memo(() => {
     let attempts = 0;
 
     const attachObserver = () => {
-      const heroElement = document.querySelector('[data-hero]');
+      const heroCTAElement = document.getElementById('hero-cta');
 
-      if (heroElement) {
+      if (heroCTAElement) {
         observer = new IntersectionObserver(
           ([entry]) => {
-            setIsHeroOutOfView(!entry.isIntersecting);
+            // Le CTA du header devient bleu quand le CTA du hero n'est plus visible
+            setIsHeroCTAOutOfView(!entry.isIntersecting);
           },
           {
             threshold: 0,
@@ -208,7 +209,7 @@ const Navbar = memo(() => {
           }
         );
 
-        observer.observe(heroElement);
+        observer.observe(heroCTAElement);
         return;
       }
 
@@ -216,8 +217,8 @@ const Navbar = memo(() => {
       if (attempts < maxAttempts) {
         retryTimeout = setTimeout(attachObserver, 150);
       } else {
-        // Si après plusieurs tentatives aucun hero n'existe, on force le CTA en bleu
-        setIsHeroOutOfView(true);
+        // Si après plusieurs tentatives aucun CTA hero n'existe (pas sur la home), on reste noir
+        setIsHeroCTAOutOfView(false);
       }
     };
 
@@ -305,13 +306,16 @@ const Navbar = memo(() => {
     <>
       <nav className="navbar-container">
         <div className={`navbar-inner ${isMenuOpen ? 'navbar-inner-menu-open' : ''} ${isTransparentHeader ? 'navbar-inner-transparent' : ''}`}>
-          <div className="max-w-[1300px] mx-auto w-full px-[20px] md:px-[30px]">
+          <div className="max-w-[1300px] mx-auto w-full px-[20px] md:px-[20px] lg:px-[30px]">
             <div className="flex items-center justify-between w-full">
             {/* Logo */}
             <a href="/" className="flex-shrink-0 relative z-[60]">
-              {/* Logo Mobile - toujours blanc car fond sombre sur mobile */}
+              {/* Logo Mobile - noir si menu ouvert (fond blanc), blanc sinon */}
               <img
-                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
+                src={isMenuOpen 
+                  ? "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
+                  : "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
+                }
                 alt="Logo"
                 width="130"
                 height="32"
@@ -336,12 +340,12 @@ const Navbar = memo(() => {
 
             {/* Desktop Navigation + CTA - Right aligned */}
             <div 
-              className="navbar-desktop hidden md:flex items-center gap-8 flex-shrink-0 overflow-visible"
+              className="navbar-desktop hidden md:flex items-center gap-3 lg:gap-6 xl:gap-8 flex-shrink-0 overflow-visible"
               style={{ marginLeft: 'auto' }}
             >
               <a 
                 href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
-                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   const sectionId = isServicePage() ? 'other-services' : 'services';
@@ -358,7 +362,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
-                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('how-it-works');
@@ -374,7 +378,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
-                className={`nav-link text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('faq');
@@ -391,14 +395,14 @@ const Navbar = memo(() => {
 
               <div className={`w-px h-6 flex-shrink-0 ${isTransparentHeader ? 'bg-white/30' : 'bg-gray-300'}`}></div>
 
-              <div className="flex items-center gap-4 flex-shrink-0">
+              <div className="flex items-center gap-2 lg:gap-4 flex-shrink-0">
                 <LanguageSelector isWhite={isTransparentHeader} />
                 <CurrencySelector isWhite={isTransparentHeader} />
               </div>
 
               <a 
                 href="https://app.mynotary.io/login" 
-                className={`nav-link text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleLoginClick, 'navbar_desktop', {
@@ -411,10 +415,10 @@ const Navbar = memo(() => {
                 {t('nav.login')}
               </a>
 
-              {/* CTA Button - toujours visible */}
+              {/* CTA Button - toujours visible, devient bleu quand le CTA du hero sort de la vue */}
               <a 
                 href={getFormUrl(currency, currentServiceId)} 
-                className="glassy-cta text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-6 py-3 font-semibold rounded-lg transition-all duration-300"
+                className={`${isHeroCTAOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-xs lg:text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-4 lg:px-6 py-2 lg:py-3 font-semibold rounded-lg transition-all duration-300`}
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackPlausibleCTAClick, 'navbar_desktop', currentServiceId, pathname, {

@@ -366,6 +366,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
             <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
               <a 
+                id="hero-cta"
                 href={formUrl} 
                 className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
                 style={{ 
@@ -422,49 +423,48 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
       {/* Pricing Section - Two Column Layout */}
       <section
-        className="min-h-screen flex items-center justify-center px-4 sm:px-[30px] py-8 sm:py-16 relative"
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-[30px] py-8 sm:py-12 md:py-16 relative"
         style={{ backgroundColor: '#F7F5F2' }}
       >
         <div className="max-w-[1300px] w-full mx-auto">
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-start">
+          <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8 items-start justify-start">
             {/* Left Side - Image SVG */}
-            <div className="lg:w-2/5 flex items-center justify-center">
+            <div className="w-full lg:w-2/5 flex items-center justify-center">
               <img
                 src={PRICING_IMG_CLOUDFLARE}
                 alt={service.name}
-                className="w-full h-auto rounded-2xl object-cover"
-                style={{ maxHeight: '800px' }}
+                className="w-full h-auto rounded-xl md:rounded-2xl object-contain"
                 loading="lazy"
                 decoding="async"
               />
             </div>
 
             {/* Right Side - Pricing Block */}
-            <div className="lg:w-3/5 flex flex-col">
+            <div className="w-full lg:w-3/5 flex flex-col">
               <div 
-                className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col h-full"
+                className="rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden flex flex-col h-full"
                 style={{
                   boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)'
                 }}
               >
                 {/* Top Section - Black Background */}
                 <div 
-                  className="p-6 sm:p-8 lg:p-10 xl:p-12"
+                  className="p-5 sm:p-6 md:p-8 lg:p-10 xl:p-12"
                   style={{
                     background: '#000000'
                   }}
                 >
                   {/* Price Section */}
                   <div>
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 sm:mb-6 text-white">{service.name}</h2>
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 md:mb-6 text-white">{service.name}</h2>
                   
                     {service.base_price ? (
                       <>
-                        <div className="mb-4 sm:mb-6">
+                        <div className="mb-3 sm:mb-4 md:mb-6">
                           <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
                             <PriceDisplay 
                               price={service.base_price} 
-                              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white"
+                              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white"
                             />
                           </div>
                           <p className="text-xs sm:text-sm text-gray-400">{t('services.perDocument')}</p>
@@ -472,7 +472,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                       </>
                     ) : (
                       <div>
-                        <p className="text-base sm:text-lg text-gray-300">{t('serviceDetail.pricing.contactForPricing')}</p>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-300">{t('serviceDetail.pricing.contactForPricing')}</p>
                       </div>
                     )}
                   </div>
@@ -480,60 +480,60 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
                 {/* Bottom Section - White Background */}
                 <div 
-                  className="p-6 sm:p-8 lg:p-10 xl:p-12 flex flex-col flex-1"
+                  className="p-5 sm:p-6 md:p-8 lg:p-10 xl:p-12 flex flex-col flex-1"
                   style={{
                     background: '#ffffff'
                   }}
                 >
                   {/* Benefits List - Optimisé sans animations coûteuses */}
-                  <div className="mb-6 sm:mb-8 space-y-3 sm:space-y-4 flex-1">
-                    <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="mb-5 sm:mb-6 md:mb-8 space-y-2.5 sm:space-y-3 md:space-y-4 flex-1">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.legallyValid.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.legallyValid.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.legallyValid.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.legallyValid.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.sameDay.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.sameDay.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.sameDay.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.sameDay.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.officialNotarization.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.officialNotarization.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.officialNotarization.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.officialNotarization.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.available247.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.available247.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.available247.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.available247.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.transparentFee.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.transparentFee.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.transparentFee.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.transparentFee.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.bankGradeSecurity.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.bankGradeSecurity.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.bankGradeSecurity.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.bankGradeSecurity.description')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="flex items-start gap-2.5 sm:gap-3 md:gap-4">
                       <IconCheckCircle />
                       <div>
-                        <h3 className="text-gray-900 text-sm sm:text-base font-semibold mb-1">{t('serviceDetail.pricing.benefits.globalCompliance.title')}</h3>
-                        <p className="text-gray-700 text-xs sm:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.globalCompliance.description')}</p>
+                        <h3 className="text-gray-900 text-xs sm:text-sm md:text-base font-semibold mb-0.5 sm:mb-1">{t('serviceDetail.pricing.benefits.globalCompliance.title')}</h3>
+                        <p className="text-gray-700 text-[11px] sm:text-xs md:text-sm leading-relaxed">{t('serviceDetail.pricing.benefits.globalCompliance.description')}</p>
                       </div>
                     </div>
                   </div>
@@ -549,7 +549,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                         elementId: 'service_detail_pricing'
                       })
                     }}
-                    className="block w-full text-base sm:text-lg px-6 sm:px-8 py-2 sm:py-3 text-white font-bold rounded-xl transition-colors duration-200 text-center bg-black hover:bg-gray-900 shadow-lg cursor-pointer"
+                    className="block w-full text-sm sm:text-base md:text-lg px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 text-white font-bold rounded-lg md:rounded-xl transition-colors duration-200 text-center bg-black hover:bg-gray-900 shadow-lg cursor-pointer"
                   >
                     <span className="inline-flex items-center justify-center gap-2">
                       <IconUpload />
