@@ -21,7 +21,7 @@ import dynamic from 'next/dynamic'
 // Différer les composants non-critiques pour réduire le JS initial
 const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
-const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: false })
+const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 
