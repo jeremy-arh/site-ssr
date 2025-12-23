@@ -101,7 +101,7 @@ const STEP_ANIMATION_STYLES = `
 .hiw-anim-body {
   position: relative;
   flex: 1;
-  margin-top: 12px;
+  margin-top: 0;
   background: linear-gradient(180deg, #f8f9fb 0%, #e9edf3 100%);
   border-radius: 14px;
   padding: 0;
@@ -464,7 +464,7 @@ const STEP_ANIMATION_STYLES = `
     border-radius: 14px;
   }
   .hiw-anim-body {
-    padding: 10px 12px 18px;
+    padding: 0;
   }
   .hiw-anim-window {
     border-radius: 12px;
