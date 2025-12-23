@@ -136,6 +136,16 @@
   .fixed {
     contain: layout style paint;
   }
+  
+  /* Mobile CTA - Sticky en bas de l'écran sur mobile */
+  .mobile-cta-sticky {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 9999 !important;
+  }
 }
 
 @layer components {
