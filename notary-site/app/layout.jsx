@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
             .top-0{top:0}.left-0{left:0}.right-0{right:0}.bottom-0{bottom:0}
             .translate-y-0{transform:translateY(0)}.translate-y-full{transform:translateY(100%)}
             .transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4,0,0.2,1)}.duration-300{transition-duration:300ms}
-            .mobile-cta-sticky{position:fixed!important;bottom:0!important;left:0!important;right:0!important;width:100%!important;z-index:9999!important}
+            .mobile-cta-sticky{position:fixed!important;bottom:0!important;left:0!important;right:0!important;width:100%!important;z-index:9999!important;contain:none!important}
             .overflow-hidden{overflow:hidden}.overflow-visible{overflow:visible}
             
             /* Spacing */

@@ -132,12 +132,8 @@
     contain: layout;
   }
 
-  /* Éléments fixed ne doivent pas causer de CLS */
-  .fixed {
-    contain: layout style paint;
-  }
-  
   /* Mobile CTA - Sticky en bas de l'écran sur mobile */
+  /* IMPORTANT: Ne pas utiliser contain: layout/paint/size sur les éléments fixed car cela casse position:fixed */
   .mobile-cta-sticky {
     position: fixed !important;
     bottom: 0 !important;
@@ -145,6 +141,7 @@
     right: 0 !important;
     width: 100% !important;
     z-index: 9999 !important;
+    contain: none !important;
   }
 }
 

@@ -26,7 +26,7 @@ function ProvidersContent({ children }) {
       <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-1" style={{ contain: 'content' }}>
+        <main className="flex-1">
           {children}
         </main>
         <Footer />
