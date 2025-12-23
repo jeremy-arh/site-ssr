@@ -21,6 +21,10 @@ const playfairDisplay = Playfair_Display({
 export const metadata = {
   title: 'My notary - Notarize and Apostille Your Documents 100% Online',
   description: 'Notarize and apostille your documents 100% online. Secure, legally valid, and recognized internationally through the Hague Convention. Book your appointment in minutes.',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({ children }) {
@@ -197,10 +201,6 @@ export default function RootLayout({ children }) {
         
         {/* DNS prefetch supprimé pour scripts tiers - chargés uniquement après interaction */}
         
-        {/* Favicons */}
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
-        
         {/* Meta */}
         <meta name="theme-color" content="#000000" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
@@ -208,7 +208,7 @@ export default function RootLayout({ children }) {
         {/* Partytown - Déplace les scripts tiers vers un Web Worker */}
         <Partytown
           debug={false}
-          forward={['dataLayer.push', 'gtag', '$crisp.push']}
+          forward={['dataLayer.push', 'gtag', '$crisp.push', 'plausible']}
         />
       </head>
       <body suppressHydrationWarning style={{ margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', backgroundColor: '#ffffff', color: '#111827' }}>

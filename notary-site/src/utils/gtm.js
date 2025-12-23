@@ -7,8 +7,30 @@
  * Initialize GTM dataLayer if it doesn't exist
  */
 export const initGTM = () => {
-  if (typeof window !== 'undefined' && !window.dataLayer) {
-    window.dataLayer = [];
+  console.log('[GTM] initGTM appelé');
+  
+  if (typeof window !== 'undefined') {
+    if (!window.dataLayer) {
+      window.dataLayer = [];
+      console.log('[GTM] ✅ dataLayer initialisé');
+    } else {
+      console.log('[GTM] ℹ️ dataLayer existe déjà, longueur:', window.dataLayer.length);
+    }
+    
+    // Vérifier si GTM script est chargé
+    const gtmScript = document.querySelector('script[src*="googletagmanager.com/gtm.js"]');
+    const gtmNoscript = document.querySelector('noscript iframe[src*="googletagmanager.com"]');
+    
+    console.log('[GTM] État du chargement:', {
+      windowExists: true,
+      dataLayerExists: typeof window.dataLayer !== 'undefined',
+      dataLayerLength: window.dataLayer?.length || 0,
+      gtmScriptTag: gtmScript !== null,
+      gtmNoscriptTag: gtmNoscript !== null,
+      gtmContainerId: gtmScript?.src?.match(/id=([^&]+)/)?.[1] || null
+    });
+  } else {
+    console.warn('[GTM] ⚠️ window n\'est pas disponible dans initGTM');
   }
 };
 
@@ -18,19 +40,22 @@ export const initGTM = () => {
  * @param {object} eventData - Additional event data
  */
 export const pushGTMEvent = (eventName, eventData = {}) => {
+  console.log('[GTM] pushGTMEvent appelé', { eventName, eventData });
+  
   if (typeof window === 'undefined') {
-    console.warn('GTM: window is undefined');
+    console.warn('[GTM] ⚠️ window est undefined');
     return;
   }
 
   // Ensure dataLayer exists
   if (!window.dataLayer) {
+    console.log('[GTM] dataLayer n\'existe pas, initialisation...');
     initGTM();
   }
 
   // Double check after initialization
   if (!window.dataLayer) {
-    console.error('GTM: Failed to initialize dataLayer');
+    console.error('[GTM] ❌ Échec de l\'initialisation du dataLayer');
     return;
   }
 
@@ -40,12 +65,21 @@ export const pushGTMEvent = (eventName, eventData = {}) => {
     ...eventData
   };
 
-  window.dataLayer.push(eventPayload);
+  console.log('[GTM] ✅ Envoi événement au dataLayer:', eventName, eventPayload);
   
-  // Debug log in development
-  // eslint-disable-next-line no-undef
-  if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
-    console.log('GTM Event pushed:', eventName, eventPayload);
+  try {
+    window.dataLayer.push(eventPayload);
+    console.log('[GTM] ✅ Événement poussé avec succès. Longueur du dataLayer:', window.dataLayer.length);
+    
+    // Vérifier si l'événement a bien été ajouté
+    const lastEvent = window.dataLayer[window.dataLayer.length - 1];
+    if (lastEvent && lastEvent.event === eventName) {
+      console.log('[GTM] ✅ Vérification: événement confirmé dans dataLayer');
+    } else {
+      console.warn('[GTM] ⚠️ L\'événement pourrait ne pas avoir été ajouté correctement');
+    }
+  } catch (error) {
+    console.error('[GTM] ❌ Erreur lors du push dans dataLayer:', error);
   }
 };
 
