@@ -47,11 +47,10 @@ function generateMultilingualUrls(basePath, lastmod, changefreq, priority) {
  * Fonction principale pour générer le sitemap
  */
 export default async function sitemap() {
-  // Récupérer l'URL de base depuis les variables d'environnement ou utiliser une valeur par défaut
+  // Récupérer l'URL de base depuis les variables d'environnement ou utiliser mynotary.io par défaut
+  // Toujours utiliser le domaine de production, jamais l'URL Vercel
   // eslint-disable-next-line no-undef
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-    // eslint-disable-next-line no-undef
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://mynotary.io')
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mynotary.io'
 
   const allUrls = []
 
