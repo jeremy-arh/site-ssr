@@ -15,16 +15,55 @@ const ChatCTA = () => {
 
   // Ouvrir le chat Crisp
   const openCrispChat = () => {
-    if (window.$crisp) {
-      window.$crisp.push(['do', 'chat:open']);
-    } else {
-      // Si Crisp n'est pas encore chargé, attendre un peu
-      setTimeout(() => {
-        if (window.$crisp) {
+    // Fonction pour vérifier si Crisp est prêt et ouvrir le chat
+    const tryOpenChat = () => {
+      if (typeof window === 'undefined') {
+        return false;
+      }
+
+      // Vérifier que $crisp existe et a la méthode push
+      if (window.$crisp && typeof window.$crisp.push === 'function') {
+        try {
           window.$crisp.push(['do', 'chat:open']);
+          return true;
+        } catch (error) {
+          console.error('Erreur lors de l\'ouverture de Crisp:', error);
+          return false;
         }
-      }, 500);
+      }
+      return false;
+    };
+
+    // Essayer d'ouvrir immédiatement
+    if (tryOpenChat()) {
+      return;
     }
+
+    // Si Crisp n'est pas encore prêt, attendre avec plusieurs tentatives
+    let attempts = 0;
+    const maxAttempts = 15; // 3 secondes max (15 * 200ms)
+    const interval = setInterval(() => {
+      attempts++;
+      if (tryOpenChat()) {
+        clearInterval(interval);
+        return;
+      }
+      
+      if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        console.warn('Crisp n\'a pas pu être chargé après plusieurs tentatives');
+        // Fallback: essayer quand même une dernière fois après un délai plus long
+        setTimeout(() => {
+          if (window.$crisp && typeof window.$crisp.push === 'function') {
+            try {
+              window.$crisp.push(['do', 'chat:open']);
+            } catch (error) {
+              console.error('Erreur finale lors de l\'ouverture de Crisp:', error);
+            }
+          }
+        }, 1000);
+      }
+    }, 200);
   };
 
   const translations = {

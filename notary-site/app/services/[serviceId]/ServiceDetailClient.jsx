@@ -339,8 +339,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
           },
         ]}
       />
-      {/* Hero Section - hauteur fixe pour éviter CLS */}
-      <section data-hero className="relative overflow-hidden h-screen flex items-center" style={{ backgroundColor: '#1f2937' }}>
+      {/* Hero Section - hauteur minimale sur mobile pour permettre le contenu long, fixe sur desktop */}
+      <section data-hero className="relative overflow-hidden min-h-screen lg:h-screen flex items-center" style={{ backgroundColor: '#1f2937' }}>
         {/* Image Hero Cloudflare optimisée */}
         <img
           src={HERO_IMG_CLOUDFLARE}
