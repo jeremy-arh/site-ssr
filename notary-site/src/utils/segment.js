@@ -130,6 +130,7 @@ export const trackCTAClick = (location, serviceId = null, pagePath = null, metad
     service_id: serviceId || undefined,
     page_path: pagePath || undefined
   }).catch(err => {
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Segment trackCTAClick error:', err);
     }
@@ -162,6 +163,7 @@ export const trackServiceClick = (serviceId, serviceName, location) => {
     service_name: serviceName,
     click_location: location
   }).catch(err => {
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Segment trackServiceClick error:', err);
     }
@@ -187,6 +189,7 @@ export const trackLoginClick = (location, metadata = {}) => {
     destination: destination || 'https://app.mynotary.io/login',
     page_path: pagePath || undefined
   }).catch(err => {
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Segment trackLoginClick error:', err);
     }
@@ -209,6 +212,7 @@ export const trackNavigationClick = (linkText, destination, metadata = {}) => {
     page_path: pagePath || undefined,
     nav_section: section || undefined,
   }).catch(err => {
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Segment trackNavigationClick error:', err);
     }
@@ -237,6 +241,7 @@ export const trackBlogPostView = (postSlug, postTitle) => {
     post_slug: postSlug,
     post_title: postTitle
   }).catch(err => {
+    // eslint-disable-next-line no-undef
     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
       console.error('Segment trackBlogPostView error:', err);
     }

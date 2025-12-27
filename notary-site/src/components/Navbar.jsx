@@ -482,7 +482,7 @@ const Navbar = memo(() => {
                 const sectionId = isServicePage() ? 'other-services' : 'services';
                 setTimeout(() => scrollToSection(sectionId), 300);
                 loadAnalytics();
-                safeTrack(trackPlausibleNavigationClick, t('nav.services'), `#${sectionId}`, {
+                safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
                   label: t('nav.services'),
                   pagePath: pathname,
                   section: 'navbar_mobile'
@@ -499,7 +499,7 @@ const Navbar = memo(() => {
                 closeMenu();
                 setTimeout(() => scrollToSection('how-it-works'), 300);
                 loadAnalytics();
-                safeTrack(trackPlausibleNavigationClick, t('nav.howItWorks'), '#how-it-works', {
+                safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
                   label: t('nav.howItWorks'),
                   pagePath: pathname,
                   section: 'navbar_mobile'
@@ -516,7 +516,7 @@ const Navbar = memo(() => {
                 closeMenu();
                 setTimeout(() => scrollToSection('faq'), 300);
                 loadAnalytics();
-                safeTrack(trackPlausibleNavigationClick, t('nav.faq'), '#faq', {
+                safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
                   label: t('nav.faq'),
                   pagePath: pathname,
                   section: 'navbar_mobile'
