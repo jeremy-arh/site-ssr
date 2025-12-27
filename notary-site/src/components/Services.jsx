@@ -8,14 +8,14 @@ import { useServicesList } from '../hooks/useServices';
 import { formatServicesForLanguage } from '../utils/services';
 import PriceDisplay from './PriceDisplay';
 
-// ANALYTICS DIFFÉRÉS - Uniquement Plausible
-let trackPlausibleServiceClick = null;
+// ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
+let trackServiceClick = null;
 
-// Charger Plausible de manière non-bloquante
+// Charger Analytics (Plausible + Segment) de manière non-bloquante
 const loadAnalytics = () => {
-  if (trackPlausibleServiceClick) return;
-  import('../utils/plausible').then((plausible) => {
-    trackPlausibleServiceClick = plausible.trackServiceClick;
+  if (trackServiceClick) return;
+  import('../utils/analytics').then((analytics) => {
+    trackServiceClick = analytics.trackServiceClick;
   }).catch(() => {});
 };
 
@@ -157,7 +157,7 @@ const Services = ({ servicesData = null }) => {
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
                   onClick={() => {
                     loadAnalytics();
-                    safeTrack(trackPlausibleServiceClick, service.service_id, service.name, 'homepage_services');
+                    safeTrack(trackServiceClick, service.service_id, service.name, 'homepage_services');
                   }}
                 >
                   <div className="flex items-center gap-3 mb-4">

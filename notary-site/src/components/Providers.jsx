@@ -18,6 +18,7 @@ const Footer = dynamic(() => import('@/components/Footer'), {
 const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 const CTAPopup = dynamic(() => import('@/components/CTAPopup'), { ssr: false })
 const GclidTracker = dynamic(() => import('@/components/GclidTracker'), { ssr: false })
+const SegmentPageTracker = dynamic(() => import('@/components/SegmentPageTracker'), { ssr: false })
 
 function ProvidersContent({ children }) {
   useScrollAnimation()
@@ -26,6 +27,7 @@ function ProvidersContent({ children }) {
     <>
       <ScrollToTop />
       <GclidTracker />
+      <SegmentPageTracker />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
@@ -38,8 +40,9 @@ function ProvidersContent({ children }) {
   )
 }
 
-// NOTE: Les scripts analytics (GTM, Plausible, Crisp) sont maintenant chargés
+// NOTE: Les scripts analytics (GTM, Plausible, Crisp, Segment) sont maintenant chargés
 // via Partytown dans layout.jsx avec strategy="worker" pour exécution dans un Web Worker
+// SegmentPageTracker track les changements de route pour les pages vues dans Next.js
 
 // Service Worker pour cache des images - enregistrement différé
 function useServiceWorker() {

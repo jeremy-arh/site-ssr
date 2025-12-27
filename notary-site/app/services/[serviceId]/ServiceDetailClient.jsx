@@ -25,9 +25,9 @@ const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 
-// ANALYTICS : Plausible uniquement (léger, ~1KB)
-const trackWithPlausible = (type, ...args) => {
-  import('@/utils/plausible').then((m) => {
+// ANALYTICS : Plausible + Segment GA4
+const trackWithAnalytics = (type, ...args) => {
+  import('@/utils/analytics').then((m) => {
     if (type === 'service') m.trackServiceClick(...args)
     else if (type === 'cta') m.trackCTAClick(...args)
   }).catch(() => {})
@@ -280,7 +280,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   // Track service view - Plausible uniquement (léger, ~1KB)
   useEffect(() => {
     if (service && serviceId) {
-      trackWithPlausible('service', serviceId, service.name, 'service_detail_page')
+      trackWithAnalytics('service', serviceId, service.name, 'service_detail_page')
     }
   }, [service, serviceId])
 
@@ -380,7 +380,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   const ctaCopy = service.cta || t('nav.notarizeNow')
                   const destination = formUrl
                   
-                  trackWithPlausible('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                  trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
                     ctaText: ctaCopy,
                     destination,
                     elementId: 'service_detail_hero'
@@ -543,7 +543,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     href={formUrl}
                     onClick={() => {
                       const destination = formUrl
-                      trackWithPlausible('cta', 'service_detail_pricing', service?.service_id || serviceId, pathname, {
+                      trackWithAnalytics('cta', 'service_detail_pricing', service?.service_id || serviceId, pathname, {
                         ctaText: 'Upload my document',
                         destination,
                         elementId: 'service_detail_pricing'

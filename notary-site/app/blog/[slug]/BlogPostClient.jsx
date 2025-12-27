@@ -24,7 +24,7 @@ const IconOpenNew = memo(() => (
     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
   </svg>
 ));
-import { trackBlogPostView } from '@/utils/plausible'
+import { trackBlogPostView } from '@/utils/analytics'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
 import { useLanguage } from '@/contexts/LanguageContext'

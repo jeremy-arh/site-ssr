@@ -7,14 +7,14 @@ import { getFormUrl } from '../utils/formUrl';
 import { useService } from '../hooks/useServices';
 import { useTranslation } from '../hooks/useTranslation';
 
-// ANALYTICS DIFFÉRÉS - Uniquement Plausible
-let trackPlausibleCTAClick = null;
+// ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
+let trackCTAClick = null;
 
-// Charger Plausible de manière non-bloquante
+// Charger Analytics (Plausible + Segment) de manière non-bloquante
 const loadAnalytics = () => {
-  if (trackPlausibleCTAClick) return;
-  import('../utils/plausible').then((plausible) => {
-    trackPlausibleCTAClick = plausible.trackCTAClick;
+  if (trackCTAClick) return;
+  import('../utils/analytics').then((analytics) => {
+    trackCTAClick = analytics.trackCTAClick;
   }).catch(() => {});
 };
 
@@ -82,7 +82,7 @@ const CTAPopup = () => {
 
   const handleContactClick = () => {
     loadAnalytics();
-    safeTrack(trackPlausibleCTAClick, 'popup_contact', serviceId, pathname, {
+    safeTrack(trackCTAClick, 'popup_contact', serviceId, pathname, {
       ctaText: t('ctaPopup.contact'),
       destination: 'crisp_chat',
       ctaType: 'contact',
@@ -107,7 +107,7 @@ const CTAPopup = () => {
     const formUrl = getFormUrl(currency, serviceId);
 
     loadAnalytics();
-    safeTrack(trackPlausibleCTAClick, 'popup_cta', serviceId, pathname, {
+    safeTrack(trackCTAClick, 'popup_cta', serviceId, pathname, {
       ctaText: label,
       destination: formUrl,
       elementId: 'popup_primary'

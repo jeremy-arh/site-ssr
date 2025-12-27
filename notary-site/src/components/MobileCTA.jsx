@@ -5,14 +5,14 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 
-// ANALYTICS DIFFÉRÉS - Uniquement Plausible
-let trackPlausibleCTAClick = null;
+// ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
+let trackCTAClick = null;
 
-// Charger Plausible de manière non-bloquante
+// Charger Analytics (Plausible + Segment) de manière non-bloquante
 const loadAnalytics = () => {
-  if (trackPlausibleCTAClick) return;
-  import('../utils/plausible').then((plausible) => {
-    trackPlausibleCTAClick = plausible.trackCTAClick;
+  if (trackCTAClick) return;
+  import('../utils/analytics').then((analytics) => {
+    trackCTAClick = analytics.trackCTAClick;
   }).catch(() => {});
 };
 
@@ -134,7 +134,7 @@ const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
               className="w-full text-center px-6 py-4 glassy-cta-blue font-bold rounded-lg transition-all duration-300"
               onClick={() => {
                 loadAnalytics();
-                safeTrack(trackPlausibleCTAClick, 'mobile_cta', serviceId, window.location.pathname, {
+                safeTrack(trackCTAClick, 'mobile_cta', serviceId, window.location.pathname, {
                   ctaText: defaultCtaText,
                   destination: getFormUrl(currency, serviceId),
                   elementId: 'mobile_bottom_cta'

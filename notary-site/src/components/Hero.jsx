@@ -9,14 +9,14 @@ import { useTranslation } from '../hooks/useTranslation';
 // URL Cloudflare - Next.js Image gère automatiquement le responsive
 const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/public';
 
-// ANALYTICS DIFFÉRÉS - Uniquement Plausible
-let trackPlausibleCTAClick = null;
+// ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
+let trackCTAClick = null;
 
-// Charger Plausible de manière non-bloquante
+// Charger Analytics (Plausible + Segment) de manière non-bloquante
 const loadAnalytics = () => {
-  if (trackPlausibleCTAClick) return;
-  import('../utils/plausible').then((plausible) => {
-    trackPlausibleCTAClick = plausible.trackCTAClick;
+  if (trackCTAClick) return;
+  import('../utils/analytics').then((analytics) => {
+    trackCTAClick = analytics.trackCTAClick;
   }).catch(() => {});
 };
 
@@ -105,7 +105,7 @@ const Hero = memo(() => {
               }}
               onClick={() => {
                 loadAnalytics();
-                safeTrack(trackPlausibleCTAClick, 'hero', null, window.location.pathname, {
+                safeTrack(trackCTAClick, 'hero', null, window.location.pathname, {
                   ctaText: t('nav.notarizeNow'),
                   destination: getFormUrl(currency),
                   elementId: 'hero_primary'

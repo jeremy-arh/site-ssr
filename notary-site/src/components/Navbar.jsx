@@ -13,18 +13,18 @@ import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
 // NOTE: Ne plus utiliser Supabase côté client - utiliser les données SSR
 import servicesData from '../../public/data/services.json';
 
-// ANALYTICS DIFFÉRÉS - Uniquement Plausible
-let trackPlausibleCTAClick = null;
-let trackPlausibleLoginClick = null;
-let trackPlausibleNavigationClick = null;
+// ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
+let trackCTAClick = null;
+let trackLoginClick = null;
+let trackNavigationClick = null;
 
-// Charger Plausible de manière non-bloquante
+// Charger Analytics (Plausible + Segment) de manière non-bloquante
 const loadAnalytics = () => {
-  if (trackPlausibleCTAClick) return;
-  import('../utils/plausible').then((plausible) => {
-    trackPlausibleCTAClick = plausible.trackCTAClick;
-    trackPlausibleLoginClick = plausible.trackLoginClick;
-    trackPlausibleNavigationClick = plausible.trackNavigationClick;
+  if (trackCTAClick) return;
+  import('../utils/analytics').then((analytics) => {
+    trackCTAClick = analytics.trackCTAClick;
+    trackLoginClick = analytics.trackLoginClick;
+    trackNavigationClick = analytics.trackNavigationClick;
   }).catch(() => {});
 };
 
@@ -351,7 +351,7 @@ const Navbar = memo(() => {
                   const sectionId = isServicePage() ? 'other-services' : 'services';
                   scrollToSection(sectionId);
                   loadAnalytics();
-                  safeTrack(trackPlausibleNavigationClick, t('nav.services'), `#${sectionId}`, {
+                  safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
                     label: t('nav.services'),
                     pagePath: pathname,
                     section: 'navbar_desktop'
@@ -367,7 +367,7 @@ const Navbar = memo(() => {
                   e.preventDefault();
                   scrollToSection('how-it-works');
                   loadAnalytics();
-                  safeTrack(trackPlausibleNavigationClick, t('nav.howItWorks'), '#how-it-works', {
+                  safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
                     label: t('nav.howItWorks'),
                     pagePath: pathname,
                     section: 'navbar_desktop'
@@ -383,7 +383,7 @@ const Navbar = memo(() => {
                   e.preventDefault();
                   scrollToSection('faq');
                   loadAnalytics();
-                  safeTrack(trackPlausibleNavigationClick, t('nav.faq'), '#faq', {
+                  safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
                     label: t('nav.faq'),
                     pagePath: pathname,
                     section: 'navbar_desktop'
@@ -405,7 +405,7 @@ const Navbar = memo(() => {
                 className={`nav-link text-sm lg:text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleLoginClick, 'navbar_desktop', {
+                  safeTrack(trackLoginClick, 'navbar_desktop', {
                     linkText: t('nav.login'),
                     pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
@@ -421,7 +421,7 @@ const Navbar = memo(() => {
                 className={`${isHeroCTAOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-xs lg:text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-4 lg:px-6 py-2 lg:py-3 font-semibold rounded-lg transition-all duration-300`}
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleCTAClick, 'navbar_desktop', currentServiceId, pathname, {
+                  safeTrack(trackCTAClick, 'navbar_desktop', currentServiceId, pathname, {
                     ctaText: ctaText || t('nav.notarizeNow'),
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_desktop_cta'
@@ -559,7 +559,7 @@ const Navbar = memo(() => {
                     }
                   }, 300);
                   loadAnalytics();
-                  safeTrack(trackPlausibleNavigationClick, t('common.contactUs'), localizedPath, {
+                  safeTrack(trackNavigationClick, t('common.contactUs'), localizedPath, {
                     label: t('common.contactUs'),
                     pagePath: pathname,
                     section: 'navbar_mobile'
@@ -574,7 +574,7 @@ const Navbar = memo(() => {
                 href="https://app.mynotary.io/login"
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleLoginClick, 'navbar_mobile', {
+                  safeTrack(trackLoginClick, 'navbar_mobile', {
                     linkText: t('nav.login'),
                     pagePath: pathname,
                     destination: 'https://app.mynotary.io/login'
@@ -591,7 +591,7 @@ const Navbar = memo(() => {
                 href={getFormUrl(currency, currentServiceId)}
                 onClick={() => {
                   loadAnalytics();
-                  safeTrack(trackPlausibleCTAClick, 'navbar_mobile', currentServiceId, pathname, {
+                  safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, pathname, {
                     ctaText: ctaText || t('nav.notarizeNow'),
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_mobile_cta'

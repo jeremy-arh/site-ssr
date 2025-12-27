@@ -11,7 +11,7 @@ import LanguageRouter from './components/LanguageRouter'
 import { useScrollAnimation } from './hooks/useScrollAnimation'
 
 // Plausible uniquement - PAS de Supabase analytics (46 KiB économisés)
-import { trackPageView as trackPlausiblePageView } from './utils/plausible'
+import { trackPageView as trackPageView } from './utils/plausible'
 
 // Prefetch chargé dynamiquement (mais sans analytics Supabase)
 let prefetchModule = null;
@@ -28,7 +28,7 @@ function PageViewTracker() {
 
   useEffect(() => {
     const pageName = location.pathname === '/' ? 'Home' : location.pathname.split('/').pop();
-    trackPlausiblePageView(pageName, location.pathname).catch(() => {});
+    trackPageView(pageName, location.pathname).catch(() => {});
   }, [location]);
 
   return null;
