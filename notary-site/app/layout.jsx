@@ -99,7 +99,8 @@ export default function RootLayout({ children }) {
             .object-cover{object-fit:cover}
             
             /* Hero section */
-            [data-hero]{min-height:100vh;position:relative;contain:layout style paint}
+            [data-hero]{min-height:750px;height:100vh;position:relative;contain:layout style paint}
+            @media(min-width:1024px){[data-hero]{min-height:100vh}}
             
             /* Navbar - Mobile */
             .navbar-container{position:fixed;top:0;left:0;right:0;z-index:50;padding:10px 10px 0 10px;background-color:transparent;contain:layout}

@@ -118,8 +118,14 @@
   [data-hero] {
     contain: layout style;
     height: 100vh;
-    min-height: 100vh;
+    min-height: 750px;
     max-height: 100vh;
+  }
+  
+  @media (min-width: 1024px) {
+    [data-hero] {
+      min-height: 100vh;
+    }
   }
 
   /* Empêcher les images de causer des shifts */

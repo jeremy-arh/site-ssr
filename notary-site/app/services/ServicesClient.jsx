@@ -106,7 +106,7 @@ export default function ServicesClient({ servicesData }) {
         canonicalPath={pathname}
       />
       
-      <section className="relative overflow-hidden h-[60vh] min-h-[500px] flex items-center px-[30px]" data-hero style={{ backgroundColor: '#1f2937' }}>
+      <section className="relative overflow-hidden flex items-center px-[30px] lg:h-[60vh]" data-hero style={{ backgroundColor: '#1f2937' }}>
         {/* Image Hero Cloudflare optimisée */}
         <img
           src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/165f7d09-facd-47ad-dd30-db71400aaf00/w=auto,q=auto,f=avif"
@@ -116,8 +116,8 @@ export default function ServicesClient({ servicesData }) {
           decoding="async"
         />
         
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Dark Overlay uniforme */}
+        <div className="absolute inset-0 z-[1] bg-black/70"></div>
         
         <div className="relative z-10 max-w-[1300px] mx-auto text-center w-full">
           <div className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold mb-4 animate-fade-in">

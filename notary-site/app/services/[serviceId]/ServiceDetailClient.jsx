@@ -340,7 +340,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         ]}
       />
       {/* Hero Section - hauteur minimale sur mobile pour permettre le contenu long, fixe sur desktop */}
-      <section data-hero className="relative overflow-hidden min-h-screen lg:h-screen flex items-center" style={{ backgroundColor: '#1f2937' }}>
+      <section data-hero className="relative overflow-hidden flex items-center lg:h-screen" style={{ backgroundColor: '#1f2937' }}>
         {/* Image Hero Cloudflare optimisée */}
         <img
           src={HERO_IMG_CLOUDFLARE}
@@ -350,8 +350,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
           decoding="async"
         />
         
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Dark Overlay uniforme */}
+        <div className="absolute inset-0 z-[1] bg-black/70"></div>
 
         {/* Content Container */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 py-16 w-full">
