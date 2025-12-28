@@ -39,6 +39,29 @@
     background-color: transparent;
   }
 
+  /* Animation pour le menu mobile - slide depuis la droite */
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutToRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+
   .navbar-inner {
     border-radius: 16px;
     height: 56px;
@@ -161,6 +184,29 @@
     gap: 8px !important;
     flex-wrap: nowrap !important;
     white-space: nowrap !important;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Ripple effect pour primary-cta */
+  .primary-cta::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .primary-cta:hover::after {
+    animation: ripple 0.8s ease-out;
+    opacity: 1;
   }
 
   .primary-cta:hover {
@@ -168,6 +214,11 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
+  }
+
+  .primary-cta .btn-text {
+    position: relative;
+    z-index: 2;
   }
 
   /* Override hover for glassy buttons */
@@ -194,6 +245,107 @@
     }
   }
 
+  /* Animation shimmer en boucle infinie pour les CTA */
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%) skewX(-20deg);
+    }
+    100% {
+      transform: translateX(400%) skewX(-20deg);
+    }
+  }
+
+  /* Animation ripple effect pour les CTA - plus visible */
+  @keyframes ripple {
+    0% {
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 1;
+    }
+    20% {
+      opacity: 0.9;
+    }
+    40% {
+      opacity: 0.7;
+    }
+    60% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(5);
+      opacity: 0;
+    }
+  }
+
+  /* Ripple effect pour tous les boutons CTA qui redirigent vers le formulaire */
+  /* Appliqué automatiquement aux boutons avec href contenant "app.mynotary.io/form" */
+  a[href*="app.mynotary.io/form"]:not(.no-ripple) {
+    position: relative;
+    overflow: hidden;
+  }
+
+  a[href*="app.mynotary.io/form"]:not(.no-ripple)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  a[href*="app.mynotary.io/form"]:not(.no-ripple):hover::after {
+    animation: ripple 0.8s ease-out;
+    opacity: 1;
+  }
+
+  /* S'assurer que le texte reste au-dessus */
+  a[href*="app.mynotary.io/form"]:not(.no-ripple) .btn-text,
+  a[href*="app.mynotary.io/form"]:not(.no-ripple) > span,
+  a[href*="app.mynotary.io/form"]:not(.no-ripple) > svg {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Ripple pour les boutons bleus (Hero, ServiceDetail, etc.) */
+  a.bg-blue-600,
+  a[class*="bg-blue-600"] {
+    position: relative;
+    overflow: hidden;
+  }
+
+  a.bg-blue-600::after,
+  a[class*="bg-blue-600"]::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 1;
+  }
+
+  a.bg-blue-600:hover::after,
+  a[class*="bg-blue-600"]:hover::after {
+    animation: ripple 0.8s ease-out;
+    opacity: 1;
+  }
+
+  a.bg-blue-600 > *,
+  a[class*="bg-blue-600"] > * {
+    position: relative;
+    z-index: 2;
+  }
+
   /* Animation for glassy effect - DÉSACTIVÉE pour éviter le CLS */
   /* Les animations avec box-shadow et border-color ne sont pas composited */
   @keyframes glassy-enhance {
@@ -211,6 +363,27 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
+  }
+
+  /* Ripple effect pour glassy-cta - plus visible */
+  .glassy-cta::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .glassy-cta:hover::after {
+    animation: ripple 0.8s ease-out;
+    opacity: 1;
   }
 
   /* backdrop-filter uniquement sur desktop pour performance */
@@ -232,38 +405,40 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 60%;
+    width: 50%;
     height: 100%;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.2) 30%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.2) 70%,
+      rgba(255, 255, 255, 0.3) 30%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0.3) 70%,
       transparent 100%
     );
-    opacity: 0;
+    opacity: 0.8;
     transform: translateX(-100%) skewX(-20deg);
     pointer-events: none;
     z-index: 1;
-    will-change: transform, opacity;
+    will-change: transform;
+    animation: shimmer 3s ease-in-out infinite;
   }
 
   /* Animation flash uniquement sur desktop - utilise transform (composited) */
   @media (min-width: 768px) {
     .glassy-cta::before {
-      filter: blur(8px);
-      animation: glassy-flash 5s ease-out infinite;
+      filter: blur(6px);
+      animation: shimmer 3s ease-in-out infinite;
     }
   }
 
   .glassy-cta:hover::before {
     animation-play-state: paused;
+    opacity: 0.5;
   }
 
   .glassy-cta .btn-text {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     color: #ffffff !important;
   }
 
@@ -303,6 +478,27 @@
     color: white !important;
   }
 
+  /* Ripple effect pour glassy-cta-blue - plus visible */
+  .glassy-cta-blue::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    transform: translate(-50%, -50%) scale(0);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  .glassy-cta-blue:hover::after {
+    animation: ripple 0.8s ease-out;
+    opacity: 1;
+  }
+
   @media (min-width: 768px) {
     .glassy-cta-blue {
       backdrop-filter: blur(40px) saturate(200%);
@@ -321,37 +517,39 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 60%;
+    width: 50%;
     height: 100%;
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.2) 30%,
-      rgba(255, 255, 255, 0.3) 50%,
-      rgba(255, 255, 255, 0.2) 70%,
+      rgba(255, 255, 255, 0.3) 30%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0.3) 70%,
       transparent 100%
     );
-    opacity: 0;
+    opacity: 0.8;
     transform: translateX(-100%) skewX(-20deg);
     pointer-events: none;
     z-index: 1;
-    will-change: transform, opacity;
+    will-change: transform;
+    animation: shimmer 3s ease-in-out infinite;
   }
 
   @media (min-width: 768px) {
     .glassy-cta-blue::before {
-      filter: blur(8px);
-      animation: glassy-flash 5s ease-out infinite;
+      filter: blur(6px);
+      animation: shimmer 3s ease-in-out infinite;
     }
   }
 
   .glassy-cta-blue:hover::before {
     animation-play-state: paused;
+    opacity: 0.5;
   }
 
   .glassy-cta-blue .btn-text {
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
 
   .glassy-cta-blue:hover {
@@ -411,13 +609,58 @@
   }
 
   .nav-link {
-    @apply text-gray-700 hover:text-black transition-colors duration-200 font-medium;
+    @apply transition-all duration-300 font-medium relative;
+    color: #000000 !important;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-link:hover {
+    color: #000000 !important;
+  }
+
+  /* Effet de soulignement animé au hover */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0.25rem;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 2px;
+  }
+
+  .nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);
+    width: 80%;
+  }
+
+  /* Effet de fond subtil au hover */
+  .nav-link:hover {
+    background: rgba(0, 0, 0, 0.03);
   }
 
   /* Desktop : liens blancs quand le header est transparent (pages service en haut) */
   @media (min-width: 768px) {
     .navbar-inner-transparent .nav-link {
-      @apply text-white hover:text-white/80;
+      color: #ffffff !important;
+    }
+
+    .navbar-inner-transparent .nav-link:hover {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    .navbar-inner-transparent .nav-link::after {
+      background: linear-gradient(90deg, transparent, white, transparent);
+    }
+
+    .navbar-inner-transparent .nav-link:hover {
+      background: rgba(255, 255, 255, 0.1);
     }
   }
 
@@ -698,12 +941,21 @@
     .glassy-cta,
     .glassy-cta-blue {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-      animation: none !important;
     }
 
+    /* Garder le shimmer sur mobile mais plus léger */
     .glassy-cta::before,
     .glassy-cta-blue::before {
-      display: none !important;
+      filter: blur(4px) !important;
+      opacity: 0.6 !important;
+      animation: shimmer 3s ease-in-out infinite !important;
+    }
+
+    /* Ripple effect sur mobile aussi */
+    .glassy-cta::after,
+    .glassy-cta-blue::after,
+    .primary-cta::after {
+      animation: ripple 0.8s ease-out !important;
     }
 
     /* Contain pour isolation */

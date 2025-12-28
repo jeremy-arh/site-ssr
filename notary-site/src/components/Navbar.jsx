@@ -52,6 +52,42 @@ const IconOpenNewLarge = memo(() => (
   </svg>
 ));
 
+// Icônes pour le menu mobile
+// material-symbols:list-rounded - icône de liste arrondie
+const IconListRounded = memo(() => (
+  <svg className="w-5 h-5 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/>
+  </svg>
+));
+
+// uil:process - icône de processus avec flèches circulaires (représente un flux de processus)
+const IconProcess = memo(() => (
+  <svg className="w-5 h-5 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 12h18M3 12l4-4M3 12l4 4M21 12l-4-4M21 12l-4 4"/>
+    <circle cx="12" cy="12" r="2" fill="currentColor"/>
+  </svg>
+));
+
+const IconQuestion = memo(() => (
+  <svg className="w-5 h-5 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>
+  </svg>
+));
+
+const IconPaperclip = memo(() => (
+  <svg className="w-5 h-5 text-white flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+  </svg>
+));
+
+const IconClose = memo(() => (
+  <svg className="w-6 h-6 text-gray-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+));
+
 // Helper function pour scroll vers une section
 // Optimisé pour utiliser requestAnimationFrame et éviter les forced layouts
 const scrollToSection = (sectionId) => {
@@ -308,8 +344,8 @@ const Navbar = memo(() => {
         <div className={`navbar-inner ${isMenuOpen ? 'navbar-inner-menu-open' : ''} ${isTransparentHeader ? 'navbar-inner-transparent' : ''}`}>
           <div className="max-w-[1300px] mx-auto w-full px-[20px] md:px-[20px] lg:px-[30px]">
             <div className="flex items-center justify-between w-full">
-            {/* Logo */}
-            <a href="/" className="flex-shrink-0 relative z-[60]">
+            {/* Logo - caché sur mobile quand le menu est ouvert */}
+            <a href="/" className={`flex-shrink-0 relative z-[60] ${isMenuOpen ? 'hidden md:block' : ''}`}>
               {/* Logo Mobile - noir si menu ouvert (fond blanc), blanc sinon */}
               <img
                 src={isMenuOpen 
@@ -345,7 +381,7 @@ const Navbar = memo(() => {
             >
               <a 
                 href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
                 onClick={(e) => {
                   e.preventDefault();
                   const sectionId = isServicePage() ? 'other-services' : 'services';
@@ -362,7 +398,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('how-it-works');
@@ -378,7 +414,7 @@ const Navbar = memo(() => {
               </a>
               <a 
                 href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('faq');
@@ -402,7 +438,7 @@ const Navbar = memo(() => {
 
               <a 
                 href="https://app.mynotary.io/login" 
-                className={`nav-link text-sm lg:text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : ''}`}
+                className={`nav-link text-sm lg:text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackLoginClick, 'navbar_desktop', {
@@ -435,10 +471,10 @@ const Navbar = memo(() => {
               </a>
             </div>
 
-            {/* Animated Hamburger Menu Button - MOBILE ONLY (hidden on md+) */}
+            {/* Animated Hamburger Menu Button - MOBILE ONLY (hidden on md+ et quand le menu est ouvert) */}
             <button
               onClick={toggleMenu}
-              className="navbar-burger flex md:hidden relative z-[60] w-10 h-10 flex-col items-center justify-center focus:outline-none overflow-visible"
+              className={`navbar-burger flex md:hidden relative z-[60] w-10 h-10 flex-col items-center justify-center focus:outline-none overflow-visible ${isMenuOpen ? 'hidden' : ''}`}
               aria-label="Toggle menu"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center relative">
@@ -466,76 +502,135 @@ const Navbar = memo(() => {
 
       {/* Fullscreen Mobile Menu Overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-white transition-all duration-500 ease-in-out ${
+        className={`md:hidden fixed inset-0 z-[60] bg-white ${
           isMenuOpen
-            ? 'opacity-100 visible'
-            : 'opacity-0 invisible'
+            ? 'opacity-100 visible translate-x-0 pointer-events-auto'
+            : 'opacity-0 invisible translate-x-full pointer-events-none'
         }`}
+        style={{
+          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-in-out, visibility 0.3s ease-in-out'
+        }}
       >
-        <div className="h-full flex flex-col justify-center items-start px-8 pt-24 pb-12">
-          <div className="w-full max-w-md space-y-4">
-            <a
-              href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')}
-              onClick={(e) => {
-                e.preventDefault();
-                closeMenu();
-                const sectionId = isServicePage() ? 'other-services' : 'services';
-                setTimeout(() => scrollToSection(sectionId), 300);
-                loadAnalytics();
-                safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
-                  label: t('nav.services'),
-                  pagePath: pathname,
-                  section: 'navbar_mobile'
-                });
-              }}
-              className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
-            >
-              {t('nav.services')}
+        <div className="h-full flex flex-col">
+          {/* Header avec logo et bouton fermer */}
+          <div 
+            className={`flex items-center justify-between px-6 py-4 border-b border-gray-200 transition-all duration-300 ${
+              isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+            }`}
+            style={{ 
+              transitionDelay: isMenuOpen ? '0.1s' : '0s',
+              transitionProperty: 'opacity, transform',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <a href="/" className="flex-shrink-0">
+              <img
+                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
+                alt="Logo"
+                width="130"
+                height="32"
+                className="h-7 w-auto"
+                loading="eager"
+                decoding="async"
+              />
             </a>
-            <a
-              href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')}
-              onClick={(e) => {
-                e.preventDefault();
-                closeMenu();
-                setTimeout(() => scrollToSection('how-it-works'), 300);
-                loadAnalytics();
-                safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
-                  label: t('nav.howItWorks'),
-                  pagePath: pathname,
-                  section: 'navbar_mobile'
-                });
-              }}
-              className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
+            <button
+              onClick={closeMenu}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+              aria-label="Close menu"
             >
-              {t('nav.howItWorks')}
-            </a>
-            <a
-              href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')}
-              onClick={(e) => {
-                e.preventDefault();
-                closeMenu();
-                setTimeout(() => scrollToSection('faq'), 300);
-                loadAnalytics();
-                safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
-                  label: t('nav.faq'),
-                  pagePath: pathname,
-                  section: 'navbar_mobile'
-                });
-              }}
-              className="block text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2 whitespace-nowrap"
-            >
-              {t('nav.faq')}
-            </a>
+              <IconClose />
+            </button>
+          </div>
 
-            <div className="border-t border-gray-200 my-4"></div>
-
-            <div className="flex items-center gap-3 py-2 whitespace-nowrap">
-              <LanguageSelector />
-              <div className="w-px h-6 bg-gray-300"></div>
-              <CurrencySelector />
+          {/* Contenu du menu */}
+          <div 
+            className={`flex-1 overflow-y-auto px-6 py-6 transition-all duration-300 ${
+              isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ 
+              transitionDelay: isMenuOpen ? '0.15s' : '0s',
+              transitionProperty: 'opacity, transform',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div className="space-y-0">
+              {/* Liens de navigation avec flèche à droite */}
+              <a
+                href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  closeMenu();
+                  const sectionId = isServicePage() ? 'other-services' : 'services';
+                  setTimeout(() => scrollToSection(sectionId), 300);
+                  loadAnalytics();
+                  safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
+                    label: t('nav.services'),
+                    pagePath: pathname,
+                    section: 'navbar_mobile'
+                  });
+                }}
+                className="flex items-center justify-between px-4 py-4 text-gray-900 hover:bg-gray-50 transition-colors duration-200 border-b border-gray-100"
+              >
+                <span className="text-base font-medium">{t('nav.services')}</span>
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a
+                href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  closeMenu();
+                  setTimeout(() => scrollToSection('how-it-works'), 300);
+                  loadAnalytics();
+                  safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
+                    label: t('nav.howItWorks'),
+                    pagePath: pathname,
+                    section: 'navbar_mobile'
+                  });
+                }}
+                className="flex items-center justify-between px-4 py-4 text-gray-900 hover:bg-gray-50 transition-colors duration-200 border-b border-gray-100"
+              >
+                <span className="text-base font-medium">{t('nav.howItWorks')}</span>
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+              <a
+                href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')}
+                onClick={(e) => {
+                  e.preventDefault();
+                  closeMenu();
+                  setTimeout(() => scrollToSection('faq'), 300);
+                  loadAnalytics();
+                  safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
+                    label: t('nav.faq'),
+                    pagePath: pathname,
+                    section: 'navbar_mobile'
+                  });
+                }}
+                className="flex items-center justify-between px-4 py-4 text-gray-900 hover:bg-gray-50 transition-colors duration-200 border-b border-gray-100"
+              >
+                <span className="text-base font-medium">{t('nav.faq')}</span>
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
             </div>
 
-            <div className="flex items-center gap-3 py-2 whitespace-nowrap">
+            {/* Sélecteurs Langue et Devise */}
+            <div className="flex items-center gap-3 mt-6 px-4">
+              <div className="flex-1 border border-gray-300 rounded-lg bg-white h-12 flex items-center">
+                <LanguageSelector />
+              </div>
+              <div className="flex-1 border border-gray-300 rounded-lg bg-white h-12 flex items-center">
+                <CurrencySelector />
+              </div>
+            </div>
+
+            {/* Liens Contact et Connexion */}
+            <div className="mt-6 space-y-2 px-4">
               <a
                 href={getLocalizedPath('/#contact')}
                 onClick={(e) => {
@@ -546,7 +641,6 @@ const Navbar = memo(() => {
                   setTimeout(() => {
                     const element = document.getElementById('contact');
                     if (element) {
-                      // Grouper les lectures de layout dans un requestAnimationFrame
                       requestAnimationFrame(() => {
                         const offset = 100;
                         const elementPosition = element.getBoundingClientRect().top;
@@ -565,11 +659,10 @@ const Navbar = memo(() => {
                     section: 'navbar_mobile'
                   });
                 }}
-                className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
+                className="block text-base font-medium text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2"
               >
                 {t('common.contactUs')}
               </a>
-              <div className="w-px h-6 bg-gray-300"></div>
               <a
                 href="https://app.mynotary.io/login"
                 onClick={() => {
@@ -581,31 +674,42 @@ const Navbar = memo(() => {
                   });
                   closeMenu();
                 }}
-                className="nav-link text-lg font-semibold text-gray-900 hover:text-gray-600 transition-colors duration-200 whitespace-nowrap"
+                className="block text-base font-medium text-gray-900 hover:text-gray-600 transition-colors duration-200 py-2"
               >
                 {t('nav.login')}
               </a>
             </div>
-            <div className="w-full mt-8">
-              <a
-                href={getFormUrl(currency, currentServiceId)}
-                onClick={() => {
-                  loadAnalytics();
-                  safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, pathname, {
-                    ctaText: ctaText || t('nav.notarizeNow'),
-                    destination: getFormUrl(currency, currentServiceId),
-                    elementId: 'navbar_mobile_cta'
-                  });
-                  closeMenu();
-                }}
-                className="block w-full text-center glassy-cta primary-cta text-lg py-4"
-              >
-                <span className="btn-text inline-flex items-center justify-center gap-2 whitespace-nowrap">
-                  <IconOpenNewLarge />
-                  <span className="whitespace-nowrap">{ctaText || t('nav.notarizeNow')}</span>
-                </span>
-              </a>
-            </div>
+          </div>
+
+          {/* CTA en bas */}
+          <div 
+            className={`px-6 pb-6 pt-4 border-t border-gray-200 transition-all duration-300 ${
+              isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            }`}
+            style={{ 
+              transitionDelay: isMenuOpen ? '0.2s' : '0s',
+              transitionProperty: 'opacity, transform',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <a
+              href={getFormUrl(currency, currentServiceId)}
+              onClick={() => {
+                loadAnalytics();
+                safeTrack(trackCTAClick, 'navbar_mobile', currentServiceId, pathname, {
+                  ctaText: ctaText || t('nav.notarizeNow'),
+                  destination: getFormUrl(currency, currentServiceId),
+                  elementId: 'navbar_mobile_cta'
+                });
+                closeMenu();
+              }}
+              className="block w-full text-center glassy-cta-blue text-base font-bold rounded-xl py-4 px-6"
+            >
+              <span className="btn-text inline-flex items-center justify-center gap-2 whitespace-nowrap">
+                <IconOpenNewLarge />
+                <span>{ctaText || t('nav.notarizeNow')}</span>
+              </span>
+            </a>
           </div>
         </div>
       </div>

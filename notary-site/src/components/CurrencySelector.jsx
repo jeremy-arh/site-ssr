@@ -89,21 +89,21 @@ const CurrencySelector = ({ isWhite = false }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full h-full">
       <button
         ref={buttonRef}
         onClick={handleToggle}
-        className={`flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors rounded-lg whitespace-nowrap flex-shrink-0 ${
+        className={`w-full h-full flex items-center px-3 text-sm font-medium transition-colors whitespace-nowrap ${
           isWhite 
             ? 'text-white hover:text-white/80 hover:bg-white/10' 
-            : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+            : 'text-gray-700 hover:text-gray-900'
         }`}
         aria-label="Select currency"
         aria-expanded={isOpen}
       >
-        <span className="text-lg">{selectedCurrency.symbol}</span>
+        <span className="text-lg flex-shrink-0">{selectedCurrency.symbol}</span>
         <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-4 h-4 transition-transform flex-shrink-0 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -115,10 +115,16 @@ const CurrencySelector = ({ isWhite = false }) => {
       {isOpen && createPortal(
         <div 
           ref={dropdownRef}
-          className="fixed w-48 bg-white rounded-lg shadow-xl py-1 max-h-96 overflow-y-auto border border-gray-200"
+          className="fixed bg-white rounded-lg shadow-xl py-1 max-h-96 overflow-y-auto border border-gray-200"
           style={{ 
             top: position.top,
             left: position.left,
+            width: typeof window !== 'undefined' && window.innerWidth >= 768 
+              ? '200px' 
+              : (buttonRef.current?.offsetWidth || 'auto'),
+            minWidth: typeof window !== 'undefined' && window.innerWidth >= 768 
+              ? '200px' 
+              : (buttonRef.current?.offsetWidth || 'auto'),
             zIndex: 99999
           }}
         >
