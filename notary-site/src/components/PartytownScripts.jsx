@@ -46,12 +46,13 @@ export default function PartytownScripts() {
 
   return (
     <>
-      {/* Google Tag Manager - via Partytown */}
+      {/* Google Tag Manager - chargé directement dans le DOM (pas via Partytown) */}
+      {/* Nécessaire pour que le Tag Assistant de Google puisse détecter les balises Google Ads */}
       <Script
         id="gtm-script"
-        type="text/partytown"
+        strategy="afterInteractive"
         onLoad={() => {
-          console.log('[GTM] ✅ Script GTM chargé via Partytown');
+          console.log('[GTM] ✅ Script GTM chargé directement dans le DOM');
           // Vérifier après un court délai si dataLayer est disponible
           setTimeout(() => {
             if (typeof window !== 'undefined') {
