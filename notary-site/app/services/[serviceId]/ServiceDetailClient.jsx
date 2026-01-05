@@ -20,10 +20,12 @@ import { formatServiceForLanguage, formatServicesForLanguage } from '@/utils/ser
 import PriceDisplay from '@/components/PriceDisplay'
 import dynamic from 'next/dynamic'
 
-// Différer les composants non-critiques pour réduire le JS initial
-const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { ssr: true })
+// Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
+import HowItWorks from '@/components/HowItWorks'
+import FAQ from '@/components/FAQ'
+
+// Différer les autres composants non-critiques pour réduire le JS initial
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
-const FAQ = dynamic(() => import('@/components/FAQ'), { ssr: true })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 
@@ -476,48 +478,46 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       </section>
 
       {/* Guarantee Section - Two Column Layout */}
-      <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
-        <div className="max-w-[1300px] w-full mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-            {/* Column 1 - Money-back guarantee */}
-            <div className="p-6 md:p-8 lg:p-10 md:pr-8 lg:pr-10 flex items-center justify-center min-h-full">
-              <div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-6 md:gap-8">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3a1e400a-ac9c-4e69-6f93-23f2322e0600/f=webp,q=30"
-                  alt="Money-back guarantee"
-                  className="block md:block w-36 h-36 flex-shrink-0 object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="text-center md:text-center">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
-                    {t('serviceDetail.guaranteeSection.moneyBack.title')}
-                  </h3>
-                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-center">
-                    {t('serviceDetail.guaranteeSection.moneyBack.description')}
-                  </p>
-                </div>
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 w-full">
+          {/* Column 1 - Money-back guarantee */}
+          <div className="p-6 md:p-8 lg:p-10 flex items-center justify-center">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 w-full max-w-2xl mx-auto">
+              <img
+                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3a1e400a-ac9c-4e69-6f93-23f2322e0600/f=webp,q=30"
+                alt="Money-back guarantee"
+                className="w-32 h-32 md:w-36 md:h-36 flex-shrink-0 object-contain self-center md:self-start"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  {t('serviceDetail.guaranteeSection.moneyBack.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.guaranteeSection.moneyBack.description')}
+                </p>
               </div>
             </div>
+          </div>
 
-            {/* Column 2 - Legal recognition */}
-            <div className="p-6 md:p-8 lg:p-10 md:pl-8 lg:pl-10 pt-6 md:pt-8 lg:pt-10 flex items-center justify-center min-h-full">
-              <div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-6 md:gap-8">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3986bff5-5981-4d31-0505-246b9dcbe500/f=webp,q=30"
-                  alt="Legally recognized certifications"
-                  className="block md:block w-36 h-36 flex-shrink-0 object-contain"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="text-center md:text-center">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
-                    {t('serviceDetail.guaranteeSection.legalRecognition.title')}
-                  </h3>
-                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-center">
-                    {t('serviceDetail.guaranteeSection.legalRecognition.description')}
-                  </p>
-                </div>
+          {/* Column 2 - Legal recognition */}
+          <div className="p-6 md:p-8 lg:p-10 flex items-center justify-center">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 w-full max-w-2xl mx-auto">
+              <img
+                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3986bff5-5981-4d31-0505-246b9dcbe500/f=webp,q=30"
+                alt="Legally recognized certifications"
+                className="w-32 h-32 md:w-36 md:h-36 flex-shrink-0 object-contain self-center md:self-start"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+                  {t('serviceDetail.guaranteeSection.legalRecognition.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.guaranteeSection.legalRecognition.description')}
+                </p>
               </div>
             </div>
           </div>

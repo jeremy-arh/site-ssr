@@ -90,20 +90,38 @@ const IconClose = memo(() => (
 ));
 
 // Helper function pour scroll vers une section
-// Optimisé pour utiliser requestAnimationFrame et éviter les forced layouts
 const scrollToSection = (sectionId) => {
+  console.log('scrollToSection called with:', sectionId);
+  
   const element = document.getElementById(sectionId);
-  if (element) {
-    // Utiliser requestAnimationFrame pour grouper les lectures de layout
-    requestAnimationFrame(() => {
-      const navbarHeight = typeof window !== 'undefined' && window.innerWidth < 768 ? 60 : 100;
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({
-        top: elementPosition - navbarHeight,
-        behavior: 'smooth'
-      });
-    });
+  console.log('Element found:', element ? 'yes' : 'no');
+  
+  if (!element) {
+    console.warn(`Section with id "${sectionId}" not found in DOM`);
+    // Essayer de lister tous les éléments avec un id pour déboguer
+    const allIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
+    console.log('Available IDs:', allIds);
+    return;
   }
+  
+  console.log('Element position:', element.getBoundingClientRect());
+  
+  // Calculer la navbar height
+  const navbar = document.querySelector('nav');
+  const navbarHeight = navbar ? navbar.offsetHeight : (window.innerWidth < 768 ? 60 : 100);
+  console.log('Navbar height:', navbarHeight);
+  
+  // Calculer la position cible
+  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+  const offsetPosition = elementPosition - navbarHeight - 20;
+  
+  console.log('Scrolling to position:', offsetPosition);
+  
+  // Scroller vers la position
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: 'smooth'
+  });
 };
 
 // Cacher le scroll pour éviter les forced layouts répétés

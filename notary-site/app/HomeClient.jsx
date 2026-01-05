@@ -19,6 +19,10 @@ const Services = dynamic(() => import('@/components/Services'), {
   )
 })
 
+// Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
+import HowItWorks from '@/components/HowItWorks'
+import FAQ from '@/components/FAQ'
+
 // Lazy load composants below-the-fold avec chargement différé
 // ssr: false pour éviter le chargement côté serveur des chunks non critiques
 // loading: composant de fallback minimal
@@ -27,14 +31,6 @@ const ChatCTA = dynamic(() => import('@/components/ChatCTA'), {
   loading: () => null 
 })
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { 
-  ssr: false,
-  loading: () => null 
-})
-const HowItWorks = dynamic(() => import('@/components/HowItWorks'), { 
-  ssr: false,
-  loading: () => null 
-})
-const FAQ = dynamic(() => import('@/components/FAQ'), { 
   ssr: false,
   loading: () => null 
 })
