@@ -128,9 +128,9 @@ if (typeof window !== 'undefined') {
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [_isScrolled, setIsScrolled] = useState(false);
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [_isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
+  const [_isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
   const [isHeroCTAOutOfView, setIsHeroCTAOutOfView] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [_isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
@@ -180,8 +180,8 @@ const Navbar = memo(() => {
     return pathWithoutLang.startsWith('/services/') && pathWithoutLang !== '/services';
   }, [pathname]);
   
-  // Vérifier si on est sur une page service
-  const isOnServicePage = isServicePage();
+  // Vérifier si on est sur une page service (utilisé via isServicePage() directement)
+  const _isOnServicePage = isServicePage();
 
   const handleScroll = useCallback(() => {
     // Utiliser le cache pour éviter les forced layouts

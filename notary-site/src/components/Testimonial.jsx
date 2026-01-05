@@ -58,7 +58,7 @@ const Testimonial = memo(({ testimonialsData = null }) => {
     
     // Déterminer le genre
     const gender = testimonial.gender || testimonial.author_gender;
-    const authorName = (testimonial.author_name || testimonial.author || '').toLowerCase();
+    const _authorName = (testimonial.author_name || testimonial.author || '').toLowerCase();
     const role = (testimonial[`role_${language}`] || testimonial.role_en || testimonial.role || '').toLowerCase();
     
     // Indices pour déterminer le genre (français, anglais, espagnol, etc.)
