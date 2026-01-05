@@ -119,6 +119,22 @@ export const translations = {
           description: 'All certifications are performed by sworn notaries, ensuring legal recognition by governments, universities, and companies worldwide.',
         },
       },
+      digitalCertification: {
+        title: 'Get your notarized and certified documents in 1 hour.',
+        block1: {
+          title: 'Fully Online with 24/7 Availability',
+          description: 'Save yourself the trip to the notary. With My Notary, have your documents certified remotely with complete simplicity, quickly, with full legal security, and worldwide.',
+        },
+        block2: {
+          title: 'Valid for Authorities and Banks',
+          description: 'Our digital certifications meet the highest standards - whether for visa applications, registers, or powers of attorney.',
+        },
+        block3: {
+          title: 'Officially Recognized in 113 Countries',
+          description: 'Our online certifications strictly comply with the Hague Convention and are therefore available in over 113 valid countries.',
+        },
+        cta: 'Start your notarization',
+      },
     },
     // How It Works
     howItWorks: {
@@ -546,6 +562,22 @@ export const translations = {
           description: 'Toutes les certifications sont effectuées par des notaires assermentés, garantissant la reconnaissance légale par les gouvernements, universités et entreprises dans le monde entier.',
         },
       },
+      digitalCertification: {
+        title: 'Obtenez vos documents notariés et certifiés en 1 heure.',
+        block1: {
+          title: 'Entièrement en ligne avec une disponibilité 24h/24 et 7j/7',
+          description: 'Épargnez-vous le déplacement chez le notaire. Avec My Notary, faites certifier vos documents à distance en toute simplicité, rapidement, en toute sécurité juridique et dans le monde entier.',
+        },
+        block2: {
+          title: 'Valable pour les autorités et les banques',
+          description: 'Nos certifications numériques répondent aux normes les plus élevées - qu\'il s\'agisse de demandes de visa, de registres ou de procurations.',
+        },
+        block3: {
+          title: 'Officiellement reconnu dans 113 pays',
+          description: 'Nos certifications en ligne respectent strictement la Convention de La Haye et sont donc disponibles dans plus de 113 pays valides.',
+        },
+        cta: 'Commencer votre notarisation',
+      },
     },
     testimonial: {
       quote: '"Enfin une solution simple et efficace"',
@@ -831,6 +863,22 @@ export const translations = {
           title: 'Certificaciones legalmente reconocidas',
           description: 'Todas las certificaciones son realizadas por notarios juramentados, asegurando el reconocimiento legal por parte de gobiernos, universidades y empresas en todo el mundo.',
         },
+      },
+      digitalCertification: {
+        title: 'Obtenga sus documentos notarizados y certificados en 1 hora.',
+        block1: {
+          title: 'Completamente en línea con disponibilidad 24/7',
+          description: 'Ahorre el viaje al notario. Con My Notary, certifique sus documentos a distancia con total simplicidad, rápidamente, con total seguridad jurídica y en todo el mundo.',
+        },
+        block2: {
+          title: 'Válido para autoridades y bancos',
+          description: 'Nuestras certificaciones digitales cumplen con los más altos estándares, ya sea para solicitudes de visa, registros o poderes notariales.',
+        },
+        block3: {
+          title: 'Oficialmente reconocido en 113 países',
+          description: 'Nuestras certificaciones en línea cumplen estrictamente con el Convenio de La Haya y, por lo tanto, están disponibles en más de 113 países válidos.',
+        },
+        cta: 'Iniciar su notarización',
       },
     },
     testimonial: {
@@ -1120,6 +1168,22 @@ export const translations = {
           description: 'Alle Zertifizierungen werden von vereidigten Notaren durchgeführt und gewährleisten die rechtliche Anerkennung durch Regierungen, Universitäten und Unternehmen weltweit.',
         },
       },
+      digitalCertification: {
+        title: 'Erhalten Sie Ihre notariell beglaubigten und zertifizierten Dokumente in 1 Stunde.',
+        block1: {
+          title: 'Vollständig online mit 24/7 Verfügbarkeit',
+          description: 'Sparen Sie sich den Weg zum Notar. Mit My Notary lassen Sie Ihre Dokumente aus der Ferne mit vollständiger Einfachheit, schnell, mit vollständiger rechtlicher Sicherheit und weltweit zertifizieren.',
+        },
+        block2: {
+          title: 'Gültig für Behörden und Banken',
+          description: 'Unsere digitalen Zertifizierungen erfüllen die höchsten Standards - sei es für Visaanträge, Register oder Vollmachten.',
+        },
+        block3: {
+          title: 'Offiziell anerkannt in 113 Ländern',
+          description: 'Unsere Online-Zertifizierungen halten sich strikt an das Haager Übereinkommen und sind daher in über 113 gültigen Ländern verfügbar.',
+        },
+        cta: 'Beginnen Sie Ihre Beglaubigung',
+      },
     },
     testimonial: {
       quote: '"Ein reibungsloses und vollständig digitales Erlebnis"',
@@ -1399,6 +1463,22 @@ export const translations = {
           title: 'Certificazioni legalmente riconosciute',
           description: 'Tutte le certificazioni sono eseguite da notai giurati, garantendo il riconoscimento legale da parte di governi, università e aziende in tutto il mondo.',
         },
+      },
+      digitalCertification: {
+        title: 'Ottieni i tuoi documenti notarizzati e certificati in 1 ora.',
+        block1: {
+          title: 'Completamente online con disponibilità 24/7',
+          description: 'Risparmia il viaggio dal notaio. Con My Notary, fai certificare i tuoi documenti a distanza con totale semplicità, rapidamente, con piena sicurezza legale e in tutto il mondo.',
+        },
+        block2: {
+          title: 'Valido per autorità e banche',
+          description: 'Le nostre certificazioni digitali soddisfano gli standard più elevati, che si tratti di richieste di visto, registri o procure.',
+        },
+        block3: {
+          title: 'Ufficialmente riconosciuto in 113 paesi',
+          description: 'Le nostre certificazioni online rispettano rigorosamente la Convenzione dell\'Aia e sono quindi disponibili in oltre 113 paesi validi.',
+        },
+        cta: 'Inizia la tua notarizzazione',
       },
     },
     testimonial: {
@@ -1687,6 +1767,22 @@ export const translations = {
           title: 'Certificações legalmente reconhecidas',
           description: 'Todas as certificações são realizadas por notários juramentados, garantindo reconhecimento legal por governos, universidades e empresas em todo o mundo.',
         },
+      },
+      digitalCertification: {
+        title: 'Obtenha seus documentos notarizados e certificados em 1 hora.',
+        block1: {
+          title: 'Totalmente online com disponibilidade 24/7',
+          description: 'Economize a viagem ao notário. Com My Notary, certifique seus documentos remotamente com total simplicidade, rapidamente, com total segurança jurídica e em todo o mundo.',
+        },
+        block2: {
+          title: 'Válido para autoridades e bancos',
+          description: 'Nossas certificações digitais atendem aos mais altos padrões - seja para solicitações de visto, registros ou procurações.',
+        },
+        block3: {
+          title: 'Oficialmente reconhecido em 113 países',
+          description: 'Nossas certificações online cumprem rigorosamente a Convenção de Haia e, portanto, estão disponíveis em mais de 113 países válidos.',
+        },
+        cta: 'Iniciar sua notarização',
       },
     },
     testimonial: {

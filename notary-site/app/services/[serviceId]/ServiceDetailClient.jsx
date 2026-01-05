@@ -102,6 +102,11 @@ const IconArrowLeft = memo(() => (
     <path d="M19 12H5M12 19l-7-7 7-7"/>
   </svg>
 ))
+const IconArrowRight = memo(() => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+))
 const IconOpenNew = memo(() => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
     <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7h-7z"/>
@@ -655,6 +660,91 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     </span>
                   </a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Digital Certification Section */}
+      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
+        <div className="max-w-[1300px] mx-auto">
+          {/* Title - Centered */}
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12 md:mb-16">
+            {t('serviceDetail.digitalCertification.title')}
+          </h2>
+
+          {/* Two Column Layout */}
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-stretch">
+            {/* Left Side - Image */}
+            <div className="w-full lg:w-1/2 flex items-center justify-center">
+              <div className="relative w-full max-w-md h-full">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/1c60913c-9c33-405e-f4c6-403ee801c600/public"
+                  alt="Professional notary service"
+                  className="w-full h-full rounded-lg object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            {/* Right Side - Three Text Blocks */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center h-full">
+              {/* Block 1 */}
+              <div className="pb-8 md:pb-10">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
+                  {t('serviceDetail.digitalCertification.block1.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.digitalCertification.block1.description')}
+                </p>
+              </div>
+
+              {/* Separator */}
+              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
+
+              {/* Block 2 */}
+              <div className="pb-8 md:pb-10">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
+                  {t('serviceDetail.digitalCertification.block2.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.digitalCertification.block2.description')}
+                </p>
+              </div>
+
+              {/* Separator */}
+              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
+
+              {/* Block 3 */}
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
+                  {t('serviceDetail.digitalCertification.block3.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.digitalCertification.block3.description')}
+                </p>
+              </div>
+
+              {/* CTA Link */}
+              <div className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-gray-200">
+                <a
+                  href={formUrl}
+                  className="inline-flex items-center gap-2 text-base md:text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors relative group"
+                  onClick={() => {
+                    trackWithAnalytics('cta', 'service_detail_digital_certification', service?.service_id || serviceId, pathname, {
+                      ctaText: t('serviceDetail.digitalCertification.cta'),
+                      destination: formUrl,
+                      elementId: 'service_detail_digital_certification_cta'
+                    })
+                  }}
+                >
+                  <span>{t('serviceDetail.digitalCertification.cta')}</span>
+                  <svg className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
