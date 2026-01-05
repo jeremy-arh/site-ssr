@@ -27,16 +27,59 @@
     font-weight: 500;
   }
 
-  /* Navbar styles - statiques pour éviter les erreurs d'hydratation */
-  /* Mobile : arrondi avec margin */
-  .navbar-container {
+  /* Top Banner styles */
+  .top-banner-container {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    z-index: 51;
+    background-color: #000000;
+  }
+
+  .top-banner-inner {
+    padding: 6px 0;
+    background-color: #000000;
+    line-height: 1.4;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .top-banner-inner {
+      padding: 8px 0;
+      min-height: 34px;
+      line-height: 1.5;
+    }
+  }
+
+  /* Navbar styles - statiques pour éviter les erreurs d'hydratation */
+  /* Mobile : pas de margin, full width, collé à la topbar (pas de gap) */
+  .navbar-container {
+    position: fixed;
+    top: 32px;
+    left: 0;
+    right: 0;
     z-index: 50;
-    padding: 10px 10px 0 10px;
+    padding: 0 !important;
+    margin: 0 !important;
     background-color: transparent;
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 640px) {
+    .navbar-container {
+      top: 34px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .navbar-container {
+      top: 36px;
+      padding: 0;
+      transform: translateY(-1px);
+    }
   }
 
   /* Animation pour le menu mobile - slide depuis la droite */
@@ -63,14 +106,14 @@
   }
 
   .navbar-inner {
-    border-radius: 16px;
-    height: 56px;
+    border-radius: 0;
+    height: 48px;
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.26);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(12px);
+    background: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   }
+
 
   /* Mobile : pas de fond quand le menu est ouvert */
   .navbar-inner-menu-open {
@@ -79,27 +122,18 @@
     backdrop-filter: none !important;
   }
 
-  /* Desktop : header transparent sur pages service en haut */
-  @media (min-width: 768px) {
-    .navbar-inner-transparent {
-      background: transparent !important;
-      box-shadow: none !important;
-      backdrop-filter: none !important;
-    }
-  }
-
-  /* Desktop : collé en haut, pas arrondi, 80px */
+  /* Tablet : navbar légèrement plus compacte */
   @media (min-width: 768px) {
     .navbar-container {
       padding: 0;
+      top: 36px;
     }
 
     .navbar-inner {
       border-radius: 0;
-      height: 80px;
-      background: #FEFEFE;
+      height: 60px;
+      background: #ffffff;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      backdrop-filter: none;
     }
 
     /* Forcer le burger menu caché sur desktop */
@@ -110,6 +144,20 @@
     /* Forcer la navigation desktop visible */
     .navbar-desktop {
       display: flex !important;
+    }
+  }
+
+  /* Desktop large : navbar plus grande */
+  @media (min-width: 1024px) {
+    .navbar-inner {
+      height: 70px;
+    }
+  }
+
+  /* Desktop XL : navbar complète */
+  @media (min-width: 1280px) {
+    .navbar-inner {
+      height: 80px;
     }
   }
 
@@ -138,16 +186,54 @@
 
   /* ANTI-CLS: Empêcher tout layout shift */
   /* Réserver l'espace pour le contenu dynamique */
+  /* Mobile: 32px (top banner) + 48px (navbar) = 80px */
   [data-hero] {
     contain: layout style;
-    height: 100vh;
-    min-height: 750px;
-    max-height: 100vh;
+    margin-top: 80px;
+    padding-top: 0;
+    min-height: calc(100vh - 80px);
+    height: auto;
+  }
+
+  /* Tablet: 34px (top banner) + 60px (navbar) = 94px */
+  @media (min-width: 640px) {
+    [data-hero] {
+      margin-top: 82px;
+      min-height: calc(100vh - 82px);
+    }
   }
   
+  /* Tablet: 36px (top banner) + 60px (navbar) = 96px */
+  @media (min-width: 768px) {
+    [data-hero] {
+      height: calc(100vh - 96px) !important;
+      min-height: calc(100vh - 96px) !important;
+      max-height: calc(100vh - 96px) !important;
+      margin-top: 96px;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  /* Desktop: Le hero doit faire 100vh, positionné sous la navbar */
   @media (min-width: 1024px) {
     [data-hero] {
-      min-height: 100vh;
+      height: 100vh !important;
+      min-height: 100vh !important;
+      max-height: 100vh !important;
+      margin-top: 106px;
+      padding-top: 0;
+    }
+  }
+
+  /* Desktop XL: Même chose, 100vh */
+  @media (min-width: 1280px) {
+    [data-hero] {
+      height: 100vh !important;
+      min-height: 100vh !important;
+      max-height: 100vh !important;
+      margin-top: 116px;
+      padding-top: 0;
     }
   }
 
@@ -611,10 +697,17 @@
   .nav-link {
     @apply transition-all duration-300 font-medium relative;
     color: #000000 !important;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
     position: relative;
     overflow: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .nav-link {
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+    }
   }
 
   .nav-link:hover {

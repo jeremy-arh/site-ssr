@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import CurrencySelector from './CurrencySelector';
 import LanguageSelector from './LanguageSelector';
+import TopBanner from './TopBanner';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -42,7 +43,7 @@ if (typeof window !== 'undefined') {
 
 // SVG inline pour éviter @iconify (performance)
 const IconOpenNew = memo(() => (
-  <svg className="w-4 h-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-3 h-3 lg:w-4 lg:h-4 text-white flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
     <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7h-7z"/>
   </svg>
 ));
@@ -95,7 +96,7 @@ const scrollToSection = (sectionId) => {
   if (element) {
     // Utiliser requestAnimationFrame pour grouper les lectures de layout
     requestAnimationFrame(() => {
-      const navbarHeight = typeof window !== 'undefined' && window.innerWidth < 768 ? 70 : 100;
+      const navbarHeight = typeof window !== 'undefined' && window.innerWidth < 768 ? 60 : 100;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
         top: elementPosition - navbarHeight,
@@ -127,7 +128,7 @@ if (typeof window !== 'undefined') {
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [_isScrolled, setIsScrolled] = useState(false);
-  const [_isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
   const [isHeroCTAOutOfView, setIsHeroCTAOutOfView] = useState(false);
@@ -190,17 +191,18 @@ const Navbar = memo(() => {
     setIsScrolled(currentScrollY > 50);
     setIsAtTop(currentScrollY === 0);
 
-    // Détecter mobile uniquement pour le scroll behavior (CSS gère le reste)
-    if (typeof window !== 'undefined' && window.innerWidth < 1150) {
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down
+    // Masquer/afficher la navbar au scroll
+    if (typeof window !== 'undefined') {
+      if (currentScrollY <= 50) {
+        // Toujours afficher en haut de page
+        setIsHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling down - masquer
         setIsHeaderVisible(false);
-      } else {
-        // Scrolling up
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - afficher
         setIsHeaderVisible(true);
       }
-    } else {
-      setIsHeaderVisible(true);
     }
 
     setLastScrollY(currentScrollY);
@@ -336,109 +338,111 @@ const Navbar = memo(() => {
 
   // Sur page service et en haut = header transparent avec texte blanc
   // Note: on utilise isOnServicePage directement (pas isMounted) pour éviter le flash au premier rendu
-  const isTransparentHeader = isOnServicePage && isAtTop;
-  
   return (
     <>
+      <TopBanner />
       <nav className="navbar-container">
-        <div className={`navbar-inner ${isMenuOpen ? 'navbar-inner-menu-open' : ''} ${isTransparentHeader ? 'navbar-inner-transparent' : ''}`}>
-          <div className="max-w-[1300px] mx-auto w-full px-[20px] md:px-[20px] lg:px-[30px]">
+        <div className={`navbar-inner ${isMenuOpen ? 'navbar-inner-menu-open' : ''}`}>
+          <div className="w-full px-[20px] md:px-[20px] lg:px-[30px]">
             <div className="flex items-center justify-between w-full">
-            {/* Logo - caché sur mobile quand le menu est ouvert */}
-            <a href="/" className={`flex-shrink-0 relative z-[60] ${isMenuOpen ? 'hidden md:block' : ''}`}>
-              {/* Logo Mobile - noir si menu ouvert (fond blanc), blanc sinon */}
-              <img
-                src={isMenuOpen 
-                  ? "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
-                  : "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
-                }
-                alt="Logo"
-                width="130"
-                height="32"
-                className="h-6 md:hidden w-auto"
-                loading="eager"
-                decoding="async"
-              />
-              {/* Logo Desktop - blanc si transparent, noir sinon */}
-              <img
-                src={isTransparentHeader 
-                  ? "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/b9d9d28f-0618-4a93-9210-8d9d18c3d200/q=10"
-                  : "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
-                }
-                alt="Logo"
-                width="130"
-                height="32"
-                className="hidden md:block h-8 w-auto"
-                loading="eager"
-                decoding="async"
-              />
-            </a>
+            {/* Left side: Logo + Navigation links */}
+            <div className="flex items-center gap-2 md:gap-3 lg:gap-5 xl:gap-8">
+              {/* Logo - caché sur mobile quand le menu est ouvert */}
+              <a href="/" className={`flex-shrink-0 relative z-[60] ${isMenuOpen ? 'hidden md:block' : ''}`}>
+                {/* Logo Mobile - toujours noir */}
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
+                  alt="Logo"
+                  width="130"
+                  height="32"
+                  className="h-4 md:hidden w-auto"
+                  loading="eager"
+                  decoding="async"
+                />
+                {/* Logo Desktop - noir - taille responsive */}
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/e4a88604-ba5d-44a5-5fe8-a0a26c632d00/q=10"
+                  alt="Logo"
+                  width="130"
+                  height="32"
+                  className="hidden md:block h-5 lg:h-6 xl:h-8 w-auto"
+                  loading="eager"
+                  decoding="async"
+                />
+              </a>
 
-            {/* Desktop Navigation + CTA - Right aligned */}
+              {/* Desktop Navigation links - Left aligned with logo */}
+              <div className="navbar-desktop hidden md:flex items-center gap-1 lg:gap-4 xl:gap-6 flex-shrink-0 overflow-visible">
+                <a 
+                  href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
+                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const sectionId = isServicePage() ? 'other-services' : 'services';
+                    scrollToSection(sectionId);
+                    loadAnalytics();
+                    safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
+                      label: t('nav.services'),
+                      pagePath: pathname,
+                      section: 'navbar_desktop'
+                    });
+                  }}
+                >
+                  {t('nav.services')}
+                </a>
+                <a 
+                  href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
+                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection('how-it-works');
+                    loadAnalytics();
+                    safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
+                      label: t('nav.howItWorks'),
+                      pagePath: pathname,
+                      section: 'navbar_desktop'
+                    });
+                  }}
+                >
+                  {t('nav.howItWorks')}
+                </a>
+                <a 
+                  href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
+                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection('faq');
+                    loadAnalytics();
+                    safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
+                      label: t('nav.faq'),
+                      pagePath: pathname,
+                      section: 'navbar_desktop'
+                    });
+                  }}
+                >
+                  {t('nav.faq')}
+                </a>
+              </div>
+            </div>
+
+            {/* Right side: Language/Currency selectors + Login + CTA */}
             <div 
-              className="navbar-desktop hidden md:flex items-center gap-3 lg:gap-6 xl:gap-8 flex-shrink-0 overflow-visible"
-              style={{ marginLeft: 'auto' }}
+              className="navbar-desktop hidden md:flex items-center gap-2 lg:gap-4 xl:gap-6 flex-shrink-0 overflow-visible"
             >
-              <a 
-                href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const sectionId = isServicePage() ? 'other-services' : 'services';
-                  scrollToSection(sectionId);
-                  loadAnalytics();
-                  safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
-                    label: t('nav.services'),
-                    pagePath: pathname,
-                    section: 'navbar_desktop'
-                  });
-                }}
-              >
-                {t('nav.services')}
-              </a>
-              <a 
-                href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('how-it-works');
-                  loadAnalytics();
-                  safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
-                    label: t('nav.howItWorks'),
-                    pagePath: pathname,
-                    section: 'navbar_desktop'
-                  });
-                }}
-              >
-                {t('nav.howItWorks')}
-              </a>
-              <a 
-                href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
-                className={`nav-link text-sm lg:text-base whitespace-nowrap ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('faq');
-                  loadAnalytics();
-                  safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
-                    label: t('nav.faq'),
-                    pagePath: pathname,
-                    section: 'navbar_desktop'
-                  });
-                }}
-              >
-                {t('nav.faq')}
-              </a>
+              <div className="w-px h-5 lg:h-6 flex-shrink-0 bg-gray-300 hidden lg:block"></div>
 
-              <div className={`w-px h-6 flex-shrink-0 ${isTransparentHeader ? 'bg-white/30' : 'bg-gray-300'}`}></div>
-
-              <div className="flex items-center gap-2 lg:gap-4 flex-shrink-0">
-                <LanguageSelector isWhite={isTransparentHeader} />
-                <CurrencySelector isWhite={isTransparentHeader} />
+              <div className="flex items-center gap-1 lg:gap-2 flex-shrink-0">
+                <div className="w-10 lg:w-auto">
+                  <LanguageSelector isWhite={false} />
+                </div>
+                <div className="w-10 lg:w-auto">
+                  <CurrencySelector isWhite={false} />
+                </div>
               </div>
 
               <a 
                 href="https://app.mynotary.io/login" 
-                className={`nav-link text-sm lg:text-base font-semibold whitespace-nowrap flex-shrink-0 ${isTransparentHeader ? 'text-white hover:text-white/80' : 'text-black'}`}
+                className="nav-link text-xs lg:text-sm xl:text-base font-semibold whitespace-nowrap flex-shrink-0 text-black hidden lg:block"
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackLoginClick, 'navbar_desktop', {
@@ -454,7 +458,7 @@ const Navbar = memo(() => {
               {/* CTA Button - toujours visible, devient bleu quand le CTA du hero sort de la vue */}
               <a 
                 href={getFormUrl(currency, currentServiceId)} 
-                className={`${isHeroCTAOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-xs lg:text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-4 lg:px-6 py-2 lg:py-3 font-semibold rounded-lg transition-all duration-300`}
+                className={`${isHeroCTAOutOfView ? 'glassy-cta-blue' : 'glassy-cta'} text-[10px] md:text-xs lg:text-sm relative z-10 flex-shrink-0 whitespace-nowrap px-2 md:px-3 lg:px-5 xl:px-6 py-1.5 md:py-2 lg:py-2.5 font-semibold rounded-md lg:rounded-lg transition-all duration-300`}
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackCTAClick, 'navbar_desktop', currentServiceId, pathname, {
@@ -464,7 +468,7 @@ const Navbar = memo(() => {
                   });
                 }}
               >
-                <span className="btn-text inline-block inline-flex items-center gap-2 whitespace-nowrap">
+                <span className="btn-text inline-block inline-flex items-center gap-1 lg:gap-2 whitespace-nowrap">
                   <IconOpenNew />
                   <span className="whitespace-nowrap">{ctaText || t('nav.notarizeNow')}</span>
                 </span>
@@ -474,24 +478,18 @@ const Navbar = memo(() => {
             {/* Animated Hamburger Menu Button - MOBILE ONLY (hidden on md+ et quand le menu est ouvert) */}
             <button
               onClick={toggleMenu}
-              className={`navbar-burger flex md:hidden relative z-[60] w-10 h-10 flex-col items-center justify-center focus:outline-none overflow-visible ${isMenuOpen ? 'hidden' : ''}`}
+              className={`navbar-burger flex md:hidden relative z-[60] w-8 h-8 flex-col items-center justify-center focus:outline-none overflow-visible ${isMenuOpen ? 'hidden' : ''}`}
               aria-label="Toggle menu"
             >
-              <div className="w-6 h-6 flex flex-col justify-center items-center relative">
+              <div className="w-4 h-4 flex flex-col justify-center items-center relative">
                 <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute ${
-                    isMenuOpen ? 'rotate-45 bg-gray-900' : 'bg-white top-0'
-                  }`}
+                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute bg-gray-900 top-0`}
                 ></span>
                 <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 absolute ${
-                    isMenuOpen ? 'opacity-0 scale-0 bg-gray-900' : 'opacity-100 scale-100 bg-white top-1/2 -translate-y-1/2'
-                  }`}
+                  className={`w-full h-0.5 rounded-full transition-all duration-300 absolute opacity-100 scale-100 bg-gray-900 top-1/2 -translate-y-1/2`}
                 ></span>
                 <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute ${
-                    isMenuOpen ? '-rotate-45 bg-gray-900' : 'bg-white bottom-0'
-                  }`}
+                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute bg-gray-900 bottom-0`}
                 ></span>
               </div>
             </button>

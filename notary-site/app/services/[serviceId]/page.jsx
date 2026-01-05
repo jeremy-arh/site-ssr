@@ -2,7 +2,8 @@ import { getService, getServices, getFAQs } from '@/lib/supabase-server'
 import { notFound } from 'next/navigation'
 import ServiceDetailClient from './ServiceDetailClient'
 
-// Forcer le rendu dynamique (SSR) - pas de prerendering statique
+// Forcer le rendu dynamique (SSR) - pas de prerendering statique  
+// Hero: deux colonnes avec image à droite
 export const dynamic = 'force-dynamic'
 
 // Cette page est un Server Component qui récupère les données côté serveur (SSR)

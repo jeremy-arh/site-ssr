@@ -93,7 +93,7 @@ const CurrencySelector = ({ isWhite = false }) => {
       <button
         ref={buttonRef}
         onClick={handleToggle}
-        className={`w-full h-full flex items-center px-3 text-sm font-medium transition-colors whitespace-nowrap ${
+        className={`w-full h-full flex items-center px-2 lg:px-3 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap ${
           isWhite 
             ? 'text-white hover:text-white/80 hover:bg-white/10' 
             : 'text-gray-700 hover:text-gray-900'
@@ -101,9 +101,9 @@ const CurrencySelector = ({ isWhite = false }) => {
         aria-label="Select currency"
         aria-expanded={isOpen}
       >
-        <span className="text-lg flex-shrink-0">{selectedCurrency.symbol}</span>
+        <span className="text-base lg:text-lg flex-shrink-0">{selectedCurrency.symbol}</span>
         <svg
-          className={`w-4 h-4 transition-transform flex-shrink-0 ml-auto ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 lg:w-4 lg:h-4 transition-transform flex-shrink-0 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

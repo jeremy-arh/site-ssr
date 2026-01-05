@@ -73,10 +73,10 @@ const TableOfContents = ({ content }) => {
       }
 
       if (element) {
-        // Calculate offset based on navbar height (h-14 md:h-20 = 56px mobile, 80px desktop)
+        // Calculate offset based on navbar height (48px mobile, 80px desktop)
         // Plus some padding for better spacing
         const isMobile = window.innerWidth < 768;
-        const navbarHeight = isMobile ? 56 : 80;
+        const navbarHeight = isMobile ? 60 : 80;
         const offset = navbarHeight + 20; // Add extra padding
         
         // Get the element's position relative to the document

@@ -1,4 +1,5 @@
 'use client'
+// Force rebuild - hero deux colonnes
 
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
@@ -6,8 +7,9 @@ import Link from 'next/link'
 import SEOHead from '@/components/SEOHead'
 
 // URLs Cloudflare optimisées avec paramètres
-const HERO_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/165f7d09-facd-47ad-dd30-db71400aaf00/w=auto,q=auto,f=avif'
-const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/23262bc0-f4d7-4c93-6254-04da31866900/q=20'
+const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3213eb00-eaf2-44f3-f108-2f6b67e70000/public'
+// Image Hero pour la colonne droite (femme avec laptop)
+const HERO_IMG_RIGHT = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/aa0b6231-eb7d-4a68-a985-249ba265d500/public'
 import StructuredData from '@/components/StructuredData'
 import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
@@ -34,18 +36,19 @@ const trackWithAnalytics = (type, ...args) => {
 }
 
 // SVG Icons inline pour éviter @iconify (performance)
+// Icônes noires pour le hero (fond clair beige)
 const IconWorld = memo(() => (
-  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
   </svg>
 ))
 const IconFlash = memo(() => (
-  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
   </svg>
 ))
 const IconLock = memo(() => (
-  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-white flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
 ))
@@ -54,9 +57,44 @@ const IconCheckCircle = memo(() => (
     <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
   </svg>
 ))
-const IconUpload = memo(() => (
-  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+// Icons for How It Works summary
+const IconUpload = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+  </svg>
+))
+const IconPeople = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+  </svg>
+))
+const IconCreditCard = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+    <path d="M9 16l2-2 2 2 4-4-1.41-1.41L12 14.17l-1.59-1.59L9 14z" fill="currentColor"/>
+  </svg>
+))
+const IconIdentityCard = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v2H4V6zm0 12v-8h16v8H4zm2-6h4v1H6v-1zm0 2h4v1H6v-1zm6-2h6v1h-6v-1zm0 2h4v1h-4v-1z"/>
+  </svg>
+))
+const IconVideoDocument = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <rect x="4" y="3" width="14" height="12" rx="1.5"/>
+    <path d="M8 7h5M8 10h7"/>
+    <path d="M16.5 16.5l-1.5-1.5 1.5-1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="17" cy="17" r="1" fill="currentColor"/>
+  </svg>
+))
+const IconCheck = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+  </svg>
+))
+const IconClockFast = memo(({ className = "w-5 h-5" }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M15 4a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m0 2a6 6 0 0 0-6 6a6 6 0 0 0 6 6a6 6 0 0 0 6-6a6 6 0 0 0-6-6m-1 2v6l5.25 3.15l.75-1.23l-4.5-2.67V8H14Z"/>
   </svg>
 ))
 const IconArrowLeft = memo(() => (
@@ -67,6 +105,19 @@ const IconArrowLeft = memo(() => (
 const IconOpenNew = memo(() => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
     <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7h-7z"/>
+  </svg>
+))
+const IconMoneyBack = memo(() => (
+  <svg className="w-12 h-12 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
+    <path d="M9 11l2 2 4-4" strokeLinecap="round" strokeLinejoin="round"/>
+    <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+  </svg>
+))
+const IconShieldCheck = memo(() => (
+  <svg className="w-12 h-12 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
+    <path d="m9 12 2 2 4-4" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 ))
 
@@ -135,6 +186,15 @@ const SERVICE_ICONS = {
   'commercial-administrative-documents': IconDocument,
 }
 
+// Map des icônes pour How It Works (défini après toutes les icônes)
+const STEP_ICONS_HIW = {
+  'line-md:uploading-loop': IconUpload,
+  'formkit:people': IconPeople,
+  'mynaui:credit-card-check-solid': IconCreditCard,
+  'hugeicons:identity-card': IconIdentityCard,
+  'video-call': IconVideoDocument,
+  'stash:check-solid': IconCheck,
+}
 
 // Composant mémorisé pour le contenu "What is" - extrait la logique lourde
 const WhatIsContent = memo(({ service, t }) => {
@@ -339,82 +399,120 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
           },
         ]}
       />
-      {/* Hero Section - hauteur minimale sur mobile pour permettre le contenu long, fixe sur desktop */}
-      <section data-hero className="relative overflow-hidden flex items-center lg:h-screen" style={{ backgroundColor: '#1f2937' }}>
-        {/* Image Hero Cloudflare optimisée */}
-        <img
-          src={HERO_IMG_CLOUDFLARE}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          fetchPriority="high"
-          decoding="async"
-        />
-        
-        {/* Dark Overlay uniforme */}
-        <div className="absolute inset-0 z-[1] bg-black/70"></div>
+      {/* Hero Section - Deux colonnes : texte à gauche, image à droite */}
+      <section data-hero className="relative min-h-screen flex">
+        {/* Colonne gauche - Texte sur fond beige */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16" style={{ backgroundColor: '#F7F5F2' }}>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
+            {service.page_h1 || service.name}
+          </h1>
 
-        {/* Content Container */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 py-16 w-full">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white mb-4 lg:mb-6 leading-tight">
-              {service.page_h1 || service.name}
-            </h1>
+          <p className="text-base sm:text-lg text-gray-700 mb-6 lg:mb-8 leading-relaxed">
+            {service.short_description || service.description}
+          </p>
 
-            <p className="text-base sm:text-lg text-white/90 mb-6 lg:mb-8 leading-relaxed max-w-2xl">
-              {service.short_description || service.description}
-            </p>
+          <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
+            <a 
+              id="hero-cta"
+              href={formUrl} 
+              className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+              onClick={() => {
+                const ctaCopy = service.cta || t('nav.notarizeNow')
+                const destination = formUrl
+                
+                trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                  ctaText: ctaCopy,
+                  destination,
+                  elementId: 'service_detail_hero'
+                })
+              }}
+            >
+              <IconOpenNew />
+              <span className="btn-text inline-block">
+                {service.cta || t('nav.notarizeNow')}
+              </span>
+            </a>
+            {ctaPrice && (
+              <div className="text-gray-900 flex items-center gap-1">
+                <span className="text-base font-semibold">{ctaPrice}</span>
+                <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+              </div>
+            )}
+          </div>
 
-            <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
-              <a 
-                id="hero-cta"
-                href={formUrl} 
-                className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
-                style={{ 
-                  display: 'inline-flex', 
-                  flexDirection: 'row', 
-                  alignItems: 'center', 
-                  gap: '8px',
-                  whiteSpace: 'nowrap'
-                }}
-                onClick={() => {
-                  const ctaCopy = service.cta || t('nav.notarizeNow')
-                  const destination = formUrl
-                  
-                  trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
-                    ctaText: ctaCopy,
-                    destination,
-                    elementId: 'service_detail_hero'
-                  })
-                }}
-              >
-                <IconOpenNew />
-                <span style={{ whiteSpace: 'nowrap' }}>
-                  {service.cta || t('nav.notarizeNow')}
-                </span>
-              </a>
-              {ctaPrice && (
-                <div className="text-white flex items-center gap-1">
-                  <span className="text-base font-semibold">{ctaPrice}</span>
-                  <span className="text-xs font-normal text-white/70">{t('services.perDocument')} - no hidden fee</span>
-                </div>
-              )}
+          {/* Features */}
+          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
+            <div className="flex items-center gap-2">
+              <IconWorld />
+              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
             </div>
 
-            {/* Features - CSS responsive uniquement, pas de JS */}
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-8 mt-6 lg:mt-8">
-              <div className="flex items-center gap-2 whitespace-nowrap">
-                <IconWorld />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <IconFlash />
+              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
+            </div>
 
-              <div className="flex items-center gap-2 whitespace-nowrap">
-                <IconFlash />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
-              </div>
+            <div className="flex items-center gap-2">
+              <IconLock />
+              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+            </div>
+          </div>
+        </div>
 
-              <div className="flex items-center gap-2 whitespace-nowrap">
-                <IconLock />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+        {/* Colonne droite - Image */}
+        <div className="hidden lg:block lg:w-1/2 relative">
+          <img
+            src={HERO_IMG_RIGHT}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
+          />
+        </div>
+      </section>
+
+      {/* Guarantee Section - Two Column Layout */}
+      <section className="py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
+        <div className="max-w-[1300px] w-full mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+            {/* Column 1 - Money-back guarantee */}
+            <div className="p-6 md:p-8 lg:p-10 md:pr-8 lg:pr-10 flex items-center justify-center min-h-full">
+              <div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-6 md:gap-8">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3a1e400a-ac9c-4e69-6f93-23f2322e0600/f=webp,q=30"
+                  alt="Money-back guarantee"
+                  className="block md:block w-36 h-36 flex-shrink-0 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="text-center md:text-center">
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+                    {t('serviceDetail.guaranteeSection.moneyBack.title')}
+                  </h3>
+                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-center">
+                    {t('serviceDetail.guaranteeSection.moneyBack.description')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 2 - Legal recognition */}
+            <div className="p-6 md:p-8 lg:p-10 md:pl-8 lg:pl-10 pt-6 md:pt-8 lg:pt-10 flex items-center justify-center min-h-full">
+              <div className="flex flex-col md:flex-row items-center md:items-center md:justify-center gap-6 md:gap-8">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3986bff5-5981-4d31-0505-246b9dcbe500/f=webp,q=30"
+                  alt="Legally recognized certifications"
+                  className="block md:block w-36 h-36 flex-shrink-0 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="text-center md:text-center">
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+                    {t('serviceDetail.guaranteeSection.legalRecognition.title')}
+                  </h3>
+                  <p className="text-base md:text-lg text-gray-600 leading-relaxed text-center">
+                    {t('serviceDetail.guaranteeSection.legalRecognition.description')}
+                  </p>
+                </div>
               </div>
             </div>
           </div>

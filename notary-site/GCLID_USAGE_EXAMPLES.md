@@ -295,3 +295,4 @@ export default function GclidDebugger() {
 4. **Sécurité** : Le cookie est sécurisé (HTTPS uniquement) et utilise `SameSite=Lax`
 5. **Backend** : Pensez à créer une colonne `gclid` dans vos tables de base de données pour stocker cette information
 
+

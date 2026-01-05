@@ -122,3 +122,4 @@ Pour tester la fonctionnalité :
 - La durée de 90 jours correspond aux recommandations de Google pour le tracking des conversions
 - Le middleware capture le gclid côté serveur, et le hook le capture également côté client comme fallback
 
+

@@ -101,6 +101,24 @@ export const translations = {
           },
         },
       },
+      heroSummary: {
+        title: 'Get certified in under 1 hour',
+        step1: 'Submit your document online',
+        step2: 'Receive an email with your identity verification link',
+        step3: 'Join the video call with a certified notary (within 15 minutes)',
+        step4: 'Receive your certified documents immediately after the session',
+        cta: 'See the complete process',
+      },
+      guaranteeSection: {
+        moneyBack: {
+          title: '100% Money-back guarantee',
+          description: 'If your certified document is rejected by the receiving organization, we refund you in full.',
+        },
+        legalRecognition: {
+          title: 'Legally recognized certifications',
+          description: 'All certifications are performed by sworn notaries, ensuring legal recognition by governments, universities, and companies worldwide.',
+        },
+      },
     },
     // How It Works
     howItWorks: {
@@ -510,6 +528,24 @@ export const translations = {
           },
         },
       },
+      heroSummary: {
+        title: 'Obtenez votre certification en moins d\'une heure',
+        step1: 'Soumettez votre document en ligne',
+        step2: 'Recevez un email avec votre lien de vérification d\'identité',
+        step3: 'Rejoignez la visio avec un notaire certifié (sous 15 minutes)',
+        step4: 'Recevez vos documents certifiés immédiatement après la session',
+        cta: 'Voir le processus complet',
+      },
+      guaranteeSection: {
+        moneyBack: {
+          title: 'Garantie de remboursement 100%',
+          description: 'Si votre document certifié est rejeté par l\'organisation destinataire, nous vous remboursons intégralement.',
+        },
+        legalRecognition: {
+          title: 'Certifications légalement reconnues',
+          description: 'Toutes les certifications sont effectuées par des notaires assermentés, garantissant la reconnaissance légale par les gouvernements, universités et entreprises dans le monde entier.',
+        },
+      },
     },
     testimonial: {
       quote: '"Enfin une solution simple et efficace"',
@@ -776,6 +812,24 @@ export const translations = {
             title: 'Cumplimiento global',
             description: 'Nuestras certificaciones están diseñadas para cumplir con los estándares estrictos de aceptación de embajadas e instituciones extranjeras.',
           },
+        },
+      },
+      heroSummary: {
+        title: 'Obtenga su certificación en menos de 1 hora',
+        step1: 'Envíe su documento en línea',
+        step2: 'Reciba un correo electrónico con su enlace de verificación de identidad',
+        step3: 'Únase a la videollamada con un notario certificado (en menos de 15 minutos)',
+        step4: 'Reciba sus documentos certificados inmediatamente después de la sesión',
+        cta: 'Ver el proceso completo',
+      },
+      guaranteeSection: {
+        moneyBack: {
+          title: 'Garantía de devolución del dinero 100%',
+          description: 'Si su documento certificado es rechazado por la organización receptora, le reembolsamos en su totalidad.',
+        },
+        legalRecognition: {
+          title: 'Certificaciones legalmente reconocidas',
+          description: 'Todas las certificaciones son realizadas por notarios juramentados, asegurando el reconocimiento legal por parte de gobiernos, universidades y empresas en todo el mundo.',
         },
       },
     },
@@ -1048,6 +1102,24 @@ export const translations = {
           },
         },
       },
+      heroSummary: {
+        title: 'Erhalten Sie Ihre Zertifizierung in weniger als 1 Stunde',
+        step1: 'Reichen Sie Ihr Dokument online ein',
+        step2: 'Erhalten Sie eine E-Mail mit Ihrem Identitätsprüfungs-Link',
+        step3: 'Nehmen Sie an dem Videoanruf mit einem zertifizierten Notar teil (innerhalb von 15 Minuten)',
+        step4: 'Erhalten Sie Ihre zertifizierten Dokumente sofort nach der Sitzung',
+        cta: 'Vollständigen Prozess ansehen',
+      },
+      guaranteeSection: {
+        moneyBack: {
+          title: '100% Geld-zurück-Garantie',
+          description: 'Wenn Ihr zertifiziertes Dokument von der empfangenden Organisation abgelehnt wird, erstatten wir Ihnen den vollen Betrag zurück.',
+        },
+        legalRecognition: {
+          title: 'Rechtlich anerkannte Zertifizierungen',
+          description: 'Alle Zertifizierungen werden von vereidigten Notaren durchgeführt und gewährleisten die rechtliche Anerkennung durch Regierungen, Universitäten und Unternehmen weltweit.',
+        },
+      },
     },
     testimonial: {
       quote: '"Ein reibungsloses und vollständig digitales Erlebnis"',
@@ -1318,6 +1390,16 @@ export const translations = {
           },
         },
       },
+      guaranteeSection: {
+        moneyBack: {
+          title: 'Garanzia di rimborso 100%',
+          description: 'Se il tuo documento certificato viene rifiutato dall\'organizzazione destinataria, ti rimborsiamo integralmente.',
+        },
+        legalRecognition: {
+          title: 'Certificazioni legalmente riconosciute',
+          description: 'Tutte le certificazioni sono eseguite da notai giurati, garantendo il riconoscimento legale da parte di governi, università e aziende in tutto il mondo.',
+        },
+      },
     },
     testimonial: {
       quote: '"Un\'esperienza fluida e completamente digitale"',
@@ -1586,6 +1668,24 @@ export const translations = {
             title: 'Conformidade global',
             description: 'Nossas certificações são projetadas para atender aos rigorosos padrões de aceitação de embaixadas e instituições estrangeiras.',
           },
+        },
+      },
+      heroSummary: {
+        title: 'Obtenha sua certificação em menos de 1 hora',
+        step1: 'Envie seu documento online',
+        step2: 'Receba um e-mail com seu link de verificação de identidade',
+        step3: 'Junte-se à videoconferência com um notário certificado (em menos de 15 minutos)',
+        step4: 'Receba seus documentos certificados imediatamente após a sessão',
+        cta: 'Ver o processo completo',
+      },
+      guaranteeSection: {
+        moneyBack: {
+          title: 'Garantia de devolução do dinheiro 100%',
+          description: 'Se o seu documento certificado for rejeitado pela organização receptora, reembolsamos integralmente.',
+        },
+        legalRecognition: {
+          title: 'Certificações legalmente reconhecidas',
+          description: 'Todas as certificações são realizadas por notários juramentados, garantindo reconhecimento legal por governos, universidades e empresas em todo o mundo.',
         },
       },
     },

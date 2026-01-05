@@ -59,10 +59,10 @@ const Hero = memo(() => {
   const { t } = useTranslation();
 
   return (
-    <section className="lg:px-5 lg:pt-[90px]" data-hero>
+    <section data-hero>
       {/* Hero Block with Background Image - LCP Element */}
       <div
-        className="relative lg:rounded-3xl overflow-hidden min-h-screen lg:min-h-0 lg:h-[calc(100vh-110px)] flex items-center"
+        className="relative overflow-hidden min-h-screen lg:min-h-0 lg:h-screen flex items-center"
         style={{ backgroundColor: '#1f2937' }}
       >
         {/* Image Hero LCP - next/image avec priority pour preload automatique */}
@@ -74,7 +74,7 @@ const Hero = memo(() => {
           fetchPriority="high"
           sizes="100vw"
           quality={80}
-          className="object-cover"
+          className="object-cover w-full h-full"
           placeholder="empty"
         />
 

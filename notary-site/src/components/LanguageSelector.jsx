@@ -131,7 +131,7 @@ const LanguageSelector = ({ isWhite = false }) => {
       <button
         ref={buttonRef}
         onClick={handleToggle}
-        className={`w-full h-full flex items-center px-3 text-sm font-medium transition-colors whitespace-nowrap ${
+        className={`w-full h-full flex items-center px-2 lg:px-3 text-xs lg:text-sm font-medium transition-colors whitespace-nowrap ${
           isWhite 
             ? 'text-white hover:text-white/80 hover:bg-white/10' 
             : 'text-gray-700 hover:text-gray-900'
@@ -139,14 +139,14 @@ const LanguageSelector = ({ isWhite = false }) => {
         aria-label="Select language"
         aria-expanded={isOpen}
       >
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1 lg:gap-2 flex-shrink-0">
           {(() => {
             const FlagComponent = getFlagComponent(language);
             return <FlagComponent />;
           })()}
         </div>
         <svg
-          className={`w-4 h-4 transition-transform flex-shrink-0 ml-auto ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 lg:w-4 lg:h-4 transition-transform flex-shrink-0 ml-auto ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

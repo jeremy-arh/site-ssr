@@ -305,3 +305,4 @@ USING (auth.role() = 'authenticated');
 - **Performance** : Les index sont essentiels pour les requêtes rapides sur de grandes tables
 - **Backup** : Incluez ces tables dans vos stratégies de sauvegarde
 
+
