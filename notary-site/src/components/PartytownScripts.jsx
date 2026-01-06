@@ -46,40 +46,6 @@ export default function PartytownScripts() {
 
   return (
     <>
-      {/* Google Tag Manager - chargé directement dans le DOM (pas via Partytown) */}
-      {/* Nécessaire pour que le Tag Assistant de Google puisse détecter les balises Google Ads */}
-      <Script
-        id="gtm-script"
-        strategy="afterInteractive"
-        onLoad={() => {
-          console.log('[GTM] ✅ Script GTM chargé directement dans le DOM');
-          // Vérifier après un court délai si dataLayer est disponible
-          setTimeout(() => {
-            if (typeof window !== 'undefined') {
-              console.log('[GTM] Vérification post-chargement:', {
-                dataLayerExists: typeof window.dataLayer !== 'undefined',
-                dataLayerLength: window.dataLayer?.length || 0,
-                dataLayerContent: window.dataLayer?.slice(-3) || []
-              });
-            }
-          }, 1000);
-        }}
-        onError={(e) => {
-          console.error('[GTM] ❌ Erreur lors du chargement du script:', e);
-        }}
-        dangerouslySetInnerHTML={{
-          __html: `
-            console.log('[GTM] Initialisation du script GTM...');
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            console.log('[GTM] Script GTM injecté, ID:', i);
-            })(window,document,'script','dataLayer','GTM-MR7JDNSD');
-          `,
-        }}
-      />
-
       {/* Plausible Analytics - via Partytown */}
       <Script
         type="text/partytown"
