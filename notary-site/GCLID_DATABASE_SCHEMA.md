@@ -306,3 +306,4 @@ USING (auth.role() = 'authenticated');
 - **Backup** : Incluez ces tables dans vos stratégies de sauvegarde
 
 
+

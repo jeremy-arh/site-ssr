@@ -29,7 +29,6 @@ const TopBanner = memo(() => {
                   </svg>
                 ))}
               </div>
-              <span className="whitespace-nowrap">161 reviews</span>
             </div>
           </div>
         </div>

@@ -296,3 +296,4 @@ export default function GclidDebugger() {
 5. **Backend** : Pensez à créer une colonne `gclid` dans vos tables de base de données pour stocker cette information
 
 
+

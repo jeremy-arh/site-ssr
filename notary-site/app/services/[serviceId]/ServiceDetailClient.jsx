@@ -407,9 +407,9 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         ]}
       />
       {/* Hero Section - Deux colonnes : texte à gauche, image à droite */}
-      <section data-hero className="relative min-h-screen flex">
-        {/* Colonne gauche - Texte sur fond beige */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16" style={{ backgroundColor: '#F7F5F2' }}>
+      <section data-hero className="relative flex flex-col lg:flex-row lg:min-h-screen">
+        {/* Colonne gauche - Texte sur fond beige, centré verticalement */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16 lg:py-24 min-h-[calc(100vh-80px)] lg:h-full" style={{ backgroundColor: '#F7F5F2' }}>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
             {service.page_h1 || service.name}
           </h1>
@@ -466,8 +466,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
           </div>
         </div>
 
-        {/* Colonne droite - Image */}
-        <div className="hidden lg:block lg:w-1/2 relative">
+        {/* Colonne droite - Image (masquée sur mobile, visible uniquement sur lg+) */}
+        <div className="hidden lg:flex w-1/2 relative" style={{ minHeight: '100%' }}>
           <img
             src={HERO_IMG_RIGHT}
             alt=""
@@ -680,9 +680,9 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             <div className="w-full lg:w-1/2 flex items-center justify-center">
               <div className="relative w-full max-w-md h-full">
                 <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/1c60913c-9c33-405e-f4c6-403ee801c600/public"
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/75287f19-53c7-450a-407d-23bf1bf8ec00/f=webp,q=30"
                   alt="Professional notary service"
-                  className="w-full h-full rounded-lg object-cover"
+                  className="w-full h-full rounded-lg object-cover shadow-xl"
                   loading="lazy"
                   decoding="async"
                 />

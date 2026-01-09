@@ -62,8 +62,8 @@ const Hero = memo(() => {
     <section data-hero>
       {/* Hero Block with Background Image - LCP Element */}
       <div
-        className="relative overflow-hidden min-h-screen lg:min-h-0 lg:h-screen flex items-center"
-        style={{ backgroundColor: '#1f2937' }}
+        className="relative"
+        style={{ backgroundColor: '#1f2937', position: 'relative', width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
       >
         {/* Image Hero LCP - next/image avec priority pour preload automatique */}
         <Image
@@ -74,16 +74,17 @@ const Hero = memo(() => {
           fetchPriority="high"
           sizes="100vw"
           quality={80}
-          className="object-cover w-full h-full"
+          className="object-cover"
+          style={{ zIndex: 0 }}
           placeholder="empty"
         />
 
         {/* Dark Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/60 z-[1]"></div>
 
-        {/* Content Container */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 py-16 w-full">
-          <div className="max-w-3xl">
+        {/* Content Container - s'étire pour remplir toute la hauteur */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full py-8 sm:py-12 lg:py-16" style={{ width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+          <div className="max-w-3xl w-full">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white mb-4 lg:mb-6 leading-tight">
               {t('hero.title')}
             </h1>

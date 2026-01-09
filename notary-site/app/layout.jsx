@@ -98,9 +98,13 @@ export default function RootLayout({ children }) {
             /* Object fit */
             .object-cover{object-fit:cover}
             
-            /* Hero section */
-            [data-hero]{margin-top:82px;padding-top:0;margin-bottom:0;padding-bottom:0;min-height:calc(100vh - 82px);height:calc(100vh - 82px);position:relative;contain:layout style paint}
-            @media(min-width:768px){[data-hero]{height:calc(100vh - 116px)!important;min-height:calc(100vh - 116px)!important;max-height:calc(100vh - 116px)!important;margin-top:116px;margin-bottom:0;padding-bottom:0}}
+            /* Hero section - Le hero fait MINIMUM 100vh - margin, mais peut s'étendre si contenu plus grand */
+            [data-hero]{margin-top:80px;padding-top:0;margin-bottom:0;padding-bottom:0;min-height:calc(100vh - 80px);display:flex;flex-direction:column;contain:layout style}
+            [data-hero]>div{flex:1;width:100%;position:relative;display:flex;flex-direction:column}
+            @media(min-width:640px){[data-hero]{margin-top:82px;min-height:calc(100vh - 82px)}}
+            @media(min-width:768px){[data-hero]{min-height:calc(100vh - 96px)!important;margin-top:96px;margin-bottom:0;padding-bottom:0}}
+            @media(min-width:1024px){[data-hero]{min-height:calc(100vh - 106px)!important;margin-top:106px}}
+            @media(min-width:1280px){[data-hero]{min-height:calc(100vh - 116px)!important;margin-top:116px}}
             
             /* Hero right image - hidden on mobile, visible on desktop via CSS variable */
             :root{--hero-image-display:none}

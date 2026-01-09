@@ -112,11 +112,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: '100% Money-back guarantee',
-          description: 'If your certified document is rejected by the receiving organization, we refund you in full.',
+          description: 'Our notaries work in compliance with internationally recognized legal frameworks, such as the Hague Convention. However, the decision to accept a document falls under the exclusive jurisdiction of each authority. In the unlikely event that your document is refused, we will fully refund you the fees.',
         },
         legalRecognition: {
           title: 'Legally recognized certifications',
-          description: 'All certifications are performed by sworn notaries, ensuring legal recognition by governments, universities, and companies worldwide.',
+          description: 'Our partner notaries operate in full compliance with internationally recognized legal frameworks, including the Hague Apostille Convention. While our documents meet international standards, final acceptance is determined by each receiving authority based on their specific requirements. In the unlikely event that your notarized document is not accepted by the intended authority, we guarantee a full refund of all fees paid.',
         },
       },
       digitalCertification: {
@@ -555,11 +555,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: 'Garantie de remboursement 100%',
-          description: 'Si votre document certifié est rejeté par l\'organisation destinataire, nous vous remboursons intégralement.',
+          description: 'Nos notaires travaillent en conformité avec les cadres juridiques internationalement reconnus, tels que la Convention de La Haye. Cependant, la décision d\'accepter un document relève de la compétence exclusive de chaque autorité. Dans l\'éventualité peu probable où votre document serait refusé, nous vous rembourserons intégralement les frais.',
         },
         legalRecognition: {
           title: 'Certifications légalement reconnues',
-          description: 'Toutes les certifications sont effectuées par des notaires assermentés, garantissant la reconnaissance légale par les gouvernements, universités et entreprises dans le monde entier.',
+          description: 'Nos notaires partenaires opèrent en pleine conformité avec les cadres juridiques internationalement reconnus, y compris la Convention de La Haye sur l\'apostille. Bien que nos documents répondent aux normes internationales, l\'acceptation finale est déterminée par chaque autorité destinataire en fonction de ses exigences spécifiques. Dans l\'éventualité peu probable où votre document notarié ne serait pas accepté par l\'autorité destinataire, nous garantissons un remboursement intégral de tous les frais payés.',
         },
       },
       digitalCertification: {
@@ -857,11 +857,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: 'Garantía de devolución del dinero 100%',
-          description: 'Si su documento certificado es rechazado por la organización receptora, le reembolsamos en su totalidad.',
+          description: 'Nuestros notarios trabajan en cumplimiento de marcos legales reconocidos internacionalmente, como el Convenio de La Haya. Sin embargo, la decisión de aceptar un documento está bajo la jurisdicción exclusiva de cada autoridad. En el caso poco probable de que su documento sea rechazado, le reembolsaremos íntegramente las tarifas.',
         },
         legalRecognition: {
           title: 'Certificaciones legalmente reconocidas',
-          description: 'Todas las certificaciones son realizadas por notarios juramentados, asegurando el reconocimiento legal por parte de gobiernos, universidades y empresas en todo el mundo.',
+          description: 'Nuestros notarios asociados operan en pleno cumplimiento de marcos legales reconocidos internacionalmente, incluida la Convención de La Haya sobre Apostilla. Aunque nuestros documentos cumplen con los estándares internacionales, la aceptación final es determinada por cada autoridad receptora según sus requisitos específicos. En el caso poco probable de que su documento notarizado no sea aceptado por la autoridad destinataria, garantizamos un reembolso completo de todas las tarifas pagadas.',
         },
       },
       digitalCertification: {
@@ -1161,11 +1161,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: '100% Geld-zurück-Garantie',
-          description: 'Wenn Ihr zertifiziertes Dokument von der empfangenden Organisation abgelehnt wird, erstatten wir Ihnen den vollen Betrag zurück.',
+          description: 'Unsere Notare arbeiten im Einklang mit international anerkannten Rechtsrahmen wie dem Haager Übereinkommen. Die Entscheidung, ein Dokument zu akzeptieren, liegt jedoch in der ausschließlichen Zuständigkeit jeder Behörde. Im unwahrscheinlichen Fall, dass Ihr Dokument abgelehnt wird, erstatten wir Ihnen die Gebühren vollständig zurück.',
         },
         legalRecognition: {
           title: 'Rechtlich anerkannte Zertifizierungen',
-          description: 'Alle Zertifizierungen werden von vereidigten Notaren durchgeführt und gewährleisten die rechtliche Anerkennung durch Regierungen, Universitäten und Unternehmen weltweit.',
+          description: 'Unsere Partner-Notare arbeiten in vollem Einklang mit international anerkannten Rechtsrahmen, einschließlich des Haager Apostille-Übereinkommens. Während unsere Dokumente internationale Standards erfüllen, wird die endgültige Annahme von jeder empfangenden Behörde auf der Grundlage ihrer spezifischen Anforderungen bestimmt. Im unwahrscheinlichen Fall, dass Ihr notariell beglaubigtes Dokument von der zuständigen Behörde nicht akzeptiert wird, garantieren wir eine vollständige Rückerstattung aller gezahlten Gebühren.',
         },
       },
       digitalCertification: {
@@ -1457,11 +1457,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: 'Garanzia di rimborso 100%',
-          description: 'Se il tuo documento certificato viene rifiutato dall\'organizzazione destinataria, ti rimborsiamo integralmente.',
+          description: 'I nostri notai lavorano in conformità con quadri giuridici riconosciuti a livello internazionale, come la Convenzione dell\'Aia. Tuttavia, la decisione di accettare un documento rientra nella giurisdizione esclusiva di ciascuna autorità. Nel caso improbabile che il tuo documento venga rifiutato, ti rimborseremo integralmente le tariffe.',
         },
         legalRecognition: {
           title: 'Certificazioni legalmente riconosciute',
-          description: 'Tutte le certificazioni sono eseguite da notai giurati, garantendo il riconoscimento legale da parte di governi, università e aziende in tutto il mondo.',
+          description: 'I nostri notai partner operano in piena conformità con quadri giuridici riconosciuti a livello internazionale, inclusa la Convenzione dell\'Aia sull\'apostille. Sebbene i nostri documenti soddisfino gli standard internazionali, l\'accettazione finale è determinata da ciascuna autorità ricevente in base ai propri requisiti specifici. Nel caso improbabile che il tuo documento notarizzato non sia accettato dall\'autorità destinataria, garantiamo un rimborso completo di tutte le tariffe pagate.',
         },
       },
       digitalCertification: {
@@ -1761,11 +1761,11 @@ export const translations = {
       guaranteeSection: {
         moneyBack: {
           title: 'Garantia de devolução do dinheiro 100%',
-          description: 'Se o seu documento certificado for rejeitado pela organização receptora, reembolsamos integralmente.',
+          description: 'Nossos notários trabalham em conformidade com estruturas legais reconhecidas internacionalmente, como a Convenção de Haia. No entanto, a decisão de aceitar um documento está sob a jurisdição exclusiva de cada autoridade. No caso improvável de seu documento ser recusado, reembolsaremos integralmente as taxas.',
         },
         legalRecognition: {
           title: 'Certificações legalmente reconhecidas',
-          description: 'Todas as certificações são realizadas por notários juramentados, garantindo reconhecimento legal por governos, universidades e empresas em todo o mundo.',
+          description: 'Nossos notários parceiros operam em plena conformidade com estruturas legais reconhecidas internacionalmente, incluindo a Convenção de Haia sobre Apostila. Embora nossos documentos atendam aos padrões internacionais, a aceitação final é determinada por cada autoridade receptora com base em seus requisitos específicos. No caso improvável de seu documento notarizado não ser aceito pela autoridade destinatária, garantimos um reembolso completo de todas as taxas pagas.',
         },
       },
       digitalCertification: {

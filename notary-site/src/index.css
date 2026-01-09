@@ -187,15 +187,17 @@
   /* ANTI-CLS: Empêcher tout layout shift */
   /* Réserver l'espace pour le contenu dynamique */
   /* Mobile: 32px (top banner) + 48px (navbar) = 80px */
+  /* Le hero fait MINIMUM 100vh - margin, mais peut s'étendre si le contenu est plus grand */
   [data-hero] {
     contain: layout style;
     margin-top: 80px;
     padding-top: 0;
     min-height: calc(100vh - 80px);
-    height: auto;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* Tablet: 34px (top banner) + 60px (navbar) = 94px */
+  /* Tablet: 34px (top banner) + 60px (navbar) = 82px */
   @media (min-width: 640px) {
     [data-hero] {
       margin-top: 82px;
@@ -206,35 +208,82 @@
   /* Tablet: 36px (top banner) + 60px (navbar) = 96px */
   @media (min-width: 768px) {
     [data-hero] {
-      height: calc(100vh - 96px) !important;
       min-height: calc(100vh - 96px) !important;
-      max-height: calc(100vh - 96px) !important;
       margin-top: 96px;
       margin-bottom: 0;
       padding-bottom: 0;
     }
   }
 
-  /* Desktop: Le hero doit faire 100vh, positionné sous la navbar */
+  /* Desktop: Le hero fait MINIMUM 100vh - margin */
   @media (min-width: 1024px) {
     [data-hero] {
-      height: 100vh !important;
-      min-height: 100vh !important;
-      max-height: 100vh !important;
+      min-height: calc(100vh - 106px) !important;
       margin-top: 106px;
       padding-top: 0;
     }
   }
 
-  /* Desktop XL: Même chose, 100vh */
+  /* Desktop XL: Même chose */
   @media (min-width: 1280px) {
     [data-hero] {
-      height: 100vh !important;
-      min-height: 100vh !important;
-      max-height: 100vh !important;
+      min-height: calc(100vh - 116px) !important;
       margin-top: 116px;
       padding-top: 0;
     }
+  }
+
+  /* Le conteneur interne du hero doit s'étirer pour remplir toute la hauteur */
+  [data-hero] > div {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Masquer l'image du hero sur mobile */
+  [data-hero] > div.hidden {
+    display: none !important;
+  }
+
+  @media (min-width: 1024px) {
+    [data-hero] > div.hidden {
+      display: flex !important;
+    }
+  }
+  
+  /* Le conteneur de contenu s'étire pour remplir l'espace */
+  [data-hero] > div > div:last-child {
+    flex: 1;
+    position: relative;
+  }
+  
+  /* L'image de fond doit couvrir toute la hauteur du conteneur */
+  /* Next.js Image avec fill positionne l'img directement en absolute */
+  [data-hero] > div > img,
+  [data-hero] > div > span,
+  [data-hero] > div > span > img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  
+  /* L'overlay doit aussi couvrir toute la hauteur */
+  [data-hero] > div > div.absolute {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   /* Empêcher les images de causer des shifts */
