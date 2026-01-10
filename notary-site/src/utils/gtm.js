@@ -40,23 +40,22 @@ export const initGTM = () => {
  * @param {object} eventData - Additional event data
  */
 export const pushGTMEvent = (eventName, eventData = {}) => {
-  console.log('[GTM] pushGTMEvent appelé', { eventName, eventData });
-  
   if (typeof window === 'undefined') {
     console.warn('[GTM] ⚠️ window est undefined');
     return;
   }
 
-  // Ensure dataLayer exists
+  // Ensure dataLayer exists - le script GTM dans le layout devrait déjà l'avoir créé
+  // mais on s'assure qu'il existe au cas où
   if (!window.dataLayer) {
     console.log('[GTM] dataLayer n\'existe pas, initialisation...');
-    initGTM();
+    window.dataLayer = window.dataLayer || [];
   }
 
-  // Double check after initialization
-  if (!window.dataLayer) {
-    console.error('[GTM] ❌ Échec de l\'initialisation du dataLayer');
-    return;
+  // Vérifier que dataLayer est bien un tableau
+  if (!Array.isArray(window.dataLayer)) {
+    console.error('[GTM] ❌ dataLayer n\'est pas un tableau');
+    window.dataLayer = [];
   }
 
   const eventPayload = {
@@ -65,21 +64,27 @@ export const pushGTMEvent = (eventName, eventData = {}) => {
     ...eventData
   };
 
-  console.log('[GTM] ✅ Envoi événement au dataLayer:', eventName, eventPayload);
-  
   try {
+    // Utiliser la méthode push native du tableau pour garantir la compatibilité
     window.dataLayer.push(eventPayload);
-    console.log('[GTM] ✅ Événement poussé avec succès. Longueur du dataLayer:', window.dataLayer.length);
     
-    // Vérifier si l'événement a bien été ajouté
-    const lastEvent = window.dataLayer[window.dataLayer.length - 1];
-    if (lastEvent && lastEvent.event === eventName) {
-      console.log('[GTM] ✅ Vérification: événement confirmé dans dataLayer');
-    } else {
-      console.warn('[GTM] ⚠️ L\'événement pourrait ne pas avoir été ajouté correctement');
+    // Log pour débogage (toujours actif pour vérifier en production)
+    console.log('[GTM] ✅ Événement envoyé:', eventName);
+    
+    // Log détaillé en développement uniquement
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[GTM] Détails:', eventPayload);
     }
   } catch (error) {
     console.error('[GTM] ❌ Erreur lors du push dans dataLayer:', error);
+    // Tentative de récupération : réinitialiser le dataLayer
+    try {
+      window.dataLayer = [];
+      window.dataLayer.push(eventPayload);
+      console.log('[GTM] ✅ Événement poussé après réinitialisation');
+    } catch (retryError) {
+      console.error('[GTM] ❌ Échec définitif du push:', retryError);
+    }
   }
 };
 
