@@ -2,9 +2,11 @@
 
 import { memo } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // URL Cloudflare - Next.js Image gère automatiquement le responsive
 const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/public';
@@ -57,6 +59,7 @@ const IconOpenNew = memo(() => (
 const Hero = memo(() => {
   const { currency } = useCurrency();
   const { t } = useTranslation();
+  const pathname = usePathname();
 
   return (
     <section data-hero>
@@ -111,6 +114,10 @@ const Hero = memo(() => {
                   destination: getFormUrl(currency),
                   elementId: 'hero_primary'
                 });
+                // Track GTM event (uniquement sur pages non-services)
+                trackCTAToForm('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
+                // Track GTM event (uniquement sur pages services)
+                trackCTAToFormOnService('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
               }}
             >
               <IconOpenNew />

@@ -6,6 +6,7 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useService } from '../hooks/useServices';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
 let trackCTAClick = null;
@@ -112,6 +113,10 @@ const CTAPopup = () => {
       destination: formUrl,
       elementId: 'popup_primary'
     });
+    // Track GTM event (uniquement sur pages non-services)
+    trackCTAToForm('popup_cta', pathname, label, formUrl, 'popup_primary', serviceId, currency);
+    // Track GTM event (uniquement sur pages services)
+    trackCTAToFormOnService('popup_cta', pathname, label, formUrl, 'popup_primary', serviceId, currency);
     window.location.href = formUrl;
   };
 

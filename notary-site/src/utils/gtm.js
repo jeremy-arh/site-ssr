@@ -190,6 +190,118 @@ export const trackExternalLinkClick = (url, linkText) => {
   });
 };
 
+/**
+ * Vérifie si on est sur une page service
+ * @param {string} pathname - Le pathname de la page
+ * @returns {boolean} True si on est sur une page service
+ */
+const isServicePage = (pathname) => {
+  if (!pathname) return false;
+  
+  // Vérifier les patterns: /services/[serviceId] ou /[lang]/services/[serviceId]
+  // Exclure /services seul (liste des services)
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const servicesIndex = pathSegments.indexOf('services');
+  
+  if (servicesIndex === -1) return false;
+  
+  // Si 'services' est suivi d'un autre segment, c'est une page service
+  // Exemple: ['services', 'apostille'] -> true
+  // Exemple: ['fr', 'services', 'apostille'] -> true
+  // Exemple: ['services'] -> false (liste des services)
+  return servicesIndex < pathSegments.length - 1;
+};
+
+/**
+ * Track CTA click vers le formulaire (uniquement sur les pages NON-services)
+ * @param {string} ctaLocation - Emplacement du CTA (hero, navbar_desktop, navbar_mobile, mobile_cta, popup_cta, how_it_works)
+ * @param {string} pathname - Le pathname de la page actuelle
+ * @param {string} ctaText - Texte du CTA
+ * @param {string} destination - URL de destination (formUrl)
+ * @param {string} elementId - ID de l'élément CTA
+ * @param {string} serviceId - ID du service (optionnel, peut être null)
+ * @param {string} currency - Devise sélectionnée (optionnel)
+ */
+export const trackCTAToForm = (ctaLocation, pathname, ctaText, destination, elementId, serviceId = null, currency = null) => {
+  // Ne pas tracker si on est sur une page service
+  if (isServicePage(pathname)) {
+    return;
+  }
+
+  // Récupérer l'URL complète pour page_location
+  const pageLocation = typeof window !== 'undefined' ? window.location.href : '';
+  const pageTitle = typeof document !== 'undefined' ? document.title : '';
+  const pageReferrer = typeof document !== 'undefined' ? document.referrer || '' : '';
+
+  pushGTMEvent('clic-notarisation', {
+    // Variables principales
+    cta_location: ctaLocation,
+    cta_text: ctaText,
+    destination: destination,
+    element_id: elementId,
+    
+    // Informations sur la page
+    page_path: pathname,
+    page_location: pageLocation,
+    page_title: pageTitle,
+    page_referrer: pageReferrer,
+    
+    // Informations sur le service (peut être null si pas de service)
+    service_id: serviceId || null,
+    
+    // Informations sur la devise
+    currency: currency || null,
+    
+    // Timestamp pour le tracking
+    timestamp: new Date().toISOString()
+  });
+};
+
+/**
+ * Track CTA click vers le formulaire (uniquement sur les pages services)
+ * @param {string} ctaLocation - Emplacement du CTA (hero, navbar_desktop, navbar_mobile, mobile_cta, popup_cta, how_it_works)
+ * @param {string} pathname - Le pathname de la page actuelle
+ * @param {string} ctaText - Texte du CTA
+ * @param {string} destination - URL de destination (formUrl)
+ * @param {string} elementId - ID de l'élément CTA
+ * @param {string} serviceId - ID du service (obligatoire sur les pages services)
+ * @param {string} currency - Devise sélectionnée (optionnel)
+ */
+export const trackCTAToFormOnService = (ctaLocation, pathname, ctaText, destination, elementId, serviceId, currency = null) => {
+  // Ne tracker que si on est sur une page service
+  if (!isServicePage(pathname)) {
+    return;
+  }
+
+  // Récupérer l'URL complète pour page_location
+  const pageLocation = typeof window !== 'undefined' ? window.location.href : '';
+  const pageTitle = typeof document !== 'undefined' ? document.title : '';
+  const pageReferrer = typeof document !== 'undefined' ? document.referrer || '' : '';
+
+  pushGTMEvent('clic-cta-service', {
+    // Variables principales
+    cta_location: ctaLocation,
+    cta_text: ctaText,
+    destination: destination,
+    element_id: elementId,
+    
+    // Informations sur la page
+    page_path: pathname,
+    page_location: pageLocation,
+    page_title: pageTitle,
+    page_referrer: pageReferrer,
+    
+    // Informations sur le service (obligatoire sur les pages services)
+    service_id: serviceId || null,
+    
+    // Informations sur la devise
+    currency: currency || null,
+    
+    // Timestamp pour le tracking
+    timestamp: new Date().toISOString()
+  });
+};
+
 // Initialize GTM on module load
 if (typeof window !== 'undefined') {
   initGTM();

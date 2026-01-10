@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback, memo } from 'react';
+import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
 let trackCTAClick = null;
@@ -37,6 +39,7 @@ const IconOpenNew = memo(() => (
 
 const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
   const { t } = useTranslation();
+  const pathname = usePathname();
   const defaultCtaText = ctaText || t('nav.notarizeNow');
   const [isVisible, setIsVisible] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -139,6 +142,10 @@ const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
                   destination: getFormUrl(currency, serviceId),
                   elementId: 'mobile_bottom_cta'
                 });
+                // Track GTM event (uniquement sur pages non-services)
+                trackCTAToForm('mobile_cta', pathname, defaultCtaText, getFormUrl(currency, serviceId), 'mobile_bottom_cta', serviceId, currency);
+                // Track GTM event (uniquement sur pages services)
+                trackCTAToFormOnService('mobile_cta', pathname, defaultCtaText, getFormUrl(currency, serviceId), 'mobile_bottom_cta', serviceId, currency);
               }}
             >
               <span className="btn-text inline-block inline-flex items-center justify-center gap-2">

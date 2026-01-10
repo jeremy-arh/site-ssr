@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
+import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
 let trackCTAClick = null;
@@ -718,6 +719,10 @@ const HowItWorks = memo(() => {
                       destination: getFormUrl(currency, currentServiceId),
                       elementId: 'how_it_works_cta'
                     });
+                    // Track GTM event (uniquement sur pages non-services)
+                    trackCTAToForm('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
+                    // Track GTM event (uniquement sur pages services)
+                    trackCTAToFormOnService('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
                   }}
                 >
                   <IconOpenNew className="w-5 h-5" />

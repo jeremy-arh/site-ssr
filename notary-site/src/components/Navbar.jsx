@@ -11,6 +11,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { useLanguage } from '../contexts/LanguageContext';
 import { formatServiceForLanguage } from '../utils/services';
 import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
+import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 // NOTE: Ne plus utiliser Supabase côté client - utiliser les données SSR
 import servicesData from '../../public/data/services.json';
 
@@ -484,6 +485,10 @@ const Navbar = memo(() => {
                     destination: getFormUrl(currency, currentServiceId),
                     elementId: 'navbar_desktop_cta'
                   });
+                  // Track GTM event (uniquement sur pages non-services)
+                  trackCTAToForm('navbar_desktop', pathname, ctaText || t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'navbar_desktop_cta', currentServiceId, currency);
+                  // Track GTM event (uniquement sur pages services)
+                  trackCTAToFormOnService('navbar_desktop', pathname, ctaText || t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'navbar_desktop_cta', currentServiceId, currency);
                 }}
               >
                 <span className="btn-text inline-block inline-flex items-center gap-1 lg:gap-2 whitespace-nowrap">
@@ -717,6 +722,10 @@ const Navbar = memo(() => {
                   destination: getFormUrl(currency, currentServiceId),
                   elementId: 'navbar_mobile_cta'
                 });
+                // Track GTM event (uniquement sur pages non-services)
+                trackCTAToForm('navbar_mobile', pathname, ctaText || t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'navbar_mobile_cta', currentServiceId, currency);
+                // Track GTM event (uniquement sur pages services)
+                trackCTAToFormOnService('navbar_mobile', pathname, ctaText || t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'navbar_mobile_cta', currentServiceId, currency);
                 closeMenu();
               }}
               className="block w-full text-center glassy-cta-blue text-base font-bold rounded-xl py-4 px-6"
