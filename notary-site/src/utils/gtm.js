@@ -72,7 +72,8 @@ export const pushGTMEvent = (eventName, eventData = {}) => {
     console.log('[GTM] ✅ Événement envoyé:', eventName);
     
     // Log détaillé en développement uniquement
-    if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-undef
+    if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') {
       console.log('[GTM] Détails:', eventPayload);
     }
   } catch (error) {
