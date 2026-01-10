@@ -8,9 +8,21 @@ const FAQ = ({ faqsData = null }) => {
   const { t, language } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [openIndex, setOpenIndex] = useState(null);
-  
+
+  // Debug en développement
+  // eslint-disable-next-line no-undef
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.log('[FAQ Component Debug]', {
+      faqsData,
+      faqsDataType: typeof faqsData,
+      isArray: Array.isArray(faqsData),
+      length: faqsData?.length,
+      language
+    })
+  }
+
   // Fallback FAQs si pas de données SSR
-  const defaultFaqs = [
+  const defaultFaqs = useMemo(() => [
     {
       question: 'How does the online notarization process work?',
       answer: 'Everything happens in just a few minutes, directly from your browser. You schedule a secure video session with a licensed notary, sign your document remotely, and the notarization is completed in real time. Your notarized document is immediately uploaded and available on the platform, accompanied by its digital certification.'
@@ -31,18 +43,7 @@ const FAQ = ({ faqsData = null }) => {
       question: 'When will I receive my final document?',
       answer: 'Immediately after the end of your video session with the notary, your notarized document is automatically available in your secure dashboard. You receive your notarized document right away, without any delay. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.'
     },
-  ];
-
-  // Debug en développement
-  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-    console.log('[FAQ Component Debug]', {
-      faqsData,
-      faqsDataType: typeof faqsData,
-      isArray: Array.isArray(faqsData),
-      length: faqsData?.length,
-      language
-    })
-  }
+  ], []);
 
   // Utiliser les données SSR si disponibles, sinon fallback
   // Vérifier que faqsData est un tableau non vide
@@ -72,7 +73,7 @@ const FAQ = ({ faqsData = null }) => {
       ...faq,
       originalIndex: index,
     }));
-  }, [faqsData, language, hasValidFaqsData]);
+  }, [faqsData, language, hasValidFaqsData, defaultFaqs]);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);

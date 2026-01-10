@@ -525,12 +525,12 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   answer: answer,
                 })
               }
-            } catch (e) {
+            } catch {
               // Continuer avec la FAQ suivante
             }
           }
         }
-      } catch (error) {
+      } catch {
         // Si les traductions ne sont pas disponibles, utiliser les FAQs par défaut en anglais
         // (ce cas ne devrait normalement pas arriver car les traductions sont toujours disponibles)
         const defaultFaqs = [
@@ -565,6 +565,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
     }
     
     // Debug en développement pour vérifier la langue utilisée
+    // eslint-disable-next-line no-undef
     if (process.env.NODE_ENV === 'development' && faqsForSchema.length > 0) {
       console.log('[Schema.org FAQ Debug]', {
         language,

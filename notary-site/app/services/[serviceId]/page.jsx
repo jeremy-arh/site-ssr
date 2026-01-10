@@ -50,6 +50,7 @@ export default async function ServiceDetail({ params }) {
   const faqsData = serviceFaqs || generalFaqsData
   
   // Debug en développement
+  // eslint-disable-next-line no-undef
   if (process.env.NODE_ENV === 'development') {
     console.log('[Service FAQ Debug]', {
       serviceId,
