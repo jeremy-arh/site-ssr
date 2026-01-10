@@ -77,6 +77,12 @@ export const getServiceFields = () => {
     base_price,
     is_active,
     show_in_list,
+    category,
+    category_fr,
+    category_es,
+    category_de,
+    category_it,
+    category_pt,
     created_at,
     updated_at
   `.replace(/\s+/g, ' ').trim();
@@ -144,6 +150,24 @@ export const formatServiceForLanguage = (service, language) => {
   const listTitle = getLocalizedServiceValue(service, 'list_title', language);
   const pageH1 = getLocalizedServiceValue(service, 'page_h1', language);
   
+  // Récupérer la catégorie localisée pour l'affichage
+  // La catégorie de référence (category) reste pour le filtrage
+  let categoryLabel = '';
+  
+  // Pour les catégories, accéder directement aux colonnes multilingues
+  if (language && language !== 'en') {
+    // Essayer directement la colonne multilingue (ex: category_fr)
+    const directCategoryField = `category_${language}`;
+    if (service[directCategoryField] && typeof service[directCategoryField] === 'string' && service[directCategoryField].trim() !== '') {
+      categoryLabel = service[directCategoryField];
+    }
+  }
+  
+  // Si pas de traduction disponible, utiliser la valeur de référence comme fallback
+  if (!categoryLabel || categoryLabel.trim() === '') {
+    categoryLabel = service.category || 'general';
+  }
+  
   return {
     ...service,
     name: name,
@@ -157,6 +181,9 @@ export const formatServiceForLanguage = (service, language) => {
     meta_title: getLocalizedServiceValue(service, 'meta_title', language) || getLocalizedServiceValue(service, 'name', language),
     meta_description: getLocalizedServiceValue(service, 'meta_description', language) || getLocalizedServiceValue(service, 'short_description', language) || getLocalizedServiceValue(service, 'description', language),
     detailed_description: getLocalizedServiceValue(service, 'detailed_description', language) || getLocalizedServiceValue(service, 'description', language),
+    // category_label: libellé traduit de la catégorie pour l'affichage
+    // category: reste la valeur de référence pour le filtrage
+    category_label: categoryLabel,
   };
 };
 

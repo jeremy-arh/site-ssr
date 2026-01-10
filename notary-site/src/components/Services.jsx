@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link';
-import { memo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { useServicesList } from '../hooks/useServices';
 import { formatServicesForLanguage } from '../utils/services';
+import { fuzzySearchServices } from '../utils/fuzzySearch';
 import PriceDisplay from './PriceDisplay';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
@@ -31,90 +32,70 @@ if (typeof window !== 'undefined') {
   setTimeout(loadAnalytics, 2000);
 }
 
-// SVG Icons inline pour éviter @iconify/react (300ms de latence)
-const IconBadgeCheck = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>
-));
-
-const IconTranslate = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12.913 17H20.087M12.913 17L11 21M12.913 17L16.5 9L20.087 17M20.087 17L22 21"/>
-    <path d="M2 5H8M8 5H11M8 5V3M11 5H14M11 5C10.5 9 9.5 11.5 8 14"/>
-    <path d="M5 10C5.5 11.5 6.5 13 8 14M8 14C9 15 11 16.5 14 16.5"/>
-  </svg>
-));
-
-const IconPassport = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <rect x="4" y="2" width="16" height="20" rx="2"/>
-    <circle cx="12" cy="10" r="3"/>
-    <path d="M8 17h8"/>
-  </svg>
-));
-
-const IconDocument = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-  </svg>
-));
-
-const IconSignature = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M20 19H4M4 15l3-3 2 2 4-4 3 3 4-4"/>
-    <circle cx="18" cy="7" r="3"/>
-  </svg>
-));
-
-const IconScale = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12 3v18M3 9l3-3 3 3M18 9l3-3-3-3M6 9v6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/>
-    <path d="M3 9a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3"/>
-  </svg>
-));
-
-const IconApostille = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M12 6v6l4 2"/>
-    <path d="M2 12h2M20 12h2M12 2v2M12 20v2"/>
-  </svg>
-));
-
-const IconPower = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <path d="M14 2v6h6"/>
-    <path d="M9 15l2 2 4-4"/>
-  </svg>
-));
-
-// Map des icônes par service_id
-const SERVICE_ICONS = {
-  'certified-translation': IconTranslate,
-  'certified-true-copy-of-passport': IconPassport,
-  'certified-true-copy': IconDocument,
-  'online-signature-certification': IconSignature,
-  'online-affidavit-sworn-declaration': IconScale,
-  'apostille-hague-convention': IconApostille,
-  'online-power-of-attorney': IconPower,
-  'commercial-administrative-documents': IconDocument,
-};
-
 const Services = ({ servicesData = null }) => {
   const { getLocalizedPath, language } = useLanguage();
   const { t } = useTranslation();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const servicesPerPage = 6;
   
   // Toujours utiliser le hook pour garantir l'ordre des hooks
   const hookResult = useServicesList({ showInListOnly: true });
   
   // Si on a des données SSR, les utiliser, sinon fallback sur le hook
-  const services = servicesData 
+  const allServices = servicesData 
     ? formatServicesForLanguage(servicesData.filter(s => s.show_in_list === true), language)
     : hookResult.services;
   const isLoading = servicesData ? false : hookResult.isLoading;
+
+  // Extraire toutes les catégories uniques avec leurs libellés traduits
+  // Utiliser category_label pour l'affichage mais garder category pour le filtrage
+  const categories = useMemo(() => {
+    // Créer un map pour associer chaque catégorie de référence à son libellé traduit
+    const categoryMap = new Map();
+    
+    allServices.forEach(service => {
+      const categoryRef = service.category || 'general';
+      const categoryLabel = service.category_label || categoryRef;
+      
+      // Stocker le libellé traduit pour chaque catégorie de référence
+      if (!categoryMap.has(categoryRef)) {
+        categoryMap.set(categoryRef, {
+          ref: categoryRef,
+          label: categoryLabel,
+        });
+      }
+    });
+    
+    // Retourner les catégories triées par libellé traduit
+    return Array.from(categoryMap.values())
+      .sort((a, b) => a.label.localeCompare(b.label, language));
+  }, [allServices, language]);
+
+  // Filtrer par catégorie d'abord, puis recherche
+  const filteredServices = useMemo(() => {
+    let filtered = allServices;
+    
+    // Filtrer par catégorie
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(service => (service.category || 'general') === selectedCategory);
+    }
+    
+    // Ensuite appliquer la recherche floue
+    return fuzzySearchServices(filtered, searchQuery);
+  }, [selectedCategory, searchQuery, allServices]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredServices.length / servicesPerPage);
+  const startIndex = (currentPage - 1) * servicesPerPage;
+  const endIndex = startIndex + servicesPerPage;
+  const paginatedServices = filteredServices.slice(startIndex, endIndex);
+
+  // Réinitialiser la page quand la recherche ou la catégorie change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, selectedCategory]);
 
   return (
     <section id="services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
@@ -129,6 +110,86 @@ const Services = ({ servicesData = null }) => {
           </h2>
         </div>
 
+        {/* Barre de recherche */}
+        <div className="mb-6 max-w-2xl mx-auto px-1 md:px-0">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
+              placeholder={t('services.searchPlaceholder') || 'Search services...'}
+              className="w-full px-5 py-4 pl-12 pr-4 text-gray-900 bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-all duration-300 text-base placeholder-gray-400"
+            />
+            <svg
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                }}
+                className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Clear search"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Filtre par catégorie */}
+        {categories.length > 0 && (
+          <div className="mb-8 flex flex-wrap justify-center gap-2 px-1 md:px-0">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                selectedCategory === 'all'
+                  ? 'bg-black text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {t('services.categories.all') || 'All'}
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.ref}
+                onClick={() => setSelectedCategory(category.ref)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                  selectedCategory === category.ref
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {isLoading ? (
           <div className="text-center py-20">
             <div className="animate-pulse space-y-4">
@@ -140,14 +201,38 @@ const Services = ({ servicesData = null }) => {
               </div>
             </div>
           </div>
-        ) : services.length === 0 ? (
+        ) : filteredServices.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-600 text-lg">{t('services.noServices')}</p>
+            {searchQuery ? (
+              <div className="max-w-md mx-auto">
+                <svg
+                  className="w-16 h-16 mx-auto text-gray-300 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <p className="text-gray-600 text-lg mb-2">
+                  {t('services.noResults') || 'No services found'}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  {t('services.tryDifferentSearch') || 'Try a different search term'}
+                </p>
+              </div>
+            ) : (
+              <p className="text-gray-600 text-lg">{t('services.noServices')}</p>
+            )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.filter(s => s && s.service_id).map((service) => {
-              const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck;
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedServices.filter(s => s && s.service_id).map((service) => {
               const servicePath = `/services/${service.service_id}`;
               const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath;
               return (
@@ -160,10 +245,7 @@ const Services = ({ servicesData = null }) => {
                     safeTrack(trackServiceClick, service.service_id, service.name, 'homepage_services');
                   }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 flex-shrink-0">
-                      <ServiceIcon />
-                    </div>
+                  <div className="mb-4">
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
                   </div>
 
@@ -185,7 +267,104 @@ const Services = ({ servicesData = null }) => {
                 </Link>
               );
             })}
-          </div>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="mt-12 flex flex-col items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Previous page"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  
+                  <div className="flex items-center gap-1">
+                    {(() => {
+                      const pages = [];
+                      let lastPage = 0;
+                      
+                      for (let page = 1; page <= totalPages; page++) {
+                        // Toujours afficher la première et dernière page
+                        if (page === 1 || page === totalPages) {
+                          if (page - lastPage > 1) {
+                            pages.push(
+                              <span key={`ellipsis-${page}`} className="px-2 text-gray-400">
+                                ...
+                              </span>
+                            );
+                          }
+                          pages.push(
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`px-4 py-2 rounded-lg border transition-colors ${
+                                currentPage === page
+                                  ? 'bg-black text-white border-black'
+                                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                              }`}
+                              aria-label={`Page ${page}`}
+                              aria-current={currentPage === page ? 'page' : undefined}
+                            >
+                              {page}
+                            </button>
+                          );
+                          lastPage = page;
+                        }
+                        // Afficher les pages autour de la page actuelle
+                        else if (page >= currentPage - 1 && page <= currentPage + 1) {
+                          if (page - lastPage > 1) {
+                            pages.push(
+                              <span key={`ellipsis-${page}`} className="px-2 text-gray-400">
+                                ...
+                              </span>
+                            );
+                          }
+                          pages.push(
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`px-4 py-2 rounded-lg border transition-colors ${
+                                currentPage === page
+                                  ? 'bg-black text-white border-black'
+                                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                              }`}
+                              aria-label={`Page ${page}`}
+                              aria-current={currentPage === page ? 'page' : undefined}
+                            >
+                              {page}
+                            </button>
+                          );
+                          lastPage = page;
+                        }
+                      }
+                      
+                      return pages;
+                    })()}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    aria-label="Next page"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-sm text-gray-500">
+                  {t('services.showing') || 'Showing'} {startIndex + 1}-{Math.min(endIndex, filteredServices.length)} {t('services.of') || 'of'} {filteredServices.length} {t('services.services') || 'services'}
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

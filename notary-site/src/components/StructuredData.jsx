@@ -60,13 +60,33 @@ const StructuredData = ({
     // Ajouter les données supplémentaires
     if (additionalData && Array.isArray(additionalData)) {
       additionalData.forEach((item) => {
-        scripts.push({
-          type: item.type || 'Thing',
-          data: {
-            '@context': 'https://schema.org',
-            ...item.data,
-          },
-        });
+        // Traitement spécial pour FAQPage
+        if (item.type === 'FAQPage' && item.data && item.data.faqItems && Array.isArray(item.data.faqItems)) {
+          scripts.push({
+            type: 'FAQPage',
+            data: {
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: item.data.faqItems.map((faqItem) => ({
+                '@type': 'Question',
+                name: faqItem.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faqItem.answer,
+                },
+              })),
+            },
+          });
+        } else {
+          // Pour les autres types, traitement standard
+          scripts.push({
+            type: item.type || 'Thing',
+            data: {
+              '@context': 'https://schema.org',
+              ...item.data,
+            },
+          });
+        }
       });
     }
 

@@ -72,6 +72,22 @@ export default function PartytownScripts() {
       <Script
         id="crisp-script"
         strategy="afterInteractive"
+        onLoad={() => {
+          console.log('[Crisp] ✅ Script Crisp initialisé');
+          // Vérifier après un court délai si Crisp est disponible
+          setTimeout(() => {
+            if (typeof window !== 'undefined') {
+              console.log('[Crisp] Vérification post-chargement:', {
+                crispExists: typeof window.$crisp !== 'undefined',
+                crispIsArray: Array.isArray(window.$crisp),
+                crispPushExists: typeof window.$crisp?.push === 'function'
+              });
+            }
+          }, 1000);
+        }}
+        onError={(e) => {
+          console.error('[Crisp] ❌ Erreur lors du chargement du script:', e);
+        }}
         dangerouslySetInnerHTML={{
           __html: `
             window.$crisp=[];
@@ -81,6 +97,8 @@ export default function PartytownScripts() {
               var s=d.createElement("script");
               s.src="https://client.crisp.chat/l.js";
               s.async=1;
+              s.onload=function(){console.log('[Crisp] Script externe chargé');};
+              s.onerror=function(e){console.error('[Crisp] Erreur chargement script externe:',e);};
               d.getElementsByTagName("head")[0].appendChild(s);
             })();
           `,

@@ -108,3 +108,38 @@ export const fuzzySearchFAQs = (faqs, query, threshold = 0.1) => {
     .sort((a, b) => b.score - a.score);
 };
 
+/**
+ * Effectue une recherche floue dans une liste de services
+ * @param {Array} services - Liste des services à rechercher
+ * @param {string} query - Requête de recherche
+ * @param {number} threshold - Seuil minimum de score pour inclure un résultat (0-1)
+ * @returns {Array} Liste des services filtrés et triés par score décroissant
+ */
+export const fuzzySearchServices = (services, query, threshold = 0.1) => {
+  if (!query || query.trim().length === 0) {
+    return services.map((service, index) => ({ ...service, originalIndex: index, score: 1 }));
+  }
+  
+  const results = services.map((service, index) => {
+    const name = service.name || service.list_title || '';
+    const description = service.description || service.short_description || '';
+    
+    const nameScore = calculateSimilarity(name, query);
+    const descriptionScore = calculateSimilarity(description, query);
+    
+    // Le score du nom a plus de poids que celui de la description
+    const totalScore = nameScore * 0.7 + descriptionScore * 0.3;
+    
+    return {
+      ...service,
+      originalIndex: index,
+      score: totalScore
+    };
+  });
+  
+  // Filtrer par seuil et trier par score décroissant
+  return results
+    .filter(result => result.score >= threshold)
+    .sort((a, b) => b.score - a.score);
+};
+

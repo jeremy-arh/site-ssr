@@ -1,5 +1,5 @@
 'use client'
-// Force rebuild - hero deux colonnes
+// Force rebuild - hero deux colonnes - services blocks updated
 
 import { useEffect, useMemo, useState, memo } from 'react'
 import { usePathname } from 'next/navigation'
@@ -18,6 +18,7 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { formatServiceForLanguage, formatServicesForLanguage } from '@/utils/services'
 import PriceDisplay from '@/components/PriceDisplay'
+import { fuzzySearchServices } from '@/utils/fuzzySearch'
 import dynamic from 'next/dynamic'
 
 // Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
@@ -41,6 +42,22 @@ const trackWithAnalytics = (type, ...args) => {
 // Icônes noires pour le hero (fond clair beige)
 const IconWorld = memo(() => (
   <svg className="w-5 h-5 lg:w-6 lg:h-6 text-gray-900 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>
+))
+// Icônes pour les blocs de certification digitale
+const IconLaptop = memo(() => (
+  <svg className="w-6 h-6 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <rect x="2" y="4" width="20" height="13" rx="2" ry="2"/><path d="M6 20h12M12 16v4"/>
+  </svg>
+))
+const IconCertificate = memo(() => (
+  <svg className="w-6 h-6 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4h4M10 13l2 2 4-4"/>
+  </svg>
+))
+const IconEarth = memo(() => (
+  <svg className="w-6 h-6 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
     <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
   </svg>
 ))
@@ -128,71 +145,6 @@ const IconShieldCheck = memo(() => (
   </svg>
 ))
 
-// Icônes pour les services (même que sur la homepage)
-const IconBadgeCheck = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-  </svg>
-))
-const IconTranslate = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12.913 17H20.087M12.913 17L11 21M12.913 17L16.5 9L20.087 17M20.087 17L22 21"/>
-    <path d="M2 5H8M8 5H11M8 5V3M11 5H14M11 5C10.5 9 9.5 11.5 8 14"/>
-    <path d="M5 10C5.5 11.5 6.5 13 8 14M8 14C9 15 11 16.5 14 16.5"/>
-  </svg>
-))
-const IconPassport = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <rect x="4" y="2" width="16" height="20" rx="2"/>
-    <circle cx="12" cy="10" r="3"/>
-    <path d="M8 17h8"/>
-  </svg>
-))
-const IconDocument = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-  </svg>
-))
-const IconSignature = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M20 19H4M4 15l3-3 2 2 4-4 3 3 4-4"/>
-    <circle cx="18" cy="7" r="3"/>
-  </svg>
-))
-const IconScale = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M12 3v18M3 9l3-3 3 3M18 9l3-3-3-3M6 9v6a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V9"/>
-    <path d="M3 9a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3"/>
-  </svg>
-))
-const IconApostille = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <circle cx="12" cy="12" r="10"/>
-    <path d="M12 6v6l4 2"/>
-    <path d="M2 12h2M20 12h2M12 2v2M12 20v2"/>
-  </svg>
-))
-const IconPower = memo(() => (
-  <svg className="w-10 h-10 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-    <path d="M14 2v6h6"/>
-    <path d="M9 15l2 2 4-4"/>
-  </svg>
-))
-
-// Map des icônes par service_id
-const SERVICE_ICONS = {
-  'certified-translation': IconTranslate,
-  'certified-true-copy-of-passport': IconPassport,
-  'certified-true-copy': IconDocument,
-  'online-signature-certification': IconSignature,
-  'online-affidavit-sworn-declaration': IconScale,
-  'apostille-hague-convention': IconApostille,
-  'online-power-of-attorney': IconPower,
-  'commercial-administrative-documents': IconDocument,
-}
-
 // Map des icônes pour How It Works (défini après toutes les icônes)
 const STEP_ICONS_HIW = {
   'line-md:uploading-loop': IconUpload,
@@ -252,13 +204,49 @@ const WhatIsContent = memo(({ service, t }) => {
 
 // Other Services Section Component - memoized pour éviter re-renders
 // Design identique à la homepage (Services.jsx)
+// Other Services Section Component - Design identique à la homepage avec recherche et catégories
 const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   const { t } = useTranslation()
   const { getLocalizedPath } = useLanguage()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('all')
 
   const relatedServices = useMemo(() => {
     return formatServicesForLanguage(relatedServicesData || [], language)
   }, [relatedServicesData, language])
+
+  // Extraire toutes les catégories uniques avec leurs libellés traduits
+  const categories = useMemo(() => {
+    const categoryMap = new Map()
+    
+    relatedServices.forEach(service => {
+      const categoryRef = service.category || 'general'
+      const categoryLabel = service.category_label || categoryRef
+      
+      if (!categoryMap.has(categoryRef)) {
+        categoryMap.set(categoryRef, {
+          ref: categoryRef,
+          label: categoryLabel,
+        })
+      }
+    })
+    
+    return Array.from(categoryMap.values())
+      .sort((a, b) => a.label.localeCompare(b.label, language))
+  }, [relatedServices, language])
+
+  // Filtrer par catégorie d'abord, puis recherche
+  const filteredServices = useMemo(() => {
+    let filtered = relatedServices
+    
+    // Filtrer par catégorie
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(service => (service.category || 'general') === selectedCategory)
+    }
+    
+    // Ensuite appliquer la recherche floue
+    return fuzzySearchServices(filtered, searchQuery)
+  }, [selectedCategory, searchQuery, relatedServices])
 
   if (relatedServices.length === 0) {
     return null
@@ -268,42 +256,155 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
     <section id="other-services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
       <div className="max-w-[1300px] mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">{t('serviceDetail.relatedServices')}</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {relatedServices.filter(s => s && s.service_id).map((service) => {
-            const ServiceIcon = SERVICE_ICONS[service.service_id] || IconBadgeCheck
-            return (
-              <Link
-                key={service.id || service.service_id}
-                href={getLocalizedPath(`/services/${service.service_id}`)}
-                className="group bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 grid"
-                style={{ gridTemplateRows: 'auto 1fr auto' }}
+
+        {/* Barre de recherche */}
+        <div className="mb-6 max-w-2xl mx-auto px-1 md:px-0">
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value)
+              }}
+              placeholder={t('services.searchPlaceholder') || 'Search services...'}
+              className="w-full px-5 py-4 pl-12 pr-4 text-gray-900 bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-all duration-300 text-base placeholder-gray-400"
+            />
+            <svg
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('')
+                }}
+                className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Clear search"
               >
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 flex-shrink-0">
-                    <ServiceIcon />
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
-                </div>
-
-                <p className="text-gray-600 mb-6 leading-relaxed self-start">{service.short_description || service.description}</p>
-
-                <div className="flex flex-col gap-3 items-center pt-4 border-t border-gray-200 self-end">
-                  <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
-                    <span className="btn-text inline-block">{t('services.learnMore')}</span>
-                    <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </div>
-                  {service.base_price && (
-                    <div className="flex items-center gap-2 justify-center">
-                      <PriceDisplay price={service.base_price} showFrom className="text-lg font-bold text-gray-900" />
-                    </div>
-                  )}
-                </div>
-              </Link>
-            )
-          })}
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Filtre par catégorie */}
+        {categories.length > 0 && (
+          <div className="mb-8 flex flex-wrap justify-center gap-2 px-1 md:px-0">
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                selectedCategory === 'all'
+                  ? 'bg-black text-white shadow-md'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {t('services.categories.all') || 'All'}
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category.ref}
+                onClick={() => setSelectedCategory(category.ref)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                  selectedCategory === category.ref
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Message si aucun résultat */}
+        {filteredServices.length === 0 ? (
+          <div className="text-center py-20">
+            {searchQuery ? (
+              <div className="max-w-md mx-auto">
+                <svg
+                  className="w-16 h-16 mx-auto text-gray-300 mb-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <p className="text-gray-600 text-lg mb-2">
+                  {t('services.noResults') || 'No services found'}
+                </p>
+                <p className="text-gray-500 text-sm">
+                  {t('services.tryDifferentSearch') || 'Try a different search term'}
+                </p>
+              </div>
+            ) : (
+              <p className="text-gray-600 text-lg">{t('services.noServices')}</p>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredServices.filter(s => s && s.service_id).map((service) => {
+              const servicePath = `/services/${service.service_id}`
+              const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath
+              
+              return (
+                <Link
+                  key={service.id || service.service_id}
+                  href={localizedPath || servicePath}
+                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
+                  onClick={() => {
+                    trackWithAnalytics('service', service.service_id, service.name, 'service_detail_other_services')
+                  }}
+                >
+                  <div className="mb-4">
+                    <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
+                  </div>
+
+                  <p className="text-gray-600 mb-6 min-h-[60px] leading-relaxed flex-1">{service.short_description || service.description}</p>
+
+                  <div className="flex flex-col gap-3 mt-auto items-center pt-4 border-t border-gray-200">
+                    <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
+                      <span className="btn-text inline-block">{t('services.learnMore')}</span>
+                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </div>
+                    {service.base_price && (
+                      <div className="flex items-center gap-2 justify-center">
+                        <PriceDisplay price={service.base_price} showFrom className="text-lg font-bold text-gray-900" />
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        )}
       </div>
     </section>
   )
@@ -361,6 +462,122 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
     ]
   }, [service, t, pathname])
 
+  // Formater les FAQs pour le schema.org (FAQPage)
+  // Inclut les FAQs dynamiques (du service ou générales) et les FAQs fixes si nécessaire
+  // IMPORTANT: Les FAQs sont formatées selon la langue actuelle (language)
+  const faqItemsForSchema = useMemo(() => {
+    const faqsForSchema = []
+    
+    // 1. Ajouter les FAQs dynamiques (du service ou générales) si disponibles
+    if (faqsData && Array.isArray(faqsData) && faqsData.length > 0) {
+      faqsData.forEach((faq) => {
+        // Récupérer la question et la réponse selon la langue actuelle
+        // Ordre de priorité : langue actuelle > anglais > question/answer par défaut
+        let question = ''
+        let answer = ''
+        
+        // Pour la langue actuelle (ex: 'fr', 'es', 'de', etc.)
+        if (language && language !== 'en') {
+          question = faq[`question_${language}`] || ''
+          answer = faq[`answer_${language}`] || ''
+        }
+        
+        // Fallback vers l'anglais si la langue actuelle n'est pas disponible
+        if (!question || !answer) {
+          question = faq.question_en || faq.question || ''
+          answer = faq.answer_en || faq.answer || ''
+        }
+        
+        // Ajouter seulement si question et answer sont valides
+        if (question && answer) {
+          faqsForSchema.push({
+            question: question,
+            answer: answer,
+          })
+        }
+      })
+    }
+    
+    // 2. Si pas de FAQs dynamiques, ajouter les FAQs fixes depuis les traductions
+    // Les traductions sont automatiquement dans la bonne langue grâce au hook useTranslation
+    if (faqsForSchema.length === 0) {
+      try {
+        // Essayer de récupérer les FAQs depuis les traductions (déjà dans la bonne langue)
+        const translatedFaqs = t('faq.items', [])
+        if (Array.isArray(translatedFaqs) && translatedFaqs.length > 0) {
+          translatedFaqs.forEach((faq) => {
+            if (faq && faq.question && faq.answer) {
+              faqsForSchema.push({
+                question: faq.question,
+                answer: faq.answer,
+              })
+            }
+          })
+        } else {
+          // Si les traductions ne retournent pas un tableau, essayer d'accéder directement
+          for (let i = 0; i < 5; i++) {
+            try {
+              const question = t(`faq.items.${i}.question`, '')
+              const answer = t(`faq.items.${i}.answer`, '')
+              if (question && answer) {
+                faqsForSchema.push({
+                  question: question,
+                  answer: answer,
+                })
+              }
+            } catch (e) {
+              // Continuer avec la FAQ suivante
+            }
+          }
+        }
+      } catch (error) {
+        // Si les traductions ne sont pas disponibles, utiliser les FAQs par défaut en anglais
+        // (ce cas ne devrait normalement pas arriver car les traductions sont toujours disponibles)
+        const defaultFaqs = [
+          {
+            question: 'How does the online notarization process work?',
+            answer: 'Everything happens in just a few minutes, directly from your browser. You schedule a secure video session with a licensed notary, sign your document remotely, and the notarization is completed in real time. Your notarized document is immediately uploaded and available on the platform, accompanied by its digital certification.'
+          },
+          {
+            question: 'Are my documents officially recognized internationally?',
+            answer: 'Yes. All documents notarized through our platform can receive an apostille issued in accordance with The Hague Convention of 5 October 1961. This apostille certifies the authenticity of the notary\'s signature and seal, ensuring the international validity of your document across all member countries.'
+          },
+          {
+            question: 'What types of documents can I have certified?',
+            answer: 'You can notarize and certify a wide range of documents, including:\n- Contracts, declarations, affidavits, and simple powers of attorney\n- Certified true copies (IDs, diplomas, certificates)\n- Certified translations Business and administrative documents\nEach document is securely signed, sealed, and stored within your private space.'
+          },
+          {
+            question: 'How is my data protected?',
+            answer: 'All transfers are end-to-end encrypted (AES-256) and stored on secure servers that comply with international data protection standards. Video sessions are recorded and archived under strict control to ensure integrity, traceability, and full confidentiality for every notarization.'
+          },
+          {
+            question: 'When will I receive my final document?',
+            answer: 'Immediately after the end of your video session with the notary, your notarized document is automatically available in your secure dashboard. You receive your notarized document right away, without any delay. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.'
+          },
+        ]
+        defaultFaqs.forEach((faq) => {
+          faqsForSchema.push({
+            question: faq.question,
+            answer: faq.answer,
+          })
+        })
+      }
+    }
+    
+    // Debug en développement pour vérifier la langue utilisée
+    if (process.env.NODE_ENV === 'development' && faqsForSchema.length > 0) {
+      console.log('[Schema.org FAQ Debug]', {
+        language,
+        faqsCount: faqsForSchema.length,
+        firstQuestion: faqsForSchema[0]?.question?.substring(0, 50),
+        firstAnswer: faqsForSchema[0]?.answer?.substring(0, 50),
+      })
+    }
+    
+    // Limiter à 10 FAQs pour le schema.org (recommandation Google)
+    return faqsForSchema.slice(0, 10)
+  }, [faqsData, language, t])
+
   const formUrl = useMemo(() => {
     return getFormUrl(currency, service?.service_id || serviceId)
   }, [currency, service?.service_id, serviceId])
@@ -404,6 +621,13 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               items: breadcrumbItems,
             },
           },
+          // Ajouter les FAQs au schema.org si disponibles
+          ...(faqItemsForSchema.length > 0 ? [{
+            type: 'FAQPage',
+            data: {
+              faqItems: faqItemsForSchema,
+            },
+          }] : []),
         ]}
       />
       {/* Hero Section - Deux colonnes : texte à gauche, image à droite */}
@@ -477,47 +701,88 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         </div>
       </section>
 
-      {/* Guarantee Section - Two Column Layout */}
-      <section className="py-12 md:py-16 lg:py-20 bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200 w-full">
-          {/* Column 1 - Money-back guarantee */}
-          <div className="p-6 md:p-8 lg:p-10 flex items-center justify-center">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 w-full max-w-2xl mx-auto">
-              <img
-                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3a1e400a-ac9c-4e69-6f93-23f2322e0600/f=webp,q=30"
-                alt="Money-back guarantee"
-                className="w-32 h-32 md:w-36 md:h-36 flex-shrink-0 object-contain self-center md:self-start"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  {t('serviceDetail.guaranteeSection.moneyBack.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.guaranteeSection.moneyBack.description')}
-                </p>
+      {/* Digital Certification Section */}
+      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
+        <div className="max-w-[1300px] mx-auto">
+          {/* Title - Centered */}
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12 md:mb-16">
+            {t('serviceDetail.digitalCertification.title')}
+          </h2>
+
+          {/* Two Column Layout */}
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-stretch">
+            {/* Left Side - Image */}
+            <div className="w-full lg:w-1/2 flex items-center justify-center">
+              <div className="relative w-full max-w-md h-full">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/75287f19-53c7-450a-407d-23bf1bf8ec00/f=webp,q=30"
+                  alt="Professional notary service"
+                  className="w-full h-full rounded-lg object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </div>
-          </div>
 
-          {/* Column 2 - Legal recognition */}
-          <div className="p-6 md:p-8 lg:p-10 flex items-center justify-center">
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 w-full max-w-2xl mx-auto">
-              <img
-                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3986bff5-5981-4d31-0505-246b9dcbe500/f=webp,q=30"
-                alt="Legally recognized certifications"
-                className="w-32 h-32 md:w-36 md:h-36 flex-shrink-0 object-contain self-center md:self-start"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                  {t('serviceDetail.guaranteeSection.legalRecognition.title')}
+            {/* Right Side - Three Text Blocks */}
+            <div className="w-full lg:w-1/2 flex flex-col justify-center h-full">
+              {/* Block 1 */}
+              <div className="pb-8 md:pb-10">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
+                  <IconLaptop />
+                  {t('serviceDetail.digitalCertification.block1.title')}
                 </h3>
                 <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.guaranteeSection.legalRecognition.description')}
+                  {t('serviceDetail.digitalCertification.block1.description')}
                 </p>
+              </div>
+
+              {/* Separator */}
+              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
+
+              {/* Block 2 */}
+              <div className="pb-8 md:pb-10">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
+                  <IconCertificate />
+                  {t('serviceDetail.digitalCertification.block2.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.digitalCertification.block2.description')}
+                </p>
+              </div>
+
+              {/* Separator */}
+              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
+
+              {/* Block 3 */}
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
+                  <IconEarth />
+                  {t('serviceDetail.digitalCertification.block3.title')}
+                </h3>
+                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
+                  {t('serviceDetail.digitalCertification.block3.description')}
+                </p>
+              </div>
+
+              {/* CTA Link */}
+              <div className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-gray-200">
+                <a
+                  href={formUrl}
+                  className="inline-flex items-center gap-2 text-base md:text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors relative group"
+                  onClick={() => {
+                    trackWithAnalytics('cta', 'service_detail_digital_certification', service?.service_id || serviceId, pathname, {
+                      ctaText: t('serviceDetail.digitalCertification.cta'),
+                      destination: formUrl,
+                      elementId: 'service_detail_digital_certification_cta'
+                    })
+                  }}
+                >
+                  <span>{t('serviceDetail.digitalCertification.cta')}</span>
+                  <svg className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -660,91 +925,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     </span>
                   </a>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Digital Certification Section */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
-        <div className="max-w-[1300px] mx-auto">
-          {/* Title - Centered */}
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12 md:mb-16">
-            {t('serviceDetail.digitalCertification.title')}
-          </h2>
-
-          {/* Two Column Layout */}
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-stretch">
-            {/* Left Side - Image */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center">
-              <div className="relative w-full max-w-md h-full">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/75287f19-53c7-450a-407d-23bf1bf8ec00/f=webp,q=30"
-                  alt="Professional notary service"
-                  className="w-full h-full rounded-lg object-cover shadow-xl"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-
-            {/* Right Side - Three Text Blocks */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center h-full">
-              {/* Block 1 */}
-              <div className="pb-8 md:pb-10">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
-                  {t('serviceDetail.digitalCertification.block1.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block1.description')}
-                </p>
-              </div>
-
-              {/* Separator */}
-              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
-
-              {/* Block 2 */}
-              <div className="pb-8 md:pb-10">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
-                  {t('serviceDetail.digitalCertification.block2.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block2.description')}
-                </p>
-              </div>
-
-              {/* Separator */}
-              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
-
-              {/* Block 3 */}
-              <div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">
-                  {t('serviceDetail.digitalCertification.block3.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block3.description')}
-                </p>
-              </div>
-
-              {/* CTA Link */}
-              <div className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-gray-200">
-                <a
-                  href={formUrl}
-                  className="inline-flex items-center gap-2 text-base md:text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors relative group"
-                  onClick={() => {
-                    trackWithAnalytics('cta', 'service_detail_digital_certification', service?.service_id || serviceId, pathname, {
-                      ctaText: t('serviceDetail.digitalCertification.cta'),
-                      destination: formUrl,
-                      elementId: 'service_detail_digital_certification_cta'
-                    })
-                  }}
-                >
-                  <span>{t('serviceDetail.digitalCertification.cta')}</span>
-                  <svg className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </a>
               </div>
             </div>
           </div>

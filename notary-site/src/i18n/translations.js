@@ -31,6 +31,21 @@ export const translations = {
       otherServices: 'Other services',
       otherServicesHeading: 'Explore Our Other Services',
       perDocument: 'per document',
+      searchPlaceholder: 'Search services...',
+      noResults: 'No services found',
+      tryDifferentSearch: 'Try a different search term',
+      showing: 'Showing',
+      of: 'of',
+      services: 'services',
+      categories: {
+        all: 'All',
+        general: 'General',
+        certification: 'Certification',
+        translation: 'Translation',
+        legal: 'Legal Documents',
+        apostille: 'Apostille',
+        signature: 'Signature',
+      },
     },
     // Service Detail Page
     serviceDetail: {
@@ -122,11 +137,11 @@ export const translations = {
       digitalCertification: {
         title: 'Get your notarized and certified documents in 1 hour.',
         block1: {
-          title: 'Fully Online with 24/7 Availability',
+          title: 'Fully Online',
           description: 'Save yourself the trip to the notary. With My Notary, have your documents certified remotely with complete simplicity, quickly, with full legal security, and worldwide.',
         },
         block2: {
-          title: 'Valid for Authorities and Banks',
+          title: 'Valid for Any Official Purpose',
           description: 'Our digital certifications meet the highest standards - whether for visa applications, registers, or powers of attorney.',
         },
         block3: {
@@ -196,7 +211,7 @@ export const translations = {
         },
         {
           question: 'When will I receive my final document?',
-          answer: 'Immediately after the video session, your notarized document is automatically uploaded to your secure dashboard. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.',
+          answer: 'Immediately after the end of your video session with the notary, your notarized document is automatically available in your secure dashboard. You receive your notarized document right away, without any delay. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.',
         },
         {
           question: 'What is The Hague Convention?',
@@ -209,14 +224,6 @@ export const translations = {
         {
           question: 'Can I track the status of my certification?',
           answer: 'Yes, you can track the status of your certification in real-time through your secure dashboard. You will receive email notifications at each stage of the process, from document upload to final certification and apostille issuance.',
-        },
-        {
-          question: 'Do I need to schedule an appointment in advance?',
-          answer: 'Yes, you need to schedule a video appointment with a licensed notary. Appointments are typically available within 24-48 hours, and you can choose a time slot that works best for you. Same-day appointments may be available depending on availability.',
-        },
-        {
-          question: 'What happens if I miss my scheduled appointment?',
-          answer: 'If you miss your scheduled appointment, you can reschedule it free of charge through your dashboard. We recommend rescheduling at least 2 hours before your original appointment time. Multiple missed appointments may result in a rescheduling fee.',
         },
         {
           question: 'What do I need for the video appointment?',
@@ -343,6 +350,21 @@ export const translations = {
       otherServices: 'Autres services',
       otherServicesHeading: 'Découvrez Nos Autres Solutions',
       perDocument: 'par document',
+      searchPlaceholder: 'Rechercher un service...',
+      noResults: 'Aucun service trouvé',
+      tryDifferentSearch: 'Essayez un autre terme de recherche',
+      showing: 'Affichage',
+      of: 'sur',
+      services: 'services',
+      categories: {
+        all: 'Tous',
+        general: 'Général',
+        certification: 'Certification',
+        translation: 'Traduction',
+        legal: 'Documents légaux',
+        apostille: 'Apostille',
+        signature: 'Signature',
+      },
     },
     howItWorks: {
       title: 'Comment Ça Marche',
@@ -385,10 +407,6 @@ export const translations = {
       searchPlaceholder: 'Tapez votre question...',
       items: [
         {
-          question: 'Comment ça fonctionne concrètement ?',
-          answer: 'C\'est très simple : vous uploadez votre document, vous choisissez un créneau de 15 minutes avec un notaire agréé, vous vous connectez en visio pour la vérification d\'identité et la signature, et c\'est terminé. Votre document certifié est disponible immédiatement dans votre espace personnel. Le tout prend moins de 5 minutes.',
-        },
-        {
           question: 'Mes documents seront-ils valides à l\'étranger ?',
           answer: 'Absolument. Tous nos documents peuvent recevoir une apostille de La Haye, reconnue dans plus de 120 pays. Cette apostille certifie l\'authenticité de la signature du notaire et garantit la validité légale internationale de votre document. Parfait pour les démarches administratives, professionnelles ou personnelles à l\'étranger.',
         },
@@ -402,7 +420,7 @@ export const translations = {
         },
         {
           question: 'Quand vais-je recevoir mon document ?',
-          answer: 'Immédiatement après votre session avec le notaire. Votre document certifié est automatiquement disponible dans votre espace personnel dès la fin de la visioconférence. Si une apostille est nécessaire, elle est ajoutée dans les 24 heures et vous recevez une notification pour télécharger votre document final.',
+          answer: 'Immédiatement après la fin de votre session vidéo avec le notaire, votre document notarisé est automatiquement disponible dans votre espace personnel sécurisé. Vous recevez votre document notarisé sans aucun délai, dès la fin de la session. Si une apostille est nécessaire, elle est ajoutée une fois validée par l\'autorité compétente — et le document certifié final devient disponible pour téléchargement instantané.',
         },
         {
           question: 'Qu\'est-ce que la Convention de La Haye ?',
@@ -415,14 +433,6 @@ export const translations = {
         {
           question: 'Puis-je suivre le statut de ma certification ?',
           answer: 'Oui, vous pouvez suivre le statut de votre certification en temps réel via votre espace personnel sécurisé. Vous recevrez des notifications par email à chaque étape du processus, de l\'upload du document à la certification finale et à l\'émission de l\'apostille.',
-        },
-        {
-          question: 'Dois-je prendre rendez-vous à l\'avance ?',
-          answer: 'Oui, vous devez planifier un rendez-vous vidéo avec un notaire agréé. Les rendez-vous sont généralement disponibles sous 24-48 heures, et vous pouvez choisir un créneau qui vous convient. Des rendez-vous le jour même peuvent être disponibles selon les disponibilités.',
-        },
-        {
-          question: 'Que se passe-t-il si je rate mon rendez-vous programmé ?',
-          answer: 'Si vous ratez votre rendez-vous programmé, vous pouvez le reprogrammer gratuitement via votre espace personnel. Nous recommandons de reprogrammer au moins 2 heures avant votre rendez-vous initial. Plusieurs rendez-vous manqués peuvent entraîner des frais de reprogrammation.',
         },
         {
           question: 'De quoi ai-je besoin pour le rendez-vous vidéo ?',
@@ -569,7 +579,7 @@ export const translations = {
           description: 'Épargnez-vous le déplacement chez le notaire. Avec My Notary, faites certifier vos documents à distance en toute simplicité, rapidement, en toute sécurité juridique et dans le monde entier.',
         },
         block2: {
-          title: 'Valable pour les autorités et les banques',
+          title: 'Valable pour tout usage officiel',
           description: 'Nos certifications numériques répondent aux normes les plus élevées - qu\'il s\'agisse de demandes de visa, de registres ou de procurations.',
         },
         block3: {
@@ -645,6 +655,21 @@ export const translations = {
       otherServices: 'Otros servicios',
       otherServicesHeading: 'Descubra Nuestras Otras Soluciones',
       perDocument: 'por documento',
+      searchPlaceholder: 'Buscar servicios...',
+      noResults: 'No se encontraron servicios',
+      tryDifferentSearch: 'Pruebe con otro término de búsqueda',
+      showing: 'Mostrando',
+      of: 'de',
+      services: 'servicios',
+      categories: {
+        all: 'Todos',
+        general: 'General',
+        certification: 'Certificación',
+        translation: 'Traducción',
+        legal: 'Documentos legales',
+        apostille: 'Apostilla',
+        signature: 'Firma',
+      },
     },
     howItWorks: {
       title: 'Cómo Funciona',
@@ -687,8 +712,6 @@ export const translations = {
       searchPlaceholder: 'Escriba su pregunta...',
       items: [
         {
-          question: '¿Cómo funciona exactamente?',
-          answer: 'Es muy sencillo: sube su documento, elige una cita de 15 minutos con un notario certificado, se conecta por videollamada para la verificación de identidad y firma, y listo. Su documento certificado está disponible inmediatamente en su espacio personal. Todo en menos de 5 minutos.',
         },
         {
           question: '¿Mis documentos serán válidos en el extranjero?',
@@ -704,7 +727,7 @@ export const translations = {
         },
         {
           question: '¿Cuándo recibiré mi documento?',
-          answer: 'Inmediatamente después de su sesión con el notario. Su documento certificado está automáticamente disponible en su espacio personal al finalizar la videoconferencia. Si se requiere una apostilla, se añade en 24 horas y recibirá una notificación para descargar su documento final.',
+          answer: 'Inmediatamente después del final de su sesión de video con el notario, su documento notarizado está automáticamente disponible en su panel seguro. Recibe su documento notarizado de inmediato, sin ningún retraso. Si se requiere una apostilla, se añade una vez validada por la autoridad competente — y el documento certificado final está disponible para descarga instantánea.',
         },
         {
           question: '¿Qué es la Convención de La Haya?',
@@ -717,14 +740,6 @@ export const translations = {
         {
           question: '¿Puedo rastrear el estado de mi certificación?',
           answer: 'Sí, puede rastrear el estado de su certificación en tiempo real a través de su panel seguro. Recibirá notificaciones por correo electrónico en cada etapa del proceso, desde la carga del documento hasta la certificación final y la emisión de la apostilla.',
-        },
-        {
-          question: '¿Necesito programar una cita con anticipación?',
-          answer: 'Sí, necesita programar una cita de video con un notario autorizado. Las citas suelen estar disponibles en 24-48 horas, y puede elegir un horario que le convenga. Las citas del mismo día pueden estar disponibles según la disponibilidad.',
-        },
-        {
-          question: '¿Qué sucede si pierdo mi cita programada?',
-          answer: 'Si pierde su cita programada, puede reprogramarla sin costo adicional a través de su panel. Recomendamos reprogramar al menos 2 horas antes de su cita original. Varias citas perdidas pueden resultar en una tarifa de reprogramación.',
         },
         {
           question: '¿Qué necesito para la cita de video?',
@@ -871,7 +886,7 @@ export const translations = {
           description: 'Ahorre el viaje al notario. Con My Notary, certifique sus documentos a distancia con total simplicidad, rápidamente, con total seguridad jurídica y en todo el mundo.',
         },
         block2: {
-          title: 'Válido para autoridades y bancos',
+          title: 'Válido para cualquier propósito oficial',
           description: 'Nuestras certificaciones digitales cumplen con los más altos estándares, ya sea para solicitudes de visa, registros o poderes notariales.',
         },
         block3: {
@@ -949,6 +964,21 @@ export const translations = {
       otherServices: 'Weitere Dienstleistungen',
       otherServicesHeading: 'Entdecken Sie Unsere Weitere Lösungen',
       perDocument: 'pro Dokument',
+      searchPlaceholder: 'Dienstleistungen suchen...',
+      noResults: 'Keine Dienstleistungen gefunden',
+      tryDifferentSearch: 'Versuchen Sie einen anderen Suchbegriff',
+      showing: 'Anzeige',
+      of: 'von',
+      services: 'Dienstleistungen',
+      categories: {
+        all: 'Alle',
+        general: 'Allgemein',
+        certification: 'Zertifizierung',
+        translation: 'Übersetzung',
+        legal: 'Rechtsdokumente',
+        apostille: 'Apostille',
+        signature: 'Unterschrift',
+      },
     },
     howItWorks: {
       title: 'Wie Es Funktioniert',
@@ -1008,7 +1038,7 @@ export const translations = {
         },
         {
           question: 'Wann erhalte ich mein endgültiges Dokument?',
-          answer: 'Unmittelbar nach der Videositzung wird Ihr notarisiertes Dokument automatisch auf Ihr sicheres Dashboard hochgeladen. Wenn eine Apostille erforderlich ist, wird sie nach Validierung durch die zuständige Behörde hinzugefügt — und das endgültige zertifizierte Dokument steht sofort zum Download zur Verfügung.',
+          answer: 'Unmittelbar nach dem Ende Ihrer Videositzung mit dem Notar ist Ihr notarisiertes Dokument automatisch in Ihrem sicheren Dashboard verfügbar. Sie erhalten Ihr notarisiertes Dokument sofort, ohne Verzögerung. Wenn eine Apostille erforderlich ist, wird sie nach Validierung durch die zuständige Behörde hinzugefügt — und das endgültige zertifizierte Dokument steht sofort zum Download zur Verfügung.',
         },
         {
           question: 'Was ist das Haager Übereinkommen?',
@@ -1021,14 +1051,6 @@ export const translations = {
         {
           question: 'Kann ich den Status meiner Zertifizierung verfolgen?',
           answer: 'Ja, Sie können den Status Ihrer Zertifizierung in Echtzeit über Ihr sicheres Dashboard verfolgen. Sie erhalten E-Mail-Benachrichtigungen in jeder Phase des Prozesses, vom Dokumenten-Upload bis zur endgültigen Zertifizierung und Apostillen-Ausstellung.',
-        },
-        {
-          question: 'Muss ich einen Termin im Voraus vereinbaren?',
-          answer: 'Ja, Sie müssen einen Video-Termin mit einem lizenzierten Notar vereinbaren. Termine sind normalerweise innerhalb von 24-48 Stunden verfügbar, und Sie können einen Zeitpunkt wählen, der für Sie am besten passt. Termine am selben Tag können je nach Verfügbarkeit verfügbar sein.',
-        },
-        {
-          question: 'Was passiert, wenn ich meinen vereinbarten Termin verpasse?',
-          answer: 'Wenn Sie Ihren vereinbarten Termin verpassen, können Sie ihn kostenlos über Ihr Dashboard neu vereinbaren. Wir empfehlen, mindestens 2 Stunden vor Ihrem ursprünglichen Termin umzuplanen. Mehrere verpasste Termine können zu einer Umplanungsgebühr führen.',
         },
         {
           question: 'Was brauche ich für den Video-Termin?',
@@ -1175,7 +1197,7 @@ export const translations = {
           description: 'Sparen Sie sich den Weg zum Notar. Mit My Notary lassen Sie Ihre Dokumente aus der Ferne mit vollständiger Einfachheit, schnell, mit vollständiger rechtlicher Sicherheit und weltweit zertifizieren.',
         },
         block2: {
-          title: 'Gültig für Behörden und Banken',
+          title: 'Gültig für jeden offiziellen Zweck',
           description: 'Unsere digitalen Zertifizierungen erfüllen die höchsten Standards - sei es für Visaanträge, Register oder Vollmachten.',
         },
         block3: {
@@ -1253,6 +1275,21 @@ export const translations = {
       otherServices: 'Altri servizi',
       otherServicesHeading: 'Scopri le Nostre Altre Soluzioni',
       perDocument: 'per documento',
+      searchPlaceholder: 'Cerca servizi...',
+      noResults: 'Nessun servizio trovato',
+      tryDifferentSearch: 'Prova con un termine di ricerca diverso',
+      showing: 'Visualizzazione',
+      of: 'di',
+      services: 'servizi',
+      categories: {
+        all: 'Tutti',
+        general: 'Generale',
+        certification: 'Certificazione',
+        translation: 'Traduzione',
+        legal: 'Documenti legali',
+        apostille: 'Apostille',
+        signature: 'Firma',
+      },
     },
     howItWorks: {
       title: 'Come Funziona',
@@ -1312,7 +1349,7 @@ export const translations = {
         },
         {
           question: 'Quando riceverò il mio documento finale?',
-          answer: 'Immediatamente dopo la sessione video, il tuo documento notarizzato viene caricato automaticamente sulla tua dashboard sicura. Se è richiesta un\'apostille, viene aggiunta una volta convalidata dall\'autorità competente — e il documento certificato finale diventa disponibile per il download immediato.',
+          answer: 'Immediatamente dopo la fine della tua sessione video con il notaio, il tuo documento notarizzato è automaticamente disponibile nella tua dashboard sicura. Ricevi il tuo documento notarizzato subito, senza alcun ritardo. Se è richiesta un\'apostille, viene aggiunta una volta convalidata dall\'autorità competente — e il documento certificato finale diventa disponibile per il download immediato.',
         },
         {
           question: 'Cos\'è la Convenzione dell\'Aia?',
@@ -1325,14 +1362,6 @@ export const translations = {
         {
           question: 'Posso tracciare lo stato della mia certificazione?',
           answer: 'Sì, puoi tracciare lo stato della tua certificazione in tempo reale attraverso la tua dashboard sicura. Riceverai notifiche via email in ogni fase del processo, dal caricamento del documento alla certificazione finale e all\'emissione dell\'apostille.',
-        },
-        {
-          question: 'Devo prenotare un appuntamento in anticipo?',
-          answer: 'Sì, devi prenotare un appuntamento video con un notaio autorizzato. Gli appuntamenti sono generalmente disponibili entro 24-48 ore e puoi scegliere un orario che funzioni meglio per te. Gli appuntamenti dello stesso giorno possono essere disponibili a seconda della disponibilità.',
-        },
-        {
-          question: 'Cosa succede se perdo il mio appuntamento programmato?',
-          answer: 'Se perdi il tuo appuntamento programmato, puoi riprogrammarlo gratuitamente attraverso la tua dashboard. Raccomandiamo di riprogrammare almeno 2 ore prima del tuo appuntamento originale. Più appuntamenti persi possono comportare una tariffa di riprogrammazione.',
         },
         {
           question: 'Di cosa ho bisogno per l\'appuntamento video?',
@@ -1471,7 +1500,7 @@ export const translations = {
           description: 'Risparmia il viaggio dal notaio. Con My Notary, fai certificare i tuoi documenti a distanza con totale semplicità, rapidamente, con piena sicurezza legale e in tutto il mondo.',
         },
         block2: {
-          title: 'Valido per autorità e banche',
+          title: 'Valido per qualsiasi scopo ufficiale',
           description: 'Le nostre certificazioni digitali soddisfano gli standard più elevati, che si tratti di richieste di visto, registri o procure.',
         },
         block3: {
@@ -1549,6 +1578,21 @@ export const translations = {
       otherServices: 'Outros serviços',
       otherServicesHeading: 'Conheça Nossas Outras Soluções',
       perDocument: 'por documento',
+      searchPlaceholder: 'Pesquisar serviços...',
+      noResults: 'Nenhum serviço encontrado',
+      tryDifferentSearch: 'Tente um termo de pesquisa diferente',
+      showing: 'Mostrando',
+      of: 'de',
+      services: 'serviços',
+      categories: {
+        all: 'Todos',
+        general: 'Geral',
+        certification: 'Certificação',
+        translation: 'Tradução',
+        legal: 'Documentos legais',
+        apostille: 'Apostila',
+        signature: 'Assinatura',
+      },
     },
     howItWorks: {
       title: 'Como Funciona',
@@ -1608,7 +1652,7 @@ export const translations = {
         },
         {
           question: 'Quando receberei meu documento final?',
-          answer: 'Imediatamente após a sessão de vídeo, seu documento notarizado é carregado automaticamente em seu painel seguro. Se uma apostila for necessária, ela é adicionada uma vez validada pela autoridade competente — e o documento certificado final fica disponível para download instantâneo.',
+          answer: 'Imediatamente após o fim da sua sessão de vídeo com o notário, seu documento notarizado está automaticamente disponível em seu painel seguro. Você recebe seu documento notarizado imediatamente, sem qualquer atraso. Se uma apostila for necessária, ela é adicionada uma vez validada pela autoridade competente — e o documento certificado final fica disponível para download instantâneo.',
         },
         {
           question: 'O que é a Convenção de Haia?',
@@ -1621,14 +1665,6 @@ export const translations = {
         {
           question: 'Posso rastrear o status da minha certificação?',
           answer: 'Sim, você pode rastrear o status da sua certificação em tempo real através do seu painel seguro. Você receberá notificações por email em cada etapa do processo, desde o upload do documento até a certificação final e a emissão da apostila.',
-        },
-        {
-          question: 'Preciso agendar uma consulta com antecedência?',
-          answer: 'Sim, você precisa agendar uma consulta de vídeo com um tabelião licenciado. As consultas geralmente estão disponíveis em 24-48 horas, e você pode escolher um horário que funcione melhor para você. Consultas no mesmo dia podem estar disponíveis dependendo da disponibilidade.',
-        },
-        {
-          question: 'O que acontece se eu perder minha consulta agendada?',
-          answer: 'Se você perder sua consulta agendada, pode reagendá-la sem custo adicional através do seu painel. Recomendamos reagendar pelo menos 2 horas antes do horário original da sua consulta. Várias consultas perdidas podem resultar em uma taxa de reagendamento.',
         },
         {
           question: 'O que preciso para a consulta de vídeo?',
@@ -1775,7 +1811,7 @@ export const translations = {
           description: 'Economize a viagem ao notário. Com My Notary, certifique seus documentos remotamente com total simplicidade, rapidamente, com total segurança jurídica e em todo o mundo.',
         },
         block2: {
-          title: 'Válido para autoridades e bancos',
+          title: 'Válido para qualquer finalidade oficial',
           description: 'Nossas certificações digitais atendem aos mais altos padrões - seja para solicitações de visto, registros ou procurações.',
         },
         block3: {

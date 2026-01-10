@@ -29,24 +29,65 @@ const FAQ = ({ faqsData = null }) => {
     },
     {
       question: 'When will I receive my final document?',
-      answer: 'Immediately after the video session, your notarized document is automatically uploaded to your secure dashboard. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.'
+      answer: 'Immediately after the end of your video session with the notary, your notarized document is automatically available in your secure dashboard. You receive your notarized document right away, without any delay. If an apostille is required, it is added once validated by the competent authority — and the final certified document becomes available for instant download.'
     },
   ];
 
+  // Debug en développement
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    console.log('[FAQ Component Debug]', {
+      faqsData,
+      faqsDataType: typeof faqsData,
+      isArray: Array.isArray(faqsData),
+      length: faqsData?.length,
+      language
+    })
+  }
+
   // Utiliser les données SSR si disponibles, sinon fallback
-  const faqs = faqsData && faqsData.length > 0 
-    ? faqsData.map(faq => ({
-        question: faq[`question_${language}`] || faq.question_en || faq.question,
-        answer: faq[`answer_${language}`] || faq.answer_en || faq.answer,
+  // Vérifier que faqsData est un tableau non vide
+  const hasValidFaqsData = faqsData && Array.isArray(faqsData) && faqsData.length > 0
+  
+  const faqs = useMemo(() => {
+    if (!hasValidFaqsData) {
+      // Pour les FAQs par défaut, ajouter originalIndex
+      return defaultFaqs.map((faq, index) => ({
+        ...faq,
+        originalIndex: index,
+      }));
+    }
+    
+    // Mapper et formater les FAQs dynamiques
+    const formattedFaqs = faqsData
+      .map((faq, index) => ({
+        question: faq[`question_${language}`] || faq.question_en || faq.question || '',
+        answer: faq[`answer_${language}`] || faq.answer_en || faq.answer || '',
+        order: faq.order !== undefined ? faq.order : index + 1, // Utiliser order si présent, sinon index
+        originalIndex: index, // Garder l'index original pour le toggle
       }))
-    : defaultFaqs;
+      .filter(faq => faq.question && faq.answer) // Filtrer les FAQs incomplètes
+      .sort((a, b) => (a.order || 0) - (b.order || 0)); // Trier par order
+    
+    return formattedFaqs.length > 0 ? formattedFaqs : defaultFaqs.map((faq, index) => ({
+      ...faq,
+      originalIndex: index,
+    }));
+  }, [faqsData, language, hasValidFaqsData]);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   // Utiliser les FAQs traduites
+  // Si on a des FAQs dynamiques (depuis Supabase), les utiliser directement
+  // Sinon, essayer de récupérer les traductions depuis le fichier de traduction
   const translatedFAQs = useMemo(() => {
+    // Si on a des FAQs dynamiques, les utiliser directement (elles sont déjà traduites)
+    if (hasValidFaqsData) {
+      return faqs;
+    }
+    
+    // Sinon, essayer de récupérer les traductions depuis le fichier de traduction
     try {
       const translatedItems = t('faq.items', faqs);
       // Vérifier que translatedItems est un tableau valide
@@ -58,7 +99,7 @@ const FAQ = ({ faqsData = null }) => {
     }
     // Fallback sur les FAQs par défaut si la traduction n'est pas disponible
     return faqs;
-  }, [faqs, t]);
+  }, [faqs, t, hasValidFaqsData]);
 
   // Recherche floue dans les FAQs
   const filteredFAQs = useMemo(() => {
@@ -170,23 +211,26 @@ const FAQ = ({ faqsData = null }) => {
         {/* Liste des FAQs filtrées */}
         <div className="space-y-4 px-0 md:px-0">
           {filteredFAQs.map((faq, displayIndex) => {
-            const originalIndex = faq.originalIndex;
+            // Utiliser l'index de display pour le toggle (après tri et filtrage)
+            const faqIndex = faq.originalIndex !== undefined ? faq.originalIndex : displayIndex;
+            const isOpen = openIndex === faqIndex;
+            
             return (
             <div
-              key={`faq-${originalIndex}-${displayIndex}`}
+              key={`faq-${faqIndex}-${displayIndex}-${faq.question?.substring(0, 20)}`}
               className="border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scroll-slide-up"
             >
               <button
-                onClick={() => toggleFAQ(originalIndex)}
+                onClick={() => toggleFAQ(faqIndex)}
                 className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-all duration-300 group"
               >
                 <span className="text-base md:text-lg font-bold text-gray-900 pr-4 transition-all">{faq.question}</span>
                 <div className={`w-8 h-8 flex items-center justify-center transition-transform duration-300 flex-shrink-0 ${
-                  openIndex === originalIndex ? 'rotate-180' : ''
+                  isOpen ? 'rotate-180' : ''
                 }`}>
                   <svg
-                    className={`w-5 h-5 ${openIndex === originalIndex ? '' : 'text-gray-900'}`}
-                    fill={openIndex === originalIndex ? "url(#faq-gradient)" : "currentColor"}
+                    className={`w-5 h-5 ${isOpen ? '' : 'text-gray-900'}`}
+                    fill={isOpen ? "url(#faq-gradient)" : "currentColor"}
                     viewBox="0 0 16 16"
                   >
                     <defs>
@@ -202,7 +246,7 @@ const FAQ = ({ faqsData = null }) => {
                 </div>
               </button>
 
-              {openIndex === originalIndex && (
+              {isOpen && (
                 <div className="px-5 md:px-6 pb-5 animate-slide-up">
                   <p className="text-gray-600 leading-relaxed whitespace-pre-line text-sm md:text-base">
                     {faq.answer}
