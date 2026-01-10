@@ -20,6 +20,7 @@ import { formatServiceForLanguage, formatServicesForLanguage } from '@/utils/ser
 import PriceDisplay from '@/components/PriceDisplay'
 import { fuzzySearchServices } from '@/utils/fuzzySearch'
 import dynamic from 'next/dynamic'
+import { trackCTAToFormOnService } from '@/utils/gtm'
 
 // Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
 import HowItWorks from '@/components/HowItWorks'
@@ -657,6 +658,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   destination,
                   elementId: 'service_detail_hero'
                 })
+                // Track GTM event pour les pages service
+                trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
               }}
             >
               <IconOpenNew />
@@ -772,11 +775,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   href={formUrl}
                   className="inline-flex items-center gap-2 text-base md:text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors relative group"
                   onClick={() => {
+                    const ctaText = t('serviceDetail.digitalCertification.cta')
                     trackWithAnalytics('cta', 'service_detail_digital_certification', service?.service_id || serviceId, pathname, {
-                      ctaText: t('serviceDetail.digitalCertification.cta'),
+                      ctaText: ctaText,
                       destination: formUrl,
                       elementId: 'service_detail_digital_certification_cta'
                     })
+                    // Track GTM event pour les pages service
+                    trackCTAToFormOnService('service_detail_digital_certification', pathname, ctaText, formUrl, 'service_detail_digital_certification_cta', service?.service_id || serviceId, currency)
                   }}
                 >
                   <span>{t('serviceDetail.digitalCertification.cta')}</span>
@@ -912,11 +918,14 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     href={formUrl}
                     onClick={() => {
                       const destination = formUrl
+                      const ctaText = 'Upload my document'
                       trackWithAnalytics('cta', 'service_detail_pricing', service?.service_id || serviceId, pathname, {
-                        ctaText: 'Upload my document',
+                        ctaText: ctaText,
                         destination,
                         elementId: 'service_detail_pricing'
                       })
+                      // Track GTM event pour les pages service
+                      trackCTAToFormOnService('service_detail_pricing', pathname, ctaText, destination, 'service_detail_pricing', service?.service_id || serviceId, currency)
                     }}
                     className="block w-full text-sm sm:text-base md:text-lg px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 text-white font-bold rounded-lg md:rounded-xl transition-colors duration-200 text-center bg-black hover:bg-gray-900 shadow-lg cursor-pointer"
                   >
