@@ -289,6 +289,7 @@ export const translations = {
     trustpilot: {
       title: 'What Our Customers Say',
       subtitle: 'Over 500 verified customer reviews',
+      rating: 'Our customers rate us 4.7 out of 5',
       verified: 'Verified',
       seeMore: 'See all reviews on',
       reviews: {
@@ -616,6 +617,7 @@ export const translations = {
     trustpilot: {
       title: 'Ce que nos clients disent',
       subtitle: 'Plus de 500 avis clients vérifiés',
+      rating: 'Nos clients nous notent 4.7 sur 5',
       verified: 'Vérifié',
       seeMore: 'Voir tous les avis sur',
       reviews: {
@@ -940,6 +942,7 @@ export const translations = {
     trustpilot: {
       title: 'Lo que dicen nuestros clientes',
       subtitle: 'Más de 500 reseñas verificadas de clientes',
+      rating: 'Nuestros clientes nos califican con 4.7 sobre 5',
       verified: 'Verificado',
       seeMore: 'Ver todas las reseñas en',
       reviews: {
@@ -1268,6 +1271,7 @@ export const translations = {
     trustpilot: {
       title: 'Was unsere Kunden sagen',
       subtitle: 'Über 500 verifizierte Kundenbewertungen',
+      rating: 'Unsere Kunden bewerten uns mit 4.7 von 5',
       verified: 'Verifiziert',
       seeMore: 'Alle Bewertungen ansehen auf',
       reviews: {
@@ -1588,6 +1592,7 @@ export const translations = {
     trustpilot: {
       title: 'Cosa dicono i nostri clienti',
       subtitle: 'Oltre 500 recensioni verificate dei clienti',
+      rating: 'I nostri clienti ci valutano 4.7 su 5',
       verified: 'Verificato',
       seeMore: 'Vedi tutte le recensioni su',
       reviews: {
@@ -1916,6 +1921,7 @@ export const translations = {
     trustpilot: {
       title: 'O que nossos clientes dizem',
       subtitle: 'Mais de 500 avaliações verificadas de clientes',
+      rating: 'Nossos clientes nos avaliam com 4.7 de 5',
       verified: 'Verificado',
       seeMore: 'Ver todas as avaliações em',
       reviews: {

@@ -151,7 +151,7 @@ const TrustpilotSlider = () => {
           </div>
           
           <span className="text-sm md:text-base text-gray-600 font-medium">
-            Nos clients nous notent 4.7 sur 5
+            {t('trustpilot.rating')}
           </span>
         </div>
 
