@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import TermsConditionsClient from '../../terms-conditions/TermsConditionsClient'
 
 // Générer les métadonnées avec canonical pour chaque langue
+// eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { lang } = await params
   return {

@@ -6,6 +6,7 @@ import BlogClient from './BlogClient'
 export const dynamic = 'force-dynamic'
 
 // Métadonnées avec canonical
+// eslint-disable-next-line react-refresh/only-export-components
 export const metadata = {
   alternates: {
     canonical: 'https://www.mynotary.io/blog',

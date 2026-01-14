@@ -7,6 +7,7 @@ import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 export const dynamic = 'force-dynamic'
 
 // Générer les métadonnées avec canonical pour chaque langue et article
+// eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { lang, slug } = await params
   return {

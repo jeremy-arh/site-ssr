@@ -7,6 +7,7 @@ import ServiceDetailClient from './ServiceDetailClient'
 export const dynamic = 'force-dynamic'
 
 // Générer les métadonnées avec canonical pour chaque service
+// eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { serviceId } = await params
   return {
