@@ -285,6 +285,23 @@ export const translations = {
       author: 'Callum Davis',
       role: 'CEO of Akkar',
     },
+    // Trustpilot
+    trustpilot: {
+      title: 'What Our Customers Say',
+      subtitle: 'Over 500 verified customer reviews',
+      verified: 'Verified',
+      seeMore: 'See all reviews on',
+      reviews: {
+        review1: 'Certified passport copy for a bank account. Done in 20 min. Perfect.',
+        review2: 'Certified translation of my transcript for an application in Sweden. Accepted without any problem.',
+        review3: 'Power of attorney sorted from my living room. Didnt have to take time off work.',
+        review4: 'My bank required a certified copy of my passport to finalize the opening of my business account. Done in one session, notary available and friendly.',
+        review5: 'Apostille for an official document, professional service.',
+        review6: 'I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.',
+        review7: 'Certified passport copy for an immigration file. Perfect.',
+        review8: 'Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.',
+      },
+    },
     // Blog
     blog: {
       badge: 'Our Blog',
@@ -595,6 +612,23 @@ export const translations = {
       author: 'Callum Davis',
       role: 'PDG d\'Akkar',
     },
+    // Trustpilot
+    trustpilot: {
+      title: 'Ce que nos clients disent',
+      subtitle: 'Plus de 500 avis clients vérifiés',
+      verified: 'Vérifié',
+      seeMore: 'Voir tous les avis sur',
+      reviews: {
+        review1: 'Copie certifiée de passeport pour un compte bancaire. Fait en 20 min. Parfait.',
+        review2: 'Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.',
+        review3: 'Procuration réglée depuis mon salon. Je n\'ai pas eu à prendre de congé.',
+        review4: 'Ma banque demandait une copie certifiée de mon passeport pour finaliser l\'ouverture de mon compte pro. Fait en une session, notaire dispo et sympa.',
+        review5: 'Apostille pour un document officiel, service carré.',
+        review6: 'Je dirige une petite entreprise d\'importation et j\'avais besoin de plusieurs documents notariés pour la douane. My Notary a tout géré professionnellement et les documents ont été acceptés par les autorités de trois pays différents. Je les utiliserai certainement à nouveau.',
+        review7: 'Copie certifiée passeport pour un dossier d\'immigration. Nickel.',
+        review8: 'Bon service pour la notarisation de signature. Petit délai avant le début de l\'appel vidéo mais sinon tout s\'est bien passé.',
+      },
+    },
     blog: {
       badge: 'Notre Blog',
       title: 'Articles et Actualités',
@@ -901,6 +935,23 @@ export const translations = {
       text: 'Necesitaba certificar varios documentos para mi empresa. Con My Notary, todo se hizo en línea en pocos minutos, sin desplazarme. El equipo es receptivo, el proceso es claro y mis documentos son válidos en todas partes. ¡Lo recomiendo totalmente!',
       author: 'Callum Davis',
       role: 'CEO de Akkar',
+    },
+    // Trustpilot
+    trustpilot: {
+      title: 'Lo que dicen nuestros clientes',
+      subtitle: 'Más de 500 reseñas verificadas de clientes',
+      verified: 'Verificado',
+      seeMore: 'Ver todas las reseñas en',
+      reviews: {
+        review1: 'Copia certificada de pasaporte para una cuenta bancaria. Hecho en 20 min. Perfecto.',
+        review2: 'Traducción certificada de mi expediente académico para una solicitud en Suecia. Aceptado sin problemas.',
+        review3: 'Poder notarial resuelto desde mi salón. No tuve que tomar tiempo libre del trabajo.',
+        review4: 'Mi banco requería una copia certificada de mi pasaporte para finalizar la apertura de mi cuenta profesional. Hecho en una sesión, notario disponible y amable.',
+        review5: 'Apostilla para un documento oficial, servicio profesional.',
+        review6: 'Dirijo un pequeño negocio de importación y necesitaba varios documentos notarizados para aduanas. My Notary manejó todo profesionalmente y los documentos fueron aceptados por las autoridades de tres países diferentes. Definitivamente los usaré nuevamente.',
+        review7: 'Copia certificada de pasaporte para un expediente de inmigración. Perfecto.',
+        review8: 'Buen servicio para notarización de firmas. Hubo una pequeña espera antes de que comenzara la videollamada, pero por lo demás todo fue fluido.',
+      },
     },
     blog: {
       badge: 'Nuestro Blog',
@@ -1213,6 +1264,23 @@ export const translations = {
       author: 'Callum Davis',
       role: 'CEO von Akkar',
     },
+    // Trustpilot
+    trustpilot: {
+      title: 'Was unsere Kunden sagen',
+      subtitle: 'Über 500 verifizierte Kundenbewertungen',
+      verified: 'Verifiziert',
+      seeMore: 'Alle Bewertungen ansehen auf',
+      reviews: {
+        review1: 'Beglaubigte Passkopie für ein Bankkonto. In 20 Minuten erledigt. Perfekt.',
+        review2: 'Beglaubigte Übersetzung meines Zeugnisses für eine Bewerbung in Schweden. Ohne Probleme akzeptiert.',
+        review3: 'Vollmacht von meinem Wohnzimmer aus erledigt. Musste keine Zeit von der Arbeit nehmen.',
+        review4: 'Meine Bank verlangte eine beglaubigte Kopie meines Passes zur Finalisierung der Eröffnung meines Geschäftskontos. In einer Sitzung erledigt, Notar verfügbar und freundlich.',
+        review5: 'Apostille für ein offizielles Dokument, professioneller Service.',
+        review6: 'Ich betreibe ein kleines Importgeschäft und benötigte mehrere notariell beglaubigte Dokumente für den Zoll. My Notary hat alles professionell abgewickelt und die Dokumente wurden von den Behörden in drei verschiedenen Ländern akzeptiert. Werde sie definitiv wieder verwenden.',
+        review7: 'Beglaubigte Passkopie für eine Einwanderungsakte. Perfekt.',
+        review8: 'Guter Service für die Notarisierung von Unterschriften. Gab eine kleine Wartezeit vor dem Start des Videoanrufs, aber ansonsten verlief alles reibungslos.',
+      },
+    },
     blog: {
       badge: 'Unser Blog',
       title: 'Artikel & Einblicke',
@@ -1515,6 +1583,23 @@ export const translations = {
       text: 'My Notary ha reso incredibilmente semplice quello che era un processo complesso. Ho potuto firmare, certificare e apostillare i miei documenti online, completamente legalmente, in pochi minuti. Il loro team è reattivo, affidabile e la piattaforma è estremamente intuitiva',
       author: 'Callum Davis',
       role: 'CEO di Akkar',
+    },
+    // Trustpilot
+    trustpilot: {
+      title: 'Cosa dicono i nostri clienti',
+      subtitle: 'Oltre 500 recensioni verificate dei clienti',
+      verified: 'Verificato',
+      seeMore: 'Vedi tutte le recensioni su',
+      reviews: {
+        review1: 'Copia certificata del passaporto per un conto bancario. Fatto in 20 minuti. Perfetto.',
+        review2: 'Traduzione certificata del mio certificato di studi per una candidatura in Svezia. Accettato senza problemi.',
+        review3: 'Procura risolta dal mio salotto. Non ho dovuto prendere permesso dal lavoro.',
+        review4: 'La mia banca richiedeva una copia certificata del mio passaporto per finalizzare l\'apertura del mio conto professionale. Fatto in una sessione, notaio disponibile e simpatico.',
+        review5: 'Apostille per un documento ufficiale, servizio professionale.',
+        review6: 'Dirigo una piccola attività di importazione e avevo bisogno di diversi documenti notarizzati per la dogana. My Notary ha gestito tutto professionalmente e i documenti sono stati accettati dalle autorità di tre paesi diversi. Li userò sicuramente di nuovo.',
+        review7: 'Copia certificata del passaporto per un fascicolo di immigrazione. Perfetto.',
+        review8: 'Buon servizio per la notarizzazione delle firme. C\'è stata una piccola attesa prima dell\'inizio della videochiamata, ma per il resto tutto è andato liscio.',
+      },
     },
     blog: {
       badge: 'Il Nostro Blog',
@@ -1826,6 +1911,23 @@ export const translations = {
       text: 'My Notary tornou incrivelmente simples o que costumava ser um processo complexo. Consegui assinar, certificar e apostilar meus documentos online, totalmente legalmente, em apenas alguns minutos. A equipe deles é responsiva, confiável e a plataforma é extremamente intuitiva',
       author: 'Callum Davis',
       role: 'CEO da Akkar',
+    },
+    // Trustpilot
+    trustpilot: {
+      title: 'O que nossos clientes dizem',
+      subtitle: 'Mais de 500 avaliações verificadas de clientes',
+      verified: 'Verificado',
+      seeMore: 'Ver todas as avaliações em',
+      reviews: {
+        review1: 'Cópia certificada do passaporte para uma conta bancária. Feito em 20 min. Perfeito.',
+        review2: 'Tradução certificada do meu histórico escolar para uma candidatura na Suécia. Aceito sem problemas.',
+        review3: 'Procuração resolvida da minha sala de estar. Não precisei tirar folga do trabalho.',
+        review4: 'Meu banco exigia uma cópia certificada do meu passaporte para finalizar a abertura da minha conta profissional. Feito em uma sessão, tabelião disponível e simpático.',
+        review5: 'Apostila para um documento oficial, serviço profissional.',
+        review6: 'Dirijo um pequeno negócio de importação e precisava de vários documentos notarizados para a alfândega. My Notary lidou com tudo profissionalmente e os documentos foram aceitos pelas autoridades de três países diferentes. Definitivamente vou usá-los novamente.',
+        review7: 'Cópia certificada do passaporte para um processo de imigração. Perfeito.',
+        review8: 'Bom serviço para notarização de assinaturas. Houve uma pequena espera antes do início da videoconferência, mas, caso contrário, tudo correu bem.',
+      },
     },
     blog: {
       badge: 'Nosso Blog',

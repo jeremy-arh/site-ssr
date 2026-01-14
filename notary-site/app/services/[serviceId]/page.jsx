@@ -6,6 +6,16 @@ import ServiceDetailClient from './ServiceDetailClient'
 // Hero: deux colonnes avec image à droite
 export const dynamic = 'force-dynamic'
 
+// Générer les métadonnées avec canonical pour chaque service
+export async function generateMetadata({ params }) {
+  const { serviceId } = await params
+  return {
+    alternates: {
+      canonical: `https://www.mynotary.io/services/${serviceId}`,
+    },
+  }
+}
+
 // Cette page est un Server Component qui récupère les données côté serveur (SSR)
 export default async function ServiceDetail({ params }) {
   const { serviceId } = await params

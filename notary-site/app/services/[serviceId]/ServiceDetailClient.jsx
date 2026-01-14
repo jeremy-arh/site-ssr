@@ -30,6 +30,8 @@ import FAQ from '@/components/FAQ'
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
+// TrustpilotSlider directement importé
+import TrustpilotSlider from '@/components/TrustpilotSlider'
 
 // ANALYTICS : Plausible + Segment GA4
 const trackWithAnalytics = (type, ...args) => {
@@ -704,6 +706,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
           />
         </div>
       </section>
+
+      <TrustpilotSlider />
 
       {/* Digital Certification Section */}
       <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">

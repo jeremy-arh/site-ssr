@@ -9,6 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import { formatServicesForLanguage } from '@/utils/services'
 import PriceDisplay from '@/components/PriceDisplay'
 import MobileCTA from '@/components/MobileCTA'
+import TrustpilotSlider from '@/components/TrustpilotSlider'
 
 export default function ServicesClient({ servicesData }) {
   const pathname = usePathname()
@@ -59,6 +60,8 @@ export default function ServicesClient({ servicesData }) {
           </p>
         </div>
       </section>
+
+      <TrustpilotSlider />
 
       <section className="py-20 px-4 sm:px-[30px] bg-white">
         <div className="max-w-[1300px] mx-auto">

@@ -6,6 +6,16 @@ import ServicesClient from '../../services/ServicesClient'
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
 
+// Générer les métadonnées avec canonical pour chaque langue
+export async function generateMetadata({ params }) {
+  const { lang } = await params
+  return {
+    alternates: {
+      canonical: `https://www.mynotary.io/${lang}/services`,
+    },
+  }
+}
+
 export default async function LangServices({ params }) {
   const { lang } = await params
 

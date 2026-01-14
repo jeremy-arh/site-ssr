@@ -6,6 +6,16 @@ import { notFound } from 'next/navigation'
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
 
+// Générer les métadonnées avec canonical pour chaque article
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  return {
+    alternates: {
+      canonical: `https://www.mynotary.io/blog/${slug}`,
+    },
+  }
+}
+
 // Cette page est un Server Component qui récupère les données côté serveur
 export default async function BlogPost({ params }) {
   const { slug } = await params

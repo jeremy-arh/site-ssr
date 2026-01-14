@@ -30,6 +30,8 @@ const ChatCTA = dynamic(() => import('@/components/ChatCTA'), {
   ssr: false,
   loading: () => null 
 })
+// TrustpilotSlider directement importé (pas de lazy load car above-the-fold)
+import TrustpilotSlider from '@/components/TrustpilotSlider'
 const Testimonial = dynamic(() => import('@/components/Testimonial'), { 
   ssr: false,
   loading: () => null 
@@ -93,6 +95,7 @@ export default function HomeClient({ blogPostsData, servicesData, faqsData, test
         ]}
       />
       <Hero />
+      <TrustpilotSlider />
       <Services servicesData={servicesData} />
       
       {/* Composants chargés uniquement quand ils deviennent visibles */}

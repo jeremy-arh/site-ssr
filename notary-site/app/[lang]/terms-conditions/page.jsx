@@ -1,6 +1,16 @@
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
-import TermsConditionsClient from './TermsConditionsClient'
+import TermsConditionsClient from '../../terms-conditions/TermsConditionsClient'
+
+// Générer les métadonnées avec canonical pour chaque langue
+export async function generateMetadata({ params }) {
+  const { lang } = await params
+  return {
+    alternates: {
+      canonical: `https://www.mynotary.io/${lang}/terms-conditions`,
+    },
+  }
+}
 
 export default async function LangTermsConditions({ params }) {
   const { lang } = await params

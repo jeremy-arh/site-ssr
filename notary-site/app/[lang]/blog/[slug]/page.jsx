@@ -6,6 +6,16 @@ import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
 
+// Générer les métadonnées avec canonical pour chaque langue et article
+export async function generateMetadata({ params }) {
+  const { lang, slug } = await params
+  return {
+    alternates: {
+      canonical: `https://www.mynotary.io/${lang}/blog/${slug}`,
+    },
+  }
+}
+
 export default async function LangBlogPost({ params }) {
   const { lang, slug } = await params
 
