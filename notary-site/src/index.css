@@ -860,14 +860,48 @@
   }
 
   .blog-content a {
-    color: #111827;
+    color: #2563eb;
     font-weight: 600;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .blog-content a:hover {
+    color: #1d4ed8;
     text-decoration: underline;
+  }
+
+  /* Styles pour les blocs CTA dans les articles de blog */
+  .blog-content .blog-cta-block {
+    margin: 3rem 0;
+    width: 100%;
+  }
+
+  .blog-content .blog-cta-block h3 {
+    color: white !important;
+  }
+
+  .blog-content .blog-cta-block p {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .blog-content .blog-cta-block .primary-cta {
+    margin-top: 1.5rem;
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .blog-content .blog-cta-block .primary-cta .btn-text {
+    color: black !important;
+  }
+
+  .blog-content .blog-cta-block .primary-cta svg {
+    color: black !important;
+  }
+
+  .blog-content .blog-cta-block .primary-cta:hover {
+    background-color: #f3f4f6 !important;
+    color: black !important;
   }
 
   .blog-content ul,

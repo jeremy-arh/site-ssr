@@ -30,6 +30,7 @@ import { getFormUrl } from '@/utils/formUrl'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTranslation } from '@/hooks/useTranslation'
 import { formatBlogPostForLanguage, formatBlogPostsForLanguage } from '@/utils/blog'
+import { insertCTAsInContent } from '@/utils/insertCTAsInContent'
 import TableOfContents from '@/components/TableOfContents'
 import MobileCTA from '@/components/MobileCTA'
 
@@ -38,6 +39,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
   const [post, setPost] = useState(initialPost)
   const [relatedPosts, setRelatedPosts] = useState(initialRelatedPosts)
   const [hasHeadings, setHasHeadings] = useState(false)
+  const [openFAQIndex, setOpenFAQIndex] = useState(null)
   const contentRef = useRef(null)
   const { currency } = useCurrency()
   const { language, getLocalizedPath } = useLanguage()
@@ -122,6 +124,98 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
     return Math.max(1, Math.round(words.length / 200))
   }, [post])
 
+  // Extraire les FAQs depuis les colonnes JSON selon la langue
+  const extractedFAQs = useMemo(() => {
+    if (!postData) return []
+    
+    // Mapper les langues aux colonnes FAQ
+    const faqColumnMap = {
+      en: 'faq',
+      fr: 'faq_fr',
+      es: 'faq_es',
+      de: 'faq_de',
+      it: 'faq_it',
+      pt: 'faq_pt'
+    }
+    
+    // Récupérer la colonne FAQ correspondant à la langue actuelle
+    const faqColumn = faqColumnMap[language] || 'faq'
+    const faqs = postData[faqColumn]
+    
+    // Si les FAQs sont disponibles dans la colonne JSON
+    if (Array.isArray(faqs) && faqs.length > 0) {
+      return faqs.map(faq => ({
+        question: faq.question || '',
+        answer: faq.answer || ''
+      })).filter(faq => faq.question && faq.answer)
+    }
+    
+    return []
+  }, [postData, language])
+
+  const formUrl = getFormUrl(currency, null)
+
+  // Générer le HTML du bloc CTA à insérer
+  const ctaTitle = t('howItWorks.ctaTitle') || 'Ready to Get Started?'
+  const ctaDescription = t('howItWorks.ctaDescription') || 'Notarize your documents online in just a few minutes. Secure, legally valid, and recognized internationally.'
+  const ctaButtonText = post?.cta || t('nav.notarizeNow')
+  
+  const ctaHTML = useMemo(() => {
+    // SVG de la flèche (IconOpenNew) - couleur noire pour le bouton blanc
+    const arrowIcon = '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>'
+    
+    return `
+      <div class="blog-cta-block my-12">
+        <div class="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl bg-blue-600">
+          <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl"></div>
+          <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl"></div>
+          <div class="relative z-10">
+            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              ${ctaTitle}
+            </h3>
+            <p class="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+              ${ctaDescription}
+            </p>
+            <a href="${formUrl}" class="primary-cta text-lg">
+              ${arrowIcon}
+              <span class="btn-text inline-block">${ctaButtonText}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `
+  }, [formUrl, ctaTitle, ctaDescription, ctaButtonText])
+
+  // Insérer les CTAs dans le contenu tous les 3 H2
+  const contentWithCTAs = useMemo(() => {
+    if (!post?.content) {
+      console.warn('No post content available')
+      return ''
+    }
+    if (!ctaHTML) {
+      console.warn('No CTA HTML available')
+      return post.content
+    }
+    
+    console.log('Inserting CTAs. CTA HTML length:', ctaHTML.length)
+    console.log('Post content length:', post.content.length)
+    
+    const result = insertCTAsInContent(post.content, ctaHTML)
+    
+    // Debug en développement
+    const h2Count = (post.content.match(/<h2[^>]*>/gi) || []).length
+    const ctaCount = (result.match(/blog-cta-block/gi) || []).length
+    console.log(`Blog post "${post.title}": ${h2Count} H2 found, ${ctaCount} CTAs inserted`)
+    console.log('Result length:', result.length)
+    
+    if (ctaCount === 0 && h2Count >= 3) {
+      console.error('ERROR: No CTAs inserted but H2 count is', h2Count)
+      console.log('CTA HTML preview:', ctaHTML.substring(0, 200))
+    }
+    
+    return result
+  }, [post?.content, ctaHTML, post?.title])
+
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
@@ -152,8 +246,6 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
     { name: post.title, url: pathname },
   ]
 
-  const formUrl = getFormUrl(currency, null)
-
   return (
     <div className="min-h-screen">
       <SEOHead
@@ -181,6 +273,13 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
               items: breadcrumbItems,
             },
           },
+          // Ajouter les FAQs extraites du HTML si disponibles
+          ...(extractedFAQs.length > 0 ? [{
+            type: 'FAQPage',
+            data: {
+              faqItems: extractedFAQs,
+            },
+          }] : []),
         ]}
       />
       {/* Hero Section */}
@@ -264,8 +363,67 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
               <div
                 ref={contentRef}
                 className="blog-content animate-fade-in animation-delay-600"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                dangerouslySetInnerHTML={{ __html: contentWithCTAs }}
               />
+
+              {/* FAQ Section - Dans le prolongement de l'article */}
+              {extractedFAQs.length > 0 && (
+                <div className="mt-16 mb-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-block px-3 py-2 bg-black text-white rounded-full text-sm font-semibold mb-3 scroll-fade-in">
+                      {t('faq.title') || 'Frequently Asked Questions'}
+                    </div>
+                  </div>
+
+                  {/* Liste des FAQs */}
+                  <div className="space-y-4">
+                    {extractedFAQs.map((faq, index) => {
+                      const isOpen = openFAQIndex === index
+                      
+                      return (
+                        <div
+                          key={`blog-faq-${index}`}
+                          className="border border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 scroll-slide-up"
+                        >
+                          <button
+                            onClick={() => setOpenFAQIndex(isOpen ? null : index)}
+                            className="w-full px-5 py-4 md:px-6 md:py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-all duration-300 group"
+                          >
+                            <span className="text-base md:text-lg font-bold text-gray-900 pr-4 transition-all">{faq.question}</span>
+                            <div className={`w-8 h-8 flex items-center justify-center transition-transform duration-300 flex-shrink-0 ${
+                              isOpen ? 'rotate-180' : ''
+                            }`}>
+                              <svg
+                                className={`w-5 h-5 ${isOpen ? '' : 'text-gray-900'}`}
+                                fill={isOpen ? "url(#blog-faq-gradient)" : "currentColor"}
+                                viewBox="0 0 16 16"
+                              >
+                                <defs>
+                                  <linearGradient id="blog-faq-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#491AE9" />
+                                    <stop offset="33%" stopColor="#D414E5" />
+                                    <stop offset="66%" stopColor="#FC03A1" />
+                                    <stop offset="100%" stopColor="#FF7715" />
+                                  </linearGradient>
+                                </defs>
+                                <path d="M8.00045 8.78092L11.3003 5.48111L12.2431 6.42392L8.00045 10.6666L3.75781 6.42392L4.70063 5.48111L8.00045 8.78092Z" />
+                              </svg>
+                            </div>
+                          </button>
+
+                          {isOpen && (
+                            <div className="px-5 md:px-6 pb-5 animate-slide-up">
+                              <p className="text-gray-600 leading-relaxed whitespace-pre-line text-sm md:text-base">
+                                {faq.answer}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
