@@ -74,12 +74,21 @@ export default function ServicesClient({ servicesData }) {
               {services.filter(s => s && s.service_id).map((service) => {
                 const servicePath = `/services/${service.service_id}`
                 const localizedHref = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath
+                const finalPath = localizedHref || servicePath
+                
+                const handleServiceClick = (e) => {
+                  e.preventDefault();
+                  trackServiceClick(service.service_id, service.name, 'services_page');
+                  // Forcer un rechargement complet de la page
+                  window.location.href = finalPath;
+                };
+                
                 return (
                   <Link
                     key={service.id}
-                    href={localizedHref || servicePath}
+                    href={finalPath}
                     className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up flex flex-col"
-                    onClick={() => trackServiceClick(service.service_id, service.name, 'services_page')}
+                    onClick={handleServiceClick}
                   >
                     <div className="mb-4">
                       <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>

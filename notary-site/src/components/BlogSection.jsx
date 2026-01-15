@@ -63,11 +63,20 @@ const BlogSection = ({ initialPosts = null }) => {
             {posts.filter(p => p && p.slug).map((post) => {
               const postPath = `/blog/${post.slug}`;
               const localizedPath = getLocalizedPath ? getLocalizedPath(postPath) : postPath;
+              const finalPath = localizedPath || postPath;
+              
+              const handlePostClick = (e) => {
+                e.preventDefault();
+                // Forcer un rechargement complet de la page
+                window.location.href = finalPath;
+              };
+              
               return (
               <Link
                 key={post.id}
-                href={localizedPath || postPath}
+                href={finalPath}
                 className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 scroll-slide-up"
+                onClick={handlePostClick}
               >
                 {/* Cover Image */}
                 {post.cover_image_url ? (
@@ -139,10 +148,18 @@ const BlogSection = ({ initialPosts = null }) => {
         {/* View All Button */}
         {posts.length > 0 && (
           <div className="text-center mt-12 scroll-fade-in">
-            <Link href={getLocalizedPath ? getLocalizedPath('/blog') : '/blog'} className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg">
+            <a 
+              href={getLocalizedPath ? getLocalizedPath('/blog') : '/blog'} 
+              className="inline-flex items-center gap-3 text-gray-900 hover:text-black font-semibold text-lg cursor-pointer"
+              onClick={(e) => {
+                e.preventDefault();
+                const blogPath = getLocalizedPath ? getLocalizedPath('/blog') : '/blog';
+                window.location.href = blogPath;
+              }}
+            >
               <span className="inline-block">{t('blog.viewAll')}</span>
               <IconOpenNew />
-            </Link>
+            </a>
           </div>
         )}
       </div>

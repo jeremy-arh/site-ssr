@@ -122,8 +122,10 @@ const LanguageSelector = ({ isWhite = false }) => {
   };
 
   const handleLanguageChange = (newLanguage) => {
-    setLanguage(newLanguage);
+    // Fermer le dropdown immédiatement
     setIsOpen(false);
+    // Changer la langue (cela va déclencher un rechargement de page)
+    setLanguage(newLanguage);
   };
 
   return (

@@ -97,24 +97,25 @@ export const LanguageProvider = ({ children }) => {
   }, [pathname, language]) // Inclure language pour éviter les warnings
 
   // Fonction pour changer la langue
-  const setLanguage = (newLanguage) => {
+  const setLanguage = useCallback((newLanguage) => {
     if (!SUPPORTED_LANGUAGES.includes(newLanguage)) {
       console.warn(`Language ${newLanguage} is not supported`)
       return
     }
 
-    setLanguageState(newLanguage)
-    saveLanguageToStorage(newLanguage)
-
     // Met à jour l'URL avec la nouvelle langue
     const currentPath = removeLanguageFromPath(pathname)
     const newPath = getLocalizedPath(currentPath, newLanguage)
     
-    // Utiliser replace au lieu de push pour éviter d'ajouter une entrée dans l'historique
+    // Sauvegarder la langue avant la navigation
+    saveLanguageToStorage(newLanguage)
+    
+    // Utiliser window.location.href pour forcer un rechargement complet de la page
+    // Cela garantit que toutes les données sont rechargées avec la nouvelle langue
     if (newPath !== pathname) {
-      router.replace(newPath)
+      window.location.href = newPath
     }
-  }
+  }, [pathname, getLocalizedPath])
 
   return (
     <LanguageContext.Provider value={{

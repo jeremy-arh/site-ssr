@@ -3,6 +3,7 @@
 import { memo, useMemo } from 'react';
 import Link from 'next/link';
 import { useTranslation } from '../hooks/useTranslation';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // IMPORT STATIQUE - Les données sont dans le bundle, ZERO fetch !
 import blogIndexData from '../../public/data/blog-index.json';
@@ -16,6 +17,7 @@ const DEFAULT_POSTS = [
 
 const Footer = memo(() => {
   const { t } = useTranslation();
+  const { getLocalizedPath } = useLanguage();
   
   // useMemo synchrone - ZERO CLS !
   const recentPosts = useMemo(() => {
@@ -76,23 +78,37 @@ const Footer = memo(() => {
           <div>
             <h3 className="text-sm font-bold text-white mb-4">Resources</h3>
             <ul className="space-y-2">
-              {recentPosts.map((post) => (
-                <li key={post.slug} className="h-5">
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-gray-400 hover:text-white transition-colors duration-200 text-sm line-clamp-1 block h-5 overflow-hidden"
-                  >
-                    {post.title}
-                  </Link>
-                </li>
-              ))}
+              {recentPosts.map((post) => {
+                const postPath = `/blog/${post.slug}`;
+                const localizedPostPath = getLocalizedPath ? getLocalizedPath(postPath) : postPath;
+                
+                return (
+                  <li key={post.slug} className="h-5">
+                    <a
+                      href={localizedPostPath}
+                      className="text-gray-400 hover:text-white transition-colors duration-200 text-sm line-clamp-1 block h-5 overflow-hidden cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = localizedPostPath;
+                      }}
+                    >
+                      {post.title}
+                    </a>
+                  </li>
+                );
+              })}
               <li className="h-5">
-                <Link
-                  href="/blog"
-                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm block h-5"
+                <a
+                  href={getLocalizedPath ? getLocalizedPath('/blog') : '/blog'}
+                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm block h-5 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const blogPath = getLocalizedPath ? getLocalizedPath('/blog') : '/blog';
+                    window.location.href = blogPath;
+                  }}
                 >
                   See all resources &gt;
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -102,14 +118,30 @@ const Footer = memo(() => {
             <h3 className="text-sm font-bold text-white mb-4">About</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/terms-conditions" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                <a 
+                  href={getLocalizedPath ? getLocalizedPath('/terms-conditions') : '/terms-conditions'} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const termsPath = getLocalizedPath ? getLocalizedPath('/terms-conditions') : '/terms-conditions';
+                    window.location.href = termsPath;
+                  }}
+                >
                   Terms &amp; Conditions
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/privacy-policy" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
+                <a 
+                  href={getLocalizedPath ? getLocalizedPath('/privacy-policy') : '/privacy-policy'} 
+                  className="text-gray-400 hover:text-white transition-colors duration-200 text-sm cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const privacyPath = getLocalizedPath ? getLocalizedPath('/privacy-policy') : '/privacy-policy';
+                    window.location.href = privacyPath;
+                  }}
+                >
                   Privacy policy
-                </Link>
+                </a>
               </li>
             </ul>
           </div>

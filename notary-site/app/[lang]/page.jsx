@@ -6,13 +6,22 @@ import HomeClient from '../HomeClient'
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
 
-// Générer les métadonnées avec canonical pour chaque langue
+// Générer les métadonnées avec canonical et hreflang pour chaque langue
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { lang } = await params
   return {
     alternates: {
       canonical: `https://www.mynotary.io/${lang}`,
+      languages: {
+        'x-default': 'https://www.mynotary.io',
+        'en': 'https://www.mynotary.io',
+        'fr': 'https://www.mynotary.io/fr',
+        'es': 'https://www.mynotary.io/es',
+        'de': 'https://www.mynotary.io/de',
+        'it': 'https://www.mynotary.io/it',
+        'pt': 'https://www.mynotary.io/pt',
+      },
     },
   }
 }

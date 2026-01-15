@@ -235,15 +235,22 @@ const Services = ({ servicesData = null }) => {
               {paginatedServices.filter(s => s && s.service_id).map((service) => {
               const servicePath = `/services/${service.service_id}`;
               const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath;
+              const finalPath = localizedPath || servicePath;
+              
+              const handleServiceClick = (e) => {
+                e.preventDefault();
+                loadAnalytics();
+                safeTrack(trackServiceClick, service.service_id, service.name, 'homepage_services');
+                // Forcer un rechargement complet de la page
+                window.location.href = finalPath;
+              };
+              
               return (
                 <Link
                   key={service.id || service.service_id}
-                  href={localizedPath || servicePath}
+                  href={finalPath}
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
-                  onClick={() => {
-                    loadAnalytics();
-                    safeTrack(trackServiceClick, service.service_id, service.name, 'homepage_services');
-                  }}
+                  onClick={handleServiceClick}
                 >
                   <div className="mb-4">
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>

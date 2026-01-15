@@ -374,15 +374,21 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
             {filteredServices.filter(s => s && s.service_id).map((service) => {
               const servicePath = `/services/${service.service_id}`
               const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath
+              const finalPath = localizedPath || servicePath
+              
+              const handleServiceClick = (e) => {
+                e.preventDefault();
+                trackWithAnalytics('service', service.service_id, service.name, 'service_detail_other_services');
+                // Forcer un rechargement complet de la page
+                window.location.href = finalPath;
+              };
               
               return (
                 <Link
                   key={service.id || service.service_id}
-                  href={localizedPath || servicePath}
+                  href={finalPath}
                   className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
-                  onClick={() => {
-                    trackWithAnalytics('service', service.service_id, service.name, 'service_detail_other_services')
-                  }}
+                  onClick={handleServiceClick}
                 >
                   <div className="mb-4">
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
@@ -592,10 +598,17 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <div className="min-h-screen flex flex-col items-center justify-center px-4">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl text-gray-900 mb-4 md:mb-6 leading-tight">{t('common.notFound')}</h1>
         <p className="text-gray-600 mb-8">{t('common.error')}</p>
-        <Link href={getLocalizedPath('/')} className="primary-cta text-lg px-8 py-4 inline-flex items-center gap-2">
+        <a 
+          href={getLocalizedPath('/')} 
+          className="primary-cta text-lg px-8 py-4 inline-flex items-center gap-2 cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = getLocalizedPath('/');
+          }}
+        >
           <IconOpenNew />
           <span className="btn-text inline-block">{t('nav.notarizeNow')}</span>
-        </Link>
+        </a>
       </div>
     )
   }
@@ -970,10 +983,17 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       {/* Back to Services */}
       <section className="px-[30px] py-12">
         <div className="max-w-[1100px] mx-auto text-center">
-          <Link href={getLocalizedPath('/#services')} className="inline-flex items-center gap-3 text-black font-semibold hover:underline">
+          <a 
+            href={getLocalizedPath('/#services')} 
+            className="inline-flex items-center gap-3 text-black font-semibold hover:underline cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = getLocalizedPath('/#services');
+            }}
+          >
             <IconArrowLeft />
             <span>{t('serviceDetail.backToServices')}</span>
-          </Link>
+          </a>
         </div>
       </section>
 

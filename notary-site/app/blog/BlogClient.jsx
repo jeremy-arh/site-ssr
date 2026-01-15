@@ -120,11 +120,20 @@ export default function BlogClient({ initialPosts, initialCategories, postsData 
               {posts.filter(p => p && p.slug).map((post) => {
                 const postPath = `/blog/${post.slug}`
                 const localizedHref = getLocalizedPath ? getLocalizedPath(postPath) : postPath
+                const finalPath = localizedHref || postPath
+                
+                const handlePostClick = (e) => {
+                  e.preventDefault();
+                  // Forcer un rechargement complet de la page
+                  window.location.href = finalPath;
+                };
+                
                 return (
                 <Link
                   key={post.id}
-                  href={localizedHref || postPath}
+                  href={finalPath}
                   className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                  onClick={handlePostClick}
                 >
                   {post.cover_image_url ? (
                     <div className="relative h-48 overflow-hidden bg-gray-100">

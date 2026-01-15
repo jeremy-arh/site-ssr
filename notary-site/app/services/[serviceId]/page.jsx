@@ -6,13 +6,22 @@ import ServiceDetailClient from './ServiceDetailClient'
 // Hero: deux colonnes avec image à droite
 export const dynamic = 'force-dynamic'
 
-// Générer les métadonnées avec canonical pour chaque service
+// Générer les métadonnées avec canonical et hreflang pour chaque service
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { serviceId } = await params
   return {
     alternates: {
       canonical: `https://www.mynotary.io/services/${serviceId}`,
+      languages: {
+        'x-default': `https://www.mynotary.io/services/${serviceId}`,
+        'en': `https://www.mynotary.io/services/${serviceId}`,
+        'fr': `https://www.mynotary.io/fr/services/${serviceId}`,
+        'es': `https://www.mynotary.io/es/services/${serviceId}`,
+        'de': `https://www.mynotary.io/de/services/${serviceId}`,
+        'it': `https://www.mynotary.io/it/services/${serviceId}`,
+        'pt': `https://www.mynotary.io/pt/services/${serviceId}`,
+      },
     },
   }
 }

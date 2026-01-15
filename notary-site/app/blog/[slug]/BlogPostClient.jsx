@@ -289,13 +289,27 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
             <div className="lg:col-span-8">
               {/* Breadcrumb */}
               <nav className="flex items-center gap-2 text-sm mb-6 animate-fade-in overflow-hidden">
-                <Link href="/" className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0">
+                <a 
+                  href={getLocalizedPath('/')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = getLocalizedPath('/');
+                  }}
+                >
                   {t('common.home') || 'Home'}
-                </Link>
+                </a>
                 <span className="text-gray-400 flex-shrink-0">/</span>
-                <Link href={getLocalizedPath('/blog')} className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0">
+                <a 
+                  href={getLocalizedPath('/blog')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors flex-shrink-0 cursor-pointer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.location.href = getLocalizedPath('/blog');
+                  }}
+                >
                   {t('blog.title') || 'Blog'}
-                </Link>
+                </a>
                 <span className="text-gray-400 flex-shrink-0">/</span>
                 <span className="text-gray-900 font-medium truncate min-w-0">{post.title}</span>
               </nav>
@@ -429,44 +443,6 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
         </div>
       </article>
 
-      {/* CTA Section */}
-      <section className="px-[30px] pb-20">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl">
-            {/* Background image optimisé avec next/image */}
-            <Image
-              src="/images/cta-background.webp"
-              alt=""
-              fill
-              quality={80}
-              sizes="(max-width: 1400px) 100vw, 1400px"
-              className="object-cover object-center"
-            />
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/60"></div>
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                {t('howItWorks.ctaTitle') || 'Ready to Get Started?'}
-              </h3>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                {t('howItWorks.ctaDescription') || 'Notarize your documents online in just a few minutes. Secure, legally valid, and recognized internationally.'}
-              </p>
-              <a
-                href={formUrl}
-                className="primary-cta text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100"
-              >
-                <IconCheck />
-                <span className="btn-text inline-block">{post.cta || t('nav.notarizeNow')}</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Related Posts Section */}
       <section className="px-[30px] py-20 bg-gray-50">
         <div className="max-w-[1400px] mx-auto">
@@ -475,11 +451,22 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
           </h2>
           {relatedPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedPosts.map((relatedPost) => (
+              {relatedPosts.map((relatedPost) => {
+                const relatedPostPath = `/blog/${relatedPost.slug}`
+                const relatedPostLocalizedPath = getLocalizedPath(relatedPostPath)
+                
+                const handleRelatedPostClick = (e) => {
+                  e.preventDefault();
+                  // Forcer un rechargement complet de la page
+                  window.location.href = relatedPostLocalizedPath;
+                };
+                
+                return (
                 <Link
                   key={relatedPost.id}
-                  href={getLocalizedPath(`/blog/${relatedPost.slug}`)}
+                  href={relatedPostLocalizedPath}
                   className="group block bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+                  onClick={handleRelatedPostClick}
                 >
                   {/* Cover Image */}
                   {relatedPost.cover_image_url ? (
@@ -543,7 +530,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
                     </div>
                   </div>
                 </Link>
-              ))}
+              )})}
             </div>
           ) : (
             <div className="text-center py-12">
@@ -556,10 +543,17 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
       {/* Back to Blog */}
       <section className="px-[30px] pb-20">
         <div className="max-w-[1400px] mx-auto text-center">
-          <Link href={getLocalizedPath('/blog')} className="inline-flex items-center gap-3 text-gray-900 hover:text-black transition-colors font-medium">
+          <a 
+            href={getLocalizedPath('/blog')} 
+            className="inline-flex items-center gap-3 text-gray-900 hover:text-black transition-colors font-medium cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = getLocalizedPath('/blog');
+            }}
+          >
             <IconArrowLeft />
             <span className="inline-block">{t('blog.backToBlog') || 'Back to Blog'}</span>
-          </Link>
+          </a>
         </div>
       </section>
       <MobileCTA ctaText={post?.cta || t('nav.notarizeNow')} />

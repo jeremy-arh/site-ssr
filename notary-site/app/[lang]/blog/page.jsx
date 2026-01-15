@@ -6,13 +6,22 @@ import BlogClient from '../../blog/BlogClient'
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
 
-// Générer les métadonnées avec canonical pour chaque langue
+// Générer les métadonnées avec canonical et hreflang pour chaque langue
 // eslint-disable-next-line react-refresh/only-export-components
 export async function generateMetadata({ params }) {
   const { lang } = await params
   return {
     alternates: {
       canonical: `https://www.mynotary.io/${lang}/blog`,
+      languages: {
+        'x-default': 'https://www.mynotary.io/blog',
+        'en': 'https://www.mynotary.io/blog',
+        'fr': 'https://www.mynotary.io/fr/blog',
+        'es': 'https://www.mynotary.io/es/blog',
+        'de': 'https://www.mynotary.io/de/blog',
+        'it': 'https://www.mynotary.io/it/blog',
+        'pt': 'https://www.mynotary.io/pt/blog',
+      },
     },
   }
 }
