@@ -11,7 +11,7 @@ const BASE_URL = 'https://www.mynotary.io'
 /**
  * Génère les balises hreflang pour une page donnée
  */
-export function generateHreflangTags(currentPathname) {
+function generateHreflangTags(currentPathname) {
   // Retirer la langue du pathname actuel pour obtenir le path de base
   const basePath = removeLanguageFromPath(currentPathname || '/')
   
