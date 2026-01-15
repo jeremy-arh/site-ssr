@@ -3,6 +3,7 @@
  * Ces balises doivent être présentes dans le HTML initial pour le SEO
  */
 
+// eslint-disable-next-line react-refresh/only-export-components
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, removeLanguageFromPath, addLanguageToPath } from '../utils/language'
 
 const BASE_URL = 'https://www.mynotary.io'
