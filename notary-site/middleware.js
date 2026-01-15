@@ -9,6 +9,9 @@ export function middleware(request) {
   // Créer la réponse
   let response = NextResponse.next()
   
+  // Ajouter le pathname dans les headers pour les hreflang
+  response.headers.set('x-pathname', pathname)
+  
   // Vérifier si le paramètre gclid est présent dans l'URL
   const gclid = searchParams.get('gclid')
   

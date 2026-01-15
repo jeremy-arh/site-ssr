@@ -3,6 +3,8 @@ import Script from 'next/script'
 import { Partytown } from '@builder.io/partytown/react'
 import Providers from '@/components/Providers'
 import PartytownScripts from '@/components/PartytownScripts'
+import HreflangLinks from '@/components/HreflangLinks'
+import { headers } from 'next/headers'
 // CSS principal - Next.js le charge, mais on va optimiser avec plus de CSS critique inline
 import '@/index.css'
 
@@ -27,10 +29,16 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // Obtenir le pathname depuis les headers pour générer les hreflang
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || headersList.get('x-invoke-path') || '/'
+  
   return (
     <html lang="en" suppressHydrationWarning className={playfairDisplay.variable}>
       <head>
+        {/* Balises hreflang pour le SEO international */}
+        <HreflangLinks pathname={pathname} />
         {/* CSS Critique inline COMPLET pour above-the-fold - élimine le render-blocking */}
         <style dangerouslySetInnerHTML={{
           __html: `
