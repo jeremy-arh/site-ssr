@@ -11,7 +11,8 @@ export default function LazyLoad({
   children, 
   fallback = null, 
   rootMargin = '200px', // Commencer à charger 200px avant que l'élément soit visible
-  threshold = 0.01 
+  threshold = 0.01,
+  sectionId = null // ID de la section pour permettre le forçage du rendu
 }) {
   const [shouldRender, setShouldRender] = useState(false)
   const ref = useRef(null)
@@ -45,15 +46,30 @@ export default function LazyLoad({
       observer.observe(ref.current)
     }
 
-    return () => {
+    // Écouter les événements personnalisés pour forcer le rendu
+    const handleForceRender = () => {
+      setShouldRender(true)
       if (ref.current) {
         observer.unobserve(ref.current)
       }
     }
-  }, [rootMargin, threshold])
+
+    if (sectionId && typeof window !== 'undefined') {
+      window.addEventListener(`force-render-${sectionId}`, handleForceRender)
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current)
+      }
+      if (sectionId && typeof window !== 'undefined') {
+        window.removeEventListener(`force-render-${sectionId}`, handleForceRender)
+      }
+    }
+  }, [rootMargin, threshold, sectionId])
 
   return (
-    <div ref={ref}>
+    <div ref={ref} data-lazy-section={sectionId || undefined}>
       {shouldRender ? children : fallback}
     </div>
   )

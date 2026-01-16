@@ -7,25 +7,47 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 // IMPORT STATIQUE - Les données sont dans le bundle, ZERO fetch !
 import blogIndexData from '../../public/data/blog-index.json';
+import servicesIndexData from '../../public/data/services-index.json';
 
 // Posts par défaut si le fichier est vide
 const DEFAULT_POSTS = [
   { slug: 'placeholder-1', title: '—' },
   { slug: 'placeholder-2', title: '—' },
-  { slug: 'placeholder-3', title: '—' }
+  { slug: 'placeholder-3', title: '—' },
+  { slug: 'placeholder-4', title: '—' },
+  { slug: 'placeholder-5', title: '—' }
 ];
 
 const Footer = memo(() => {
   const { t } = useTranslation();
-  const { getLocalizedPath } = useLanguage();
+  const { getLocalizedPath, language } = useLanguage();
   
   // useMemo synchrone - ZERO CLS !
   const recentPosts = useMemo(() => {
     if (blogIndexData && blogIndexData.length > 0) {
-      return blogIndexData.slice(0, 3);
+      return blogIndexData.slice(0, 5);
     }
     return DEFAULT_POSTS;
   }, []);
+
+  // Formater les services selon la langue
+  const services = useMemo(() => {
+    if (!servicesIndexData || servicesIndexData.length === 0) {
+      return [];
+    }
+    
+    // Filtrer les services actifs qui doivent apparaître dans la liste
+    const activeServices = servicesIndexData.filter(s => s.show_in_list === true);
+    
+    // Formater selon la langue
+    return activeServices.map(service => {
+      const nameKey = language === 'en' ? 'name' : `name_${language}`;
+      return {
+        service_id: service.service_id,
+        name: service[nameKey] || service.name
+      };
+    });
+  }, [language]);
 
   return (
     <footer 
@@ -36,7 +58,7 @@ const Footer = memo(() => {
       }}
     >
       <div className="max-w-[1300px] mx-auto px-[30px] py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8 mb-8">
           {/* Logo */}
           <div className="md:col-span-1">
             <a href="/" className="inline-block">
@@ -68,9 +90,35 @@ const Footer = memo(() => {
               </li>
               <li>
                 <a href="/#faq" className="text-gray-400 hover:text-white transition-colors duration-200 text-sm">
-                  FAQ
+FAQ
                 </a>
               </li>
+            </ul>
+          </div>
+
+          {/* Services Links */}
+          <div>
+            <h3 className="text-sm font-bold text-white mb-4">Services</h3>
+            <ul className="space-y-2">
+              {services.map((service) => {
+                const servicePath = `/services/${service.service_id}`;
+                const localizedServicePath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath;
+                
+                return (
+                  <li key={service.service_id} className="h-5">
+                    <a
+                      href={localizedServicePath}
+                      className="text-gray-400 hover:text-white transition-colors duration-200 text-sm line-clamp-1 block h-5 overflow-hidden cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.location.href = localizedServicePath;
+                      }}
+                    >
+                      {service.name}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 

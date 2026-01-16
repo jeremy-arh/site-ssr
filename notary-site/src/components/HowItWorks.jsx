@@ -545,30 +545,21 @@ const HowItWorks = memo(() => {
       title: t('howItWorks.step1.title'),
       subtitle: t('howItWorks.step1.subtitle'),
       description: t('howItWorks.step1.description'),
-    },
-    {
-      icon: 'formkit:people',
-      title: t('howItWorks.step2.title'),
-      subtitle: t('howItWorks.step2.subtitle'),
-      description: t('howItWorks.step2.description'),
+      videoStep: 1,
     },
     {
       icon: 'mynaui:credit-card-check-solid',
-      title: t('howItWorks.step3.title'),
-      subtitle: t('howItWorks.step3.subtitle'),
-      description: t('howItWorks.step3.description'),
+      title: t('howItWorks.step2.title'),
+      subtitle: t('howItWorks.step2.subtitle'),
+      description: t('howItWorks.step2.description'),
+      videoStep: 3,
     },
     {
       icon: 'hugeicons:identity-card',
-      title: t('howItWorks.step4.title'),
-      subtitle: t('howItWorks.step4.subtitle'),
-      description: t('howItWorks.step4.description'),
-    },
-    {
-      icon: 'stash:check-solid',
-      title: t('howItWorks.step5.title'),
-      subtitle: t('howItWorks.step5.subtitle'),
-      description: t('howItWorks.step5.description'),
+      title: t('howItWorks.step3.title'),
+      subtitle: t('howItWorks.step3.subtitle'),
+      description: t('howItWorks.step3.description'),
+      videoStep: 4,
     }
   ], [t]);
 
@@ -619,7 +610,7 @@ const HowItWorks = memo(() => {
                 >
                   {/* Animated Illustration */}
                   <div className="mb-[10px] w-full">
-                    <StepAnimation step={index + 1} />
+                    <StepAnimation step={step.videoStep} />
                   </div>
                   
                   {/* Text Block - Below Illustration */}
@@ -657,7 +648,7 @@ const HowItWorks = memo(() => {
                 }}
               >
                 <div className="mb-[10px]">
-                  <StepAnimation step={index + 1} />
+                  <StepAnimation step={step.videoStep} />
                 </div>
                 <div className="grid grid-cols-[auto,1fr] gap-3 items-center">
                   {(() => { const StepIcon = STEP_ICONS[step.icon]; return StepIcon ? <StepIcon className="w-6 h-6 text-black flex-shrink-0 mt-0.5" /> : null; })()}

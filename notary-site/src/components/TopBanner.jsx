@@ -16,8 +16,8 @@ const TopBanner = memo(() => {
 
             {/* Right - Reviews avec étoiles vertes */}
             <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-              <span className="font-semibold whitespace-nowrap">4.7 Excellent</span>
-              <div className="relative w-12 h-2.5 sm:w-14 sm:h-3 flex-shrink-0">
+              <span className="font-semibold whitespace-nowrap">4.7/5 on Trustpilot</span>
+              <div className="relative w-16 h-3 sm:w-20 sm:h-4 flex-shrink-0">
                 <Image
                   src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ec7e0448-41ea-4fef-ee59-b617ab362f00/public"
                   alt="5 stars"

@@ -13,55 +13,14 @@ const IconChat = () => (
 const ChatCTA = () => {
   const { language } = useTranslation();
 
-  // Charger Crisp si nécessaire
-  const ensureCrispLoaded = () => {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-
-    // Si Crisp est déjà initialisé, retourner true
-    if (window.$crisp && typeof window.$crisp.push === 'function') {
-      return true;
-    }
-
-    // Vérifier si le script Crisp existe dans le DOM
-    const crispScript = document.querySelector('script[src*="client.crisp.chat"]');
-    if (crispScript) {
-      // Le script est présent, attendre qu'il se charge
-      return false;
-    }
-
-    // Le script n'existe pas, l'initialiser
-    if (!window.$crisp) {
-      window.$crisp = [];
-      window.CRISP_WEBSITE_ID = "fd0c2560-46ba-4da6-8979-47748ddf247a";
-    }
-
-    // Créer et charger le script Crisp
-    const script = document.createElement('script');
-    script.src = 'https://client.crisp.chat/l.js';
-    script.async = true;
-    document.head.appendChild(script);
-
-    return false;
-  };
-
   // Ouvrir le chat Crisp
   const openCrispChat = () => {
     if (typeof window === 'undefined') {
       return;
     }
 
-    // S'assurer que Crisp est chargé
-    ensureCrispLoaded();
-
-    // Fonction pour vérifier si Crisp est prêt et ouvrir le chat
+    // Fonction pour ouvrir le chat
     const tryOpenChat = () => {
-      if (typeof window === 'undefined') {
-        return false;
-      }
-
-      // Vérifier que $crisp existe et a la méthode push
       if (window.$crisp && typeof window.$crisp.push === 'function') {
         try {
           window.$crisp.push(['do', 'chat:open']);
@@ -81,7 +40,7 @@ const ChatCTA = () => {
 
     // Si Crisp n'est pas encore prêt, attendre avec plusieurs tentatives
     let attempts = 0;
-    const maxAttempts = 30; // 6 secondes max (30 * 200ms) - augmenté pour la prod
+    const maxAttempts = 50; // 10 secondes max (50 * 200ms)
     const interval = setInterval(() => {
       attempts++;
       if (tryOpenChat()) {
@@ -92,27 +51,9 @@ const ChatCTA = () => {
       if (attempts >= maxAttempts) {
         clearInterval(interval);
         console.warn('Crisp n\'a pas pu être chargé après plusieurs tentatives');
-        // Fallback: essayer quand même une dernière fois après un délai plus long
+        // Dernière tentative après un délai plus long
         setTimeout(() => {
-          if (window.$crisp && typeof window.$crisp.push === 'function') {
-            try {
-              window.$crisp.push(['do', 'chat:open']);
-            } catch (error) {
-              console.error('Erreur finale lors de l\'ouverture de Crisp:', error);
-            }
-          } else {
-            // Dernier recours: recharger Crisp
-            ensureCrispLoaded();
-            setTimeout(() => {
-              if (window.$crisp && typeof window.$crisp.push === 'function') {
-                try {
-                  window.$crisp.push(['do', 'chat:open']);
-                } catch (error) {
-                  console.error('Erreur lors de la dernière tentative:', error);
-                }
-              }
-            }, 2000);
-          }
+          tryOpenChat();
         }, 1000);
       }
     }, 200);

@@ -154,33 +154,23 @@ export const translations = {
     // How It Works
     howItWorks: {
       title: 'How It Works',
-      subtitle: 'Five simple steps to get your documents notarized online',
+      subtitle: 'Three simple steps to get your documents notarized online',
       badge: 'How it work ?',
       heading: 'Notarization Made Easy',
       step1: {
         title: 'Upload Documents',
         subtitle: '',
-        description: 'Upload the PDF or high-quality scan of the passport or document you need to notarize directly to our secure portal.',
+        description: 'Upload your document (passport, certificate, contract...) as a PDF or high-quality scan to our secure, encrypted portal. All files are protected with bank-level security and automatically deleted after processing.',
       },
       step2: {
-        title: 'Add Signatories',
-        subtitle: '',
-        description: 'Enter your name and email address as the signatory to link your identity to the document for certification.',
-      },
-      step3: {
         title: 'Secure Payment',
         subtitle: '',
-        description: 'Proceed to our secure online checkout to finalize your order. Transparent pricing with no hidden fees.',
+        description: 'Review your order and pay securely via Stripe (credit card, Apple Pay, Google Pay) or PayPal. Transparent pricing with no hidden fees — you\'ll receive instant confirmation with your tracking link.',
       },
-      step4: {
-        title: 'ID Verification & E-Signature',
+      step3: {
+        title: 'Live Notarization in Minutes',
         subtitle: '',
-        description: 'Complete the automated identity check via our secure system and electronically sign your request in seconds.',
-      },
-      step5: {
-      title: 'Finalize and Retrieve Your Document',
-        subtitle: '',
-        description: 'Complete the process via video call with an accredited notary. Once done, immediately access your finalized document on your dashboard.',
+        description: 'Click your secure link and verify your identity by scanning your ID document (passport, national ID, or driver\'s license). Once verified, a live video session starts automatically — a certified notary joins within minutes to notarize your document. Your notarized certificate is delivered to your inbox immediately after the session.',
       },
       stepLabel: 'Step',
       of: 'of',
@@ -386,33 +376,23 @@ export const translations = {
     },
     howItWorks: {
       title: 'Comment Ça Marche',
-    subtitle: '5 étapes simples pour obtenir vos documents certifiés',
+    subtitle: '3 étapes simples pour obtenir vos documents certifiés',
       badge: 'Processus simple',
-    heading: 'Notarisation Express en 5 Étapes',
+    heading: 'Notarisation Express en 3 Étapes',
       step1: {
       title: 'Téléversez vos documents',
       subtitle: '',
-      description: 'Importez le PDF ou un scan haute qualité du passeport ou du document à certifier directement sur notre portail sécurisé.',
+      description: 'Téléversez votre document (passeport, certificat, contrat...) en PDF ou scan haute qualité sur notre portail sécurisé et crypté. Tous les fichiers sont protégés par une sécurité de niveau bancaire et automatiquement supprimés après traitement.',
       },
       step2: {
-      title: 'Ajoutez les signataires',
+      title: 'Paiement sécurisé',
         subtitle: '',
-      description: 'Entrez votre nom et votre adresse e-mail en tant que signataire pour lier votre identité au document à certifier.',
+      description: 'Consultez votre commande et payez en toute sécurité via Stripe (carte de crédit, Apple Pay, Google Pay) ou PayPal. Tarification transparente sans frais cachés — vous recevrez une confirmation instantanée avec votre lien de suivi.',
       },
       step3: {
-      title: 'Paiement sécurisé',
-      subtitle: '',
-      description: 'Effectuez le paiement via notre checkout en ligne sécurisé pour finaliser votre demande. Tarification transparente, sans frais cachés.',
-      },
-      step4: {
-      title: 'Vérification d\'identité et signature électronique',
-      subtitle: '',
-      description: 'Réalisez la vérification automatisée d\'identité via notre système sécurisé puis signez électroniquement votre demande en quelques secondes.',
-      },
-      step5: {
-      title: 'Finaliser et récupérer votre document',
+      title: 'Notarisation en direct en quelques minutes',
         subtitle: '',
-      description: 'Terminez le processus via un appel vidéo avec un notaire agréé. Une fois terminé, accédez immédiatement à votre document finalisé sur votre tableau de bord.',
+      description: 'Cliquez sur votre lien sécurisé et vérifiez votre identité en scannant votre pièce d\'identité (passeport, carte d\'identité nationale ou permis de conduire). Une fois vérifié, une session vidéo en direct démarre automatiquement — un notaire certifié vous rejoint en quelques minutes pour notariser votre document. Votre certificat notarié est livré dans votre boîte de réception immédiatement après la session.',
       },
       stepLabel: 'Étape',
       of: 'sur',

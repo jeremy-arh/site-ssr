@@ -90,39 +90,112 @@ const IconClose = memo(() => (
   </svg>
 ));
 
-// Helper function pour scroll vers une section
-const scrollToSection = (sectionId) => {
-  console.log('scrollToSection called with:', sectionId);
-  
-  const element = document.getElementById(sectionId);
-  console.log('Element found:', element ? 'yes' : 'no');
-  
-  if (!element) {
-    console.warn(`Section with id "${sectionId}" not found in DOM`);
-    // Essayer de lister tous les éléments avec un id pour déboguer
-    const allIds = Array.from(document.querySelectorAll('[id]')).map(el => el.id);
-    console.log('Available IDs:', allIds);
-    return;
+// Helper function pour forcer le rendu d'une section lazy-loadée
+const forceRenderLazySection = (sectionId) => {
+  // Envoyer un événement personnalisé pour forcer le rendu
+  if (typeof window !== 'undefined') {
+    const event = new CustomEvent(`force-render-${sectionId}`);
+    window.dispatchEvent(event);
   }
-  
-  console.log('Element position:', element.getBoundingClientRect());
-  
-  // Calculer la navbar height
-  const navbar = document.querySelector('nav');
-  const navbarHeight = navbar ? navbar.offsetHeight : (window.innerWidth < 768 ? 60 : 100);
-  console.log('Navbar height:', navbarHeight);
-  
-  // Calculer la position cible
-  const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-  const offsetPosition = elementPosition - navbarHeight - 20;
-  
-  console.log('Scrolling to position:', offsetPosition);
-  
-  // Scroller vers la position
-  window.scrollTo({
-    top: offsetPosition,
-    behavior: 'smooth'
-  });
+};
+
+// Helper function pour scroll vers une section
+// Cette fonction doit être appelée depuis le composant pour avoir accès à getLocalizedPath et pathname
+const createScrollToSection = (getLocalizedPath, pathname) => {
+  return (sectionId) => {
+    // Forcer le rendu de la section lazy-loadée d'abord
+    forceRenderLazySection(sectionId);
+    
+    // Fonction interne pour effectuer le scroll avec plusieurs tentatives
+    const performScroll = (attempt = 0) => {
+      const maxAttempts = 50; // Augmenter encore plus le nombre de tentatives
+      const element = document.getElementById(sectionId);
+      
+      // Si l'élément n'existe pas sur la page actuelle, rediriger vers la page d'accueil
+      if (!element) {
+        const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+        const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+        
+        if (!isHomePage) {
+          // Rediriger vers la page d'accueil avec le hash
+          const homePath = getLocalizedPath(`/#${sectionId}`);
+          window.location.href = homePath;
+          return;
+        }
+        
+        // Si on est sur la page d'accueil mais l'élément n'existe pas encore, réessayer
+        // Scroller légèrement pour déclencher le lazy load si nécessaire
+        if (attempt === 5 && (window.scrollY || window.pageYOffset) === 0) {
+          window.scrollTo({ top: 200, behavior: 'auto' });
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'auto' });
+          }, 150);
+        }
+        
+        if (attempt < maxAttempts) {
+          setTimeout(() => performScroll(attempt + 1), 100);
+          return;
+        }
+        
+        console.warn(`Section with id "${sectionId}" not found in DOM after ${maxAttempts} attempts`);
+        return;
+      }
+      
+      // Vérifier que l'élément est vraiment rendu (a une hauteur ou est visible)
+      const elementRect = element.getBoundingClientRect();
+      const isElementRendered = elementRect.height > 0 || element.offsetHeight > 0 || element.scrollHeight > 0;
+      
+      // Si l'élément n'est pas encore rendu, réessayer
+      if (!isElementRendered && attempt < maxAttempts) {
+        setTimeout(() => performScroll(attempt + 1), 100);
+        return;
+      }
+      
+      // Calculer la navbar height
+      const navbar = document.querySelector('nav');
+      const navbarHeight = navbar ? navbar.offsetHeight : (window.innerWidth < 768 ? 60 : 100);
+      
+      // Obtenir la position actuelle
+      const currentScroll = window.scrollY || window.pageYOffset;
+      
+      // Obtenir la position de l'élément
+      const elementTop = elementRect.top + currentScroll;
+      
+      // Calculer la position cible avec offset pour la navbar
+      const targetScroll = Math.max(0, elementTop - navbarHeight - 20);
+      
+      // Toujours scroller, même si on est déjà en haut
+      // Utiliser une approche plus agressive pour forcer le scroll
+      if (currentScroll === 0 || Math.abs(currentScroll - targetScroll) < 5) {
+        // Si on est déjà en haut ou très proche, forcer un scroll minimal puis scroller vers la cible
+        window.scrollTo({
+          top: 1,
+          behavior: 'auto'
+        });
+        
+        // Attendre que le scroll soit effectué puis scroller vers la cible
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            window.scrollTo({
+              top: targetScroll,
+              behavior: 'smooth'
+            });
+          });
+        });
+      } else {
+        // Scroller normalement vers la position
+        window.scrollTo({
+          top: targetScroll,
+          behavior: 'smooth'
+        });
+      }
+    };
+    
+    // Démarrer le scroll avec un petit délai pour laisser le temps au lazy load
+    setTimeout(() => {
+      performScroll();
+    }, 200);
+  };
 };
 
 // Cacher le scroll pour éviter les forced layouts répétés
@@ -161,6 +234,9 @@ const Navbar = memo(() => {
   const { formatPrice, currency } = useCurrency();
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
+  
+  // Créer la fonction scrollToSection avec accès aux dépendances
+  const scrollToSection = useCallback(createScrollToSection(getLocalizedPath, pathname), [getLocalizedPath, pathname]);
   
   // Marquer comme monté et détecter desktop pour éviter les différences d'hydratation
   useEffect(() => {
@@ -414,6 +490,12 @@ const Navbar = memo(() => {
                   className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
+                    // Mettre à jour l'URL avec le hash
+                    const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                    const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                    if (isHomePage) {
+                      window.history.pushState(null, '', `#how-it-works`);
+                    }
                     scrollToSection('how-it-works');
                     loadAnalytics();
                     safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
@@ -430,6 +512,12 @@ const Navbar = memo(() => {
                   className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
+                    // Mettre à jour l'URL avec le hash
+                    const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                    const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                    if (isHomePage) {
+                      window.history.pushState(null, '', `#faq`);
+                    }
                     scrollToSection('faq');
                     loadAnalytics();
                     safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {
@@ -603,6 +691,12 @@ const Navbar = memo(() => {
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
+                  // Mettre à jour l'URL avec le hash
+                  const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                  const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                  if (isHomePage) {
+                    window.history.pushState(null, '', `#how-it-works`);
+                  }
                   setTimeout(() => scrollToSection('how-it-works'), 300);
                   loadAnalytics();
                   safeTrack(trackNavigationClick, t('nav.howItWorks'), '#how-it-works', {
@@ -623,6 +717,12 @@ const Navbar = memo(() => {
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
+                  // Mettre à jour l'URL avec le hash
+                  const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                  const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                  if (isHomePage) {
+                    window.history.pushState(null, '', `#faq`);
+                  }
                   setTimeout(() => scrollToSection('faq'), 300);
                   loadAnalytics();
                   safeTrack(trackNavigationClick, t('nav.faq'), '#faq', {

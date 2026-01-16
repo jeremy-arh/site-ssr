@@ -32,10 +32,6 @@ const ChatCTA = dynamic(() => import('@/components/ChatCTA'), {
 })
 // TrustpilotSlider directement importé (pas de lazy load car above-the-fold)
 import TrustpilotSlider from '@/components/TrustpilotSlider'
-const Testimonial = dynamic(() => import('@/components/Testimonial'), { 
-  ssr: false,
-  loading: () => null 
-})
 const BlogSection = dynamic(() => import('@/components/BlogSection'), { 
   ssr: false,
   loading: () => null 
@@ -45,7 +41,7 @@ const MobileCTA = dynamic(() => import('@/components/MobileCTA'), {
   loading: () => null 
 })
 
-export default function HomeClient({ blogPostsData, servicesData, faqsData, testimonialsData }) {
+export default function HomeClient({ blogPostsData, servicesData, faqsData }) {
   const { t } = useTranslation()
   
   // Données structurées pour la FAQ
@@ -103,15 +99,11 @@ export default function HomeClient({ blogPostsData, servicesData, faqsData, test
         <ChatCTA />
       </LazyLoad>
       
-      <LazyLoad rootMargin="300px">
-        <Testimonial testimonialsData={testimonialsData} />
-      </LazyLoad>
-      
-      <LazyLoad rootMargin="300px">
+      <LazyLoad rootMargin="300px" sectionId="how-it-works">
         <HowItWorks />
       </LazyLoad>
       
-      <LazyLoad rootMargin="300px">
+      <LazyLoad rootMargin="300px" sectionId="faq">
         <FAQ faqsData={faqsData} />
       </LazyLoad>
       

@@ -1,4 +1,4 @@
-import { getBlogPosts, getServices, getFAQs, getTestimonials } from '@/lib/supabase-server'
+import { getBlogPosts, getServices, getFAQs } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import HomeClient from '../HomeClient'
@@ -33,11 +33,10 @@ export default async function LangHome({ params }) {
     redirect('/')
   }
 
-  const [blogPostsData, servicesData, faqsData, testimonialsData] = await Promise.all([
+  const [blogPostsData, servicesData, faqsData] = await Promise.all([
     getBlogPosts(),
     getServices(),
     getFAQs(),
-    getTestimonials(),
   ])
 
   const recentPosts = blogPostsData.slice(0, 3) // Prendre les 3 plus récents
@@ -47,7 +46,6 @@ export default async function LangHome({ params }) {
       blogPostsData={recentPosts}
       servicesData={servicesData}
       faqsData={faqsData}
-      testimonialsData={testimonialsData}
     />
   )
 }

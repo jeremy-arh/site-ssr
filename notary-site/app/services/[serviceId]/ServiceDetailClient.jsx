@@ -27,7 +27,6 @@ import HowItWorks from '@/components/HowItWorks'
 import FAQ from '@/components/FAQ'
 
 // Différer les autres composants non-critiques pour réduire le JS initial
-const Testimonial = dynamic(() => import('@/components/Testimonial'), { ssr: true })
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
 const ChatCTA = dynamic(() => import('@/components/ChatCTA'), { ssr: true })
 // TrustpilotSlider directement importé
@@ -967,9 +966,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
       {/* Chat CTA Section */}
       <ChatCTA />
-
-      {/* Testimonial Section */}
-      <Testimonial />
 
       {/* How It Works Section */}
       <HowItWorks />
