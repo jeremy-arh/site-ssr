@@ -215,7 +215,15 @@ const isServicePage = (pathname) => {
   // Exemple: ['services', 'apostille'] -> true
   // Exemple: ['fr', 'services', 'apostille'] -> true
   // Exemple: ['services'] -> false (liste des services)
-  return servicesIndex < pathSegments.length - 1;
+  const isService = servicesIndex < pathSegments.length - 1;
+  
+  // Log de débogage uniquement en développement
+  // eslint-disable-next-line no-undef
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') {
+    console.log('[GTM] isServicePage:', pathname, '->', isService, '(segments:', pathSegments, ', servicesIndex:', servicesIndex, ')');
+  }
+  
+  return isService;
 };
 
 /**
@@ -276,6 +284,10 @@ export const trackCTAToForm = (ctaLocation, pathname, ctaText, destination, elem
 export const trackCTAToFormOnService = (ctaLocation, pathname, ctaText, destination, elementId, serviceId, currency = null) => {
   // Ne tracker que si on est sur une page service
   if (!isServicePage(pathname)) {
+    // eslint-disable-next-line no-undef
+    if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') {
+      console.log('[GTM] trackCTAToFormOnService: pas une page service, événement ignoré', { pathname, ctaLocation });
+    }
     return;
   }
 
