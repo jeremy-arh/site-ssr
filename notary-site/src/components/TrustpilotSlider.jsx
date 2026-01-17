@@ -8,72 +8,98 @@ const TrustpilotSlider = () => {
   const { t } = useTranslation();
   const scrollRef = useRef(null);
 
-  // Avis Trustpilot réels depuis https://fr.trustpilot.com/review/mynotary.io
-  // Les textes sont traduits via le système de traduction
+  // Avis Trustpilot réels depuis https://fr.trustpilot.com/review/mynotary.io?languages=all
+  // Tous les 9 avis avec leurs timestamps réels
   const reviews = [
     {
       id: 1,
       rating: 5,
       textKey: 'trustpilot.reviews.review1',
-      author: "Julia Booker",
-      country: "US",
-      verified: true
+      author: "Kyle Fournier",
+      country: "FR",
+      verified: true,
+      timeAgo: "1 day ago",
+      timeAgoKey: 'trustpilot.timeAgo.1day'
     },
     {
       id: 2,
       rating: 5,
       textKey: 'trustpilot.reviews.review2',
-      author: "Julie",
+      author: "Julia Booker",
       country: "US",
-      verified: true
+      verified: true,
+      timeAgo: "3 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.3days'
     },
     {
       id: 3,
       rating: 5,
       textKey: 'trustpilot.reviews.review3',
-      author: "Max",
-      country: "IT",
-      verified: true
+      author: "Julie",
+      country: "US",
+      verified: true,
+      timeAgo: "4 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.4days'
     },
     {
       id: 4,
       rating: 5,
       textKey: 'trustpilot.reviews.review4',
-      author: "Gabriele Angelotti",
-      country: "DE",
-      verified: true
+      author: "Robbo",
+      country: "IT",
+      verified: true,
+      timeAgo: "5 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.5days'
     },
     {
       id: 5,
       rating: 5,
       textKey: 'trustpilot.reviews.review5',
-      author: "Helen White",
+      author: "Gabriele Angelotti",
       country: "DE",
-      verified: true
+      verified: true,
+      timeAgo: "6 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.6days'
     },
     {
       id: 6,
       rating: 5,
       textKey: 'trustpilot.reviews.review6',
-      author: "Romano",
-      country: "PT",
-      verified: true
+      author: "Helen White",
+      country: "DE",
+      verified: true,
+      timeAgo: "7 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.7days'
     },
     {
       id: 7,
       rating: 5,
       textKey: 'trustpilot.reviews.review7',
-      author: "Denis Dubrovin",
-      country: "GB",
-      verified: true
+      author: "Romano",
+      country: "PT",
+      verified: true,
+      timeAgo: "9 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.9days'
     },
     {
       id: 8,
       rating: 5,
       textKey: 'trustpilot.reviews.review8',
+      author: "Denis Dubrovin",
+      country: "GB",
+      verified: true,
+      timeAgo: "9 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.9days'
+    },
+    {
+      id: 9,
+      rating: 5,
+      textKey: 'trustpilot.reviews.review9',
       author: "Ulvi",
       country: "GB",
-      verified: true
+      verified: true,
+      timeAgo: "8 days ago",
+      timeAgoKey: 'trustpilot.timeAgo.8days'
     },
   ];
 
@@ -135,11 +161,16 @@ const TrustpilotSlider = () => {
   }, [reviews.length]);
 
   return (
-    <section className="py-12 md:py-16 px-4 sm:px-[30px] bg-white border-b border-gray-100">
-      <div className="max-w-[1300px] mx-auto">
-        {/* Header avec logo Trustpilot */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-8">
-          {/* Logo Trustpilot avec 5 étoiles */}
+    <section className="py-12 md:py-16 bg-white border-b border-gray-100">
+      {/* Header avec logo Trustpilot - contenu centré avec max-width */}
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-[30px] mb-8">
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6">
+          {/* Texte à gauche sur desktop */}
+          <span className="text-sm md:text-base text-gray-600 font-medium">
+            {t('trustpilot.rating')}
+          </span>
+          
+          {/* Logo Trustpilot avec 5 étoiles à droite sur desktop */}
           <div className="relative w-48 h-10 md:w-64 md:h-12">
             <Image
               src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/da5d4b50-9730-4759-2fe2-e7a593be7600/public"
@@ -149,14 +180,11 @@ const TrustpilotSlider = () => {
               unoptimized
             />
           </div>
-          
-          <span className="text-sm md:text-base text-gray-600 font-medium">
-            {t('trustpilot.rating')}
-          </span>
         </div>
+      </div>
 
-        {/* Slider avec défilement infini */}
-        <div className="overflow-hidden relative">
+      {/* Slider avec défilement infini - pleine largeur */}
+      <div className="overflow-hidden relative w-full">
           {/* Ombre gauche */}
           <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
           
@@ -173,45 +201,41 @@ const TrustpilotSlider = () => {
                 key={`${review.id}-${index}`}
                 className="w-[300px] md:w-[350px] flex-shrink-0 flex"
               >
-                <div className="bg-gray-50 rounded-xl p-6 h-full border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col">
-                  {/* Stars - aligné en haut */}
-                  <div className="flex items-center mb-3 flex-shrink-0">
-                    <div className="relative w-24 h-5 md:w-28 md:h-6">
-                      <Image
-                        src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ec7e0448-41ea-4fef-ee59-b617ab362f00/public"
-                        alt="5 stars"
-                        fill
-                        className="object-contain object-left"
-                        unoptimized
-                      />
+                <div className="bg-white rounded-lg p-6 h-full border border-gray-200 hover:shadow-md transition-shadow duration-300 flex flex-col">
+                  {/* Stars et timestamp - alignés en haut */}
+                  <div className="flex items-center justify-between mb-3 flex-shrink-0">
+                    {/* 5 étoiles vertes */}
+                    <div className="flex items-center gap-0.5">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <svg
+                          key={star}
+                          className="w-5 h-5 text-green-500"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
                     </div>
+                    {/* Timestamp */}
+                    <span className="text-gray-400 text-xs">
+                      {review.timeAgoKey ? t(review.timeAgoKey) : review.timeAgo}
+                    </span>
                   </div>
 
                   {/* Review text - prend l'espace disponible */}
-                  <p className="text-gray-700 text-sm md:text-base mb-4 leading-relaxed line-clamp-4 flex-grow">
-                    &quot;{t(review.textKey)}&quot;
+                  <p className="text-gray-700 text-sm md:text-base mb-4 leading-relaxed flex-grow">
+                    {t(review.textKey)}
                   </p>
 
                   {/* Author info - aligné en bas */}
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-3 mt-auto flex-shrink-0">
-                    <div>
-                      <p className="font-semibold text-gray-900 text-sm">{review.author}</p>
-                      <p className="text-gray-500 text-xs">{review.country}</p>
-                    </div>
-                    {review.verified && (
-                      <div className="flex items-center gap-1 text-green-600 text-xs">
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
-                        <span className="hidden md:inline">{t('trustpilot.verified') || 'Vérifié'}</span>
-                      </div>
-                    )}
+                  <div className="mt-auto flex-shrink-0 pt-3 border-t border-gray-100">
+                    <p className="text-gray-600 text-sm font-medium">{review.author}</p>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
       </div>
     </section>
   );

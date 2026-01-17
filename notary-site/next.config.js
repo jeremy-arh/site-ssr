@@ -119,6 +119,16 @@ const nextConfig = {
   async headers() {
     const headers = [
       {
+        // HTML - pas de cache pour toujours avoir la dernière version
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
+      {
         // Images, SVG, fonts
         source: '/:all*(svg|jpg|jpeg|png|webp|avif|ico|woff|woff2)',
         headers: [
