@@ -467,16 +467,21 @@ const Navbar = memo(() => {
               </a>
 
               {/* Desktop Navigation links - Left aligned with logo */}
-              <div className="navbar-desktop hidden md:flex items-center gap-1 lg:gap-4 xl:gap-6 flex-shrink-0 overflow-visible">
+              <div className="navbar-desktop hidden md:flex items-center gap-1 lg:gap-3 xl:gap-4 flex-shrink-0 overflow-visible relative">
                 <a 
-                  href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')} 
-                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  href={isServicePage() ? '#services' : getLocalizedPath('/#services')} 
+                  className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
-                    const sectionId = isServicePage() ? 'other-services' : 'services';
-                    scrollToSection(sectionId);
+                    // Mettre à jour l'URL avec le hash
+                    const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                    const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                    if (isHomePage) {
+                      window.history.pushState(null, '', `#services`);
+                    }
+                    scrollToSection('services');
                     loadAnalytics();
-                    safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
+                    safeTrack(trackNavigationClick, t('nav.services'), '#services', {
                       label: t('nav.services'),
                       pagePath: pathname,
                       section: 'navbar_desktop'
@@ -487,7 +492,7 @@ const Navbar = memo(() => {
                 </a>
                 <a 
                   href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
-                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     // Mettre à jour l'URL avec le hash
@@ -509,7 +514,7 @@ const Navbar = memo(() => {
                 </a>
                 <a 
                   href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
-                  className="nav-link text-xs lg:text-sm xl:text-base whitespace-nowrap text-black"
+                  className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
                     // Mettre à jour l'URL avec le hash
@@ -549,7 +554,7 @@ const Navbar = memo(() => {
 
               <a 
                 href="https://app.mynotary.io/login" 
-                className="nav-link text-xs lg:text-sm xl:text-base font-semibold whitespace-nowrap flex-shrink-0 text-black hidden lg:block"
+                className="nav-link text-xs lg:text-sm font-semibold whitespace-nowrap flex-shrink-0 text-black hidden lg:block"
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackLoginClick, 'navbar_desktop', {
@@ -664,16 +669,21 @@ const Navbar = memo(() => {
             }}
           >
             <div className="space-y-0">
-              {/* Liens de navigation avec flèche à droite */}
+              {/* Lien Services */}
               <a
-                href={isServicePage() ? '#other-services' : getLocalizedPath('/#services')}
+                href={isServicePage() ? '#services' : getLocalizedPath('/#services')}
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
-                  const sectionId = isServicePage() ? 'other-services' : 'services';
-                  setTimeout(() => scrollToSection(sectionId), 300);
+                  // Mettre à jour l'URL avec le hash
+                  const pathWithoutLang = pathname ? pathname.replace(/^\/(en|fr|es|de|it|pt)/, '') : '';
+                  const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
+                  if (isHomePage) {
+                    window.history.pushState(null, '', `#services`);
+                  }
+                  setTimeout(() => scrollToSection('services'), 300);
                   loadAnalytics();
-                  safeTrack(trackNavigationClick, t('nav.services'), `#${sectionId}`, {
+                  safeTrack(trackNavigationClick, t('nav.services'), '#services', {
                     label: t('nav.services'),
                     pagePath: pathname,
                     section: 'navbar_mobile'

@@ -255,7 +255,7 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   }
 
   return (
-    <section id="other-services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
+    <section id="services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
       <div className="max-w-[1300px] mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">{t('serviceDetail.relatedServices')}</h2>
 
