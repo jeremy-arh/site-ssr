@@ -74,32 +74,79 @@ export default function PartytownScripts() {
         strategy="afterInteractive"
         onLoad={() => {
           console.log('[Crisp] ✅ Script Crisp initialisé');
-          // Vérifier après un court délai si Crisp est disponible
-          setTimeout(() => {
+          // Vérifier périodiquement si Crisp est disponible (le script externe peut prendre du temps)
+          let checkCount = 0;
+          const maxChecks = 20; // 10 secondes max (20 * 500ms)
+          const checkInterval = setInterval(() => {
+            checkCount++;
             if (typeof window !== 'undefined') {
-              console.log('[Crisp] Vérification post-chargement:', {
-                crispExists: typeof window.$crisp !== 'undefined',
-                crispIsArray: Array.isArray(window.$crisp),
-                crispPushExists: typeof window.$crisp?.push === 'function'
-              });
+              const scriptLoaded = document.querySelector('script[src*="client.crisp.chat"]') !== null;
+              const crispReady = window.$crisp && typeof window.$crisp.push === 'function';
+              
+              if (crispReady && scriptLoaded) {
+                console.log('[Crisp] ✅ Crisp complètement chargé et prêt');
+                clearInterval(checkInterval);
+              } else if (checkCount % 5 === 0) {
+                // Log toutes les 5 vérifications
+                console.log('[Crisp] Vérification:', {
+                  checkCount,
+                  scriptLoaded,
+                  crispExists: typeof window.$crisp !== 'undefined',
+                  crispIsArray: Array.isArray(window.$crisp),
+                  crispPushExists: typeof window.$crisp?.push === 'function',
+                  crispReady
+                });
+              }
+              
+              if (checkCount >= maxChecks) {
+                clearInterval(checkInterval);
+                console.warn('[Crisp] ⚠️ Crisp n\'est pas complètement chargé après', maxChecks, 'vérifications');
+              }
             }
-          }, 1000);
+          }, 500);
         }}
         onError={(e) => {
           console.error('[Crisp] ❌ Erreur lors du chargement du script:', e);
         }}
         dangerouslySetInnerHTML={{
           __html: `
-            window.$crisp=[];
-            window.CRISP_WEBSITE_ID="fd0c2560-46ba-4da6-8979-47748ddf247a";
             (function(){
-              var d=document;
-              var s=d.createElement("script");
-              s.src="https://client.crisp.chat/l.js";
-              s.async=1;
-              s.onload=function(){console.log('[Crisp] Script externe chargé');};
-              s.onerror=function(e){console.error('[Crisp] Erreur chargement script externe:',e);};
-              d.getElementsByTagName("head")[0].appendChild(s);
+              // Initialiser Crisp immédiatement
+              window.$crisp = window.$crisp || [];
+              window.CRISP_WEBSITE_ID = "fd0c2560-46ba-4da6-8979-47748ddf247a";
+              
+              var d = document;
+              var s = d.createElement("script");
+              s.src = "https://client.crisp.chat/l.js";
+              s.async = 1;
+              s.defer = 1;
+              
+              s.onload = function(){
+                console.log('[Crisp] ✅ Script externe chargé avec succès');
+                // Vérifier que Crisp est bien initialisé après le chargement
+                setTimeout(function(){
+                  if (window.$crisp && typeof window.$crisp.push === 'function') {
+                    console.log('[Crisp] ✅ Crisp est prêt à être utilisé');
+                  } else {
+                    console.warn('[Crisp] ⚠️ Crisp chargé mais pas encore initialisé');
+                  }
+                }, 1000);
+              };
+              
+              s.onerror = function(e){
+                console.error('[Crisp] ❌ Erreur lors du chargement du script externe:', e);
+              };
+              
+              // Ajouter le script au head
+              var head = d.getElementsByTagName("head")[0];
+              if (head) {
+                head.appendChild(s);
+              } else {
+                // Si head n'existe pas encore, attendre que le DOM soit prêt
+                d.addEventListener('DOMContentLoaded', function(){
+                  d.getElementsByTagName("head")[0].appendChild(s);
+                });
+              }
             })();
           `,
         }}

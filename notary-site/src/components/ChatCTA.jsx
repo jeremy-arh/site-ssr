@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslation } from '../hooks/useTranslation';
+import { openCrispChat } from '../utils/crisp';
 
 // SVG inline pour éviter les requêtes réseau à @iconify (320ms de latence)
 const IconChat = () => (
@@ -13,50 +14,13 @@ const IconChat = () => (
 const ChatCTA = () => {
   const { language } = useTranslation();
 
-  // Ouvrir le chat Crisp
-  const openCrispChat = () => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-
-    // Fonction pour ouvrir le chat
-    const tryOpenChat = () => {
-      if (window.$crisp && typeof window.$crisp.push === 'function') {
-        try {
-          window.$crisp.push(['do', 'chat:open']);
-          return true;
-        } catch (error) {
-          console.error('Erreur lors de l\'ouverture de Crisp:', error);
-          return false;
-        }
-      }
-      return false;
-    };
-
-    // Essayer d'ouvrir immédiatement
-    if (tryOpenChat()) {
-      return;
-    }
-
-    // Si Crisp n'est pas encore prêt, attendre avec plusieurs tentatives
-    let attempts = 0;
-    const maxAttempts = 50; // 10 secondes max (50 * 200ms)
-    const interval = setInterval(() => {
-      attempts++;
-      if (tryOpenChat()) {
-        clearInterval(interval);
-        return;
-      }
-      
-      if (attempts >= maxAttempts) {
-        clearInterval(interval);
-        console.warn('Crisp n\'a pas pu être chargé après plusieurs tentatives');
-        // Dernière tentative après un délai plus long
-        setTimeout(() => {
-          tryOpenChat();
-        }, 1000);
-      }
-    }, 200);
+  // Ouvrir le chat Crisp en utilisant la fonction utilitaire robuste
+  const handleOpenChat = () => {
+    openCrispChat({
+      maxAttempts: 100, // 20 secondes max pour la production
+      intervalMs: 200,
+      forceLoad: true
+    });
   };
 
   const translations = {
@@ -119,7 +83,7 @@ const ChatCTA = () => {
           </p>
           <button
             className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-md"
-            onClick={openCrispChat}
+            onClick={handleOpenChat}
           >
             <IconChat />
             <span>{content.buttonText}</span>

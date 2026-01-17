@@ -251,9 +251,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         {/* End Microsoft Clarity */}
         
         {/* Partytown - Déplace les scripts tiers vers un Web Worker */}
+        {/* Note: $crisp.push est exclu car Crisp a besoin d'un accès direct au DOM et ne fonctionne pas avec Partytown */}
         <Partytown
           debug={false}
-          forward={['dataLayer.push', 'gtag', '$crisp.push', 'plausible']}
+          forward={['dataLayer.push', 'gtag', 'plausible']}
         />
       </head>
       <body suppressHydrationWarning style={{ margin: 0, padding: 0, fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', backgroundColor: '#ffffff', color: '#111827' }}>
