@@ -96,7 +96,7 @@ export default function PartytownScripts() {
                     console.warn('[Crisp] ⚠️ Fonction trackChatOpeningGTM non disponible');
                   }
                 }]);
-                console.log('[Crisp] ✅ Listener d\'événement chat:opened configuré');
+                console.log('[Crisp] ✅ Listener d'événement chat:opened configuré');
                 return true;
               } catch (error) {
                 console.error('[Crisp] ❌ Erreur lors de la configuration du listener:', error);
@@ -188,7 +188,7 @@ export default function PartytownScripts() {
                     console.warn('[Crisp] ⚠️ Fonction trackChatOpeningGTM non disponible');
                   }
                 }]);
-                      console.log('[Crisp] ✅ Listener d\'événement chat:opened configuré');
+                      console.log('[Crisp] ✅ Listener d'événement chat:opened configuré');
                     } catch (error) {
                       console.error('[Crisp] ❌ Erreur lors de la configuration du listener:', error);
                     }

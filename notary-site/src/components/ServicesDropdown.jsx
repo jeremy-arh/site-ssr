@@ -10,6 +10,7 @@ import servicesData from '../../public/data/services.json';
 const ServicesDropdown = ({ isMobile = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuTop, setMenuTop] = useState(0);
+  const [closeTimeout, setCloseTimeout] = useState(null);
   const { t } = useTranslation();
   const { getLocalizedPath, language } = useLanguage();
   const dropdownRef = useRef(null);
@@ -157,8 +158,6 @@ const ServicesDropdown = ({ isMobile = false }) => {
   }
 
   // DESKTOP VERSION - Menu collé au bas du header sans espace
-  const [closeTimeout, setCloseTimeout] = useState(null);
-
   const handleMouseEnter = () => {
     if (closeTimeout) {
       clearTimeout(closeTimeout);
