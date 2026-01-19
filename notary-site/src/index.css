@@ -56,6 +56,10 @@
 
   /* Navbar styles - statiques pour éviter les erreurs d'hydratation */
   /* Mobile : pas de margin, full width, collé à la topbar (pas de gap) */
+  :root {
+    --navbar-offset: 80px;
+  }
+
   .navbar-container {
     position: fixed;
     top: 32px;
@@ -69,12 +73,20 @@
   }
 
   @media (min-width: 640px) {
+    :root {
+      --navbar-offset: 82px;
+    }
+
     .navbar-container {
       top: 34px;
     }
   }
 
   @media (min-width: 768px) {
+    :root {
+      --navbar-offset: 96px;
+    }
+
     .navbar-container {
       top: 36px;
       padding: 0;
@@ -149,6 +161,10 @@
 
   /* Desktop large : navbar plus grande */
   @media (min-width: 1024px) {
+    :root {
+      --navbar-offset: 106px;
+    }
+
     .navbar-inner {
       height: 70px;
     }
@@ -156,6 +172,10 @@
 
   /* Desktop XL : navbar complète */
   @media (min-width: 1280px) {
+    :root {
+      --navbar-offset: 116px;
+    }
+
     .navbar-inner {
       height: 80px;
     }

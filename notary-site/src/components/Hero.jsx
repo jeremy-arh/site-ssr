@@ -9,7 +9,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // URL Cloudflare - Next.js Image gère automatiquement le responsive
-const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/public';
+const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/9483e3eb-083f-4203-aad2-34bd68e56c00/f=webp,q=80';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
 let trackCTAClick = null;
@@ -83,7 +83,7 @@ const Hero = memo(() => {
         />
 
         {/* Dark Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/60 z-[1]"></div>
+        <div className="absolute inset-0 bg-black/80 z-[1]"></div>
 
         {/* Content Container - s'étire pour remplir toute la hauteur */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 w-full py-8 sm:py-12 lg:py-16" style={{ width: '100%', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>

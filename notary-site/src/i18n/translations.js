@@ -9,6 +9,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Connexion',
       notarizeNow: 'Start your notarization',
+      servicesMenu: {
+        commonDocumentsTitle: 'Common documents',
+        useTemplatesTitle: 'Use templates',
+        otherServicesTitle: 'Other services',
+        commonDocuments: {
+          notarizeDocuments: 'Notarize documents',
+          notarizeCopies: 'Notarize copies',
+          notarizeSignatures: 'Notarize signatures',
+          certificates: 'Certificates',
+          idDocuments: 'ID documents',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Create a power of attorney',
+        },
+        otherServices: {
+          contractDrafted: 'Have a contract drafted',
+          signDocument: 'Sign document',
+          requestLawyer: 'Request a lawyer',
+          newBadge: 'NEW',
+        },
+        contactLine: 'Get in touch, arrange a callback or receive information by phone +49 89 38038332',
+        imageAlt: 'Customer award winner',
+        imageBadge: 'German Customer Awards Winner 2025',
+      },
     },
     // Hero Section
     hero: {
@@ -349,6 +373,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Connexion',
       notarizeNow: 'Commencer votre notarisation',
+      servicesMenu: {
+        commonDocumentsTitle: 'Documents courants',
+        useTemplatesTitle: 'Utiliser des modèles',
+        otherServicesTitle: 'Autres services',
+        commonDocuments: {
+          notarizeDocuments: 'Notariser des documents',
+          notarizeCopies: 'Notariser des copies',
+          notarizeSignatures: 'Notariser des signatures',
+          certificates: 'Certificats',
+          idDocuments: 'Documents d’identité',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Créer une procuration',
+        },
+        otherServices: {
+          contractDrafted: 'Faire rédiger un contrat',
+          signDocument: 'Signer un document',
+          requestLawyer: 'Demander un avocat',
+          newBadge: 'NOUVEAU',
+        },
+        contactLine: 'Contactez-nous, demandez un rappel ou recevez des infos par téléphone au +49 89 38038332',
+        imageAlt: 'Lauréat du German Customer Awards',
+        imageBadge: 'German Customer Awards – Lauréat 2025',
+      },
     },
     hero: {
       title: 'Notarisation en Ligne : Vos Documents Certifiés en 5 Minutes',
@@ -673,6 +721,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Conexión',
       notarizeNow: 'Iniciar su notarización',
+      servicesMenu: {
+        commonDocumentsTitle: 'Documentos comunes',
+        useTemplatesTitle: 'Usar plantillas',
+        otherServicesTitle: 'Otros servicios',
+        commonDocuments: {
+          notarizeDocuments: 'Notarizar documentos',
+          notarizeCopies: 'Notarizar copias',
+          notarizeSignatures: 'Notarizar firmas',
+          certificates: 'Certificados',
+          idDocuments: 'Documentos de identidad',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Crear un poder notarial',
+        },
+        otherServices: {
+          contractDrafted: 'Redactar un contrato',
+          signDocument: 'Firmar documento',
+          requestLawyer: 'Solicitar un abogado',
+          newBadge: 'NUEVO',
+        },
+        contactLine: 'Contacta con nosotros, solicita una devolución de llamada o recibe información por teléfono en +49 89 38038332',
+        imageAlt: 'Ganador de premios al cliente',
+        imageBadge: 'German Customer Awards Ganador 2025',
+      },
     },
     hero: {
       title: 'Notarización Online: Sus Documentos Certificados en 5 Minutos',
@@ -1011,6 +1083,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Anmeldung',
       notarizeNow: 'Beginnen Sie Ihre Notarisierung',
+      servicesMenu: {
+        commonDocumentsTitle: 'Häufige Dokumente',
+        useTemplatesTitle: 'Vorlagen nutzen',
+        otherServicesTitle: 'Weitere Services',
+        commonDocuments: {
+          notarizeDocuments: 'Dokumente beglaubigen',
+          notarizeCopies: 'Kopien beglaubigen',
+          notarizeSignatures: 'Unterschriften beglaubigen',
+          certificates: 'Zertifikate',
+          idDocuments: 'Ausweisdokumente',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Vollmacht erstellen',
+        },
+        otherServices: {
+          contractDrafted: 'Vertrag erstellen lassen',
+          signDocument: 'Dokument signieren',
+          requestLawyer: 'Anwalt anfragen',
+          newBadge: 'NEU',
+        },
+        contactLine: 'Kontaktieren Sie uns, vereinbaren Sie einen Rückruf oder erhalten Sie Infos telefonisch unter +49 89 38038332',
+        imageAlt: 'Gewinner der German Customer Awards',
+        imageBadge: 'German Customer Awards Gewinner 2025',
+      },
     },
     hero: {
       title: 'Online-Beglaubigung: Ihre Dokumente in 5 Minuten zertifiziert',
@@ -1351,6 +1447,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Accesso',
       notarizeNow: 'Inizia la tua notarizzazione',
+      servicesMenu: {
+        commonDocumentsTitle: 'Documenti comuni',
+        useTemplatesTitle: 'Usa modelli',
+        otherServicesTitle: 'Altri servizi',
+        commonDocuments: {
+          notarizeDocuments: 'Notarizzare documenti',
+          notarizeCopies: 'Notarizzare copie',
+          notarizeSignatures: 'Notarizzare firme',
+          certificates: 'Certificati',
+          idDocuments: 'Documenti d’identità',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Creare una procura',
+        },
+        otherServices: {
+          contractDrafted: 'Far redigere un contratto',
+          signDocument: 'Firmare un documento',
+          requestLawyer: 'Richiedi un avvocato',
+          newBadge: 'NUOVO',
+        },
+        contactLine: 'Contattaci, richiedi un richiamo o ricevi informazioni al +49 89 38038332',
+        imageAlt: 'Vincitore dei German Customer Awards',
+        imageBadge: 'German Customer Awards Vincitore 2025',
+      },
     },
     hero: {
       title: 'Notarizzazione Online: I Tuoi Documenti Certificati in 5 Minuti',
@@ -1683,6 +1803,30 @@ export const translations = {
       faq: 'FAQ',
       login: 'Conexão',
       notarizeNow: 'Inicie sua notarização',
+      servicesMenu: {
+        commonDocumentsTitle: 'Documentos comuns',
+        useTemplatesTitle: 'Usar modelos',
+        otherServicesTitle: 'Outros serviços',
+        commonDocuments: {
+          notarizeDocuments: 'Notarizar documentos',
+          notarizeCopies: 'Notarizar cópias',
+          notarizeSignatures: 'Notarizar assinaturas',
+          certificates: 'Certificados',
+          idDocuments: 'Documentos de identidade',
+        },
+        useTemplates: {
+          powerOfAttorney: 'Criar uma procuração',
+        },
+        otherServices: {
+          contractDrafted: 'Redigir um contrato',
+          signDocument: 'Assinar documento',
+          requestLawyer: 'Solicitar um advogado',
+          newBadge: 'NOVO',
+        },
+        contactLine: 'Entre em contato, agende um retorno ou receba informações pelo telefone +49 89 38038332',
+        imageAlt: 'Vencedor do German Customer Awards',
+        imageBadge: 'German Customer Awards Vencedor 2025',
+      },
     },
     hero: {
       title: 'Notarização Online: Seus Documentos Certificados em 5 Minutos',

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Script from 'next/script'
+import { trackChatOpening } from '../utils/gtm'
 
 /**
  * Scripts tiers optimisés pour les performances
@@ -11,6 +12,13 @@ import Script from 'next/script'
 export default function PartytownScripts() {
   useEffect(() => {
     console.log('[PartytownScripts] Composant monté');
+    
+    // Exposer la fonction de tracking du chat pour le code inline
+    if (typeof window !== 'undefined') {
+      window.trackChatOpeningGTM = (source) => {
+        trackChatOpening(source);
+      };
+    }
     
     // Vérifier l'état initial après le montage
     const checkStatus = () => {
@@ -74,9 +82,35 @@ export default function PartytownScripts() {
         strategy="afterInteractive"
         onLoad={() => {
           console.log('[Crisp] ✅ Script Crisp initialisé');
+          
+          // Fonction pour configurer le listener d'événement Crisp
+          const setupCrispEventListener = () => {
+            if (typeof window !== 'undefined' && window.$crisp && typeof window.$crisp.push === 'function') {
+              try {
+                window.$crisp.push(['on', 'chat:opened', function(){
+                  console.log('[Crisp] 📊 Chat ouvert - Envoi événement GTM');
+                  // Utiliser la fonction globale exposée
+                  if (window.trackChatOpeningGTM) {
+                    window.trackChatOpeningGTM('crisp');
+                  } else {
+                    console.warn('[Crisp] ⚠️ Fonction trackChatOpeningGTM non disponible');
+                  }
+                }]);
+                console.log('[Crisp] ✅ Listener d\'événement chat:opened configuré');
+                return true;
+              } catch (error) {
+                console.error('[Crisp] ❌ Erreur lors de la configuration du listener:', error);
+                return false;
+              }
+            }
+            return false;
+          };
+          
           // Vérifier périodiquement si Crisp est disponible (le script externe peut prendre du temps)
           let checkCount = 0;
           const maxChecks = 20; // 10 secondes max (20 * 500ms)
+          let listenerConfigured = false;
+          
           const checkInterval = setInterval(() => {
             checkCount++;
             if (typeof window !== 'undefined') {
@@ -85,7 +119,15 @@ export default function PartytownScripts() {
               
               if (crispReady && scriptLoaded) {
                 console.log('[Crisp] ✅ Crisp complètement chargé et prêt');
-                clearInterval(checkInterval);
+                
+                // Configurer le listener si ce n'est pas déjà fait
+                if (!listenerConfigured) {
+                  listenerConfigured = setupCrispEventListener();
+                }
+                
+                if (listenerConfigured) {
+                  clearInterval(checkInterval);
+                }
               } else if (checkCount % 5 === 0) {
                 // Log toutes les 5 vérifications
                 console.log('[Crisp] Vérification:', {
@@ -101,6 +143,13 @@ export default function PartytownScripts() {
               if (checkCount >= maxChecks) {
                 clearInterval(checkInterval);
                 console.warn('[Crisp] ⚠️ Crisp n\'est pas complètement chargé après', maxChecks, 'vérifications');
+                
+                // Dernière tentative pour configurer le listener
+                if (!listenerConfigured) {
+                  setTimeout(() => {
+                    setupCrispEventListener();
+                  }, 1000);
+                }
               }
             }
           }, 500);
@@ -127,6 +176,22 @@ export default function PartytownScripts() {
                 setTimeout(function(){
                   if (window.$crisp && typeof window.$crisp.push === 'function') {
                     console.log('[Crisp] ✅ Crisp est prêt à être utilisé');
+                    
+                    // Intercepter l'événement d'ouverture du chat Crisp
+                    try {
+                window.$crisp.push(['on', 'chat:opened', function(){
+                  console.log('[Crisp] 📊 Chat ouvert - Envoi événement GTM');
+                  // Utiliser la fonction globale exposée
+                  if (window.trackChatOpeningGTM) {
+                    window.trackChatOpeningGTM('crisp');
+                  } else {
+                    console.warn('[Crisp] ⚠️ Fonction trackChatOpeningGTM non disponible');
+                  }
+                }]);
+                      console.log('[Crisp] ✅ Listener d\'événement chat:opened configuré');
+                    } catch (error) {
+                      console.error('[Crisp] ❌ Erreur lors de la configuration du listener:', error);
+                    }
                   } else {
                     console.warn('[Crisp] ⚠️ Crisp chargé mais pas encore initialisé');
                   }

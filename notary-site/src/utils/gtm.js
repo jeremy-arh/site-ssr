@@ -320,6 +320,27 @@ export const trackCTAToFormOnService = (ctaLocation, pathname, ctaText, destinat
   });
 };
 
+/**
+ * Track chat opening event
+ * @param {string} source - Source de l'ouverture du chat (crisp, button, etc.)
+ * @param {string} pagePath - Le pathname de la page actuelle
+ */
+export const trackChatOpening = (source = 'crisp', pagePath = null) => {
+  const pathname = pagePath || (typeof window !== 'undefined' ? window.location.pathname : '');
+  const pageLocation = typeof window !== 'undefined' ? window.location.href : '';
+  const pageTitle = typeof document !== 'undefined' ? document.title : '';
+  const pageReferrer = typeof document !== 'undefined' ? document.referrer || '' : '';
+
+  pushGTMEvent('opening_chat', {
+    chat_source: source,
+    page_path: pathname,
+    page_location: pageLocation,
+    page_title: pageTitle,
+    page_referrer: pageReferrer,
+    timestamp: new Date().toISOString()
+  });
+};
+
 // Initialize GTM on module load
 if (typeof window !== 'undefined') {
   initGTM();

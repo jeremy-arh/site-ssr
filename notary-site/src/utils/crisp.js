@@ -52,6 +52,7 @@ export const openCrispChat = (options = {}) => {
         try {
           window.$crisp.push(['do', 'chat:open']);
           console.log('[Crisp] ✅ Chat ouvert avec succès');
+          // L'événement GTM sera envoyé automatiquement via le listener "chat:opened" configuré dans PartytownScripts.jsx
           return true;
         } catch (error) {
           console.error('[Crisp] ❌ Erreur lors de l\'ouverture:', error);

@@ -8,7 +8,7 @@
   "base_price": 99,
   "is_active": true,
   "created_at": "2025-11-01T18:05:00.735819+00:00",
-  "updated_at": "2025-12-03T13:12:41.711422+00:00",
+  "updated_at": "2026-01-10T14:52:05.547971+00:00",
   "short_description": "Need business documents notarized? My Notary provides a fully compliant online notarization service that adheres to applicable laws and regulations. Accelerate your business operations with 15-20 minute certification available 7 days a week.",
   "cta": "Start Notarization now",
   "meta_title": "Notarize Business & Administrative Documents | Secure & Legal",
@@ -61,5 +61,12 @@
   "page_h1_de": null,
   "page_h1_it": null,
   "page_h1_pt": null,
-  "show_in_list": true
+  "show_in_list": true,
+  "faqs": [],
+  "category": "general",
+  "category_fr": "Général",
+  "category_es": "General",
+  "category_de": "Allgemein",
+  "category_it": "Generale",
+  "category_pt": "Geral"
 }
