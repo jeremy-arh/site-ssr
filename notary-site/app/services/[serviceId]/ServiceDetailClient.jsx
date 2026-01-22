@@ -198,7 +198,33 @@ const WhatIsContent = memo(({ service, t }) => {
         {firstH2Content || `${t('serviceDetail.whatIs')} ${service.name}?`}
       </h2>
       <div className="max-w-6xl mx-auto">
-        <div className="blog-content" dangerouslySetInnerHTML={{ __html: contentWithoutFirstH2 }} />
+        <div 
+          className="max-h-[600px] overflow-y-auto pr-4 blog-content-scrollable"
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#cbd5e1 #f1f5f9'
+          }}
+        >
+          <style dangerouslySetInnerHTML={{
+            __html: `
+              .blog-content-scrollable::-webkit-scrollbar {
+                width: 8px;
+              }
+              .blog-content-scrollable::-webkit-scrollbar-track {
+                background: #f1f5f9;
+                border-radius: 4px;
+              }
+              .blog-content-scrollable::-webkit-scrollbar-thumb {
+                background: #cbd5e1;
+                border-radius: 4px;
+              }
+              .blog-content-scrollable::-webkit-scrollbar-thumb:hover {
+                background: #94a3b8;
+              }
+            `
+          }} />
+          <div className="blog-content" dangerouslySetInnerHTML={{ __html: contentWithoutFirstH2 }} />
+        </div>
       </div>
     </>
   )
@@ -723,99 +749,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
       <TrustpilotSlider />
 
-      {/* Digital Certification Section */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
-        <div className="max-w-[1300px] mx-auto">
-          {/* Title - Centered */}
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12 md:mb-16">
-            {t('serviceDetail.digitalCertification.title')}
-          </h2>
-
-          {/* Two Column Layout */}
-          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 lg:gap-16 items-stretch">
-            {/* Left Side - Image */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center">
-              <div className="relative w-full max-w-md h-full">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/75287f19-53c7-450a-407d-23bf1bf8ec00/f=webp,q=30"
-                  alt="Professional notary service"
-                  className="w-full h-full rounded-lg object-cover shadow-xl"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-
-            {/* Right Side - Three Text Blocks */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center h-full">
-              {/* Block 1 */}
-              <div className="pb-8 md:pb-10">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
-                  <IconLaptop />
-                  {t('serviceDetail.digitalCertification.block1.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block1.description')}
-                </p>
-              </div>
-
-              {/* Separator */}
-              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
-
-              {/* Block 2 */}
-              <div className="pb-8 md:pb-10">
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
-                  <IconCertificate />
-                  {t('serviceDetail.digitalCertification.block2.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block2.description')}
-                </p>
-              </div>
-
-              {/* Separator */}
-              <div className="w-full h-px bg-gray-200 mb-8 md:mb-10"></div>
-
-              {/* Block 3 */}
-              <div>
-                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
-                  <IconEarth />
-                  {t('serviceDetail.digitalCertification.block3.title')}
-                </h3>
-                <p className="text-base md:text-lg text-gray-600 leading-relaxed">
-                  {t('serviceDetail.digitalCertification.block3.description')}
-                </p>
-              </div>
-
-              {/* CTA Link */}
-              <div className="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-gray-200">
-                <a
-                  href={formUrl}
-                  className="inline-flex items-center gap-2 text-base md:text-lg font-semibold text-blue-600 hover:text-blue-700 transition-colors relative group"
-                  onClick={() => {
-                    const ctaText = t('serviceDetail.digitalCertification.cta')
-                    trackWithAnalytics('cta', 'service_detail_digital_certification', service?.service_id || serviceId, pathname, {
-                      ctaText: ctaText,
-                      destination: formUrl,
-                      elementId: 'service_detail_digital_certification_cta'
-                    })
-                    // Track GTM event (uniquement sur pages non-services)
-                    trackCTAToForm('service_detail_digital_certification', pathname, ctaText, formUrl, 'service_detail_digital_certification_cta', service?.service_id || serviceId, currency)
-                    // Track GTM event (uniquement sur pages services)
-                    trackCTAToFormOnService('service_detail_digital_certification', pathname, ctaText, formUrl, 'service_detail_digital_certification_cta', service?.service_id || serviceId, currency)
-                  }}
-                >
-                  <span>{t('serviceDetail.digitalCertification.cta')}</span>
-                  <svg className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Pricing Section - Two Column Layout */}
       <section
         className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-[30px] py-8 sm:py-12 md:py-16 relative"
@@ -960,6 +893,210 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Features Section - Alternating Image/Content Layout */}
+      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
+        <div className="max-w-[1300px] mx-auto space-y-16 md:space-y-20">
+          
+          {/* Section 1: What You Receive After Your Notary Appointment - Image Left, Content Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
+            {/* Left - Image */}
+            <div className="flex items-center justify-center order-2 lg:order-1">
+              <div className="w-full max-w-md">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/8516862d-ec24-487f-e5c8-0d3adf0dbd00/f=webp,q=30"
+                  alt="What You Receive After Your Notary Appointment"
+                  className="w-full h-auto rounded-lg object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            {/* Right - Content */}
+            <div className="flex items-center justify-center order-1 lg:order-2">
+              <div className="w-full max-w-md text-left">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+                  What You Receive After Your Notary Appointment
+                </h2>
+                <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
+                  A complete, ready-to-submit certified document
+                </p>
+                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Official "True Copy Certification" statement</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Notary's full name, title, and handwritten signature</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Date of certification and unique reference number</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Digitally signed PDF delivered to your email</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Permanent access from your My Notary dashboard</span>
+                  </li>
+                </ul>
+                <a
+                  href={formUrl}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                  onClick={() => {
+                    const ctaText = 'Start your notarization'
+                    trackWithAnalytics('cta', 'service_detail_features_section_1', service?.service_id || serviceId, pathname, {
+                      ctaText: ctaText,
+                      destination: formUrl,
+                      elementId: 'service_detail_features_section_1_cta'
+                    })
+                    trackCTAToForm('service_detail_features_section_1', pathname, ctaText, formUrl, 'service_detail_features_section_1_cta', service?.service_id || serviceId, currency)
+                    trackCTAToFormOnService('service_detail_features_section_1', pathname, ctaText, formUrl, 'service_detail_features_section_1_cta', service?.service_id || serviceId, currency)
+                  }}
+                >
+                  <span>Start your notarization</span>
+                  <IconArrowRight />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Officially Recognized in 113 Countries - Content Left, Image Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
+            {/* Left - Content */}
+            <div className="flex items-center justify-center order-1 lg:order-1">
+              <div className="w-full max-w-md text-left">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+                  Officially Recognized in 113 Countries
+                </h2>
+                <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
+                  Through the Hague Apostille Convention
+                </p>
+                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Valid across all Hague Convention member states</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Accepted by governments, banks, and institutions worldwide</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">No additional legalization required in most cases</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Notary license number included for verification</span>
+                  </li>
+                </ul>
+                <a
+                  href={formUrl}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                  onClick={() => {
+                    const ctaText = 'Start your notarization'
+                    trackWithAnalytics('cta', 'service_detail_features_section_2', service?.service_id || serviceId, pathname, {
+                      ctaText: ctaText,
+                      destination: formUrl,
+                      elementId: 'service_detail_features_section_2_cta'
+                    })
+                    trackCTAToForm('service_detail_features_section_2', pathname, ctaText, formUrl, 'service_detail_features_section_2_cta', service?.service_id || serviceId, currency)
+                    trackCTAToFormOnService('service_detail_features_section_2', pathname, ctaText, formUrl, 'service_detail_features_section_2_cta', service?.service_id || serviceId, currency)
+                  }}
+                >
+                  <span>Start your notarization</span>
+                  <IconArrowRight />
+                </a>
+              </div>
+            </div>
+
+            {/* Right - Image */}
+            <div className="flex items-center justify-center order-2 lg:order-2">
+              <div className="w-full max-w-md">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/1f9e72c1-2018-46b7-29a9-5424890a7800/f=webp,q=80"
+                  alt="Officially Recognized in 113 Countries"
+                  className="w-full h-auto rounded-lg object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Valid for Any Official Purpose - Image Left, Content Right */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
+            {/* Left - Image */}
+            <div className="flex items-center justify-center order-2 lg:order-1">
+              <div className="w-full max-w-md">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/68f3d89b-5e76-4a1b-6b84-4896a91bc000/f=webp,q=80"
+                  alt="Valid for Any Official Purpose"
+                  className="w-full h-auto rounded-lg object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            {/* Right - Content */}
+            <div className="flex items-center justify-center order-1 lg:order-2">
+              <div className="w-full max-w-md text-left">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
+                  Valid for Any Official Purpose
+                </h2>
+                <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
+                  One document, endless possibilities
+                </p>
+                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Bank and investment account opening (KYC/AML)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Visa and immigration applications</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">University enrollment abroad</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Property purchases and legal proceedings</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">Company registration and business contracts</span>
+                  </li>
+                </ul>
+                <a
+                  href={formUrl}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                  onClick={() => {
+                    const ctaText = 'Start your notarization'
+                    trackWithAnalytics('cta', 'service_detail_features_section_3', service?.service_id || serviceId, pathname, {
+                      ctaText: ctaText,
+                      destination: formUrl,
+                      elementId: 'service_detail_features_section_3_cta'
+                    })
+                    trackCTAToForm('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
+                    trackCTAToFormOnService('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
+                  }}
+                >
+                  <span>Start your notarization</span>
+                  <IconArrowRight />
+                </a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
