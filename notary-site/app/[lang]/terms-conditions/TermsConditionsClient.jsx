@@ -7,6 +7,7 @@ import SEOHead from '@/components/SEOHead'
 import { useTranslation } from '@/hooks/useTranslation'
 import MobileCTA from '@/components/MobileCTA'
 import { useLanguage } from '@/contexts/LanguageContext'
+import TermsConditionsContent from '@/components/TermsConditionsContent'
 
 // SVG Icon inline pour éviter @iconify/react
 const IconArrowLeft = memo(() => (
@@ -18,27 +19,70 @@ const IconArrowLeft = memo(() => (
 export default function TermsConditionsClient() {
   const pathname = usePathname()
   const { t } = useTranslation()
-  const { getLocalizedPath } = useLanguage()
+  const { getLocalizedPath, language } = useLanguage()
+  
+  // Contenu traduit pour le titre et la date
+  const titleContent = {
+    en: "Terms & Conditions",
+    fr: "Conditions Générales d'Utilisation",
+    es: "Términos y Condiciones",
+    de: "Allgemeine Geschäftsbedingungen",
+    it: "Termini e Condizioni",
+    pt: "Termos e Condições"
+  }
+  
+  const lastUpdatedContent = {
+    en: "Last updated:",
+    fr: "Dernière mise à jour :",
+    es: "Última actualización:",
+    de: "Zuletzt aktualisiert:",
+    it: "Ultimo aggiornamento:",
+    pt: "Última atualização:"
+  }
+  
+  const dateContent = {
+    en: "November 17, 2025",
+    fr: "17 novembre 2025",
+    es: "17 de noviembre de 2025",
+    de: "17. November 2025",
+    it: "17 novembre 2025",
+    pt: "17 de novembro de 2025"
+  }
+  
+  const backToHomeContent = {
+    en: "Back to Home",
+    fr: "Retour à l'accueil",
+    es: "Volver al inicio",
+    de: "Zurück zur Startseite",
+    it: "Torna alla home",
+    pt: "Voltar ao início"
+  }
+  
+  const lang = language || 'en'
+  const title = titleContent[lang] || titleContent.en
+  const lastUpdated = lastUpdatedContent[lang] || lastUpdatedContent.en
+  const date = dateContent[lang] || dateContent.en
+  const backToHome = backToHomeContent[lang] || backToHomeContent.en
   
   return (
     <div className="min-h-screen">
       <SEOHead
-        title={`Terms & Conditions - ${t('seo.siteName')}`}
-        description={`Terms and Conditions for ${t('seo.siteName')} services`}
-        ogTitle={`Terms & Conditions - ${t('seo.siteName')}`}
-        ogDescription={`Terms and Conditions for ${t('seo.siteName')} services`}
-        twitterTitle={`Terms & Conditions - ${t('seo.siteName')}`}
-        twitterDescription={`Terms and Conditions for ${t('seo.siteName')} services`}
+        title={`${title} - ${t('seo.siteName')}`}
+        description={`${title} for ${t('seo.siteName')} services`}
+        ogTitle={`${title} - ${t('seo.siteName')}`}
+        ogDescription={`${title} for ${t('seo.siteName')} services`}
+        twitterTitle={`${title} - ${t('seo.siteName')}`}
+        twitterDescription={`${title} for ${t('seo.siteName')} services`}
         canonicalPath={pathname}
       />
       {/* Hero Section */}
       <section className="bg-gray-900 text-white pt-32 pb-16 px-[30px]">
         <div className="max-w-[1100px] mx-auto">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            Terms &amp; Conditions
+            {title}
           </h1>
           <p className="text-lg text-gray-300">
-            Last updated: November 17, 2025
+            {lastUpdated} {date}
           </p>
         </div>
       </section>
@@ -46,7 +90,7 @@ export default function TermsConditionsClient() {
       {/* Content Section */}
       <section className="py-20 px-[30px]">
         <div className="max-w-[1100px] mx-auto">
-          <div className="prose prose-lg max-w-none">
+          <TermsConditionsContent />
             <h2 className="text-3xl font-bold text-gray-900 mb-6 mt-12">1. PLATFORM OVERVIEW</h2>
             <p className="text-gray-600 mb-6">
               My Notary (hereinafter "the Platform") is an online service accessible via the website mynotary.io, operated by My Notary (hereinafter "My Notary", "we", "our"), which connects clients with certified notaries for the notarization of documents intended for international use. The Platform facilitates appointment scheduling, remote online notarization (RON) sessions, and apostille processing in accordance with the Hague Convention.
@@ -434,18 +478,11 @@ export default function TermsConditionsClient() {
               <p>Email: <a href="mailto:support@mynotary.io" className="text-black font-semibold hover:underline">support@mynotary.io</a></p>
             </div>
 
-            <hr className="border-gray-300 my-8" />
-
-            <p className="text-gray-600 mb-6 italic">
-              <strong>By using the My Notary Platform, you acknowledge that you have read, understood, and accepted these Terms and Conditions of Use.</strong>
-            </p>
-          </div>
-
           {/* Back to Home Button */}
           <div className="mt-12 text-center">
             <Link href={getLocalizedPath('/')} className="primary-cta text-lg px-8 py-4 inline-flex items-center gap-3">
               <IconArrowLeft />
-              <span className="btn-text inline-block">Back to Home</span>
+              <span className="btn-text inline-block">{backToHome}</span>
             </Link>
           </div>
         </div>
