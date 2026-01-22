@@ -9,7 +9,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
 
 // URL Cloudflare - Next.js Image gère automatiquement le responsive
-const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/9483e3eb-083f-4203-aad2-34bd68e56c00/f=webp,q=80';
+const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/0c55cf3b-5ec9-4302-dcb8-717ddc084600/public';
 
 // ANALYTICS DIFFÉRÉS - Plausible + Segment (GA4)
 let trackCTAClick = null;
