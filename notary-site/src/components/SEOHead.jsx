@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../utils/language';
 
 /**
@@ -19,8 +18,8 @@ const LANGUAGE_TO_LOCALE = {
 /**
  * Composant SEO qui gère uniquement les meta tags dynamiques.
  * 
- * IMPORTANT: Les canonical et hreflang sont maintenant gérés par les métadonnées Next.js
- * côté serveur (generateMetadata dans page.jsx) pour être présents dans le HTML initial.
+ * IMPORTANT: Les canonical et hreflang sont maintenant gérés par HreflangLinks
+ * côté serveur (dans layout.jsx) pour être présents dans le HTML initial.
  * 
  * Ce composant gère :
  * - L'attribut lang sur <html>
@@ -41,7 +40,6 @@ const SEOHead = ({
   nofollow = false,
   serverLanguage // Langue passée depuis le serveur
 }) => {
-  const pathname = usePathname()
   // Utiliser la langue serveur pour éviter le flash
   const language = serverLanguage || DEFAULT_LANGUAGE
   

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import SEOHead from '@/components/SEOHead'
 import { trackServiceClick } from '@/utils/analytics'
 import { useTranslation } from '@/hooks/useTranslation'
@@ -11,7 +10,6 @@ import MobileCTA from '@/components/MobileCTA'
 import TrustpilotSlider from '@/components/TrustpilotSlider'
 
 export default function ServicesClient({ servicesData, serverLanguage }) {
-  const pathname = usePathname()
   // Utiliser la langue serveur pour éviter le flash
   const { t } = useTranslation(serverLanguage)
   const { getLocalizedPath } = useLanguage()

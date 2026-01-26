@@ -1,6 +1,5 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { memo } from 'react'
 import SEOHead from '@/components/SEOHead'
@@ -17,7 +16,6 @@ const IconArrowLeft = memo(() => (
 IconArrowLeft.displayName = 'IconArrowLeft';
 
 export default function PrivacyPolicyClient({ serverLanguage }) {
-  const pathname = usePathname()
   // Utiliser la langue serveur pour éviter le flash
   const { t } = useTranslation(serverLanguage)
   

@@ -1,12 +1,10 @@
 'use client'
 
 import { useState, useEffect, memo } from 'react'
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import SEOHead from '@/components/SEOHead'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { formatBlogPostsForLanguage } from '@/utils/blog'
 import MobileCTA from '@/components/MobileCTA'
 
 // SVG Icon inline pour éviter @iconify/react
@@ -16,8 +14,7 @@ const IconOpenNew = memo(() => (
   </svg>
 ));
 
-export default function BlogClient({ initialPosts, initialCategories, postsData, serverLanguage }) {
-  const pathname = usePathname()
+export default function BlogClient({ initialPosts, initialCategories, serverLanguage }) {
   // Les posts sont déjà pré-formatés côté serveur
   const [posts, setPosts] = useState(initialPosts)
   const [selectedCategory, setSelectedCategory] = useState('all')

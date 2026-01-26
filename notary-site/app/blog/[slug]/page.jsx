@@ -46,8 +46,6 @@ export default async function BlogPost({ params }) {
     <BlogPostClient
       initialPost={formattedPost}
       initialRelatedPosts={formattedRelatedPosts}
-      postData={postData}
-      relatedPostsData={relatedPostsData}
       slug={slug}
       serverLanguage={DEFAULT_LANGUAGE}
     />

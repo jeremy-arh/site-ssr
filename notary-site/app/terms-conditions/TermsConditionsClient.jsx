@@ -1,13 +1,11 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { memo } from 'react'
 import SEOHead from '@/components/SEOHead'
 import { useTranslation } from '@/hooks/useTranslation'
 import MobileCTA from '@/components/MobileCTA'
 import TermsConditionsContent from '@/components/TermsConditionsContent'
-import { useLanguage } from '@/contexts/LanguageContext'
 
 // SVG Icon inline pour éviter @iconify/react
 const IconArrowLeft = memo(() => (
@@ -19,7 +17,6 @@ const IconArrowLeft = memo(() => (
 IconArrowLeft.displayName = 'IconArrowLeft';
 
 export default function TermsConditionsClient({ serverLanguage }) {
-  const pathname = usePathname()
   // Utiliser la langue serveur pour éviter le flash
   const { t } = useTranslation(serverLanguage)
   const language = serverLanguage

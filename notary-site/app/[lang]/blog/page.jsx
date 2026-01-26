@@ -46,7 +46,6 @@ export default async function LangBlog({ params }) {
     <BlogClient 
       initialPosts={formattedPosts} 
       initialCategories={categoriesData} 
-      postsData={blogPostsData}
       serverLanguage={lang}
     />
   )

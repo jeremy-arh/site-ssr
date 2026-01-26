@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
-import { getSupabase } from '@/lib/supabase'
 
 // SVG Icons inline pour éviter @iconify/react
 const IconArrowLeft = memo(() => (
@@ -29,16 +28,15 @@ import { useCurrency } from '@/contexts/CurrencyContext'
 import { getFormUrl } from '@/utils/formUrl'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { useTranslation } from '@/hooks/useTranslation'
-import { formatBlogPostForLanguage, formatBlogPostsForLanguage } from '@/utils/blog'
 import { insertCTAsInContent } from '@/utils/insertCTAsInContent'
 import TableOfContents from '@/components/TableOfContents'
 import MobileCTA from '@/components/MobileCTA'
 
-export default function BlogPostClient({ initialPost, initialRelatedPosts, postData, relatedPostsData, slug, serverLanguage }) {
+export default function BlogPostClient({ initialPost, initialRelatedPosts, slug, serverLanguage }) {
   const pathname = usePathname()
   // Les données sont déjà pré-formatées côté serveur
-  const [post, setPost] = useState(initialPost)
-  const [relatedPosts, setRelatedPosts] = useState(initialRelatedPosts)
+  const post = initialPost
+  const relatedPosts = initialRelatedPosts
   // Utiliser la langue serveur pour éviter le flash
   const language = serverLanguage
   const [hasHeadings, setHasHeadings] = useState(false)

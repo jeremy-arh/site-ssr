@@ -36,7 +36,6 @@ export default async function Blog() {
     <BlogClient 
       initialPosts={formattedPosts} 
       initialCategories={categoriesData} 
-      postsData={blogPostsData}
       serverLanguage={DEFAULT_LANGUAGE}
     />
   )
