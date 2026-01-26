@@ -229,10 +229,11 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
   }
 
   // Breadcrumbs pour données structurées
+  const currentPath = getLocalizedPath(`/blog/${slug}`)
   const breadcrumbItems = [
-    { name: t('common.home') || 'Home', url: '/' },
-    { name: t('blog.title') || 'Blog', url: '/blog' },
-    { name: post.title, url: pathname },
+    { name: t('common.home') || 'Home', url: getLocalizedPath('/') },
+    { name: t('blog.title') || 'Blog', url: getLocalizedPath('/blog') },
+    { name: post.title, url: currentPath },
   ]
 
   return (
