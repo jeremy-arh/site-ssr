@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef, useMemo, memo } from 'react'
-import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import SEOHead from '@/components/SEOHead'
 import StructuredData from '@/components/StructuredData'
+import { getSupabase } from '@/lib/supabase'
 
 // SVG Icons inline pour éviter @iconify/react
 const IconArrowLeft = memo(() => (
@@ -33,7 +33,6 @@ import TableOfContents from '@/components/TableOfContents'
 import MobileCTA from '@/components/MobileCTA'
 
 export default function BlogPostClient({ initialPost, initialRelatedPosts, slug, serverLanguage }) {
-  const pathname = usePathname()
   // Les données sont déjà pré-formatées côté serveur
   const post = initialPost
   const relatedPosts = initialRelatedPosts
@@ -79,20 +78,22 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
 
   // Incrémenter le compteur de vues (côté client uniquement)
   useEffect(() => {
-    if (post && postData) {
+    if (post) {
       trackBlogPostView(slug, post.title)
       
       // Incrémenter le compteur de vues
-      getSupabase().then((supabase) => {
-        supabase
-          .from('blog_posts')
-          .update({ views_count: (postData.views_count || 0) + 1 })
-          .eq('id', postData.id)
-          .then(() => {})
-          .catch((err) => console.error('Error updating view count:', err))
-      }).catch(() => {})
+      if (post.id) {
+        getSupabase().then((supabase) => {
+          supabase
+            .from('blog_posts')
+            .update({ views_count: (post.views_count || 0) + 1 })
+            .eq('id', post.id)
+            .then(() => {})
+            .catch((err) => console.error('Error updating view count:', err))
+        }).catch(() => {})
+      }
     }
-  }, [slug, post, postData])
+  }, [slug, post])
 
   const computedReadTime = useMemo(() => {
     if (!post) return null
@@ -114,7 +115,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
 
   // Extraire les FAQs depuis les colonnes JSON selon la langue
   const extractedFAQs = useMemo(() => {
-    if (!postData) return []
+    if (!post) return []
     
     // Mapper les langues aux colonnes FAQ
     const faqColumnMap = {
@@ -128,7 +129,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
     
     // Récupérer la colonne FAQ correspondant à la langue actuelle
     const faqColumn = faqColumnMap[language] || 'faq'
-    const faqs = postData[faqColumn]
+    const faqs = post[faqColumn]
     
     // Si les FAQs sont disponibles dans la colonne JSON
     if (Array.isArray(faqs) && faqs.length > 0) {
@@ -139,7 +140,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
     }
     
     return []
-  }, [postData, language])
+  }, [post, language])
 
   const formUrl = getFormUrl(currency, null)
 
