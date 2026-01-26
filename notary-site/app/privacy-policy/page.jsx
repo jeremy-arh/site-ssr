@@ -1,9 +1,13 @@
 import PrivacyPolicyClient from './PrivacyPolicyClient'
 import { DEFAULT_LANGUAGE } from '@/utils/language'
 
-// Métadonnées avec canonical et hreflang
+// Métadonnées - page légale exclue du sitemap et noindex
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
   alternates: {
     canonical: 'https://www.mynotary.io/privacy-policy',
     languages: {

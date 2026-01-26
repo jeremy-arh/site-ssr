@@ -1,6 +1,6 @@
 import { getBlogPosts, getServices, getFAQs } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 import HomeClient from '../HomeClient'
 import { formatServicesForLanguage } from '@/utils/services'
 
@@ -31,7 +31,7 @@ export default async function LangHome({ params }) {
   const { lang } = await params
 
   if (!SUPPORTED_LANGUAGES.includes(lang) || lang === DEFAULT_LANGUAGE) {
-    redirect('/')
+    permanentRedirect('/')
   }
 
   const [blogPostsData, servicesData, faqsData] = await Promise.all([

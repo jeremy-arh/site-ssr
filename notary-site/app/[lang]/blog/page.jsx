@@ -1,6 +1,6 @@
 import { getBlogPosts, getBlogCategories } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
-import { redirect } from 'next/navigation'
+import { permanentRedirect } from 'next/navigation'
 import BlogClient from '../../blog/BlogClient'
 import { formatBlogPostsForLanguage } from '@/utils/blog'
 
@@ -31,7 +31,7 @@ export default async function LangBlog({ params }) {
   const { lang } = await params
 
   if (!SUPPORTED_LANGUAGES.includes(lang) || lang === DEFAULT_LANGUAGE) {
-    redirect('/blog')
+    permanentRedirect('/blog')
   }
 
   const [blogPostsData, categoriesData] = await Promise.all([

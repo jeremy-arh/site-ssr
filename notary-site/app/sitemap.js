@@ -134,23 +134,8 @@ export default async function sitemap() {
       })
     }
 
-    // Pages statiques (multilingue)
-    const staticPages = [
-      { path: '/terms-conditions', changefreq: 'monthly', priority: '0.5' },
-      { path: '/privacy-policy', changefreq: 'monthly', priority: '0.5' },
-    ]
-
-    staticPages.forEach((page) => {
-      const pageUrls = generateMultilingualUrls(page.path, new Date(), page.changefreq, page.priority)
-      pageUrls.forEach((url) => {
-        allUrls.push({
-          url: `${baseUrl}${url.url}`,
-          lastModified: url.lastModified,
-          changeFrequency: url.changeFrequency,
-          priority: url.priority,
-        })
-      })
-    })
+    // Pages légales exclues du sitemap (noindex, nofollow)
+    // Les pages terms-conditions et privacy-policy ne sont pas incluses dans le sitemap
 
   } catch (error) {
     console.error('Error generating sitemap:', error)
