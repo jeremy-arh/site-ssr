@@ -41,8 +41,9 @@ const MobileCTA = dynamic(() => import('@/components/MobileCTA'), {
   loading: () => null 
 })
 
-export default function HomeClient({ blogPostsData, servicesData, faqsData }) {
-  const { t } = useTranslation()
+export default function HomeClient({ blogPostsData, servicesData, faqsData, serverLanguage }) {
+  // Utiliser la langue serveur pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
   
   // Données structurées pour la FAQ
   const faqItems = [
@@ -77,7 +78,7 @@ export default function HomeClient({ blogPostsData, servicesData, faqsData }) {
         ogDescription={t('seo.defaultOgDescription')}
         twitterTitle={t('seo.defaultOgTitle')}
         twitterDescription={t('seo.defaultOgDescription')}
-        canonicalPath="/"
+        serverLanguage={serverLanguage}
       />
       <StructuredData 
         type="Organization"

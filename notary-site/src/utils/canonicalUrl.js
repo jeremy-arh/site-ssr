@@ -16,7 +16,7 @@ export const getCanonicalUrl = (pathname = '/') => {
   // Format identique au sitemap : ${protocol}//${host}
   const baseUrl = typeof window !== 'undefined' 
     ? `${window.location.protocol}//${window.location.host}`
-    : 'https://mynotary.io';
+    : 'https://www.mynotary.io';
   
   // Normaliser le pathname pour correspondre au format du sitemap
   // S'assurer que le pathname commence par /

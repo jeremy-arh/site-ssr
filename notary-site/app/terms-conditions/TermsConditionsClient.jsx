@@ -18,10 +18,11 @@ const IconArrowLeft = memo(() => (
 
 IconArrowLeft.displayName = 'IconArrowLeft';
 
-export default function TermsConditionsClient() {
+export default function TermsConditionsClient({ serverLanguage }) {
   const pathname = usePathname()
-  const { t } = useTranslation()
-  const { language } = useLanguage()
+  // Utiliser la langue serveur pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
+  const language = serverLanguage
   
   // Contenu traduit pour le titre et la date
   const titleContent = {
@@ -65,7 +66,7 @@ export default function TermsConditionsClient() {
         ogDescription={`${title} for ${t('seo.siteName')} services`}
         twitterTitle={`${title} - ${t('seo.siteName')}`}
         twitterDescription={`${title} for ${t('seo.siteName')} services`}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       {/* Hero Section */}
       <section className="bg-gray-900 text-white pt-32 pb-16 px-[30px]">

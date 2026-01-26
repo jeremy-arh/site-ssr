@@ -34,29 +34,19 @@ import { insertCTAsInContent } from '@/utils/insertCTAsInContent'
 import TableOfContents from '@/components/TableOfContents'
 import MobileCTA from '@/components/MobileCTA'
 
-export default function BlogPostClient({ initialPost, initialRelatedPosts, postData, relatedPostsData, slug }) {
+export default function BlogPostClient({ initialPost, initialRelatedPosts, postData, relatedPostsData, slug, serverLanguage }) {
   const pathname = usePathname()
+  // Les données sont déjà pré-formatées côté serveur
   const [post, setPost] = useState(initialPost)
   const [relatedPosts, setRelatedPosts] = useState(initialRelatedPosts)
+  // Utiliser la langue serveur pour éviter le flash
+  const language = serverLanguage
   const [hasHeadings, setHasHeadings] = useState(false)
   const [openFAQIndex, setOpenFAQIndex] = useState(null)
   const contentRef = useRef(null)
   const { currency } = useCurrency()
-  const { language, getLocalizedPath } = useLanguage()
-  const { t } = useTranslation()
-
-  // Mettre à jour le post et les articles liés quand la langue change
-  useEffect(() => {
-    if (postData) {
-      const formattedPost = formatBlogPostForLanguage(postData, language)
-      setPost(formattedPost)
-    }
-
-    if (relatedPostsData && relatedPostsData.length > 0) {
-      const formattedRelatedPosts = formatBlogPostsForLanguage(relatedPostsData, language)
-      setRelatedPosts(formattedRelatedPosts)
-    }
-  }, [language, postData, relatedPostsData])
+  const { getLocalizedPath } = useLanguage()
+  const { t } = useTranslation(serverLanguage)
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -255,7 +245,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, postD
         ogDescription={post.meta_description || post.excerpt || ''}
         twitterTitle={post.meta_title || post.title || 'Blog Post'}
         twitterDescription={post.meta_description || post.excerpt || ''}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       <StructuredData
         type="Article"

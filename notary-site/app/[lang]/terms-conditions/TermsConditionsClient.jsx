@@ -73,7 +73,7 @@ export default function TermsConditionsClient() {
         ogDescription={`${title} for ${t('seo.siteName')} services`}
         twitterTitle={`${title} - ${t('seo.siteName')}`}
         twitterDescription={`${title} for ${t('seo.siteName')} services`}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       {/* Hero Section */}
       <section className="bg-gray-900 text-white pt-32 pb-16 px-[30px]">

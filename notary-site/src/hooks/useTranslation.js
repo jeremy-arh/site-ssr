@@ -3,11 +3,13 @@ import { translations } from '../i18n/translations';
 
 /**
  * Hook pour utiliser les traductions
- * @param {string} key - Clé de traduction (ex: 'hero.title', 'nav.services')
- * @returns {string} - Texte traduit
+ * @param {string} serverLanguage - Langue serveur optionnelle (prioritaire pour éviter le flash)
+ * @returns {object} - { t: fonction de traduction, language: langue utilisée }
  */
-export const useTranslation = () => {
-  const { language } = useLanguage();
+export const useTranslation = (serverLanguage) => {
+  const { language: contextLanguage } = useLanguage();
+  // Utiliser la langue serveur en priorité pour éviter le flash côté client
+  const language = serverLanguage || contextLanguage;
 
   const t = (key, fallback = '') => {
     const keys = key.split('.');

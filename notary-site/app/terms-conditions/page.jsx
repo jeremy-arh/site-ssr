@@ -1,4 +1,5 @@
 import TermsConditionsClient from './TermsConditionsClient'
+import { DEFAULT_LANGUAGE } from '@/utils/language'
 
 // Métadonnées avec canonical et hreflang
 // eslint-disable-next-line react-refresh/only-export-components
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function TermsConditions() {
-  return <TermsConditionsClient />
+  return <TermsConditionsClient serverLanguage={DEFAULT_LANGUAGE} />
 }

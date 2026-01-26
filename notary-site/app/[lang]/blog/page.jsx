@@ -2,6 +2,7 @@ import { getBlogPosts, getBlogCategories } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import BlogClient from '../../blog/BlogClient'
+import { formatBlogPostsForLanguage } from '@/utils/blog'
 
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
@@ -38,7 +39,15 @@ export default async function LangBlog({ params }) {
     getBlogCategories(),
   ])
 
+  // Pré-formater pour la langue côté serveur
+  const formattedPosts = formatBlogPostsForLanguage(blogPostsData, lang)
+
   return (
-    <BlogClient initialPosts={blogPostsData} initialCategories={categoriesData} postsData={blogPostsData} />
+    <BlogClient 
+      initialPosts={formattedPosts} 
+      initialCategories={categoriesData} 
+      postsData={blogPostsData}
+      serverLanguage={lang}
+    />
   )
 }

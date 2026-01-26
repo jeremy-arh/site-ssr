@@ -2,6 +2,7 @@ import { getServices } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import ServicesClient from '../../services/ServicesClient'
+import { formatServicesForLanguage } from '@/utils/services'
 
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
@@ -34,8 +35,9 @@ export default async function LangServices({ params }) {
   }
 
   const servicesData = await getServices()
+  const formattedServices = formatServicesForLanguage(servicesData, lang)
 
   return (
-    <ServicesClient servicesData={servicesData} />
+    <ServicesClient servicesData={formattedServices} serverLanguage={lang} />
   )
 }

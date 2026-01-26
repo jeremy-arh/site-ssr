@@ -16,9 +16,10 @@ const IconArrowLeft = memo(() => (
 
 IconArrowLeft.displayName = 'IconArrowLeft';
 
-export default function PrivacyPolicyClient() {
+export default function PrivacyPolicyClient({ serverLanguage }) {
   const pathname = usePathname()
-  const { t } = useTranslation()
+  // Utiliser la langue serveur pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
   
   return (
     <div className="min-h-screen">
@@ -29,7 +30,7 @@ export default function PrivacyPolicyClient() {
         ogDescription={`Privacy Policy for ${t('seo.siteName')} services`}
         twitterTitle={`Privacy Policy - ${t('seo.siteName')}`}
         twitterDescription={`Privacy Policy for ${t('seo.siteName')} services`}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       {/* Hero Section */}
       <section className="bg-gray-900 text-white pt-32 pb-16 px-[30px]">

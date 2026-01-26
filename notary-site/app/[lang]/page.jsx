@@ -2,6 +2,7 @@ import { getBlogPosts, getServices, getFAQs } from '@/lib/supabase-server'
 import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/utils/language'
 import { redirect } from 'next/navigation'
 import HomeClient from '../HomeClient'
+import { formatServicesForLanguage } from '@/utils/services'
 
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
@@ -39,13 +40,16 @@ export default async function LangHome({ params }) {
     getFAQs(),
   ])
 
-  const recentPosts = blogPostsData.slice(0, 3) // Prendre les 3 plus récents
+  const recentPosts = blogPostsData.slice(0, 3)
+  // Pré-formater les données côté serveur selon la langue
+  const formattedServices = formatServicesForLanguage(servicesData, lang)
 
   return (
     <HomeClient
       blogPostsData={recentPosts}
-      servicesData={servicesData}
+      servicesData={formattedServices}
       faqsData={faqsData}
+      serverLanguage={lang}
     />
   )
 }

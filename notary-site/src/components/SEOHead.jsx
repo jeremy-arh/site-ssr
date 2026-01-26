@@ -2,9 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { useLanguage } from '../contexts/LanguageContext';
-import { getCanonicalUrl } from '../utils/canonicalUrl';
-import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE, removeLanguageFromPath, addLanguageToPath } from '../utils/language';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '../utils/language';
 
 /**
  * Mapping des codes de langue vers les codes de locale pour og:locale
@@ -19,23 +17,16 @@ const LANGUAGE_TO_LOCALE = {
 };
 
 /**
- * Mapping des codes de langue vers les codes hreflang
- * Certaines langues peuvent avoir des variantes régionales
- */
-const LANGUAGE_TO_HREFLANG = {
-  en: 'en',
-  fr: 'fr',
-  es: 'es',
-  de: 'de',
-  it: 'it',
-  pt: 'pt',
-};
-
-/**
- * Composant SEO global qui gère :
+ * Composant SEO qui gère uniquement les meta tags dynamiques.
+ * 
+ * IMPORTANT: Les canonical et hreflang sont maintenant gérés par les métadonnées Next.js
+ * côté serveur (generateMetadata dans page.jsx) pour être présents dans le HTML initial.
+ * 
+ * Ce composant gère :
  * - L'attribut lang sur <html>
- * - Les balises hreflang pour toutes les langues
- * - Les balises meta de base (peut être étendu)
+ * - Le title et description
+ * - Les meta Open Graph
+ * - Les meta Twitter Card
  */
 const SEOHead = ({ 
   title, 
@@ -46,41 +37,14 @@ const SEOHead = ({
   twitterTitle,
   twitterDescription,
   twitterImage,
-  canonicalPath,
   noindex = false,
-  nofollow = false
+  nofollow = false,
+  serverLanguage // Langue passée depuis le serveur
 }) => {
-  const { language } = useLanguage();
-  const pathname = usePathname();
+  const pathname = usePathname()
+  // Utiliser la langue serveur pour éviter le flash
+  const language = serverLanguage || DEFAULT_LANGUAGE
   
-  // Génère les URLs hreflang pour toutes les langues
-  const generateHreflangUrls = () => {
-    const basePath = canonicalPath || pathname;
-    const cleanPath = removeLanguageFromPath(basePath);
-    const hreflangUrls = [];
-
-    // Pour chaque langue supportée, génère l'URL correspondante
-    SUPPORTED_LANGUAGES.forEach((lang) => {
-      const localizedPath = addLanguageToPath(cleanPath, lang);
-      const url = getCanonicalUrl(localizedPath);
-      hreflangUrls.push({
-        lang: LANGUAGE_TO_HREFLANG[lang],
-        url,
-      });
-    });
-
-    // Ajoute aussi x-default qui pointe vers la langue par défaut
-    const defaultPath = addLanguageToPath(cleanPath, DEFAULT_LANGUAGE);
-    hreflangUrls.push({
-      lang: 'x-default',
-      url: getCanonicalUrl(defaultPath),
-    });
-
-    return hreflangUrls;
-  };
-
-  const hreflangUrls = generateHreflangUrls();
-  const canonicalUrl = getCanonicalUrl(canonicalPath || pathname);
   const locale = LANGUAGE_TO_LOCALE[language] || LANGUAGE_TO_LOCALE[DEFAULT_LANGUAGE];
 
   // Génère les meta robots
@@ -97,7 +61,7 @@ const SEOHead = ({
     }
   }, [language]);
 
-  // Met à jour les meta tags dans le head
+  // Met à jour les meta tags dans le head (sauf canonical et hreflang gérés par Next.js)
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
@@ -135,25 +99,7 @@ const SEOHead = ({
     }
     robotsMetaElement.setAttribute('content', robotsMeta);
 
-    // Canonical
-    let canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (!canonicalLink) {
-      canonicalLink = document.createElement('link');
-      canonicalLink.setAttribute('rel', 'canonical');
-      head.appendChild(canonicalLink);
-    }
-    canonicalLink.setAttribute('href', canonicalUrl);
-
-    // Hreflang - supprimer les anciens
-    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(link => link.remove());
-    // Ajouter les nouveaux
-    hreflangUrls.forEach(({ lang, url }) => {
-      const link = document.createElement('link');
-      link.setAttribute('rel', 'alternate');
-      link.setAttribute('hreflang', lang);
-      link.setAttribute('href', url);
-      head.appendChild(link);
-    });
+    // NE PAS toucher aux canonical et hreflang - ils sont gérés par Next.js côté serveur
 
     // Open Graph
     const setOGMeta = (property, content) => {
@@ -170,7 +116,6 @@ const SEOHead = ({
     if (ogTitle) setOGMeta('og:title', ogTitle);
     if (ogDescription) setOGMeta('og:description', ogDescription);
     if (ogImage) setOGMeta('og:image', ogImage);
-    setOGMeta('og:url', canonicalUrl);
     setOGMeta('og:type', 'website');
     setOGMeta('og:locale', locale);
 
@@ -202,14 +147,8 @@ const SEOHead = ({
     if (twitterDescription) setTwitterMeta('twitter:description', twitterDescription);
     if (twitterImage) setTwitterMeta('twitter:image', twitterImage);
 
-    // Cleanup function
-    return () => {
-      // Ne pas supprimer les meta tags au cleanup car ils sont nécessaires
-      // Ils seront mis à jour au prochain render
-    };
-  }, [title, description, robotsMeta, canonicalUrl, hreflangUrls, ogTitle, ogDescription, ogImage, locale, language, twitterTitle, twitterDescription, twitterImage]);
+  }, [title, description, robotsMeta, ogTitle, ogDescription, ogImage, locale, language, twitterTitle, twitterDescription, twitterImage]);
 
-  // Le composant ne retourne rien car tout est géré via useEffect
   return null;
 };
 

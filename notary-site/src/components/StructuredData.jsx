@@ -6,6 +6,18 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { getCanonicalUrl } from '../utils/canonicalUrl';
 
 /**
+ * Mapping des codes de langue vers les noms de pays pour Schema.org
+ */
+const LANGUAGE_TO_COUNTRY = {
+  en: 'Worldwide',
+  fr: 'France',
+  es: 'Spain',
+  de: 'Germany',
+  it: 'Italy',
+  pt: 'Portugal',
+};
+
+/**
  * Composant pour générer les données structurées Schema.org (JSON-LD)
  * Améliore le référencement en permettant aux moteurs de recherche de mieux comprendre le contenu
  */
@@ -104,7 +116,7 @@ const StructuredData = ({
         },
         areaServed: {
           '@type': 'Country',
-          name: 'Worldwide',
+          name: LANGUAGE_TO_COUNTRY[language] || LANGUAGE_TO_COUNTRY['en'],
         },
       };
       

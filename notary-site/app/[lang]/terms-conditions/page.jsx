@@ -29,5 +29,5 @@ export default async function LangTermsConditions({ params }) {
     redirect('/terms-conditions')
   }
 
-  return <TermsConditionsClient />
+  return <TermsConditionsClient serverLanguage={lang} />
 }

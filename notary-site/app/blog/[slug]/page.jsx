@@ -2,6 +2,7 @@ import { getBlogPost, getRelatedBlogPosts } from '@/lib/supabase-server'
 import { formatBlogPostForLanguage, formatBlogPostsForLanguage } from '@/utils/blog'
 import BlogPostClient from './BlogPostClient'
 import { notFound } from 'next/navigation'
+import { DEFAULT_LANGUAGE } from '@/utils/language'
 
 // Forcer le rendu dynamique (SSR) - pas de prerendering statique
 export const dynamic = 'force-dynamic'
@@ -26,23 +27,20 @@ export async function generateMetadata({ params }) {
   }
 }
 
-// Cette page est un Server Component qui récupère les données côté serveur
 export default async function BlogPost({ params }) {
   const { slug } = await params
 
-  // Récupérer l'article côté serveur (SSR)
   const postData = await getBlogPost(slug)
 
   if (!postData) {
     notFound()
   }
 
-  // Récupérer les articles liés côté serveur
   const relatedPostsData = await getRelatedBlogPosts(slug, 3)
 
-  // Formater pour la langue par défaut (sera ajusté côté client)
-  const formattedPost = formatBlogPostForLanguage(postData, 'en')
-  const formattedRelatedPosts = formatBlogPostsForLanguage(relatedPostsData, 'en')
+  // Pré-formater côté serveur
+  const formattedPost = formatBlogPostForLanguage(postData, DEFAULT_LANGUAGE)
+  const formattedRelatedPosts = formatBlogPostsForLanguage(relatedPostsData, DEFAULT_LANGUAGE)
 
   return (
     <BlogPostClient
@@ -51,6 +49,7 @@ export default async function BlogPost({ params }) {
       postData={postData}
       relatedPostsData={relatedPostsData}
       slug={slug}
+      serverLanguage={DEFAULT_LANGUAGE}
     />
   )
 }

@@ -6,21 +6,18 @@ import SEOHead from '@/components/SEOHead'
 import { trackServiceClick } from '@/utils/analytics'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { formatServicesForLanguage } from '@/utils/services'
 import PriceDisplay from '@/components/PriceDisplay'
 import MobileCTA from '@/components/MobileCTA'
 import TrustpilotSlider from '@/components/TrustpilotSlider'
 
-export default function ServicesClient({ servicesData }) {
+export default function ServicesClient({ servicesData, serverLanguage }) {
   const pathname = usePathname()
-  const { t } = useTranslation()
-  const { language, getLocalizedPath } = useLanguage()
+  // Utiliser la langue serveur pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
+  const { getLocalizedPath } = useLanguage()
 
-  // Formater les services selon la langue
-  const services = formatServicesForLanguage(
-    servicesData.filter(s => s.show_in_list === true),
-    language
-  )
+  // Les services sont déjà pré-formatés côté serveur
+  const services = (servicesData || []).filter(s => s.show_in_list === true)
 
   return (
     <div className="min-h-screen">
@@ -31,7 +28,7 @@ export default function ServicesClient({ servicesData }) {
         ogDescription={t('seo.servicesDescription')}
         twitterTitle={t('seo.servicesTitle')}
         twitterDescription={t('seo.servicesDescription')}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       
       <section className="relative overflow-hidden flex items-center px-[30px] lg:h-[60vh]" data-hero style={{ backgroundColor: '#1f2937' }}>

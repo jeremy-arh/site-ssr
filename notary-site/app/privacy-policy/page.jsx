@@ -1,4 +1,5 @@
 import PrivacyPolicyClient from './PrivacyPolicyClient'
+import { DEFAULT_LANGUAGE } from '@/utils/language'
 
 // Métadonnées avec canonical et hreflang
 // eslint-disable-next-line react-refresh/only-export-components
@@ -18,5 +19,5 @@ export const metadata = {
 }
 
 export default function PrivacyPolicy() {
-  return <PrivacyPolicyClient />
+  return <PrivacyPolicyClient serverLanguage={DEFAULT_LANGUAGE} />
 }

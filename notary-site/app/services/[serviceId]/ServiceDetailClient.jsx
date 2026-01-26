@@ -16,7 +16,7 @@ import { getFormUrl } from '@/utils/formUrl'
 import { getCanonicalUrl } from '@/utils/canonicalUrl'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { formatServiceForLanguage, formatServicesForLanguage } from '@/utils/services'
+// Les données sont pré-formatées côté serveur, plus besoin de formatServiceForLanguage
 import PriceDisplay from '@/components/PriceDisplay'
 import { fuzzySearchServices } from '@/utils/fuzzySearch'
 import dynamic from 'next/dynamic'
@@ -239,9 +239,8 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  const relatedServices = useMemo(() => {
-    return formatServicesForLanguage(relatedServicesData || [], language)
-  }, [relatedServicesData, language])
+  // Les services liés sont déjà pré-formatés côté serveur
+  const relatedServices = relatedServicesData || []
 
   // Extraire toutes les catégories uniques avec leurs libellés traduits
   const categories = useMemo(() => {
@@ -444,30 +443,23 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   )
 })
 
-export default function ServiceDetailClient({ serviceData, relatedServicesData, serviceId, faqsData }) {
+export default function ServiceDetailClient({ serviceData, relatedServicesData, serviceId, faqsData, serverLanguage }) {
   const pathname = usePathname()
-  const { t } = useTranslation()
-  const { language, getLocalizedPath } = useLanguage()
+  // Utiliser la langue serveur en priorité pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
+  const { getLocalizedPath } = useLanguage()
   const { currency, formatPrice } = useCurrency()
   const [ctaPrice, setCtaPrice] = useState('')
 
-  // Debug: vérifier que faqsData est bien passé
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      console.log('FAQ Data:', faqsData)
-    }
-  }, [faqsData])
+  // Les données sont déjà pré-formatées côté serveur, utiliser directement
+  const service = serviceData
+  const language = serverLanguage
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'auto' })
     }
   }, [serviceId])
-
-  // Formater le service selon la langue
-  const service = useMemo(() => {
-    return formatServiceForLanguage(serviceData, language)
-  }, [serviceData, language])
 
   // Différer le formatage du prix pour ne pas bloquer le rendu initial
   useEffect(() => {
@@ -647,7 +639,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         ogDescription={service.meta_description || service.short_description || service.description || ''}
         twitterTitle={service.meta_title || service.name || t('serviceDetail.defaultTitle')}
         twitterDescription={service.meta_description || service.short_description || service.description || ''}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       <StructuredData
         type="Service"

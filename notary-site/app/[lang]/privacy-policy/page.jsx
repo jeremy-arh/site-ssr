@@ -29,5 +29,5 @@ export default async function LangPrivacyPolicy({ params }) {
     redirect('/privacy-policy')
   }
 
-  return <PrivacyPolicyClient />
+  return <PrivacyPolicyClient serverLanguage={lang} />
 }

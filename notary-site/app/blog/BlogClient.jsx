@@ -16,31 +16,32 @@ const IconOpenNew = memo(() => (
   </svg>
 ));
 
-export default function BlogClient({ initialPosts, initialCategories, postsData }) {
+export default function BlogClient({ initialPosts, initialCategories, postsData, serverLanguage }) {
   const pathname = usePathname()
+  // Les posts sont déjà pré-formatés côté serveur
   const [posts, setPosts] = useState(initialPosts)
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [categories, setCategories] = useState(initialCategories)
-  const { t } = useTranslation()
-  const { language, getLocalizedPath } = useLanguage()
+  // Utiliser la langue serveur pour éviter le flash
+  const { t } = useTranslation(serverLanguage)
+  const { getLocalizedPath } = useLanguage()
+  const language = serverLanguage
 
-  // Mettre à jour les posts quand la langue change
+  // Mettre à jour les posts quand le filtre change (pas la langue)
   useEffect(() => {
-    if (postsData && postsData.length > 0) {
-      const formattedPosts = formatBlogPostsForLanguage(postsData, language)
-      
+    if (initialPosts && initialPosts.length > 0) {
       if (selectedCategory !== 'all') {
-        const filtered = formattedPosts.filter(post => post.category === selectedCategory)
+        const filtered = initialPosts.filter(post => post.category === selectedCategory)
         setPosts(filtered)
       } else {
-        setPosts(formattedPosts)
+        setPosts(initialPosts)
       }
 
-      // Mettre à jour les catégories selon la langue
-      const uniqueCategories = [...new Set(formattedPosts.map(post => post.category).filter(Boolean))]
+      // Mettre à jour les catégories
+      const uniqueCategories = [...new Set(initialPosts.map(post => post.category).filter(Boolean))]
       setCategories(uniqueCategories)
     }
-  }, [language, selectedCategory, postsData])
+  }, [selectedCategory, initialPosts])
 
   const formatDate = (dateString) => {
     if (!dateString) return ''
@@ -61,7 +62,7 @@ export default function BlogClient({ initialPosts, initialCategories, postsData 
         ogDescription={t('seo.blogDescription')}
         twitterTitle={t('seo.blogTitle')}
         twitterDescription={t('seo.blogDescription')}
-        canonicalPath={pathname}
+        serverLanguage={serverLanguage}
       />
       <section className="pt-32 pb-16 px-[30px] bg-gray-50">
         <div className="max-w-[1300px] mx-auto text-center">
