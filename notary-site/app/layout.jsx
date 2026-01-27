@@ -24,8 +24,8 @@ export const metadata = {
   title: 'My notary - Notarize and Apostille Your Documents 100% Online',
   description: 'Notarize and apostille your documents 100% online. Secure, legally valid, and recognized internationally through the Hague Convention. Book your appointment in minutes.',
   icons: {
-    icon: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: '/favicon.svg?v=2',
+    apple: '/favicon.svg?v=2',
   },
 }
 
