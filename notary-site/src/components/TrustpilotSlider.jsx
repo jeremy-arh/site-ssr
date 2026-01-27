@@ -9,97 +9,97 @@ const TrustpilotSlider = () => {
   const scrollRef = useRef(null);
 
   // Avis Trustpilot réels depuis https://fr.trustpilot.com/review/mynotary.io?languages=all
-  // Tous les 9 avis avec leurs timestamps réels
+  // Avis 4* et 5* uniquement
   const reviews = [
     {
       id: 1,
       rating: 5,
-      textKey: 'trustpilot.reviews.review1',
       author: "Kyle Fournier",
       country: "FR",
-      verified: true,
-      timeAgo: "1 day ago",
-      timeAgoKey: 'trustpilot.timeAgo.1day'
+      reviewCount: 109,
+      headline: "Javais besoin dune procuration notariée…",
+      content: "Javais besoin dune procuration notariée pour vendre un bien immobilier alors que jétais en déplacement. Tout fait par appel vidéo, le notaire a bien vérifié chaque détail. Top.",
+      avatar: "https://ui-avatars.com/api/?name=Kyle+Fournier&background=random&size=80"
     },
     {
       id: 2,
       rating: 5,
-      textKey: 'trustpilot.reviews.review2',
       author: "Julia Booker",
       country: "US",
-      verified: true,
-      timeAgo: "3 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.3days'
+      reviewCount: 26,
+      headline: "Certified passport copy for a bank…",
+      content: "Certified passport copy for a bank account. Done in 20 min. Perfect.",
+      avatar: "https://ui-avatars.com/api/?name=Julia+Booker&background=random&size=80"
     },
     {
       id: 3,
       rating: 5,
-      textKey: 'trustpilot.reviews.review3',
       author: "Julie",
-      country: "US",
-      verified: true,
-      timeAgo: "4 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.4days'
+      country: "DE",
+      reviewCount: 4,
+      headline: "Traduction certifiée de mon relevé de…",
+      content: "Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.",
+      avatar: "https://ui-avatars.com/api/?name=Julie&background=random&size=80"
     },
     {
       id: 4,
       rating: 5,
-      textKey: 'trustpilot.reviews.review4',
       author: "Robbo",
       country: "IT",
-      verified: true,
-      timeAgo: "5 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.5days'
+      reviewCount: 36,
+      headline: "Power of attorney sorted from my living…",
+      content: "Power of attorney sorted from my living room. Didnt have to take time off work.",
+      avatar: "https://ui-avatars.com/api/?name=Robbo&background=random&size=80"
     },
     {
       id: 5,
       rating: 5,
-      textKey: 'trustpilot.reviews.review5',
       author: "Gabriele Angelotti",
       country: "DE",
-      verified: true,
-      timeAgo: "6 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.6days'
+      reviewCount: 2,
+      headline: "Ma banque demandait une copie certifiée…",
+      content: "Ma banque demandait une copie certifiée de mon passeport pour finaliser louverture de mon compte pro. Fait en une session, notaire dispo et sympa.",
+      avatar: "https://ui-avatars.com/api/?name=Gabriele+Angelotti&background=random&size=80"
     },
     {
       id: 6,
       rating: 5,
-      textKey: 'trustpilot.reviews.review6',
       author: "Helen White",
       country: "DE",
-      verified: true,
-      timeAgo: "7 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.7days'
+      reviewCount: 71,
+      headline: "Apostille pour un document officiel",
+      content: "Apostille pour un document officiel, service carré.",
+      avatar: "https://ui-avatars.com/api/?name=Helen+White&background=random&size=80"
     },
     {
       id: 7,
       rating: 5,
-      textKey: 'trustpilot.reviews.review7',
       author: "Romano",
       country: "PT",
-      verified: true,
-      timeAgo: "9 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.9days'
+      reviewCount: 37,
+      headline: "I run a small import business and…",
+      content: "I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.",
+      avatar: "https://ui-avatars.com/api/?name=Romano&background=random&size=80"
     },
     {
       id: 8,
       rating: 5,
-      textKey: 'trustpilot.reviews.review8',
       author: "Denis Dubrovin",
       country: "GB",
-      verified: true,
-      timeAgo: "9 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.9days'
+      reviewCount: 120,
+      headline: "Copie certifiée passeport pour un…",
+      content: "Copie certifiée passeport pour un dossier dimmigration. Nickel.",
+      avatar: "https://ui-avatars.com/api/?name=Denis+Dubrovin&background=random&size=80"
     },
     {
       id: 9,
       rating: 5,
-      textKey: 'trustpilot.reviews.review9',
       author: "Ulvi",
       country: "GB",
-      verified: true,
-      timeAgo: "8 days ago",
-      timeAgoKey: 'trustpilot.timeAgo.8days'
+      reviewCount: 140,
+      headline: "Good service for signature…",
+      content: "Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.",
+      avatar: "https://ui-avatars.com/api/?name=Ulvi&background=random&size=80"
     },
   ];
 
@@ -199,39 +199,50 @@ const TrustpilotSlider = () => {
             {duplicatedReviews.map((review, index) => (
               <div
                 key={`${review.id}-${index}`}
-                className="w-[300px] md:w-[350px] flex-shrink-0 flex"
+                className="w-[320px] md:w-[380px] flex-shrink-0 flex"
               >
-                <div className="bg-white rounded-lg p-6 h-full border border-gray-200 hover:shadow-md transition-shadow duration-300 flex flex-col">
-                  {/* Stars et timestamp - alignés en haut */}
-                  <div className="flex items-center justify-between mb-3 flex-shrink-0">
-                    {/* 5 étoiles vertes */}
-                    <div className="flex items-center gap-0.5">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <svg
-                          key={star}
-                          className="w-5 h-5 text-green-500"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
+                <div className="bg-white rounded-xl p-5 h-full border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                  {/* Header avec avatar et infos auteur */}
+                  <div className="flex items-start gap-3 mb-3">
+                    {/* Avatar */}
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                      <img
+                        src={review.avatar}
+                        alt={review.author}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
                     </div>
-                    {/* Timestamp */}
-                    <span className="text-gray-400 text-xs">
-                      {review.timeAgoKey ? t(review.timeAgoKey) : review.timeAgo}
-                    </span>
+                    {/* Nom et infos */}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 text-sm">{review.author}</p>
+                      <p className="text-gray-500 text-xs">{review.country} • {review.reviewCount} avis</p>
+                    </div>
                   </div>
 
-                  {/* Review text - prend l'espace disponible */}
-                  <p className="text-gray-700 text-sm md:text-base mb-4 leading-relaxed flex-grow">
-                    {t(review.textKey)}
+                  {/* Étoiles Trustpilot */}
+                  <div className="flex items-center gap-0.5 mb-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg
+                        key={star}
+                        className={`w-5 h-5 ${star <= review.rating ? 'text-[#00b67a]' : 'text-gray-300'}`}
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                      >
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+                      </svg>
+                    ))}
+                  </div>
+
+                  {/* Headline */}
+                  <h4 className="font-semibold text-gray-900 text-sm mb-2 line-clamp-1">
+                    {review.headline}
+                  </h4>
+
+                  {/* Contenu de l'avis */}
+                  <p className="text-gray-600 text-sm leading-relaxed flex-grow line-clamp-4">
+                    {review.content}
                   </p>
-
-                  {/* Author info - aligné en bas */}
-                  <div className="mt-auto flex-shrink-0 pt-3 border-t border-gray-100">
-                    <p className="text-gray-600 text-sm font-medium">{review.author}</p>
-                  </div>
                 </div>
               </div>
             ))}
