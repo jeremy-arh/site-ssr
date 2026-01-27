@@ -36,8 +36,8 @@ export const translations = {
     },
     // Hero Section
     hero: {
-      title: 'Notarize and Apostille Your Documents 100% Online',
-      subtitle: 'Secure, legally valid, recognized internationally through the Hague Convention from anywhere, in just a few minutes.',
+      title: 'Notarize Your Documents Online in Minutes',
+      subtitle: 'Fast, secure, and legally recognized worldwide. Complete your notarization entirely online in just a few minutes.',
       cta: 'Notarize now',
       feature1: 'Accepted in EU & Internationally',
       feature2: 'Same-Day Delivery',
