@@ -1,24 +1,22 @@
 'use client'
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from '../hooks/useTranslation';
 import Image from 'next/image';
 
-const TrustpilotSlider = () => {
-  const { t } = useTranslation();
+const TrustpilotSlider = ({ serverLanguage }) => {
+  const { t } = useTranslation(serverLanguage);
   const scrollRef = useRef(null);
 
-  // Avis Trustpilot réels depuis https://fr.trustpilot.com/review/mynotary.io?languages=all
-  // Avis 4* et 5* uniquement
-  const reviews = [
+  // Données des auteurs Trustpilot (non traduites)
+  const reviewAuthors = [
     {
       id: 1,
       rating: 5,
       author: "Kyle Fournier",
       country: "FR",
       reviewCount: 109,
-      headline: "Javais besoin dune procuration notariée…",
-      content: "Javais besoin dune procuration notariée pour vendre un bien immobilier alors que jétais en déplacement. Tout fait par appel vidéo, le notaire a bien vérifié chaque détail. Top.",
+      reviewKey: 'review1',
       avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/60ec27fd-fb21-4674-afc5-e59b20a09600/f=webp,q=80"
     },
     {
@@ -27,8 +25,7 @@ const TrustpilotSlider = () => {
       author: "Julia Booker",
       country: "US",
       reviewCount: 26,
-      headline: "Certified passport copy for a bank…",
-      content: "Certified passport copy for a bank account. Done in 20 min. Perfect.",
+      reviewKey: 'review2',
       avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/77565b98-8a68-4d82-81c2-83cfd8baeb00/f=webp,q=80"
     },
     {
@@ -37,8 +34,7 @@ const TrustpilotSlider = () => {
       author: "Julie",
       country: "DE",
       reviewCount: 4,
-      headline: "Traduction certifiée de mon relevé de…",
-      content: "Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.",
+      reviewKey: 'review3',
       avatar: "https://ui-avatars.com/api/?name=Julie&background=3B82F6&color=fff&size=80&bold=true"
     },
     {
@@ -47,8 +43,7 @@ const TrustpilotSlider = () => {
       author: "Robbo",
       country: "IT",
       reviewCount: 36,
-      headline: "Power of attorney sorted from my living…",
-      content: "Power of attorney sorted from my living room. Didnt have to take time off work.",
+      reviewKey: 'review4',
       avatar: "https://ui-avatars.com/api/?name=Robbo&background=10B981&color=fff&size=80&bold=true"
     },
     {
@@ -57,8 +52,7 @@ const TrustpilotSlider = () => {
       author: "Gabriele Angelotti",
       country: "DE",
       reviewCount: 2,
-      headline: "Ma banque demandait une copie certifiée…",
-      content: "Ma banque demandait une copie certifiée de mon passeport pour finaliser louverture de mon compte pro. Fait en une session, notaire dispo et sympa.",
+      reviewKey: 'review5',
       avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d631b594-34de-424a-fa38-cd4502366600/f=webp,q=80"
     },
     {
@@ -67,8 +61,7 @@ const TrustpilotSlider = () => {
       author: "Helen White",
       country: "DE",
       reviewCount: 71,
-      headline: "Apostille pour un document officiel",
-      content: "Apostille pour un document officiel, service carré.",
+      reviewKey: 'review6',
       avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/8a0a2881-30fa-4f23-a460-471be870d700/f=webp,q=80"
     },
     {
@@ -77,8 +70,7 @@ const TrustpilotSlider = () => {
       author: "Romano",
       country: "PT",
       reviewCount: 37,
-      headline: "I run a small import business and…",
-      content: "I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.",
+      reviewKey: 'review7',
       avatar: "https://ui-avatars.com/api/?name=Romano&background=6366F1&color=fff&size=80&bold=true"
     },
     {
@@ -87,8 +79,7 @@ const TrustpilotSlider = () => {
       author: "Denis Dubrovin",
       country: "GB",
       reviewCount: 120,
-      headline: "Copie certifiée passeport pour un…",
-      content: "Copie certifiée passeport pour un dossier dimmigration. Nickel.",
+      reviewKey: 'review8',
       avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/23712022-5064-4860-3253-b2d73119f100/f=webp,q=80"
     },
     {
@@ -97,14 +88,25 @@ const TrustpilotSlider = () => {
       author: "Ulvi",
       country: "GB",
       reviewCount: 140,
-      headline: "Good service for signature…",
-      content: "Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.",
+      reviewKey: 'review9',
       avatar: "https://ui-avatars.com/api/?name=Ulvi&background=F97316&color=fff&size=80&bold=true"
     },
   ];
 
+  // Combiner les données auteurs avec les traductions
+  const reviews = useMemo(() => {
+    return reviewAuthors.map(author => ({
+      ...author,
+      headline: t(`trustpilot.reviews.${author.reviewKey}.headline`),
+      content: t(`trustpilot.reviews.${author.reviewKey}.content`),
+    }));
+  }, [t]);
+
+  // Mot traduit pour "avis"
+  const reviewsWord = t('trustpilot.reviewsWord');
+
   // Dupliquer les avis pour créer l'effet de défilement infini
-  const duplicatedReviews = [...reviews, ...reviews, ...reviews];
+  const duplicatedReviews = useMemo(() => [...reviews, ...reviews, ...reviews], [reviews]);
 
   // Animation de défilement automatique
   useEffect(() => {
@@ -216,7 +218,7 @@ const TrustpilotSlider = () => {
                     {/* Nom et infos */}
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 text-sm">{review.author}</p>
-                      <p className="text-gray-500 text-xs">{review.country} • {review.reviewCount} avis</p>
+                      <p className="text-gray-500 text-xs">{review.country} • {review.reviewCount} {reviewsWord}</p>
                     </div>
                   </div>
 

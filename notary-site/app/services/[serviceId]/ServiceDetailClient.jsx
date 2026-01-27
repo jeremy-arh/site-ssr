@@ -739,7 +739,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         </div>
       </section>
 
-      <TrustpilotSlider />
+      <TrustpilotSlider serverLanguage={serverLanguage} />
 
       {/* Pricing Section - Two Column Layout */}
       <section

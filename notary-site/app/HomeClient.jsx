@@ -92,7 +92,7 @@ export default function HomeClient({ blogPostsData, servicesData, faqsData, serv
         ]}
       />
       <Hero />
-      <TrustpilotSlider />
+      <TrustpilotSlider serverLanguage={serverLanguage} />
       <Services servicesData={servicesData} />
       
       {/* Composants chargés uniquement quand ils deviennent visibles */}

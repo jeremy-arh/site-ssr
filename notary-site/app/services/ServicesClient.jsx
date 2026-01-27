@@ -56,7 +56,7 @@ export default function ServicesClient({ servicesData, serverLanguage }) {
         </div>
       </section>
 
-      <TrustpilotSlider />
+      <TrustpilotSlider serverLanguage={serverLanguage} />
 
       <section className="py-20 px-4 sm:px-[30px] bg-white">
         <div className="max-w-[1300px] mx-auto">

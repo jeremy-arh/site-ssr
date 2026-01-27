@@ -307,15 +307,42 @@ export const translations = {
       verified: 'Verified',
       seeMore: 'See all reviews on',
       reviews: {
-        review1: 'I needed a notarized power of attorney to sell a property while I was traveling. Everything done by video call, the notary carefully verified every detail. Top.',
-        review2: 'Certified passport copy for a bank account. Done in 20 min. Perfect.',
-        review3: 'Certified translation of my transcript for an application in Sweden. Accepted without any problem.',
-        review4: 'Power of attorney sorted from my living room. Didnt have to take time off work.',
-        review5: 'My bank required a certified copy of my passport to finalize the opening of my business account. Done in one session, notary available and friendly.',
-        review6: 'Apostille for an official document, professional service.',
-        review7: 'I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.',
-        review8: 'Certified passport copy for an immigration file. Perfect.',
-        review9: 'Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.',
+        review1: {
+          headline: 'I needed a notarized power of attorney...',
+          content: 'I needed a notarized power of attorney to sell a property while I was traveling. Everything done by video call, the notary carefully verified every detail. Top.',
+        },
+        review2: {
+          headline: 'Certified passport copy for a bank...',
+          content: 'Certified passport copy for a bank account. Done in 20 min. Perfect.',
+        },
+        review3: {
+          headline: 'Certified translation of my transcript...',
+          content: 'Certified translation of my transcript for an application in Sweden. Accepted without any problem.',
+        },
+        review4: {
+          headline: 'Power of attorney sorted from my living...',
+          content: 'Power of attorney sorted from my living room. Didnt have to take time off work.',
+        },
+        review5: {
+          headline: 'My bank required a certified copy...',
+          content: 'My bank required a certified copy of my passport to finalize the opening of my business account. Done in one session, notary available and friendly.',
+        },
+        review6: {
+          headline: 'Apostille for an official document',
+          content: 'Apostille for an official document, professional service.',
+        },
+        review7: {
+          headline: 'I run a small import business and...',
+          content: 'I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.',
+        },
+        review8: {
+          headline: 'Certified passport copy for an...',
+          content: 'Certified passport copy for an immigration file. Perfect.',
+        },
+        review9: {
+          headline: 'Good service for signature...',
+          content: 'Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.',
+        },
       },
       timeAgo: {
         '1day': '1 day ago',
@@ -327,6 +354,7 @@ export const translations = {
         '8days': '8 days ago',
         '9days': '9 days ago',
       },
+      reviewsWord: 'reviews',
     },
     // Blog
     blog: {
@@ -660,15 +688,42 @@ export const translations = {
       verified: 'Vérifié',
       seeMore: 'Voir tous les avis sur',
       reviews: {
-        review1: 'J\'avais besoin d\'une procuration notariée pour vendre un bien immobilier alors que j\'étais en déplacement. Tout fait par appel vidéo, le notaire a bien vérifié chaque détail. Top.',
-        review2: 'Copie certifiée de passeport pour un compte bancaire. Fait en 20 min. Parfait.',
-        review3: 'Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.',
-        review4: 'Procuration réglée depuis mon salon. Je n\'ai pas eu à prendre de congé.',
-        review5: 'Ma banque demandait une copie certifiée de mon passeport pour finaliser l\'ouverture de mon compte pro. Fait en une session, notaire dispo et sympa.',
-        review6: 'Apostille pour un document officiel, service carré.',
-        review7: 'Je dirige une petite entreprise d\'importation et j\'avais besoin de plusieurs documents notariés pour la douane. My Notary a tout géré professionnellement et les documents ont été acceptés par les autorités de trois pays différents. Je les utiliserai certainement à nouveau.',
-        review8: 'Copie certifiée passeport pour un dossier d\'immigration. Nickel.',
-        review9: 'Bon service pour la notarisation de signature. Petit délai avant le début de l\'appel vidéo mais sinon tout s\'est bien passé.',
+        review1: {
+          headline: 'J\'avais besoin d\'une procuration notariée...',
+          content: 'J\'avais besoin d\'une procuration notariée pour vendre un bien immobilier alors que j\'étais en déplacement. Tout fait par appel vidéo, le notaire a bien vérifié chaque détail. Top.',
+        },
+        review2: {
+          headline: 'Copie certifiée de passeport pour un...',
+          content: 'Copie certifiée de passeport pour un compte bancaire. Fait en 20 min. Parfait.',
+        },
+        review3: {
+          headline: 'Traduction certifiée de mon relevé de...',
+          content: 'Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.',
+        },
+        review4: {
+          headline: 'Procuration réglée depuis mon salon...',
+          content: 'Procuration réglée depuis mon salon. Je n\'ai pas eu à prendre de congé.',
+        },
+        review5: {
+          headline: 'Ma banque demandait une copie certifiée...',
+          content: 'Ma banque demandait une copie certifiée de mon passeport pour finaliser l\'ouverture de mon compte pro. Fait en une session, notaire dispo et sympa.',
+        },
+        review6: {
+          headline: 'Apostille pour un document officiel',
+          content: 'Apostille pour un document officiel, service carré.',
+        },
+        review7: {
+          headline: 'Je dirige une petite entreprise d\'importation...',
+          content: 'Je dirige une petite entreprise d\'importation et j\'avais besoin de plusieurs documents notariés pour la douane. My Notary a tout géré professionnellement et les documents ont été acceptés par les autorités de trois pays différents. Je les utiliserai certainement à nouveau.',
+        },
+        review8: {
+          headline: 'Copie certifiée passeport pour un...',
+          content: 'Copie certifiée passeport pour un dossier d\'immigration. Nickel.',
+        },
+        review9: {
+          headline: 'Bon service pour la notarisation de...',
+          content: 'Bon service pour la notarisation de signature. Petit délai avant le début de l\'appel vidéo mais sinon tout s\'est bien passé.',
+        },
       },
       timeAgo: {
         '1day': 'Il y a 1 jour',
@@ -680,6 +735,7 @@ export const translations = {
         '8days': 'Il y a 8 jours',
         '9days': 'Il y a 9 jours',
       },
+      reviewsWord: 'avis',
     },
     blog: {
       badge: 'Notre Blog',
@@ -1020,15 +1076,42 @@ export const translations = {
       verified: 'Verificado',
       seeMore: 'Ver todas las reseñas en',
       reviews: {
-        review1: 'Necesitaba un poder notarial para vender una propiedad mientras estaba de viaje. Todo hecho por videollamada, el notario verificó cuidadosamente cada detalle. Excelente.',
-        review2: 'Copia certificada de pasaporte para una cuenta bancaria. Hecho en 20 min. Perfecto.',
-        review3: 'Traducción certificada de mi expediente académico para una solicitud en Suecia. Aceptado sin problemas.',
-        review4: 'Poder notarial resuelto desde mi salón. No tuve que tomar tiempo libre del trabajo.',
-        review5: 'Mi banco requería una copia certificada de mi pasaporte para finalizar la apertura de mi cuenta profesional. Hecho en una sesión, notario disponible y amable.',
-        review6: 'Apostilla para un documento oficial, servicio profesional.',
-        review7: 'Dirijo un pequeño negocio de importación y necesitaba varios documentos notarizados para aduanas. My Notary manejó todo profesionalmente y los documentos fueron aceptados por las autoridades de tres países diferentes. Definitivamente los usaré nuevamente.',
-        review8: 'Copia certificada de pasaporte para un expediente de inmigración. Perfecto.',
-        review9: 'Buen servicio para notarización de firmas. Hubo una pequeña espera antes de que comenzara la videollamada, pero por lo demás todo fue fluido.',
+        review1: {
+          headline: 'Necesitaba un poder notarial para...',
+          content: 'Necesitaba un poder notarial para vender una propiedad mientras estaba de viaje. Todo hecho por videollamada, el notario verificó cuidadosamente cada detalle. Excelente.',
+        },
+        review2: {
+          headline: 'Copia certificada de pasaporte para una...',
+          content: 'Copia certificada de pasaporte para una cuenta bancaria. Hecho en 20 min. Perfecto.',
+        },
+        review3: {
+          headline: 'Traducción certificada de mi expediente...',
+          content: 'Traducción certificada de mi expediente académico para una solicitud en Suecia. Aceptado sin problemas.',
+        },
+        review4: {
+          headline: 'Poder notarial resuelto desde mi salón...',
+          content: 'Poder notarial resuelto desde mi salón. No tuve que tomar tiempo libre del trabajo.',
+        },
+        review5: {
+          headline: 'Mi banco requería una copia certificada...',
+          content: 'Mi banco requería una copia certificada de mi pasaporte para finalizar la apertura de mi cuenta profesional. Hecho en una sesión, notario disponible y amable.',
+        },
+        review6: {
+          headline: 'Apostilla para un documento oficial',
+          content: 'Apostilla para un documento oficial, servicio profesional.',
+        },
+        review7: {
+          headline: 'Dirijo un pequeño negocio de importación...',
+          content: 'Dirijo un pequeño negocio de importación y necesitaba varios documentos notarizados para aduanas. My Notary manejó todo profesionalmente y los documentos fueron aceptados por las autoridades de tres países diferentes. Definitivamente los usaré nuevamente.',
+        },
+        review8: {
+          headline: 'Copia certificada de pasaporte para un...',
+          content: 'Copia certificada de pasaporte para un expediente de inmigración. Perfecto.',
+        },
+        review9: {
+          headline: 'Buen servicio para notarización de...',
+          content: 'Buen servicio para notarización de firmas. Hubo una pequeña espera antes de que comenzara la videollamada, pero por lo demás todo fue fluido.',
+        },
       },
       timeAgo: {
         '1day': 'Hace 1 día',
@@ -1040,6 +1123,7 @@ export const translations = {
         '8days': 'Hace 8 días',
         '9days': 'Hace 9 días',
       },
+      reviewsWord: 'reseñas',
     },
     blog: {
       badge: 'Nuestro Blog',
@@ -1384,15 +1468,42 @@ export const translations = {
       verified: 'Verifiziert',
       seeMore: 'Alle Bewertungen ansehen auf',
       reviews: {
-        review1: 'Ich brauchte eine notarielle Vollmacht zum Verkauf einer Immobilie, während ich unterwegs war. Alles per Videocall erledigt, der Notar hat jedes Detail sorgfältig überprüft. Top.',
-        review2: 'Beglaubigte Passkopie für ein Bankkonto. In 20 Minuten erledigt. Perfekt.',
-        review3: 'Beglaubigte Übersetzung meines Zeugnisses für eine Bewerbung in Schweden. Ohne Probleme akzeptiert.',
-        review4: 'Vollmacht von meinem Wohnzimmer aus erledigt. Musste keine Zeit von der Arbeit nehmen.',
-        review5: 'Meine Bank verlangte eine beglaubigte Kopie meines Passes zur Finalisierung der Eröffnung meines Geschäftskontos. In einer Sitzung erledigt, Notar verfügbar und freundlich.',
-        review6: 'Apostille für ein offizielles Dokument, professioneller Service.',
-        review7: 'Ich betreibe ein kleines Importgeschäft und benötigte mehrere notariell beglaubigte Dokumente für den Zoll. My Notary hat alles professionell abgewickelt und die Dokumente wurden von den Behörden in drei verschiedenen Ländern akzeptiert. Werde sie definitiv wieder verwenden.',
-        review8: 'Beglaubigte Passkopie für eine Einwanderungsakte. Perfekt.',
-        review9: 'Guter Service für die Notarisierung von Unterschriften. Gab eine kleine Wartezeit vor dem Start des Videoanrufs, aber ansonsten verlief alles reibungslos.',
+        review1: {
+          headline: 'Ich brauchte eine notarielle Vollmacht...',
+          content: 'Ich brauchte eine notarielle Vollmacht zum Verkauf einer Immobilie, während ich unterwegs war. Alles per Videocall erledigt, der Notar hat jedes Detail sorgfältig überprüft. Top.',
+        },
+        review2: {
+          headline: 'Beglaubigte Passkopie für ein Bankkonto...',
+          content: 'Beglaubigte Passkopie für ein Bankkonto. In 20 Minuten erledigt. Perfekt.',
+        },
+        review3: {
+          headline: 'Beglaubigte Übersetzung meines Zeugnisses...',
+          content: 'Beglaubigte Übersetzung meines Zeugnisses für eine Bewerbung in Schweden. Ohne Probleme akzeptiert.',
+        },
+        review4: {
+          headline: 'Vollmacht von meinem Wohnzimmer aus...',
+          content: 'Vollmacht von meinem Wohnzimmer aus erledigt. Musste keine Zeit von der Arbeit nehmen.',
+        },
+        review5: {
+          headline: 'Meine Bank verlangte eine beglaubigte...',
+          content: 'Meine Bank verlangte eine beglaubigte Kopie meines Passes zur Finalisierung der Eröffnung meines Geschäftskontos. In einer Sitzung erledigt, Notar verfügbar und freundlich.',
+        },
+        review6: {
+          headline: 'Apostille für ein offizielles Dokument',
+          content: 'Apostille für ein offizielles Dokument, professioneller Service.',
+        },
+        review7: {
+          headline: 'Ich betreibe ein kleines Importgeschäft...',
+          content: 'Ich betreibe ein kleines Importgeschäft und benötigte mehrere notariell beglaubigte Dokumente für den Zoll. My Notary hat alles professionell abgewickelt und die Dokumente wurden von den Behörden in drei verschiedenen Ländern akzeptiert. Werde sie definitiv wieder verwenden.',
+        },
+        review8: {
+          headline: 'Beglaubigte Passkopie für eine...',
+          content: 'Beglaubigte Passkopie für eine Einwanderungsakte. Perfekt.',
+        },
+        review9: {
+          headline: 'Guter Service für die Notarisierung...',
+          content: 'Guter Service für die Notarisierung von Unterschriften. Gab eine kleine Wartezeit vor dem Start des Videoanrufs, aber ansonsten verlief alles reibungslos.',
+        },
       },
       timeAgo: {
         '1day': 'Vor 1 Tag',
@@ -1404,6 +1515,7 @@ export const translations = {
         '8days': 'Vor 8 Tagen',
         '9days': 'Vor 9 Tagen',
       },
+      reviewsWord: 'Bewertungen',
     },
     blog: {
       badge: 'Unser Blog',
@@ -1740,15 +1852,42 @@ export const translations = {
       verified: 'Verificato',
       seeMore: 'Vedi tutte le recensioni su',
       reviews: {
-        review1: 'Avevo bisogno di una procura notarile per vendere una proprietà mentre ero in viaggio. Tutto fatto tramite videochiamata, il notaio ha verificato attentamente ogni dettaglio. Ottimo.',
-        review2: 'Copia certificata del passaporto per un conto bancario. Fatto in 20 minuti. Perfetto.',
-        review3: 'Traduzione certificata del mio certificato di studi per una candidatura in Svezia. Accettato senza problemi.',
-        review4: 'Procura risolta dal mio salotto. Non ho dovuto prendere permesso dal lavoro.',
-        review5: 'La mia banca richiedeva una copia certificata del mio passaporto per finalizzare l\'apertura del mio conto professionale. Fatto in una sessione, notaio disponibile e simpatico.',
-        review6: 'Apostille per un documento ufficiale, servizio professionale.',
-        review7: 'Dirigo una piccola attività di importazione e avevo bisogno di diversi documenti notarizzati per la dogana. My Notary ha gestito tutto professionalmente e i documenti sono stati accettati dalle autorità di tre paesi diversi. Li userò sicuramente di nuovo.',
-        review8: 'Copia certificata del passaporto per un fascicolo di immigrazione. Perfetto.',
-        review9: 'Buon servizio per la notarizzazione delle firme. C\'è stata una piccola attesa prima dell\'inizio della videochiamata, ma per il resto tutto è andato liscio.',
+        review1: {
+          headline: 'Avevo bisogno di una procura notarile...',
+          content: 'Avevo bisogno di una procura notarile per vendere una proprietà mentre ero in viaggio. Tutto fatto tramite videochiamata, il notaio ha verificato attentamente ogni dettaglio. Ottimo.',
+        },
+        review2: {
+          headline: 'Copia certificata del passaporto per un...',
+          content: 'Copia certificata del passaporto per un conto bancario. Fatto in 20 minuti. Perfetto.',
+        },
+        review3: {
+          headline: 'Traduzione certificata del mio certificato...',
+          content: 'Traduzione certificata del mio certificato di studi per una candidatura in Svezia. Accettato senza problemi.',
+        },
+        review4: {
+          headline: 'Procura risolta dal mio salotto...',
+          content: 'Procura risolta dal mio salotto. Non ho dovuto prendere permesso dal lavoro.',
+        },
+        review5: {
+          headline: 'La mia banca richiedeva una copia...',
+          content: 'La mia banca richiedeva una copia certificata del mio passaporto per finalizzare l\'apertura del mio conto professionale. Fatto in una sessione, notaio disponibile e simpatico.',
+        },
+        review6: {
+          headline: 'Apostille per un documento ufficiale',
+          content: 'Apostille per un documento ufficiale, servizio professionale.',
+        },
+        review7: {
+          headline: 'Dirigo una piccola attività di importazione...',
+          content: 'Dirigo una piccola attività di importazione e avevo bisogno di diversi documenti notarizzati per la dogana. My Notary ha gestito tutto professionalmente e i documenti sono stati accettati dalle autorità di tre paesi diversi. Li userò sicuramente di nuovo.',
+        },
+        review8: {
+          headline: 'Copia certificata del passaporto per un...',
+          content: 'Copia certificata del passaporto per un fascicolo di immigrazione. Perfetto.',
+        },
+        review9: {
+          headline: 'Buon servizio per la notarizzazione...',
+          content: 'Buon servizio per la notarizzazione delle firme. C\'è stata una piccola attesa prima dell\'inizio della videochiamata, ma per il resto tutto è andato liscio.',
+        },
       },
       timeAgo: {
         '1day': '1 giorno fa',
@@ -1760,6 +1899,7 @@ export const translations = {
         '8days': '8 giorni fa',
         '9days': '9 giorni fa',
       },
+      reviewsWord: 'recensioni',
     },
     blog: {
       badge: 'Il Nostro Blog',
@@ -2104,15 +2244,42 @@ export const translations = {
       verified: 'Verificado',
       seeMore: 'Ver todas as avaliações em',
       reviews: {
-        review1: 'Precisava de uma procuração notarial para vender uma propriedade enquanto estava viajando. Tudo feito por videoconferência, o tabelião verificou cuidadosamente cada detalhe. Excelente.',
-        review2: 'Cópia certificada do passaporte para uma conta bancária. Feito em 20 min. Perfeito.',
-        review3: 'Tradução certificada do meu histórico escolar para uma candidatura na Suécia. Aceito sem problemas.',
-        review4: 'Procuração resolvida da minha sala de estar. Não precisei tirar folga do trabalho.',
-        review5: 'Meu banco exigia uma cópia certificada do meu passaporte para finalizar a abertura da minha conta profissional. Feito em uma sessão, tabelião disponível e simpático.',
-        review6: 'Apostila para um documento oficial, serviço profissional.',
-        review7: 'Dirijo um pequeno negócio de importação e precisava de vários documentos notarizados para a alfândega. My Notary lidou com tudo profissionalmente e os documentos foram aceitos pelas autoridades de três países diferentes. Definitivamente vou usá-los novamente.',
-        review8: 'Cópia certificada do passaporte para um processo de imigração. Perfeito.',
-        review9: 'Bom serviço para notarização de assinaturas. Houve uma pequena espera antes do início da videoconferência, mas, caso contrário, tudo correu bem.',
+        review1: {
+          headline: 'Precisava de uma procuração notarial para...',
+          content: 'Precisava de uma procuração notarial para vender uma propriedade enquanto estava viajando. Tudo feito por videoconferência, o tabelião verificou cuidadosamente cada detalhe. Excelente.',
+        },
+        review2: {
+          headline: 'Cópia certificada do passaporte para uma...',
+          content: 'Cópia certificada do passaporte para uma conta bancária. Feito em 20 min. Perfeito.',
+        },
+        review3: {
+          headline: 'Tradução certificada do meu histórico...',
+          content: 'Tradução certificada do meu histórico escolar para uma candidatura na Suécia. Aceito sem problemas.',
+        },
+        review4: {
+          headline: 'Procuração resolvida da minha sala de...',
+          content: 'Procuração resolvida da minha sala de estar. Não precisei tirar folga do trabalho.',
+        },
+        review5: {
+          headline: 'Meu banco exigia uma cópia certificada...',
+          content: 'Meu banco exigia uma cópia certificada do meu passaporte para finalizar a abertura da minha conta profissional. Feito em uma sessão, tabelião disponível e simpático.',
+        },
+        review6: {
+          headline: 'Apostila para um documento oficial',
+          content: 'Apostila para um documento oficial, serviço profissional.',
+        },
+        review7: {
+          headline: 'Dirijo um pequeno negócio de importação...',
+          content: 'Dirijo um pequeno negócio de importação e precisava de vários documentos notarizados para a alfândega. My Notary lidou com tudo profissionalmente e os documentos foram aceitos pelas autoridades de três países diferentes. Definitivamente vou usá-los novamente.',
+        },
+        review8: {
+          headline: 'Cópia certificada do passaporte para um...',
+          content: 'Cópia certificada do passaporte para um processo de imigração. Perfeito.',
+        },
+        review9: {
+          headline: 'Bom serviço para notarização de assinaturas...',
+          content: 'Bom serviço para notarização de assinaturas. Houve uma pequena espera antes do início da videoconferência, mas, caso contrário, tudo correu bem.',
+        },
       },
       timeAgo: {
         '1day': 'Há 1 dia',
@@ -2124,6 +2291,7 @@ export const translations = {
         '8days': 'Há 8 dias',
         '9days': 'Há 9 dias',
       },
+      reviewsWord: 'avaliações',
     },
     blog: {
       badge: 'Nosso Blog',
