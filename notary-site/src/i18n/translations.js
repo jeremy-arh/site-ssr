@@ -272,10 +272,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarize and Apostille Your Documents 100% Online',
-      defaultDescription: 'Notarize and apostille your documents 100% online. Secure, legally valid, and recognized internationally through the Hague Convention. Book your appointment in minutes.',
-      defaultOgTitle: 'My notary - Notarize and Apostille Your Documents 100% Online',
-      defaultOgDescription: 'Notarize and apostille your documents 100% online. Secure, legally valid, and recognized internationally through the Hague Convention.',
+      defaultTitle: 'My notary - Notarize Your Documents Online in Minutes',
+      defaultDescription: 'Fast, secure, and legally recognized worldwide. Complete your notarization entirely online in just a few minutes.',
+      defaultOgTitle: 'My notary - Notarize Your Documents Online in Minutes',
+      defaultOgDescription: 'Fast, secure, and legally recognized worldwide. Complete your notarization entirely online in just a few minutes.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Stay informed about notarization, legal documents, apostilles, and industry news',
       servicesTitle: 'Our Services - My notary',
@@ -552,10 +552,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarisez et Apostillez Vos Documents 100% En Ligne',
-      defaultDescription: 'Notarisez et apostillez vos documents 100% en ligne. Sécurisé, légalement valide et reconnu internationalement grâce à la Convention de La Haye. Réservez votre rendez-vous en quelques minutes.',
-      defaultOgTitle: 'My notary - Notarisez et Apostillez Vos Documents 100% En Ligne',
-      defaultOgDescription: 'Notarisez et apostillez vos documents 100% en ligne. Sécurisé, légalement valide et reconnu internationalement grâce à la Convention de La Haye.',
+      defaultTitle: 'My notary - Notariez Vos Documents en Ligne en Quelques Minutes',
+      defaultDescription: 'Rapide, sécurisé et reconnu légalement dans le monde entier. Effectuez votre notarisation entièrement en ligne en quelques minutes seulement.',
+      defaultOgTitle: 'My notary - Notariez Vos Documents en Ligne en Quelques Minutes',
+      defaultOgDescription: 'Rapide, sécurisé et reconnu légalement dans le monde entier. Effectuez votre notarisation entièrement en ligne en quelques minutes seulement.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Restez informé sur la notarisation, les documents légaux, les apostilles et les actualités du secteur',
       servicesTitle: 'Nos Services - My notary',
@@ -940,10 +940,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarice y Apostille Sus Documentos 100% En Línea',
-      defaultDescription: 'Notarice y apostille sus documentos 100% en línea. Seguro, legalmente válido y reconocido internacionalmente a través de la Convención de La Haya. Reserve su cita en minutos.',
-      defaultOgTitle: 'My notary - Notarice y Apostille Sus Documentos 100% En Línea',
-      defaultOgDescription: 'Notarice y apostille sus documentos 100% en línea. Seguro, legalmente válido y reconocido internacionalmente a través de la Convención de La Haya.',
+      defaultTitle: 'My notary - Notarice Sus Documentos en Línea en Minutos',
+      defaultDescription: 'Rápido, seguro y legalmente reconocido en todo el mundo. Complete su notarización completamente en línea en solo unos minutos.',
+      defaultOgTitle: 'My notary - Notarice Sus Documentos en Línea en Minutos',
+      defaultOgDescription: 'Rápido, seguro y legalmente reconocido en todo el mundo. Complete su notarización completamente en línea en solo unos minutos.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Manténgase informado sobre notarización, documentos legales, apostillas y noticias del sector',
       servicesTitle: 'Nuestros Servicios - My notary',
@@ -1332,10 +1332,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarisieren und Apostillieren Sie Ihre Dokumente 100% Online',
-      defaultDescription: 'Notarisieren und apostillieren Sie Ihre Dokumente 100% online. Sicher, rechtlich gültig und international anerkannt durch das Haager Übereinkommen. Buchen Sie Ihren Termin in wenigen Minuten.',
-      defaultOgTitle: 'My notary - Notarisieren und Apostillieren Sie Ihre Dokumente 100% Online',
-      defaultOgDescription: 'Notarisieren und apostillieren Sie Ihre Dokumente 100% online. Sicher, rechtlich gültig und international anerkannt durch das Haager Übereinkommen.',
+      defaultTitle: 'My notary - Beglaubigen Sie Ihre Dokumente Online in Wenigen Minuten',
+      defaultDescription: 'Schnell, sicher und weltweit rechtlich anerkannt. Erledigen Sie Ihre Beglaubigung vollständig online in nur wenigen Minuten.',
+      defaultOgTitle: 'My notary - Beglaubigen Sie Ihre Dokumente Online in Wenigen Minuten',
+      defaultOgDescription: 'Schnell, sicher und weltweit rechtlich anerkannt. Erledigen Sie Ihre Beglaubigung vollständig online in nur wenigen Minuten.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Bleiben Sie informiert über Notarisierung, Rechtsdokumente, Apostillen und Branchennachrichten',
       servicesTitle: 'Unsere Dienstleistungen - My notary',
@@ -1724,10 +1724,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarizza e Apostilla i Tuoi Documenti 100% Online',
-      defaultDescription: 'Notarizza e apostilla i tuoi documenti 100% online. Sicuro, legalmente valido e riconosciuto a livello internazionale attraverso la Convenzione dell\'Aia. Prenota il tuo appuntamento in pochi minuti.',
-      defaultOgTitle: 'My notary - Notarizza e Apostilla i Tuoi Documenti 100% Online',
-      defaultOgDescription: 'Notarizza e apostilla i tuoi documenti 100% online. Sicuro, legalmente valido e riconosciuto a livello internazionale attraverso la Convenzione dell\'Aia.',
+      defaultTitle: 'My notary - Notarizza i Tuoi Documenti Online in Pochi Minuti',
+      defaultDescription: 'Veloce, sicuro e legalmente riconosciuto in tutto il mondo. Completa la tua notarizzazione interamente online in pochi minuti.',
+      defaultOgTitle: 'My notary - Notarizza i Tuoi Documenti Online in Pochi Minuti',
+      defaultOgDescription: 'Veloce, sicuro e legalmente riconosciuto in tutto il mondo. Completa la tua notarizzazione interamente online in pochi minuti.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Resta informato su notarizzazione, documenti legali, apostille e notizie del settore',
       servicesTitle: 'I Nostri Servizi - My notary',
@@ -2108,10 +2108,10 @@ export const translations = {
     // SEO Meta Tags
     seo: {
       siteName: 'My notary',
-      defaultTitle: 'My notary - Notarize e Apostile Seus Documentos 100% Online',
-      defaultDescription: 'Notarize e apostile seus documentos 100% online. Seguro, legalmente válido e reconhecido internacionalmente através da Convenção de Haia. Agende sua consulta em minutos.',
-      defaultOgTitle: 'My notary - Notarize e Apostile Seus Documentos 100% Online',
-      defaultOgDescription: 'Notarize e apostile seus documentos 100% online. Seguro, legalmente válido e reconhecido internacionalmente através da Convenção de Haia.',
+      defaultTitle: 'My notary - Notarize Seus Documentos Online em Poucos Minutos',
+      defaultDescription: 'Rápido, seguro e legalmente reconhecido em todo o mundo. Conclua sua notarização completamente online em apenas alguns minutos.',
+      defaultOgTitle: 'My notary - Notarize Seus Documentos Online em Poucos Minutos',
+      defaultOgDescription: 'Rápido, seguro e legalmente reconhecido em todo o mundo. Conclua sua notarização completamente online em apenas alguns minutos.',
       blogTitle: 'Blog - My notary',
       blogDescription: 'Mantenha-se informado sobre notarização, documentos legais, apostilas e notícias do setor',
       servicesTitle: 'Nossos Serviços - My notary',
