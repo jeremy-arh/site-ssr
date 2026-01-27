@@ -19,7 +19,7 @@ const TrustpilotSlider = () => {
       reviewCount: 109,
       headline: "Javais besoin dune procuration notariée…",
       content: "Javais besoin dune procuration notariée pour vendre un bien immobilier alors que jétais en déplacement. Tout fait par appel vidéo, le notaire a bien vérifié chaque détail. Top.",
-      avatar: "https://ui-avatars.com/api/?name=Kyle+Fournier&background=random&size=80"
+      avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/60ec27fd-fb21-4674-afc5-e59b20a09600/f=webp,q=80"
     },
     {
       id: 2,
@@ -29,7 +29,7 @@ const TrustpilotSlider = () => {
       reviewCount: 26,
       headline: "Certified passport copy for a bank…",
       content: "Certified passport copy for a bank account. Done in 20 min. Perfect.",
-      avatar: "https://ui-avatars.com/api/?name=Julia+Booker&background=random&size=80"
+      avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/77565b98-8a68-4d82-81c2-83cfd8baeb00/f=webp,q=80"
     },
     {
       id: 3,
@@ -39,7 +39,7 @@ const TrustpilotSlider = () => {
       reviewCount: 4,
       headline: "Traduction certifiée de mon relevé de…",
       content: "Traduction certifiée de mon relevé de notes pour une candidature en Suède. Accepté sans problème.",
-      avatar: "https://ui-avatars.com/api/?name=Julie&background=random&size=80"
+      avatar: "https://ui-avatars.com/api/?name=Julie&background=3B82F6&color=fff&size=80&bold=true"
     },
     {
       id: 4,
@@ -49,7 +49,7 @@ const TrustpilotSlider = () => {
       reviewCount: 36,
       headline: "Power of attorney sorted from my living…",
       content: "Power of attorney sorted from my living room. Didnt have to take time off work.",
-      avatar: "https://ui-avatars.com/api/?name=Robbo&background=random&size=80"
+      avatar: "https://ui-avatars.com/api/?name=Robbo&background=10B981&color=fff&size=80&bold=true"
     },
     {
       id: 5,
@@ -59,7 +59,7 @@ const TrustpilotSlider = () => {
       reviewCount: 2,
       headline: "Ma banque demandait une copie certifiée…",
       content: "Ma banque demandait une copie certifiée de mon passeport pour finaliser louverture de mon compte pro. Fait en une session, notaire dispo et sympa.",
-      avatar: "https://ui-avatars.com/api/?name=Gabriele+Angelotti&background=random&size=80"
+      avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d631b594-34de-424a-fa38-cd4502366600/f=webp,q=80"
     },
     {
       id: 6,
@@ -69,7 +69,7 @@ const TrustpilotSlider = () => {
       reviewCount: 71,
       headline: "Apostille pour un document officiel",
       content: "Apostille pour un document officiel, service carré.",
-      avatar: "https://ui-avatars.com/api/?name=Helen+White&background=random&size=80"
+      avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/8a0a2881-30fa-4f23-a460-471be870d700/f=webp,q=80"
     },
     {
       id: 7,
@@ -79,7 +79,7 @@ const TrustpilotSlider = () => {
       reviewCount: 37,
       headline: "I run a small import business and…",
       content: "I run a small import business and needed several documents notarized for customs. My Notary handled everything professionally and the documents were accepted by authorities in three different countries. Will definitely be using them again.",
-      avatar: "https://ui-avatars.com/api/?name=Romano&background=random&size=80"
+      avatar: "https://ui-avatars.com/api/?name=Romano&background=6366F1&color=fff&size=80&bold=true"
     },
     {
       id: 8,
@@ -89,7 +89,7 @@ const TrustpilotSlider = () => {
       reviewCount: 120,
       headline: "Copie certifiée passeport pour un…",
       content: "Copie certifiée passeport pour un dossier dimmigration. Nickel.",
-      avatar: "https://ui-avatars.com/api/?name=Denis+Dubrovin&background=random&size=80"
+      avatar: "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/23712022-5064-4860-3253-b2d73119f100/f=webp,q=80"
     },
     {
       id: 9,
@@ -99,7 +99,7 @@ const TrustpilotSlider = () => {
       reviewCount: 140,
       headline: "Good service for signature…",
       content: "Good service for signature notarization. Had a small wait before the video call started but otherwise smooth.",
-      avatar: "https://ui-avatars.com/api/?name=Ulvi&background=random&size=80"
+      avatar: "https://ui-avatars.com/api/?name=Ulvi&background=F97316&color=fff&size=80&bold=true"
     },
   ];
 
@@ -201,7 +201,7 @@ const TrustpilotSlider = () => {
                 key={`${review.id}-${index}`}
                 className="w-[320px] md:w-[380px] flex-shrink-0 flex"
               >
-                <div className="bg-white rounded-xl p-5 h-full border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col">
+                <div className="bg-white rounded-xl p-5 h-full flex flex-col">
                   {/* Header avec avatar et infos auteur */}
                   <div className="flex items-start gap-3 mb-3">
                     {/* Avatar */}
@@ -220,18 +220,14 @@ const TrustpilotSlider = () => {
                     </div>
                   </div>
 
-                  {/* Étoiles Trustpilot */}
-                  <div className="flex items-center gap-0.5 mb-3">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <svg
-                        key={star}
-                        className={`w-5 h-5 ${star <= review.rating ? 'text-[#00b67a]' : 'text-gray-300'}`}
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                      >
-                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                      </svg>
-                    ))}
+                  {/* Étoiles Trustpilot - image officielle */}
+                  <div className="mb-3">
+                    <img
+                      src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/ec7e0448-41ea-4fef-ee59-b617ab362f00/public"
+                      alt="5 stars"
+                      className="h-5 w-auto"
+                      loading="lazy"
+                    />
                   </div>
 
                   {/* Headline */}

@@ -12,6 +12,10 @@ export const useTranslation = (serverLanguage) => {
   const language = serverLanguage || contextLanguage;
 
   const t = (key, fallback = '') => {
+    // Protection contre les clés undefined ou null
+    if (!key || typeof key !== 'string') {
+      return fallback || '';
+    }
     const keys = key.split('.');
     let value = translations[language];
 
