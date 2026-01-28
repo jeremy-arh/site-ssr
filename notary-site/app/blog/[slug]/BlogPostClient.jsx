@@ -31,6 +31,8 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { insertCTAsInContent } from '@/utils/insertCTAsInContent'
 import TableOfContents from '@/components/TableOfContents'
 import MobileCTA from '@/components/MobileCTA'
+import { trackCTAToForm } from '@/utils/gtm'
+import { usePathname } from 'next/navigation'
 
 export default function BlogPostClient({ initialPost, initialRelatedPosts, slug, serverLanguage }) {
   // Les données sont déjà pré-formatées côté serveur
@@ -44,6 +46,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
   const { currency } = useCurrency()
   const { getLocalizedPath } = useLanguage()
   const { t } = useTranslation(serverLanguage)
+  const pathname = usePathname()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -62,6 +65,33 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
       })
     }
   }, [post])
+
+  // Ajouter le tracking GTM aux CTA du blog après le rendu
+  useEffect(() => {
+    if (!contentRef.current) return
+
+    const blogCTALinks = contentRef.current.querySelectorAll('.blog-cta-link')
+    
+    const handleCTAClick = (e) => {
+      const link = e.currentTarget
+      const ctaLocation = link.getAttribute('data-cta-location') || 'blog_content'
+      const ctaText = link.getAttribute('data-cta-text') || t('nav.notarizeNow')
+      const formUrl = link.getAttribute('data-form-url') || getFormUrl(currency, null)
+      
+      // Track GTM event (uniquement sur pages non-services)
+      trackCTAToForm(ctaLocation, pathname, ctaText, formUrl, `blog_cta_${ctaLocation}`, null, currency)
+    }
+
+    blogCTALinks.forEach(link => {
+      link.addEventListener('click', handleCTAClick)
+    })
+
+    return () => {
+      blogCTALinks.forEach(link => {
+        link.removeEventListener('click', handleCTAClick)
+      })
+    }
+  }, [contentWithCTAs, pathname, currency, t])
 
   useEffect(() => {
     if (!post?.content || typeof DOMParser === 'undefined') {
@@ -165,7 +195,7 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
             <p class="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
               ${ctaDescription}
             </p>
-            <a href="${formUrl}" class="primary-cta text-lg">
+            <a href="${formUrl}" class="primary-cta blog-cta-link text-lg" data-cta-location="blog_content" data-cta-text="${ctaButtonText}" data-form-url="${formUrl}">
               ${arrowIcon}
               <span class="btn-text inline-block">${ctaButtonText}</span>
             </a>

@@ -20,7 +20,7 @@ import { useLanguage } from '@/contexts/LanguageContext'
 import PriceDisplay from '@/components/PriceDisplay'
 import { fuzzySearchServices } from '@/utils/fuzzySearch'
 import dynamic from 'next/dynamic'
-import { trackCTAToForm, trackCTAToFormOnService } from '@/utils/gtm'
+import { trackCTAToFormOnService } from '@/utils/gtm'
 
 // Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
 import HowItWorks from '@/components/HowItWorks'
@@ -690,8 +690,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   destination,
                   elementId: 'service_detail_hero'
                 })
-                // Track GTM event (uniquement sur pages non-services)
-                trackCTAToForm('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
                 // Track GTM event (uniquement sur pages services)
                 trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
               }}
@@ -869,8 +867,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                         destination,
                         elementId: 'service_detail_pricing'
                       })
-                      // Track GTM event (uniquement sur pages non-services)
-                      trackCTAToForm('service_detail_pricing', pathname, ctaText, destination, 'service_detail_pricing', service?.service_id || serviceId, currency)
                       // Track GTM event (uniquement sur pages services)
                       trackCTAToFormOnService('service_detail_pricing', pathname, ctaText, destination, 'service_detail_pricing', service?.service_id || serviceId, currency)
                     }}
@@ -948,7 +944,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                       destination: formUrl,
                       elementId: 'service_detail_features_section_1_cta'
                     })
-                    trackCTAToForm('service_detail_features_section_1', pathname, ctaText, formUrl, 'service_detail_features_section_1_cta', service?.service_id || serviceId, currency)
+                    // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_1', pathname, ctaText, formUrl, 'service_detail_features_section_1_cta', service?.service_id || serviceId, currency)
                   }}
                 >
@@ -998,7 +994,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                       destination: formUrl,
                       elementId: 'service_detail_features_section_2_cta'
                     })
-                    trackCTAToForm('service_detail_features_section_2', pathname, ctaText, formUrl, 'service_detail_features_section_2_cta', service?.service_id || serviceId, currency)
+                    // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_2', pathname, ctaText, formUrl, 'service_detail_features_section_2_cta', service?.service_id || serviceId, currency)
                   }}
                 >
@@ -1078,7 +1074,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                       destination: formUrl,
                       elementId: 'service_detail_features_section_3_cta'
                     })
-                    trackCTAToForm('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
+                    // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
                   }}
                 >
