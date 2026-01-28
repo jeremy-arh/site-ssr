@@ -681,7 +681,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               id="hero-cta"
               href={formUrl} 
               className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault()
                 const ctaCopy = service.cta || t('nav.notarizeNow')
                 const destination = formUrl
                 
@@ -692,6 +693,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 })
                 // Track GTM event (uniquement sur pages services)
                 trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
+                // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                setTimeout(() => {
+                  window.location.href = destination
+                }, 100)
               }}
             >
               <IconOpenNew />
@@ -859,7 +864,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   {/* CTA Button - Simplifié sans animations coûteuses */}
                   <a
                     href={formUrl}
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault()
                       const destination = formUrl
                       const ctaText = 'Upload my document'
                       trackWithAnalytics('cta', 'service_detail_pricing', service?.service_id || serviceId, pathname, {
@@ -869,6 +875,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                       })
                       // Track GTM event (uniquement sur pages services)
                       trackCTAToFormOnService('service_detail_pricing', pathname, ctaText, destination, 'service_detail_pricing', service?.service_id || serviceId, currency)
+                      // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                      setTimeout(() => {
+                        window.location.href = destination
+                      }, 100)
                     }}
                     className="block w-full text-sm sm:text-base md:text-lg px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 text-white font-bold rounded-lg md:rounded-xl transition-colors duration-200 text-center bg-black hover:bg-gray-900 shadow-lg cursor-pointer"
                   >
@@ -894,7 +904,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             <div className="flex items-center justify-center order-2 lg:order-1">
               <div className="w-full max-w-md">
                 <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/8516862d-ec24-487f-e5c8-0d3adf0dbd00/f=webp,q=30"
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3f9a44ae-57fe-4ec8-6f73-f936dd190a00/f=webp,q=80"
                   alt="What You Receive After Your Notary Appointment"
                   className="w-full h-auto rounded-lg object-cover shadow-xl"
                   loading="lazy"
@@ -937,7 +947,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 <a
                   href={formUrl}
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     const ctaText = 'Start your notarization'
                     trackWithAnalytics('cta', 'service_detail_features_section_1', service?.service_id || serviceId, pathname, {
                       ctaText: ctaText,
@@ -946,6 +957,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     })
                     // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_1', pathname, ctaText, formUrl, 'service_detail_features_section_1_cta', service?.service_id || serviceId, currency)
+                    // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                    setTimeout(() => {
+                      window.location.href = formUrl
+                    }, 100)
                   }}
                 >
                   <span>Start your notarization</span>
@@ -987,7 +1002,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 <a
                   href={formUrl}
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     const ctaText = 'Start your notarization'
                     trackWithAnalytics('cta', 'service_detail_features_section_2', service?.service_id || serviceId, pathname, {
                       ctaText: ctaText,
@@ -996,6 +1012,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     })
                     // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_2', pathname, ctaText, formUrl, 'service_detail_features_section_2_cta', service?.service_id || serviceId, currency)
+                    // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                    setTimeout(() => {
+                      window.location.href = formUrl
+                    }, 100)
                   }}
                 >
                   <span>Start your notarization</span>
@@ -1067,7 +1087,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 <a
                   href={formUrl}
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     const ctaText = 'Start your notarization'
                     trackWithAnalytics('cta', 'service_detail_features_section_3', service?.service_id || serviceId, pathname, {
                       ctaText: ctaText,
@@ -1076,6 +1097,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     })
                     // Track GTM event (uniquement sur pages services)
                     trackCTAToFormOnService('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
+                    // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                    setTimeout(() => {
+                      window.location.href = formUrl
+                    }, 100)
                   }}
                 >
                   <span>Start your notarization</span>
