@@ -36,7 +36,7 @@ const StructuredData = ({
   const organizationData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'My notary',
+    name: 'My Notary',
     alternateName: 'mynotary.io',
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
@@ -52,6 +52,12 @@ const StructuredData = ({
       contactType: 'Customer Service',
       email: 'support@mynotary.io',
       availableLanguage: ['en', 'fr', 'es', 'de', 'it', 'pt'],
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.7',
+      reviewCount: '10',
+      url: 'https://www.trustpilot.com/review/mynotary.io',
     },
     sameAs: [
       // Ajouter les réseaux sociaux si disponibles
@@ -89,14 +95,36 @@ const StructuredData = ({
               })),
             },
           });
-        } else {
-          // Pour les autres types, traitement standard
+        } else if (item.type === 'BreadcrumbList' && item.data && item.data.items && Array.isArray(item.data.items)) {
+          // Traitement spécial pour BreadcrumbList
           scripts.push({
-            type: item.type || 'Thing',
+            type: 'BreadcrumbList',
             data: {
               '@context': 'https://schema.org',
-              ...item.data,
+              '@type': 'BreadcrumbList',
+              itemListElement: item.data.items.map((breadcrumbItem, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                name: breadcrumbItem.name,
+                item: breadcrumbItem.url ? `${baseUrl}${breadcrumbItem.url}` : getCanonicalUrl(pathname),
+              })),
             },
+          });
+        } else {
+          // Pour les autres types, traitement standard avec vérification de @type
+          const schemaData = {
+            '@context': 'https://schema.org',
+            ...item.data,
+          };
+          
+          // S'assurer que @type est présent si un type est spécifié
+          if (item.type && !schemaData['@type']) {
+            schemaData['@type'] = item.type;
+          }
+          
+          scripts.push({
+            type: item.type || 'Thing',
+            data: schemaData,
           });
         }
       });
