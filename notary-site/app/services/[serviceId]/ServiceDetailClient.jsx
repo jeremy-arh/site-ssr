@@ -614,7 +614,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full overflow-x-hidden max-w-full">
       <SEOHead
         title={service.meta_title || service.name || t('serviceDetail.defaultTitle')}
         description={service.meta_description || service.short_description || service.description || ''}
@@ -648,74 +648,79 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         ]}
       />
       {/* Hero Section - Deux colonnes : texte à gauche, image à droite */}
-      <section data-hero className="relative flex flex-col lg:flex-row lg:min-h-screen overflow-x-hidden">
+      <section data-hero className="relative flex flex-col lg:flex-row overflow-x-hidden w-full max-w-full">
         {/* Colonne gauche - Texte sur fond beige, centré verticalement */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16 lg:py-24 min-h-[calc(100vh-80px)] lg:h-full" style={{ backgroundColor: '#F7F5F2' }}>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
-            {service.page_h1 || service.name}
-          </h1>
+        <div 
+          className="w-full lg:w-1/2 flex flex-col items-start px-6 sm:px-12 lg:px-16 py-16 lg:py-0 service-hero-left-column" 
+          style={{ backgroundColor: '#F7F5F2' }}
+        >
+          <div className="w-full">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
+              {service.page_h1 || service.name}
+            </h1>
 
-          <p className="text-base sm:text-lg text-gray-700 mb-6 lg:mb-8 leading-relaxed">
-            {service.short_description || service.description}
-          </p>
+            <p className="text-base sm:text-lg text-gray-700 mb-6 lg:mb-8 leading-relaxed">
+              {service.short_description || service.description}
+            </p>
 
-          <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
-            <a 
-              id="hero-cta"
-              href={formUrl} 
-              className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
-              onClick={(e) => {
-                e.preventDefault()
-                const ctaCopy = service.cta || t('nav.notarizeNow')
-                const destination = formUrl
-                
-                trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
-                  ctaText: ctaCopy,
-                  destination,
-                  elementId: 'service_detail_hero'
-                })
-                // Track GTM event (uniquement sur pages services)
-                trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
-                // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
-                setTimeout(() => {
-                  window.location.href = destination
-                }, 100)
-              }}
-            >
-              <IconOpenNew />
-              <span className="btn-text inline-block">
-                {service.cta || t('nav.notarizeNow')}
-              </span>
-            </a>
-            {ctaPrice && (
-              <div className="text-gray-900 flex items-center gap-1">
-                <span className="text-base font-semibold">{ctaPrice}</span>
-                <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+            <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
+              <a 
+                id="hero-cta"
+                href={formUrl} 
+                className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                onClick={(e) => {
+                  e.preventDefault()
+                  const ctaCopy = service.cta || t('nav.notarizeNow')
+                  const destination = formUrl
+                  
+                  trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                    ctaText: ctaCopy,
+                    destination,
+                    elementId: 'service_detail_hero'
+                  })
+                  // Track GTM event (uniquement sur pages services)
+                  trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
+                  // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
+                  setTimeout(() => {
+                    window.location.href = destination
+                  }, 100)
+                }}
+              >
+                <IconOpenNew />
+                <span className="btn-text inline-block">
+                  {service.cta || t('nav.notarizeNow')}
+                </span>
+              </a>
+              {ctaPrice && (
+                <div className="text-gray-900 flex items-center gap-1">
+                  <span className="text-base font-semibold">{ctaPrice}</span>
+                  <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+                </div>
+              )}
+            </div>
+
+            {/* Features */}
+            <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
+              <div className="flex items-center gap-2">
+                <IconWorld />
+                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
               </div>
-            )}
-          </div>
 
-          {/* Features */}
-          <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
-            <div className="flex items-center gap-2">
-              <IconWorld />
-              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
-            </div>
+              <div className="flex items-center gap-2">
+                <IconFlash />
+                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
+              </div>
 
-            <div className="flex items-center gap-2">
-              <IconFlash />
-              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <IconLock />
-              <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+              <div className="flex items-center gap-2">
+                <IconLock />
+                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Colonne droite - Image (masquée sur mobile, visible uniquement sur lg+) */}
-        <div className="hidden lg:flex w-1/2 relative" style={{ minHeight: '100%' }}>
+        <div className="hidden lg:flex w-1/2 relative service-hero-right-column">
           <img
             src={HERO_IMG_RIGHT}
             alt=""
@@ -729,7 +734,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
 
       {/* Pricing Section - Two Column Layout */}
       <section
-        className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-[30px] py-8 sm:py-12 md:py-16 relative"
+        className="min-h-screen flex items-center justify-center px-4 sm:px-6 md:px-8 lg:px-[30px] py-8 sm:py-12 md:py-16 relative overflow-x-hidden w-full max-w-full"
         style={{ backgroundColor: '#F7F5F2' }}
       >
         <div className="max-w-[1300px] w-full mx-auto">
@@ -879,8 +884,11 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         </div>
       </section>
 
+      {/* Chat CTA Section */}
+      <ChatCTA />
+
       {/* Features Section - Alternating Image/Content Layout */}
-      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white">
+      <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white overflow-x-hidden w-full max-w-full">
         <div className="max-w-[1300px] mx-auto space-y-16 md:space-y-20">
           
           {/* Section 1: What You Receive After Your Notary Appointment - Image Left, Content Right */}
@@ -1034,14 +1042,11 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       </section>
 
       {/* What is Section - content-visibility pour optimisation */}
-      <section className="py-20 px-[30px] bg-gray-50 content-visibility-auto">
+      <section className="py-20 px-[30px] bg-gray-50 content-visibility-auto overflow-x-hidden w-full max-w-full">
         <div className="max-w-[1300px] mx-auto">
           <WhatIsContent service={service} t={t} />
         </div>
       </section>
-
-      {/* Chat CTA Section */}
-      <ChatCTA />
 
       {/* How It Works Section */}
       <HowItWorks />
