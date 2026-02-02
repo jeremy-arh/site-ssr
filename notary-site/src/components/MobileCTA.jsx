@@ -37,7 +37,7 @@ const IconOpenNew = memo(() => (
   </svg>
 ));
 
-const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
+const MobileCTA = memo(({ ctaText = null, price, priceUsd = null, priceGbp = null, serviceId = null }) => {
   const { t } = useTranslation();
   const pathname = usePathname();
   const defaultCtaText = ctaText || t('nav.notarizeNow');
@@ -113,12 +113,23 @@ const MobileCTA = memo(({ ctaText = null, price, serviceId = null }) => {
   }, [checkMenuState]);
 
   useEffect(() => {
-    if (price) {
-      formatPrice(price).then(setFormattedPrice);
-    } else {
+    if (!price) {
       setFormattedPrice('');
+      return;
     }
-  }, [price, formatPrice]);
+    
+    // EUR, USD, GBP = prix fixes depuis la DB
+    if (currency === 'EUR') {
+      setFormattedPrice(`${price}€`);
+    } else if (currency === 'USD' && priceUsd != null) {
+      setFormattedPrice(`$${Number(priceUsd).toFixed(2)}`);
+    } else if (currency === 'GBP' && priceGbp != null) {
+      setFormattedPrice(`£${Number(priceGbp).toFixed(2)}`);
+    } else {
+      // Autres devises = conversion dynamique
+      formatPrice(price).then(setFormattedPrice);
+    }
+  }, [price, priceUsd, priceGbp, currency, formatPrice]);
 
   return (
     <div

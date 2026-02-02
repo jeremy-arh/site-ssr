@@ -57,13 +57,24 @@ const CTAPopup = () => {
   const { service } = useService(serviceId);
 
   // Update price when service or currency changes
+  // EUR, USD, GBP = prix fixes depuis la DB
   useEffect(() => {
-    if (service?.base_price) {
-      formatPrice(service.base_price).then(setCtaPrice);
-    } else {
+    if (!service?.base_price) {
       setCtaPrice('');
+      return;
     }
-  }, [service?.base_price, formatPrice, currency]);
+    
+    if (currency === 'EUR') {
+      setCtaPrice(`${service.base_price}€`);
+    } else if (currency === 'USD' && service.price_usd != null) {
+      setCtaPrice(`$${Number(service.price_usd).toFixed(2)}`);
+    } else if (currency === 'GBP' && service.price_gbp != null) {
+      setCtaPrice(`£${Number(service.price_gbp).toFixed(2)}`);
+    } else {
+      // Autres devises = conversion dynamique
+      formatPrice(service.base_price).then(setCtaPrice);
+    }
+  }, [service?.base_price, service?.price_usd, service?.price_gbp, formatPrice, currency]);
 
   // Prevent body scroll when popup is visible
   useEffect(() => {

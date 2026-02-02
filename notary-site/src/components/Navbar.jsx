@@ -228,6 +228,8 @@ const Navbar = memo(() => {
   const [_isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
+  const [servicePriceUsd, setServicePriceUsd] = useState(null);
+  const [servicePriceGbp, setServicePriceGbp] = useState(null);
   const [_formattedPrice, setFormattedPrice] = useState('');
   const [currentServiceId, setCurrentServiceId] = useState(null);
   const pathname = usePathname();
@@ -408,28 +410,44 @@ const Navbar = memo(() => {
       const serviceData = servicesData.find(s => s.service_id === serviceId);
       if (serviceData) {
         const formattedService = formatServiceForLanguage(serviceData, language);
-              setCtaText(formattedService.cta || '');
-              const price = formattedService.base_price;
-              setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
-            } else {
-            setCtaText('');
-            setServicePrice(null);
-          }
-        } else {
-          // Reset to default if not on blog/service detail page
-          setCtaText('');
-          setServicePrice(null);
-      setCurrentServiceId(null);
+        setCtaText(formattedService.cta || '');
+        const price = formattedService.base_price;
+        setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
+        setServicePriceUsd(serviceData.price_usd ?? null);
+        setServicePriceGbp(serviceData.price_gbp ?? null);
+      } else {
+        setCtaText('');
+        setServicePrice(null);
+        setServicePriceUsd(null);
+        setServicePriceGbp(null);
       }
+    } else {
+      // Reset to default if not on blog/service detail page
+      setCtaText('');
+      setServicePrice(null);
+      setServicePriceUsd(null);
+      setServicePriceGbp(null);
+      setCurrentServiceId(null);
+    }
   }, [pathname, language]);
 
+  // Formatage du prix - EUR, USD, GBP = prix fixes depuis la DB
   useEffect(() => {
-    if (servicePrice) {
-      formatPrice(servicePrice).then(setFormattedPrice);
-    } else {
+    if (!servicePrice) {
       setFormattedPrice('');
+      return;
     }
-  }, [servicePrice, formatPrice]);
+    
+    if (currency === 'EUR') {
+      setFormattedPrice(`${servicePrice}€`);
+    } else if (currency === 'USD' && servicePriceUsd != null) {
+      setFormattedPrice(`$${Number(servicePriceUsd).toFixed(2)}`);
+    } else if (currency === 'GBP' && servicePriceGbp != null) {
+      setFormattedPrice(`£${Number(servicePriceGbp).toFixed(2)}`);
+    } else {
+      formatPrice(servicePrice).then(setFormattedPrice);
+    }
+  }, [servicePrice, servicePriceUsd, servicePriceGbp, currency, formatPrice]);
 
   // Sur page service et en haut = header transparent avec texte blanc
   // Note: on utilise isOnServicePage directement (pas isMounted) pour éviter le flash au premier rendu

@@ -186,11 +186,10 @@ const detectCurrencyFromLocale = () => {
 };
 
 /**
- * Taux de change fixes depuis EUR - PAS D'APPEL API pour éviter 1000ms+ de latence
- * Ces taux sont approximatifs et mis à jour manuellement
- * Dernière mise à jour: Décembre 2024
+ * Taux de change depuis EUR - pour les devises autres que EUR, USD, GBP
+ * EUR, USD, GBP utilisent les prix fixes stockés dans la table services
  */
-const FIXED_EXCHANGE_RATES = {
+const DYNAMIC_EXCHANGE_RATES = {
   EUR: 1,
   USD: 1.05,
   GBP: 0.86,
@@ -226,11 +225,10 @@ const FIXED_EXCHANGE_RATES = {
 };
 
 /**
- * Get exchange rates - SYNCHRONE, pas d'appel API
+ * Get exchange rates - pour les conversions dynamiques (devises autres que EUR, USD, GBP)
  */
 const fetchExchangeRates = async () => {
-  // Utiliser les taux fixes pour éviter la latence
-  return FIXED_EXCHANGE_RATES;
+  return DYNAMIC_EXCHANGE_RATES;
 };
 
 /**

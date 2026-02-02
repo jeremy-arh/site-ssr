@@ -100,7 +100,7 @@ export default function ServicesClient({ servicesData, serverLanguage }) {
                       </div>
                       {service.base_price && (
                         <div className="flex items-center gap-2 justify-center">
-                          <PriceDisplay price={service.base_price} showFrom className="text-lg font-bold text-gray-900" />
+                          <PriceDisplay price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} showFrom className="text-lg font-bold text-gray-900" />
                         </div>
                       )}
                     </div>

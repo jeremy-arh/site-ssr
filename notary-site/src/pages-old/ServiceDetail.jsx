@@ -188,7 +188,7 @@ const OtherServicesSection = memo(({ currentServiceId }) => {
                 </div>
                 {serviceItem.base_price && (
                   <div className="flex items-center gap-2 justify-center">
-                    <PriceDisplay price={serviceItem.base_price} showFrom className="text-lg font-bold text-gray-900" />
+                    <PriceDisplay price={serviceItem.base_price} priceUsd={serviceItem.price_usd} priceGbp={serviceItem.price_gbp} showFrom className="text-lg font-bold text-gray-900" />
                   </div>
                 )}
               </div>
@@ -268,15 +268,23 @@ const ServiceDetail = () => {
   const error = serviceError ? t('serviceDetail.loadServiceError') : null;
 
   // Différer le formatage du prix pour ne pas bloquer le rendu initial
+  // EUR, USD, GBP = prix fixes depuis la DB
   useEffect(() => {
-    if (service?.base_price) {
-      // Différer pour ne pas bloquer le FCP
-      const timer = setTimeout(() => {
+    if (!service?.base_price) return;
+    
+    const timer = setTimeout(() => {
+      if (currency === 'EUR') {
+        setCtaPrice(`${service.base_price}€`);
+      } else if (currency === 'USD' && service.price_usd != null) {
+        setCtaPrice(`$${Number(service.price_usd).toFixed(2)}`);
+      } else if (currency === 'GBP' && service.price_gbp != null) {
+        setCtaPrice(`£${Number(service.price_gbp).toFixed(2)}`);
+      } else {
         formatPrice(service.base_price).then(setCtaPrice);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [service?.base_price, formatPrice]);
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [service?.base_price, service?.price_usd, service?.price_gbp, currency, formatPrice]);
 
   // Track service view - Plausible uniquement (léger, ~1KB)
   useEffect(() => {
@@ -460,7 +468,9 @@ const ServiceDetail = () => {
                         <div className="mb-4 sm:mb-6">
                           <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
                           <PriceDisplay 
-                            price={service.base_price} 
+                            price={service.base_price}
+                            priceUsd={service.price_usd}
+                            priceGbp={service.price_gbp}
                             className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white"
                           />
                         </div>
@@ -593,7 +603,7 @@ const ServiceDetail = () => {
       </section>
 
       {/* Mobile CTA */}
-      <MobileCTA ctaText={service.cta || t('nav.notarizeNow')} price={service.base_price} serviceId={service?.service_id || serviceId} />
+      <MobileCTA ctaText={service.cta || t('nav.notarizeNow')} price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} serviceId={service?.service_id || serviceId} />
     </div>
   );
 };

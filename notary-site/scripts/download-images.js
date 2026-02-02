@@ -21,7 +21,7 @@ const images = [
   },
   {
     name: 'cta-background.webp',
-    url: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d84aca7a-998a-4ff6-1862-7676557ab400/public'
+    url: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/030b6f5a-54b6-4dd2-66f0-676c7ca84c00/f=webp,q=80'
   },
   {
     name: 'logo.webp',

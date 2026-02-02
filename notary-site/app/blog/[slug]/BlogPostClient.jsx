@@ -184,19 +184,17 @@ export default function BlogPostClient({ initialPost, initialRelatedPosts, slug,
     const arrowIcon = '<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>'
     
     return `
-      <div class="blog-cta-block my-12">
-        <div class="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl bg-blue-600">
-          <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl"></div>
-          <div class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl"></div>
-          <div class="relative z-10">
-            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+      <div class="blog-cta-block my-12 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-12">
+        <div class="py-16 md:py-20 px-6 text-center" style="background-color: #F7F5F2;">
+          <div class="max-w-2xl mx-auto">
+            <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
               ${ctaTitle}
             </h3>
-            <p class="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p class="text-lg md:text-xl text-gray-800 mb-8 leading-relaxed">
               ${ctaDescription}
             </p>
-            <a href="${formUrl}" class="primary-cta blog-cta-link text-lg" data-cta-location="blog_content" data-cta-text="${ctaButtonText}" data-form-url="${formUrl}">
-              ${arrowIcon}
+            <a href="${formUrl}" class="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors text-lg" data-cta-location="blog_content" data-cta-text="${ctaButtonText}" data-form-url="${formUrl}">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
               <span class="btn-text inline-block">${ctaButtonText}</span>
             </a>
           </div>

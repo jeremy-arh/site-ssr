@@ -7,7 +7,7 @@ import Link from 'next/link'
 import SEOHead from '@/components/SEOHead'
 
 // URLs Cloudflare optimisées avec paramètres
-const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3213eb00-eaf2-44f3-f108-2f6b67e70000/public'
+const PRICING_IMG_CLOUDFLARE = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/2207777e-4fd2-441a-4447-820672f68b00/f=webp,q=80'
 // Image Hero pour la colonne droite (femme avec laptop)
 const HERO_IMG_RIGHT = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/aa0b6231-eb7d-4a68-a985-249ba265d500/public'
 import StructuredData from '@/components/StructuredData'
@@ -198,33 +198,7 @@ const WhatIsContent = memo(({ service, t }) => {
         {firstH2Content || `${t('serviceDetail.whatIs')} ${service.name}?`}
       </h2>
       <div className="max-w-6xl mx-auto">
-        <div 
-          className="max-h-[600px] overflow-y-auto pr-4 blog-content-scrollable"
-          style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: '#cbd5e1 #f1f5f9'
-          }}
-        >
-          <style dangerouslySetInnerHTML={{
-            __html: `
-              .blog-content-scrollable::-webkit-scrollbar {
-                width: 8px;
-              }
-              .blog-content-scrollable::-webkit-scrollbar-track {
-                background: #f1f5f9;
-                border-radius: 4px;
-              }
-              .blog-content-scrollable::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
-                border-radius: 4px;
-              }
-              .blog-content-scrollable::-webkit-scrollbar-thumb:hover {
-                background: #94a3b8;
-              }
-            `
-          }} />
-          <div className="blog-content" dangerouslySetInnerHTML={{ __html: contentWithoutFirstH2 }} />
-        </div>
+        <div className="blog-content" dangerouslySetInnerHTML={{ __html: contentWithoutFirstH2 }} />
       </div>
     </>
   )
@@ -429,7 +403,7 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
                     </div>
                     {service.base_price && (
                       <div className="flex items-center gap-2 justify-center">
-                        <PriceDisplay price={service.base_price} showFrom className="text-lg font-bold text-gray-900" />
+                        <PriceDisplay price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} showFrom className="text-lg font-bold text-gray-900" />
                       </div>
                     )}
                   </div>
@@ -462,14 +436,23 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   }, [serviceId])
 
   // Différer le formatage du prix pour ne pas bloquer le rendu initial
+  // EUR, USD, GBP = prix fixes depuis la DB
   useEffect(() => {
-    if (service?.base_price) {
-      const timer = setTimeout(() => {
+    if (!service?.base_price) return
+    
+    const timer = setTimeout(() => {
+      if (currency === 'EUR') {
+        setCtaPrice(`${service.base_price}€`)
+      } else if (currency === 'USD' && service.price_usd != null) {
+        setCtaPrice(`$${Number(service.price_usd).toFixed(2)}`)
+      } else if (currency === 'GBP' && service.price_gbp != null) {
+        setCtaPrice(`£${Number(service.price_gbp).toFixed(2)}`)
+      } else {
         formatPrice(service.base_price).then(setCtaPrice)
-      }, 100)
-      return () => clearTimeout(timer)
-    }
-  }, [service?.base_price, formatPrice])
+      }
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [service?.base_price, service?.price_usd, service?.price_gbp, currency, formatPrice])
 
   // Track service view - Plausible uniquement (léger, ~1KB)
   useEffect(() => {
@@ -786,7 +769,9 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                         <div className="mb-3 sm:mb-4 md:mb-6">
                           <div className="flex items-baseline gap-2 mb-2 sm:mb-3">
                             <PriceDisplay 
-                              price={service.base_price} 
+                              price={service.base_price}
+                              priceUsd={service.price_usd}
+                              priceGbp={service.price_gbp}
                               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white"
                             />
                           </div>
@@ -904,12 +889,15 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             <div className="flex items-center justify-center order-2 lg:order-1">
               <div className="w-full max-w-md">
                 <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3f9a44ae-57fe-4ec8-6f73-f936dd190a00/f=webp,q=80"
-                  alt="What You Receive After Your Notary Appointment"
-                  className="w-full h-auto rounded-lg object-cover shadow-xl"
+                  src={service.certificate_image || "https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/3f9a44ae-57fe-4ec8-6f73-f936dd190a00/f=webp,q=80"}
+                  alt={t('serviceDetail.whatYouReceive.title')}
+                  className="w-full h-auto rounded-[30px] object-cover shadow-xl"
                   loading="lazy"
                   decoding="async"
                 />
+                <p className="text-xs text-gray-400 mt-3 text-center italic">
+                  {t('serviceDetail.whatYouReceive.disclaimer')}
+                </p>
               </div>
             </div>
 
@@ -917,31 +905,31 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             <div className="flex items-center justify-center order-1 lg:order-2">
               <div className="w-full max-w-md text-left">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
-                  What You Receive After Your Notary Appointment
+                  {t('serviceDetail.whatYouReceive.title')}
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
-                  A complete, ready-to-submit certified document
+                  {t('serviceDetail.whatYouReceive.subtitle')}
                 </p>
                 <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Official "True Copy Certification" statement</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.whatYouReceive.items.official')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Notary's full name, title, and handwritten signature</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.whatYouReceive.items.notaryInfo')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Date of certification and unique reference number</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.whatYouReceive.items.dateRef')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Digitally signed PDF delivered to your email</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.whatYouReceive.items.digitalPdf')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Permanent access from your My Notary dashboard</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.whatYouReceive.items.permanentAccess')}</span>
                   </li>
                 </ul>
                 <a
@@ -949,7 +937,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
                   onClick={(e) => {
                     e.preventDefault()
-                    const ctaText = 'Start your notarization'
+                    const ctaText = t('serviceDetail.whatYouReceive.cta')
                     trackWithAnalytics('cta', 'service_detail_features_section_1', service?.service_id || serviceId, pathname, {
                       ctaText: ctaText,
                       destination: formUrl,
@@ -963,40 +951,57 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     }, 100)
                   }}
                 >
-                  <span>Start your notarization</span>
+                  <span>{t('serviceDetail.whatYouReceive.cta')}</span>
                   <IconArrowRight />
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Section 2: Officially Recognized in 113 Countries - Content Left, Image Right */}
+          {/* Section 2: Valid for Any Official Purpose - Image Left, Content Right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
-            {/* Left - Content */}
-            <div className="flex items-center justify-center order-1 lg:order-1">
+            {/* Left - Image */}
+            <div className="flex items-center justify-center order-2 lg:order-1">
+              <div className="w-full max-w-md">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/68f3d89b-5e76-4a1b-6b84-4896a91bc000/f=webp,q=80"
+                  alt={t('serviceDetail.validForPurpose.title')}
+                  className="w-full h-auto rounded-[30px] object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+
+            {/* Right - Content */}
+            <div className="flex items-center justify-center order-1 lg:order-2">
               <div className="w-full max-w-md text-left">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
-                  Officially Recognized in 113 Countries
+                  {t('serviceDetail.validForPurpose.title')}
                 </h2>
                 <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
-                  Through the Hague Apostille Convention
+                  {t('serviceDetail.validForPurpose.subtitle')}
                 </p>
                 <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Valid across all Hague Convention member states</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.validForPurpose.items.bankAccount')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Accepted by governments, banks, and institutions worldwide</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.validForPurpose.items.visa')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">No additional legalization required in most cases</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.validForPurpose.items.university')}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Notary license number included for verification</span>
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.validForPurpose.items.property')}</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <IconCheckCircle />
+                    <span className="text-gray-700 text-sm md:text-base">{t('serviceDetail.validForPurpose.items.company')}</span>
                   </li>
                 </ul>
                 <a
@@ -1004,7 +1009,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                   className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
                   onClick={(e) => {
                     e.preventDefault()
-                    const ctaText = 'Start your notarization'
+                    const ctaText = t('serviceDetail.validForPurpose.cta')
                     trackWithAnalytics('cta', 'service_detail_features_section_2', service?.service_id || serviceId, pathname, {
                       ctaText: ctaText,
                       destination: formUrl,
@@ -1018,92 +1023,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                     }, 100)
                   }}
                 >
-                  <span>Start your notarization</span>
-                  <IconArrowRight />
-                </a>
-              </div>
-            </div>
-
-            {/* Right - Image */}
-            <div className="flex items-center justify-center order-2 lg:order-2">
-              <div className="w-full max-w-md">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/1f9e72c1-2018-46b7-29a9-5424890a7800/f=webp,q=80"
-                  alt="Officially Recognized in 113 Countries"
-                  className="w-full h-auto rounded-lg object-cover shadow-xl"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Section 3: Valid for Any Official Purpose - Image Left, Content Right */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
-            {/* Left - Image */}
-            <div className="flex items-center justify-center order-2 lg:order-1">
-              <div className="w-full max-w-md">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/68f3d89b-5e76-4a1b-6b84-4896a91bc000/f=webp,q=80"
-                  alt="Valid for Any Official Purpose"
-                  className="w-full h-auto rounded-lg object-cover shadow-xl"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-
-            {/* Right - Content */}
-            <div className="flex items-center justify-center order-1 lg:order-2">
-              <div className="w-full max-w-md text-left">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
-                  Valid for Any Official Purpose
-                </h2>
-                <p className="text-base md:text-lg text-gray-600 mb-6 md:mb-8">
-                  One document, endless possibilities
-                </p>
-                <ul className="space-y-3 md:space-y-4 mb-6 md:mb-8">
-                  <li className="flex items-start gap-3">
-                    <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Bank and investment account opening (KYC/AML)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Visa and immigration applications</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">University enrollment abroad</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Property purchases and legal proceedings</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <IconCheckCircle />
-                    <span className="text-gray-700 text-sm md:text-base">Company registration and business contracts</span>
-                  </li>
-                </ul>
-                <a
-                  href={formUrl}
-                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    const ctaText = 'Start your notarization'
-                    trackWithAnalytics('cta', 'service_detail_features_section_3', service?.service_id || serviceId, pathname, {
-                      ctaText: ctaText,
-                      destination: formUrl,
-                      elementId: 'service_detail_features_section_3_cta'
-                    })
-                    // Track GTM event (uniquement sur pages services)
-                    trackCTAToFormOnService('service_detail_features_section_3', pathname, ctaText, formUrl, 'service_detail_features_section_3_cta', service?.service_id || serviceId, currency)
-                    // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
-                    setTimeout(() => {
-                      window.location.href = formUrl
-                    }, 100)
-                  }}
-                >
-                  <span>Start your notarization</span>
+                  <span>{t('serviceDetail.validForPurpose.cta')}</span>
                   <IconArrowRight />
                 </a>
               </div>
@@ -1150,7 +1070,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       </section>
 
       {/* Mobile CTA */}
-      <MobileCTA ctaText={service.cta || t('nav.notarizeNow')} price={service.base_price} serviceId={service?.service_id || serviceId} />
+      <MobileCTA ctaText={service.cta || t('nav.notarizeNow')} price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} serviceId={service?.service_id || serviceId} />
     </div>
   )
 }

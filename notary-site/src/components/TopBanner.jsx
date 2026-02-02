@@ -11,7 +11,7 @@ const TopBanner = memo(() => {
           <div className="flex items-center justify-between text-white text-[10px] xs:text-xs sm:text-sm">
             {/* Left - Customers count - visible sur tous les écrans */}
             <div className="flex items-center flex-shrink-0">
-              <span className="whitespace-nowrap">Already over 5000 customers</span>
+              <span className="whitespace-nowrap">🎉 Already over 5000 customers</span>
             </div>
 
             {/* Right - Reviews avec étoiles vertes */}

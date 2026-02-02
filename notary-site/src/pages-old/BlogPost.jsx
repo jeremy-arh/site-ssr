@@ -328,40 +328,22 @@ const BlogPost = () => {
         </div>
       </article>
 
-      {/* CTA Section */}
-      <section className="px-[30px] pb-20">
-        <div className="max-w-[1400px] mx-auto">
-          <div 
-            className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl"
-            style={{
-              backgroundImage: `url(https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/d84aca7a-998a-4ff6-1862-7676557ab400/q=20,f=webp)`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
+      {/* CTA Section - Full Width */}
+      <section className="py-16 md:py-24" style={{ backgroundColor: '#F7F5F2' }}>
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
+            {t('howItWorks.ctaTitle') || 'Ready to Get Started?'}
+          </h3>
+          <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl mx-auto leading-relaxed">
+            {t('howItWorks.ctaDescription') || 'Notarize your documents online in just a few minutes. Secure, legally valid, and recognized internationally.'}
+          </p>
+          <a
+            href={getFormUrl(currency)}
+            className="text-lg inline-flex items-center gap-3 px-6 py-3 bg-black text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
           >
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/60"></div>
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                {t('howItWorks.ctaTitle') || 'Ready to Get Started?'}
-              </h3>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                {t('howItWorks.ctaDescription') || 'Notarize your documents online in just a few minutes. Secure, legally valid, and recognized internationally.'}
-              </p>
-              <a
-                href={getFormUrl(currency)}
-                className="primary-cta text-lg inline-flex items-center gap-3 bg-white text-black hover:bg-gray-100"
-              >
-                <Icon icon="stash:check-solid" className="w-5 h-5" />
-                <span className="btn-text inline-block">{post.cta || t('nav.notarizeNow')}</span>
-              </a>
-            </div>
-          </div>
+            <Icon icon="stash:check-solid" className="w-5 h-5" />
+            <span className="btn-text inline-block">{post.cta || t('nav.notarizeNow')}</span>
+          </a>
         </div>
       </section>
 

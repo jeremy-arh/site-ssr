@@ -2,7 +2,6 @@
 
 import { useState, useEffect, memo, useMemo, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
@@ -674,56 +673,38 @@ const HowItWorks = memo(() => {
           </div>
         </div>
 
-        {/* Bottom CTA (blog-detail style) */}
-        <div className="px-2 md:px-0 mt-16 md:mt-32 animate-fade-in animation-delay-1000">
-          <div className="relative overflow-hidden rounded-3xl p-8 md:p-12 text-center shadow-2xl">
-            {/* Background image optimisé avec next/image */}
-            <Image
-              src="/images/cta-background.webp"
-              alt=""
-              fill
-              quality={80}
-              sizes="(max-width: 1300px) 100vw, 1300px"
-              className="object-cover object-center"
-            />
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/60"></div>
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-3xl"></div>
+      </div>
 
-            <div className="relative z-10">
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                {t('howItWorks.ctaTitle')}
-              </h3>
-              <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
-                {t('howItWorks.ctaDescription')}
-              </p>
-              <div className="flex flex-row flex-wrap items-center justify-center gap-3 md:flex-col md:items-center md:gap-2">
-                <a
-                  href={getFormUrl(currency, currentServiceId)}
-                  className="text-sm md:text-lg inline-flex items-center gap-3 px-6 py-3 rounded-lg font-medium bg-white text-black hover:bg-blue-600 hover:text-white whitespace-nowrap flex-shrink-0 justify-center transition-colors duration-200"
-                  onClick={() => {
-                    loadAnalytics();
-                    safeTrack(trackCTAClick, 'how_it_works', currentServiceId, pathname, {
-                      ctaText: t('nav.notarizeNow'),
-                      destination: getFormUrl(currency, currentServiceId),
-                      elementId: 'how_it_works_cta'
-                    });
-                    // Track GTM event (uniquement sur pages non-services)
-                    trackCTAToForm('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
-                    // Track GTM event (uniquement sur pages services)
-                    trackCTAToFormOnService('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
-                  }}
-                >
-                  <IconOpenNew className="w-5 h-5" />
-                  <span className="btn-text inline-block">
-                    {t('nav.notarizeNow')}
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
+      {/* Bottom CTA - Full Width */}
+      <div className="py-16 md:py-24 animate-fade-in animation-delay-1000 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-[30px] mt-16 md:mt-32" style={{ backgroundColor: '#F7F5F2' }}>
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
+            {t('howItWorks.ctaTitle')}
+          </h3>
+          <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl mx-auto leading-relaxed">
+            {t('howItWorks.ctaDescription')}
+          </p>
+          <a
+            href={getFormUrl(currency, currentServiceId)}
+            className="text-sm md:text-lg inline-flex items-center gap-3 px-6 py-3 rounded-lg font-medium bg-black text-white hover:bg-gray-800 whitespace-nowrap justify-center transition-colors duration-200"
+            onClick={() => {
+              loadAnalytics();
+              safeTrack(trackCTAClick, 'how_it_works', currentServiceId, pathname, {
+                ctaText: t('nav.notarizeNow'),
+                destination: getFormUrl(currency, currentServiceId),
+                elementId: 'how_it_works_cta'
+              });
+              // Track GTM event (uniquement sur pages non-services)
+              trackCTAToForm('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
+              // Track GTM event (uniquement sur pages services)
+              trackCTAToFormOnService('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
+            }}
+          >
+            <IconOpenNew className="w-5 h-5" />
+            <span className="btn-text inline-block">
+              {t('nav.notarizeNow')}
+            </span>
+          </a>
         </div>
       </div>
     </section>
