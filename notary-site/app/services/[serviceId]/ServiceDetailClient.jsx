@@ -648,7 +648,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         ]}
       />
       {/* Hero Section - Deux colonnes : texte à gauche, image à droite */}
-      <section data-hero className="relative flex flex-col lg:flex-row lg:min-h-screen">
+      <section data-hero className="relative flex flex-col lg:flex-row lg:min-h-screen overflow-x-hidden">
         {/* Colonne gauche - Texte sur fond beige, centré verticalement */}
         <div className="w-full lg:w-1/2 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16 lg:py-24 min-h-[calc(100vh-80px)] lg:h-full" style={{ backgroundColor: '#F7F5F2' }}>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
