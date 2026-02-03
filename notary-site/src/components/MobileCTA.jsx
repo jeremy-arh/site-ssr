@@ -151,8 +151,8 @@ const MobileCTA = memo(({ ctaText = null, price, priceUsd = null, priceGbp = nul
           backgroundRepeat: 'no-repeat'
         }}
       >
-        {/* Overlay pour améliorer la lisibilité du texte */}
-        <div className="absolute inset-0 bg-white/80"></div>
+        {/* Overlay opaque */}
+        <div className="absolute inset-0 bg-white"></div>
         <div className="relative z-10">
         <div className="px-4 py-2">
           <div className="flex flex-col items-center gap-1.5">
