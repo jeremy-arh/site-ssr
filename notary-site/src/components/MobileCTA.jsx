@@ -32,7 +32,7 @@ if (typeof window !== 'undefined') {
 
 // SVG inline pour éviter @iconify
 const IconOpenNew = memo(() => (
-  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+  <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
     <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7h-7z"/>
   </svg>
 ));
@@ -131,6 +131,8 @@ const MobileCTA = memo(({ ctaText = null, price, priceUsd = null, priceGbp = nul
     }
   }, [price, priceUsd, priceGbp, currency, formatPrice]);
 
+  const backgroundImageUrl = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/104122e4-b72f-471e-b61d-ee998edb2a00/public';
+
   return (
     <div
       className="md:hidden mobile-cta-sticky"
@@ -140,12 +142,23 @@ const MobileCTA = memo(({ ctaText = null, price, priceUsd = null, priceGbp = nul
         pointerEvents: isVisible && !isMenuOpen ? 'auto' : 'none',
       }}
     >
-      <div className="bg-white border-t border-gray-200 shadow-2xl">
-        <div className="px-4 py-3">
-          <div className="flex flex-col items-center gap-2">
+      <div 
+        className="border-t border-gray-200 shadow-2xl relative overflow-hidden"
+        style={{
+          backgroundImage: `url(${backgroundImageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Overlay pour améliorer la lisibilité du texte */}
+        <div className="absolute inset-0 bg-white/80"></div>
+        <div className="relative z-10">
+        <div className="px-4 py-2">
+          <div className="flex flex-col items-center gap-1.5">
             <a
               href={getFormUrl(currency, serviceId)}
-              className="w-full text-center px-6 py-4 glassy-cta-blue font-bold rounded-lg transition-all duration-300"
+              className="w-full text-center px-4 py-2.5 glassy-cta-blue font-bold rounded-lg transition-all duration-300 text-sm"
               onClick={() => {
                 loadAnalytics();
                 safeTrack(trackCTAClick, 'mobile_cta', serviceId, window.location.pathname, {
@@ -164,13 +177,16 @@ const MobileCTA = memo(({ ctaText = null, price, priceUsd = null, priceGbp = nul
                 {defaultCtaText}
               </span>
             </a>
-            {formattedPrice && (
+            {serviceId && (
               <div className="text-gray-900 flex items-center gap-1">
-                <span className="text-base font-semibold">{formattedPrice}</span>
+                {formattedPrice && (
+                  <span className="text-sm font-semibold">{formattedPrice}</span>
+                )}
                 <span className="text-xs font-normal text-gray-500">{t('services.perDocument')} - no hidden fee</span>
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
     </div>

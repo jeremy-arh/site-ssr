@@ -44,8 +44,8 @@ export default async function RootLayout({ children }) {
           __html: `
             /* Reset & Base */
             *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-            html{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth}
-            body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow-x:hidden;background:#ffffff;color:#111827;line-height:1.5}
+            html{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
+            body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;overflow-x:hidden;background:#ffffff;color:#111827;line-height:1.5;max-width:100%;position:relative}
             h1,h2{font-family:var(--font-playfair,Georgia,'Times New Roman',serif);font-weight:500}
             h3,h4,h5,h6{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-weight:500}
             a{color:inherit;text-decoration:none}

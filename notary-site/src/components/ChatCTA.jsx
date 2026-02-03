@@ -78,7 +78,7 @@ const ChatCTA = () => {
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
             {content.title}
           </h3>
-          <p className="text-gray-600 text-sm sm:text-base mb-6 max-w-2xl line-clamp-3">
+          <p className="text-gray-600 text-sm sm:text-base mb-6 max-w-2xl">
             {content.text}
           </p>
           <button

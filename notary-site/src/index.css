@@ -10,11 +10,30 @@
   }
 
   /* PERF: Fonts système pour ne pas bloquer le rendu */
+  html {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    max-width: 100%;
+    position: relative;
+  }
+
+  /* Empêcher le scroll horizontal sur tous les éléments */
+  * {
+    max-width: 100%;
+  }
+
+  /* Exception pour les éléments qui doivent pouvoir dépasser (sliders, etc.) */
+  .infinite-scroll-container,
+  .animate-scroll-infinite,
+  [style*="width: fit-content"] {
+    max-width: none;
   }
 
   h1, h2 {
@@ -236,11 +255,33 @@
   }
 
   /* Desktop: Le hero fait MINIMUM 100vh - margin */
+  /* Colonne droite du hero service - même hauteur que la gauche */
+  .service-hero-right-column {
+    min-height: calc(100vh - 80px);
+  }
+
+  @media (min-width: 640px) {
+    .service-hero-right-column {
+      min-height: calc(100vh - 82px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .service-hero-right-column {
+      min-height: calc(100vh - 96px);
+    }
+  }
+
   @media (min-width: 1024px) {
     [data-hero] {
       min-height: calc(100vh - 106px) !important;
       margin-top: 106px;
       padding-top: 0;
+      align-items: stretch !important;
+    }
+    
+    .service-hero-right-column {
+      min-height: calc(100vh - 106px) !important;
     }
   }
 
@@ -251,16 +292,60 @@
       margin-top: 116px;
       padding-top: 0;
     }
+    
+    .service-hero-right-column {
+      min-height: calc(100vh - 116px) !important;
+    }
   }
 
   /* Le conteneur interne du hero doit s'étirer pour remplir toute la hauteur */
-  [data-hero] > div {
+  /* Exception pour les pages service qui ont leur propre structure */
+  [data-hero] > div:not([class*="hidden"]):not(.service-hero-left-column) {
     flex: 1;
     width: 100%;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+  }
+  
+  /* Classe spécifique pour la colonne gauche du hero service - CENTRAGE VERTICAL FORCÉ */
+  .service-hero-left-column {
+    min-height: calc(100vh - 80px);
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+  
+  /* Le wrapper interne ne doit pas interférer avec le centrage */
+  .service-hero-left-column > div {
+    width: 100%;
+    margin: 0 !important;
+  }
+
+  @media (min-width: 640px) {
+    .service-hero-left-column {
+      min-height: calc(100vh - 82px);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .service-hero-left-column {
+      min-height: calc(100vh - 96px);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .service-hero-left-column {
+      min-height: calc(100vh - 106px) !important;
+      justify-content: center !important;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .service-hero-left-column {
+      min-height: calc(100vh - 116px) !important;
+    }
   }
 
   /* Masquer l'image du hero sur mobile */

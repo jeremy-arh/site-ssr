@@ -1041,15 +1041,15 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <HowItWorks />
+
       {/* What is Section - content-visibility pour optimisation */}
       <section className="py-20 px-[30px] bg-gray-50 content-visibility-auto overflow-x-hidden w-full max-w-full">
         <div className="max-w-[1300px] mx-auto">
           <WhatIsContent service={service} t={t} />
         </div>
       </section>
-
-      {/* How It Works Section */}
-      <HowItWorks />
 
       {/* Other Services Section */}
       <OtherServicesSection relatedServicesData={relatedServicesData} language={language} />

@@ -675,11 +675,31 @@ const HowItWorks = memo(() => {
 
       </div>
 
-      {/* Bottom CTA - Full Width */}
-      <div className="py-16 md:py-24 animate-fade-in animation-delay-1000 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-[30px] mt-16 md:mt-32" style={{ backgroundColor: '#F7F5F2' }}>
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      {/* Bottom CTA - Full Width avec fond gris et vagues */}
+      <div 
+        className="py-16 md:py-24 animate-fade-in animation-delay-1000 mt-16 md:mt-32 relative overflow-hidden"
+        style={{ 
+          backgroundColor: '#f3f4f6',
+          position: 'relative',
+          left: '50%',
+          right: '50%',
+          marginLeft: '-50vw',
+          marginRight: '-50vw',
+          width: '100vw',
+          maxWidth: '100vw'
+        }}
+      >
+        {/* Vagues décoratives */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" preserveAspectRatio="none" viewBox="0 0 1440 560">
+          <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,0 L0,0 Z" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
+          <path d="M0,240 C320,300 420,180 720,240 C1020,300 1120,180 1440,240" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
+          <path d="M0,320 C320,380 420,260 720,320 C1020,380 1120,260 1440,320" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
+          <path d="M0,400 C320,460 420,340 720,400 C1020,460 1120,340 1440,400" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
+          <path d="M0,480 C320,540 420,420 720,480 C1020,540 1120,420 1440,480 L1440,560 L0,560 Z" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
+        </svg>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
-            {t('howItWorks.ctaTitle')}
+            📄 {t('howItWorks.ctaTitle')}
           </h3>
           <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl mx-auto leading-relaxed">
             {t('howItWorks.ctaDescription')}
