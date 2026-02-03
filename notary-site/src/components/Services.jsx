@@ -231,7 +231,7 @@ const Services = ({ servicesData = null }) => {
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch auto-rows-fr">
               {paginatedServices.filter(s => s && s.service_id).map((service) => {
               const servicePath = `/services/${service.service_id}`;
               const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath;
@@ -249,27 +249,28 @@ const Services = ({ servicesData = null }) => {
                 <Link
                   key={service.id || service.service_id}
                   href={finalPath}
-                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
+                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col min-h-full"
                   onClick={handleServiceClick}
+                  style={{ display: 'flex', flexDirection: 'column' }}
                 >
                   <div className="mb-4">
                     <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
                   </div>
 
-                  <p className="text-gray-600 mb-6 min-h-[60px] leading-relaxed flex-1">{service.short_description || service.description}</p>
+                  <p className="text-gray-600 mb-6 leading-relaxed flex-1 min-h-0">{service.short_description || service.description}</p>
 
-                  <div className="flex flex-col gap-3 mt-auto items-center pt-4 border-t border-gray-200">
+                  <div className="flex flex-col gap-3 mt-auto items-center pt-4 border-t border-gray-200 min-h-[100px]">
                     <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
                       <span className="btn-text inline-block">{t('services.learnMore')}</span>
                       <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </div>
-                    {service.base_price && (
-                      <div className="flex items-center gap-2 justify-center">
+                    <div className="flex items-center gap-2 justify-center min-h-[28px]">
+                      {service.base_price && (
                         <PriceDisplay price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} showFrom className="text-lg font-bold text-gray-900" />
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </Link>
               );
