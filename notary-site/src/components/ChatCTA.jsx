@@ -59,36 +59,49 @@ const ChatCTA = () => {
   const content = translations[language] || translations.en;
 
   return (
-    <section className="py-12 px-4 sm:px-[30px] bg-white">
-      <div className="max-w-[1100px] mx-auto">
-        <div className="flex flex-col items-center justify-center text-center rounded-2xl bg-gray-50 border border-gray-200 py-8 px-6">
-          <div className="relative mb-6">
-            <Image
-              src="/images/chat-cta.webp"
-              alt="Agent support"
-              width={80}
-              height={80}
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-white shadow-md"
-            />
-            {/* Point vert pour indiquer "en ligne" */}
-            <span className="absolute bottom-0 right-0 w-4 h-4 sm:w-5 sm:h-5 bg-green-500 border-2 border-white rounded-full shadow-sm animate-pulse">
-              <span className="absolute inset-0 bg-green-500 rounded-full animate-ping"></span>
-            </span>
+    <section className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden" style={{ backgroundColor: '#F6F4F1' }}>
+      <div className="max-w-4xl mx-auto px-6">
+        
+        {/* Contenu central */}
+        <div className="flex flex-col items-center justify-center text-center">
+          
+          {/* 2 bulles assemblées au-dessus */}
+          <div className="flex items-center justify-center mb-6 md:mb-8">
+            {/* Bulle 1 - à gauche, devant */}
+            <div className="relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden border-4 border-white shadow-lg z-20">
+              <Image
+                src="/images/chat-cta.webp"
+                alt="Expert 1"
+                fill
+                className="object-cover"
+              />
+            </div>
+            {/* Bulle 2 - chevauchement léger, derrière */}
+            <div className="relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden border-4 border-white shadow-lg z-10" style={{ marginLeft: '-16px' }}>
+              <Image
+                src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/fdd2c406-8968-42ec-8ebd-21efcd575d00/f=webp,q=80"
+                alt="Expert 2"
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
+          
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
             {content.title}
           </h3>
-          <p className="text-gray-600 text-sm sm:text-base mb-6 max-w-2xl">
+          <p className="text-gray-600 text-sm md:text-base lg:text-lg mb-6 md:mb-8 max-w-xl">
             {content.text}
           </p>
           <button
-            className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-md"
+            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-lg text-base md:text-lg"
             onClick={handleOpenChat}
           >
             <IconChat />
             <span>{content.buttonText}</span>
           </button>
         </div>
+        
       </div>
     </section>
   );

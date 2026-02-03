@@ -57,6 +57,16 @@ const IconCheck = memo(({ className }) => (
     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
   </svg>
 ));
+const IconAccountCheck = memo(({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M21.1 12.5l1.4 1.41-6.53 6.59L12.5 17l1.4-1.41 2.07 2.08 5.13-5.17M10 17l3 3H3v-2c0-2.21 3.58-4 8-4l1.89.11L10 17m1-13a4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 4-4z"/>
+  </svg>
+));
+const IconVideoCall = memo(({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+  </svg>
+));
 const IconOpenNew = memo(({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
     <path d="M14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7zm-2 16H5V5h7V3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7h-7z"/>
@@ -70,6 +80,8 @@ const STEP_ICONS = {
   'mynaui:credit-card-check-solid': IconCreditCard,
   'hugeicons:identity-card': IconIdentityCard,
   'stash:check-solid': IconCheck,
+  'mdi:account-check': IconAccountCheck,
+  'mdi:video': IconVideoCall,
 };
 
 const STEP_ANIMATION_STYLES = `
@@ -500,6 +512,37 @@ function StepAnimation({ step }) {
     return () => observer.disconnect();
   }, []);
 
+  // Pour les étapes 1, 2, 3, 4 et 5, utiliser un mockup simplifié adapté au ratio de l'image
+  const stepImages = {
+    1: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/85d45789-02dc-4348-52df-29e59d5c1b00/public',
+    3: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/fb0fc312-6e68-4ae3-034b-6920c1e4f200/public',
+    4: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/84ecd9c9-6cee-4d05-46d2-f5a75cd5d900/public',
+    5: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/451be27c-b409-4593-0bfc-128e5a17c000/public',
+    6: 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/2c9ff509-7aec-4530-da59-351a2df18500/public',
+  };
+
+  if (stepImages[step]) {
+    return (
+      <div 
+        ref={containerRef}
+        className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-gradient-to-b from-gray-50 to-gray-100 shadow-lg"
+      >
+        <div className="flex items-center gap-1.5 px-4 py-3 bg-gradient-to-b from-gray-100 to-gray-50 border-b border-gray-200">
+          <span className="w-3 h-3 rounded-full bg-orange-400"></span>
+          <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+          <span className="w-3 h-3 rounded-full bg-green-400"></span>
+        </div>
+        {isVisible && (
+          <img
+            src={stepImages[step]}
+            alt={`Step ${step}`}
+            className="w-full h-auto block"
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className="hiw-anim-screen" data-step={step}>
       <div className="hiw-anim-topbar">
@@ -530,6 +573,8 @@ const HowItWorks = memo(() => {
   const pathname = usePathname();
   const { currency } = useCurrency();
   const { t } = useTranslation();
+  const [activeStep, setActiveStep] = useState(0);
+  const stepRefs = useRef([]);
 
   // Extraire le serviceId depuis l'URL (pas d'appel API pour éviter CLS)
   const currentServiceId = useMemo(() => {
@@ -559,11 +604,53 @@ const HowItWorks = memo(() => {
       subtitle: t('howItWorks.step3.subtitle'),
       description: t('howItWorks.step3.description'),
       videoStep: 4,
+    },
+    {
+      icon: 'mdi:account-check',
+      title: t('howItWorks.step4.title'),
+      subtitle: t('howItWorks.step4.subtitle'),
+      description: t('howItWorks.step4.description'),
+      videoStep: 5,
+    },
+    {
+      icon: 'mdi:video',
+      title: t('howItWorks.step5.title'),
+      subtitle: t('howItWorks.step5.subtitle'),
+      description: t('howItWorks.step5.description'),
+      videoStep: 6,
     }
   ], [t]);
 
+  // Observer pour détecter l'étape active pendant le scroll
+  useEffect(() => {
+    const observers = [];
+    const options = {
+      root: null,
+      rootMargin: '-30% 0px -50% 0px',
+      threshold: 0
+    };
+
+    stepRefs.current.forEach((ref, index) => {
+      if (ref) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveStep(index);
+            }
+          });
+        }, options);
+        observer.observe(ref);
+        observers.push(observer);
+      }
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, [steps.length]);
+
   return (
-    <section id="how-it-works" className="py-10 md:py-26 px-2 md:px-6 bg-gray-50 relative">
+    <section id="how-it-works" className="pt-16 pb-10 md:pt-24 md:pb-26 lg:pt-32 px-2 md:px-6 bg-gray-50 relative" style={{ minHeight: '100vh' }}>
       <style>{STEP_ANIMATION_STYLES}</style>
       <div className="max-w-[1300px] mx-auto">
         {/* Mobile Header */}
@@ -582,7 +669,7 @@ const HowItWorks = memo(() => {
         {/* Desktop Layout: Sticky Title/Subtitle Left + Steps Right */}
         <div className="hidden md:grid md:grid-cols-[1fr_2fr] md:gap-8 lg:gap-14">
           {/* Sticky Left Column - Title & Subtitle */}
-          <div className="sticky top-32 self-start">
+          <div className="hiw-sticky-left">
             <div className="mb-6">
               <div className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold mb-6 scroll-fade-in">
                 {t('howItWorks.badge')}
@@ -591,9 +678,33 @@ const HowItWorks = memo(() => {
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 scroll-slide-up leading-tight">
               {t('howItWorks.heading').split(' ').slice(0, -1).join(' ')} <span>{t('howItWorks.heading').split(' ').slice(-1)[0]}</span>
             </h2>
-            <p className="text-lg lg:text-xl text-gray-600 scroll-slide-up leading-relaxed">
+            <p className="text-lg lg:text-xl text-gray-600 scroll-slide-up leading-relaxed mb-8">
               {t('howItWorks.subtitle')}
             </p>
+            
+            {/* Liste des étapes avec indicateur actif */}
+            <nav className="space-y-3">
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center gap-2 text-sm lg:text-base transition-all duration-300 cursor-pointer ${
+                    activeStep === index 
+                      ? 'text-blue-600 font-semibold' 
+                      : 'text-gray-400 hover:text-gray-600'
+                  }`}
+                  onClick={() => {
+                    stepRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }}
+                >
+                  <span className={`transition-all duration-300 ${activeStep === index ? 'opacity-100' : 'opacity-0'}`}>
+                    →
+                  </span>
+                  <span className={`transition-all duration-300 ${activeStep === index ? 'translate-x-0' : '-translate-x-4'}`}>
+                    {step.title}
+                  </span>
+                </div>
+              ))}
+            </nav>
           </div>
 
           {/* Right Column - Steps List */}
@@ -602,6 +713,7 @@ const HowItWorks = memo(() => {
               {steps.map((step, index) => (
                 <div
                   key={index}
+                  ref={(el) => (stepRefs.current[index] = el)}
                   className="scroll-slide-up"
                   style={{
                     animationDelay: `${index * 0.1}s`
@@ -626,7 +738,13 @@ const HowItWorks = memo(() => {
                       </h3>
                     </div>
                     <p className="col-span-2 text-sm lg:text-base text-gray-600 leading-relaxed">
-                      {step.description}
+                      {step.videoStep === 6 ? (
+                        <>
+                          {step.description.split('My Notary dashboard')[0]}
+                          <a href="https://app.mynotary.io/dashboard" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">My Notary dashboard</a>
+                          {step.description.split('My Notary dashboard')[1]}
+                        </>
+                      ) : step.description}
                     </p>
                   </div>
                 </div>
@@ -636,36 +754,40 @@ const HowItWorks = memo(() => {
         </div>
 
         {/* Mobile Steps */}
-        <div className="md:hidden relative px-2">
-          <div className="space-y-8">
+        <div className="md:hidden relative px-4">
+          <div className="space-y-16">
             {steps.map((step, index) => (
               <div
                 key={index}
-                className="bg-white rounded-3xl p-2 shadow-lg border border-gray-200 transition-shadow duration-300 scroll-slide-up"
+                className="scroll-slide-up"
                 style={{
                   animationDelay: `${index * 0.1}s`
                 }}
               >
-                <div className="mb-[10px]">
+                <div className="mb-5">
                   <StepAnimation step={step.videoStep} />
                 </div>
-                <div className="grid grid-cols-[auto,1fr] gap-3 items-center">
-                  {(() => { const StepIcon = STEP_ICONS[step.icon]; return StepIcon ? <StepIcon className="w-6 h-6 text-black flex-shrink-0 mt-0.5" /> : null; })()}
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center">
-                      <h3 className="text-base font-semibold text-gray-900 leading-tight">
-                        {step.title}
-                      </h3>
-                      {step.subtitle && (
-                        <p className="text-gray-600 text-xs ml-2">{step.subtitle}</p>
-                      )}
-                    </div>
-                    <span className="text-gray-400 text-xs font-medium whitespace-nowrap">
-                      {index + 1}/{steps.length}
-                    </span>
+                <div className="space-y-3">
+                  <span className="text-gray-400 text-sm font-medium">
+                    {index + 1}/{steps.length}
+                  </span>
+                  <div className="flex items-center gap-3">
+                    {(() => { const StepIcon = STEP_ICONS[step.icon]; return StepIcon ? <StepIcon className="w-5 h-5 text-gray-900 flex-shrink-0" /> : null; })()}
+                    <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+                      {step.title}
+                    </h3>
                   </div>
-                  <p className="col-span-2 text-gray-700 text-sm leading-relaxed">
-                    {step.description}
+                  {step.subtitle && (
+                    <p className="text-gray-500 text-sm">{step.subtitle}</p>
+                  )}
+                  <p className="text-gray-600 text-base leading-relaxed pt-1">
+                    {step.videoStep === 6 ? (
+                      <>
+                        {step.description.split('My Notary dashboard')[0]}
+                        <a href="https://app.mynotary.io/dashboard" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">My Notary dashboard</a>
+                        {step.description.split('My Notary dashboard')[1]}
+                      </>
+                    ) : step.description}
                   </p>
                 </div>
               </div>
@@ -699,7 +821,7 @@ const HowItWorks = memo(() => {
         </svg>
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
-            📄 {t('howItWorks.ctaTitle')}
+            {t('howItWorks.ctaTitle')}
           </h3>
           <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl mx-auto leading-relaxed">
             {t('howItWorks.ctaDescription')}

@@ -614,7 +614,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
   }
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden max-w-full">
+    <div className="min-h-screen w-full max-w-full" style={{ overflowX: 'clip' }}>
       <SEOHead
         title={service.meta_title || service.name || t('serviceDetail.defaultTitle')}
         description={service.meta_description || service.short_description || service.description || ''}
@@ -884,9 +884,6 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
         </div>
       </section>
 
-      {/* Chat CTA Section */}
-      <ChatCTA />
-
       {/* Features Section - Alternating Image/Content Layout */}
       <section className="py-16 md:py-20 px-4 sm:px-6 md:px-8 lg:px-[30px] bg-white overflow-x-hidden w-full max-w-full">
         <div className="max-w-[1300px] mx-auto space-y-16 md:space-y-20">
@@ -966,23 +963,10 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
             </div>
           </div>
 
-          {/* Section 2: Valid for Any Official Purpose - Image Left, Content Right */}
+          {/* Section 2: Valid for Any Official Purpose - Content Left, Image Right */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 min-h-[400px] lg:min-h-[500px]">
-            {/* Left - Image */}
-            <div className="flex items-center justify-center order-2 lg:order-1">
-              <div className="w-full max-w-md">
-                <img
-                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/68f3d89b-5e76-4a1b-6b84-4896a91bc000/f=webp,q=80"
-                  alt={t('serviceDetail.validForPurpose.title')}
-                  className="w-full h-auto rounded-[30px] object-cover shadow-xl"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
-
-            {/* Right - Content */}
-            <div className="flex items-center justify-center order-1 lg:order-2">
+            {/* Left - Content */}
+            <div className="flex items-center justify-center order-1 lg:order-1">
               <div className="w-full max-w-md text-left">
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4">
                   {t('serviceDetail.validForPurpose.title')}
@@ -1036,10 +1020,26 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 </a>
               </div>
             </div>
+
+            {/* Right - Image */}
+            <div className="flex items-center justify-center order-2 lg:order-2">
+              <div className="w-full max-w-md">
+                <img
+                  src="https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/01529a7e-1628-4385-60ff-e85c87731700/f=webp,q=80"
+                  alt={t('serviceDetail.validForPurpose.title')}
+                  className="w-full h-auto rounded-[30px] object-cover shadow-xl"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
           </div>
 
         </div>
       </section>
+
+      {/* Chat CTA Section */}
+      <ChatCTA />
 
       {/* How It Works Section */}
       <HowItWorks />

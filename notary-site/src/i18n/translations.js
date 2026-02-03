@@ -214,7 +214,7 @@ export const translations = {
     // How It Works
     howItWorks: {
       title: 'How It Works',
-      subtitle: 'Three simple steps to get your documents notarized online',
+      subtitle: 'Five simple steps to get your documents notarized online',
       badge: 'How it work ?',
       heading: 'Notarization Made Easy',
       step1: {
@@ -223,14 +223,24 @@ export const translations = {
         description: 'Upload your document (passport, certificate, contract...) as a PDF or high-quality scan to our secure, encrypted portal. All files are protected with bank-level security and automatically deleted after processing.',
       },
       step2: {
-        title: 'Secure Payment',
+        title: 'Enter Your Details',
         subtitle: '',
-        description: 'Review your order and pay securely via Stripe (credit card, Apple Pay, Google Pay) or PayPal. Transparent pricing with no hidden fees — you\'ll receive instant confirmation with your tracking link.',
+        description: 'Enter your contact details to receive your notarized documents. Your information is securely stored and only used to process your order.',
       },
       step3: {
-        title: 'Live Notarization in Minutes',
+        title: 'Review your order and pay securely',
         subtitle: '',
-        description: 'Click your secure link and verify your identity by scanning your ID document (passport, national ID, or driver\'s license). Once verified, a live video session starts automatically — a certified notary joins within minutes to notarize your document. Your notarized certificate is delivered to your inbox immediately after the session.',
+        description: 'Review your order and pay securely via Stripe (credit card, Apple Pay, Google Pay) or PayPal. Transparent pricing with no hidden fees. You\'ll receive instant confirmation with your tracking link.',
+      },
+      step4: {
+        title: 'Verify Your Identity',
+        subtitle: '',
+        description: 'Check your inbox for your confirmation email. Click the secure link to verify your identity with a quick selfie and ID photo, then you\'re ready for your video session.',
+      },
+      step5: {
+        title: 'Meet Your Notary via Live Video Session',
+        subtitle: '',
+        description: 'Join a short video call with a certified notary to complete your document signing. Once done, receive your notarized documents instantly via secure email and in your My Notary dashboard.',
       },
       stepLabel: 'Step',
       of: 'of',

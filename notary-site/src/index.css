@@ -412,6 +412,16 @@
     z-index: 9999 !important;
     contain: none !important;
   }
+  
+  /* How It Works - Sticky left column */
+  .hiw-sticky-left {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 120px;
+    align-self: start;
+    height: fit-content;
+    z-index: 10;
+  }
 }
 
 @layer components {
@@ -1580,4 +1590,9 @@
     animation: wave-3 12s ease-in-out infinite;
     animation-delay: -4s;
   }
+}
+
+/* ChatCTA background */
+.chat-cta-section {
+  background-color: #F6F4F1 !important;
 }
