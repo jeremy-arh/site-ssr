@@ -244,7 +244,10 @@ const Navbar = memo(() => {
   const { language, getLocalizedPath } = useLanguage();
   
   // Créer la fonction scrollToSection avec accès aux dépendances
-  const scrollToSection = useCallback(createScrollToSection(getLocalizedPath, pathname), [getLocalizedPath, pathname]);
+  const scrollToSection = useCallback(
+    (sectionId) => createScrollToSection(getLocalizedPath, pathname)(sectionId),
+    [getLocalizedPath, pathname]
+  );
   
   // Marquer comme monté et détecter desktop pour éviter les différences d'hydratation
   useEffect(() => {

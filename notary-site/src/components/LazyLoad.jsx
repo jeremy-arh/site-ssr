@@ -24,14 +24,14 @@ export default function LazyLoad({
       return
     }
 
+    const node = ref.current
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setShouldRender(true)
-            // Une fois rendu, on peut arrêter d'observer
-            if (ref.current) {
-              observer.unobserve(ref.current)
+            if (entry.target) {
+              observer.unobserve(entry.target)
             }
           }
         })
@@ -42,15 +42,15 @@ export default function LazyLoad({
       }
     )
 
-    if (ref.current) {
-      observer.observe(ref.current)
+    if (node) {
+      observer.observe(node)
     }
 
     // Écouter les événements personnalisés pour forcer le rendu
     const handleForceRender = () => {
       setShouldRender(true)
-      if (ref.current) {
-        observer.unobserve(ref.current)
+      if (node) {
+        observer.unobserve(node)
       }
     }
 
@@ -59,8 +59,8 @@ export default function LazyLoad({
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current)
+      if (node) {
+        observer.unobserve(node)
       }
       if (sectionId && typeof window !== 'undefined') {
         window.removeEventListener(`force-render-${sectionId}`, handleForceRender)

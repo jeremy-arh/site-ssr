@@ -214,7 +214,7 @@ const OtherServicesSection = memo(({ relatedServicesData, language }) => {
   const [selectedCategory, setSelectedCategory] = useState('all')
 
   // Les services liés sont déjà pré-formatés côté serveur
-  const relatedServices = relatedServicesData || []
+  const relatedServices = useMemo(() => relatedServicesData || [], [relatedServicesData])
 
   // Extraire toutes les catégories uniques avec leurs libellés traduits
   const categories = useMemo(() => {

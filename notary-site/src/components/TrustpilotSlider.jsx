@@ -100,7 +100,7 @@ const TrustpilotSlider = ({ serverLanguage }) => {
       headline: t(`trustpilot.reviews.${author.reviewKey}.headline`),
       content: t(`trustpilot.reviews.${author.reviewKey}.content`),
     }));
-  }, [t]);
+  }, [t, reviewAuthors]);
 
   // Dupliquer les avis pour créer l'effet de défilement infini
   const duplicatedReviews = useMemo(() => [...reviews, ...reviews, ...reviews], [reviews]);

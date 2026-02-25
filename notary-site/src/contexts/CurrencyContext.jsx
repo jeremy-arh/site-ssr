@@ -44,7 +44,6 @@ const getCurrencyFromURL = (searchParams) => {
 // Fonction d'initialisation synchrone de la devise
 // IMPORTANT: Retourne TOUJOURS 'EUR' pour éviter les erreurs d'hydratation
 // La vraie devise sera chargée après le montage du composant
-// eslint-disable-next-line no-unused-vars
 const _getInitialCurrency = () => {
   // Toujours retourner EUR pour le rendu initial (SSR et premier rendu client)
   // Cela évite les différences d'hydratation

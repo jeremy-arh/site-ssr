@@ -64,8 +64,6 @@ const CurrencySelector = ({ isWhite = false, mobileModal = false }) => {
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  const selectedCurrency = CURRENCIES.find(c => c.code === currency) || CURRENCIES[0];
-
   useEffect(() => {
     if (mobileModal) return;
     const handleClickOutside = (event) => {

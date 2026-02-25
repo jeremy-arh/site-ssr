@@ -70,7 +70,6 @@ const waitForPlausible = () => {
  * @param {string} pageName - Page name (optional)
  * @param {string} pagePath - Page path (optional, defaults to current path)
  */
-// eslint-disable-next-line no-unused-vars
 export const trackPageView = async (_pageName = null, pagePath = null) => {
   console.log('[Plausible] trackPageView appelé', { pageName: _pageName, pagePath });
   
