@@ -101,7 +101,7 @@ const Hero = memo(() => {
               <a 
                 id="hero-cta"
                 href={getFormUrl(currency)} 
-                className="text-base lg:text-lg text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                className="text-[10px] min-[380px]:text-xs sm:text-sm md:text-base lg:text-lg text-white bg-blue-600 hover:bg-blue-700 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2 whitespace-nowrap"
                 onClick={() => {
                   loadAnalytics();
                   safeTrack(trackCTAClick, 'hero', null, window.location.pathname, {
@@ -136,17 +136,17 @@ const Hero = memo(() => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-8 mt-6 lg:mt-8">
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <IconWorld />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
+                <span className="text-white font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature1')}</span>
               </div>
 
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <IconFlash />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
+                <span className="text-white font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature2')}</span>
               </div>
 
               <div className="flex items-center gap-2 whitespace-nowrap">
                 <IconLock />
-                <span className="text-white font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+                <span className="text-white font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature3')}</span>
               </div>
             </div>
           </div>

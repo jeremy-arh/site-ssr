@@ -160,7 +160,7 @@ export default function OnlineNotaryServiceClient({ relatedServicesData }) {
                 <a
                   id="hero-cta"
                   href={formUrl}
-                  className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                  className="text-[10px] min-[380px]:text-xs sm:text-sm md:text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2 whitespace-nowrap"
                   onClick={(e) => {
                     e.preventDefault()
                     trackWithAnalytics('cta', 'online_notary_service_hero', null, pathname, { ctaText: 'Start your notarization', destination: formUrl, elementId: 'online_notary_service_hero' })
@@ -172,9 +172,9 @@ export default function OnlineNotaryServiceClient({ relatedServicesData }) {
                   <span>Start your notarization</span>
                 </a>
                 {ctaPrice && (
-                  <div className="text-gray-900 flex items-center gap-1">
-                    <span className="text-base font-semibold">From {ctaPrice}</span>
-                    <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+                  <div className="text-gray-900 flex items-center gap-1 whitespace-nowrap">
+                    <span className="text-[10px] min-[380px]:text-xs sm:text-sm md:text-base font-semibold">From {ctaPrice}</span>
+                    <span className="text-[9px] min-[380px]:text-[10px] sm:text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
                   </div>
                 )}
               </div>
@@ -190,15 +190,15 @@ export default function OnlineNotaryServiceClient({ relatedServicesData }) {
             <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
               <div className="flex items-center gap-2">
                 <IconWorld />
-                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature1')}</span>
+                <span className="text-gray-900 font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature1')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <IconFlash />
-                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature2')}</span>
+                <span className="text-gray-900 font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature2')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <IconLock />
-                <span className="text-gray-900 font-medium text-sm lg:text-base">{t('hero.feature3')}</span>
+                <span className="text-gray-900 font-medium text-[10px] min-[380px]:text-xs sm:text-sm lg:text-base whitespace-nowrap">{t('hero.feature3')}</span>
               </div>
             </div>
           </div>
