@@ -1592,3 +1592,15 @@
   }
 }
 
+/* Motif de points pour blocs CTA - visible sur tous écrans */
+.cta-dots-pattern {
+  background-image: radial-gradient(circle at center, #e1e1e3 1.5px, transparent 1.5px) !important;
+  background-size: 4px 4px !important;
+  opacity: 0.9 !important;
+}
+.cta-dots-pattern-gray {
+  background-image: radial-gradient(circle at center, #b8b8b8 1.5px, transparent 1.5px) !important;
+  background-size: 4px 4px !important;
+  opacity: 0.9 !important;
+}
+

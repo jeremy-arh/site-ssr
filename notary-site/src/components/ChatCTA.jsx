@@ -64,19 +64,13 @@ const ChatCTA = () => {
   return (
     <section 
       className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden relative"
-      style={{ backgroundColor: bgColor }}
+      style={{ 
+        backgroundColor: bgColor,
+        backgroundImage: 'url(/images/dots-pattern.svg)',
+        backgroundSize: '4px 4px',
+        backgroundRepeat: 'repeat',
+      }}
     >
-      {/* Couche BG avec points */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{ 
-          opacity: 0.8,
-          backgroundImage: 'radial-gradient(#e1e1e3 0.2px, #FFFFFF 0.2px)',
-          backgroundSize: '4px 4px',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
-        }}
-      />
       {/* Jointure en dégradé vers le bloc suivant (HowItWorks) */}
       <div 
         className="absolute inset-x-0 bottom-0 h-20 md:h-28 pointer-events-none z-[5]"

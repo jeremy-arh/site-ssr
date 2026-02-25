@@ -650,6 +650,7 @@ const HowItWorks = memo(() => {
   }, [steps.length]);
 
   return (
+    <>
     <section id="how-it-works" className="pt-16 pb-10 md:pt-24 md:pb-26 lg:pt-32 px-2 md:px-6 bg-gray-50 relative" style={{ minHeight: '100vh' }}>
       <style>{STEP_ANIMATION_STYLES}</style>
       <div className="max-w-[1300px] mx-auto">
@@ -796,42 +797,30 @@ const HowItWorks = memo(() => {
         </div>
 
       </div>
+    </section>
 
-      {/* Bottom CTA - Full Width avec fond gris et vagues */}
-      <div 
-        className="py-16 md:py-24 animate-fade-in animation-delay-1000 mt-16 md:mt-32 relative overflow-hidden"
-        style={{ 
-          backgroundColor: '#f3f4f6',
-          position: 'relative',
-          left: '50%',
-          right: '50%',
-          marginLeft: '-50vw',
-          marginRight: '-50vw',
-          width: '100vw',
-          maxWidth: '100vw'
-        }}
-      >
-        {/* Motif de points avec dégradé haut/bas */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{ 
-            opacity: 0.8,
-            backgroundImage: 'radial-gradient(#e1e1e3 0.2px, #f3f4f6 0.2px)',
-            backgroundSize: '4px 4px',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
-          }}
-        />
-        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
+    {/* CTA - section séparée, fond blanc + points comme ChatCTA */}
+    <section 
+      id="ready-to-start"
+      className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden relative animate-fade-in animation-delay-1000"
+      style={{ 
+        backgroundColor: '#FFFFFF',
+        backgroundImage: 'url(/images/dots-pattern.svg)',
+        backgroundSize: '4px 4px',
+        backgroundRepeat: 'repeat',
+      }}
+    >
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="flex flex-col items-center justify-center text-center">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
             {t('howItWorks.ctaTitle')}
           </h3>
-          <p className="text-lg md:text-xl text-gray-800 mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-sm md:text-base lg:text-lg mb-6 md:mb-8 max-w-xl">
             {t('howItWorks.ctaDescription')}
           </p>
           <a
             href={getFormUrl(currency, currentServiceId)}
-            className="text-sm md:text-lg inline-flex items-center gap-3 px-6 py-3 rounded-lg font-medium bg-black text-white hover:bg-gray-800 whitespace-nowrap justify-center transition-colors duration-200"
+            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-lg text-base md:text-lg"
             onClick={() => {
               loadAnalytics();
               safeTrack(trackCTAClick, 'how_it_works', currentServiceId, pathname, {
@@ -839,9 +828,7 @@ const HowItWorks = memo(() => {
                 destination: getFormUrl(currency, currentServiceId),
                 elementId: 'how_it_works_cta'
               });
-              // Track GTM event (uniquement sur pages non-services)
               trackCTAToForm('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
-              // Track GTM event (uniquement sur pages services)
               trackCTAToFormOnService('how_it_works', pathname, t('nav.notarizeNow'), getFormUrl(currency, currentServiceId), 'how_it_works_cta', currentServiceId, currency);
             }}
           >
@@ -853,6 +840,7 @@ const HowItWorks = memo(() => {
         </div>
       </div>
     </section>
+    </>
   );
 });
 
