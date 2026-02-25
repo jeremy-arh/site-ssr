@@ -155,35 +155,38 @@ export default function OnlineNotaryServiceClient({ relatedServicesData }) {
             <p className="text-base sm:text-lg text-gray-700 mb-6 lg:mb-8 leading-relaxed">
               Get your documents notarized online in minutes. Our professional online notary service is fast, secure, and legally recognized worldwide. Certified true copies, affidavits, apostilles, and more.
             </p>
-            <div className="flex flex-row flex-wrap items-center gap-3 mb-6 lg:mb-8">
-              <a
-                id="hero-cta"
-                href={formUrl}
-                className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
-                onClick={(e) => {
-                  e.preventDefault()
-                  trackWithAnalytics('cta', 'online_notary_service_hero', null, pathname, { ctaText: 'Start your notarization', destination: formUrl, elementId: 'online_notary_service_hero' })
-                  trackCTAToFormOnService('online_notary_service_hero', pathname, 'Start your notarization', formUrl, 'online_notary_service_hero', null, currency)
-                  setTimeout(() => { window.location.href = formUrl }, 100)
+            <div className="flex flex-col items-start gap-4 mb-8 lg:mb-12">
+              <div className="flex flex-row flex-wrap items-center gap-3">
+                <a
+                  id="hero-cta"
+                  href={formUrl}
+                  className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    trackWithAnalytics('cta', 'online_notary_service_hero', null, pathname, { ctaText: 'Start your notarization', destination: formUrl, elementId: 'online_notary_service_hero' })
+                    trackCTAToFormOnService('online_notary_service_hero', pathname, 'Start your notarization', formUrl, 'online_notary_service_hero', null, currency)
+                    setTimeout(() => { window.location.href = formUrl }, 100)
+                  }}
+                >
+                  <IconOpenNew />
+                  <span>Start your notarization</span>
+                </a>
+                {ctaPrice && (
+                  <div className="text-gray-900 flex items-center gap-1">
+                    <span className="text-base font-semibold">From {ctaPrice}</span>
+                    <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+                  </div>
+                )}
+              </div>
+              <NeedAssistanceCTA
+                textColor="text-black"
+                analyticsContext="online_notary_service_hero"
+                onTrack={(ctaText, destination, elementId) => {
+                  trackWithAnalytics('cta', 'online_notary_service_hero', null, pathname, { ctaText, destination, elementId })
                 }}
-              >
-                <IconOpenNew />
-                <span>Start your notarization</span>
-              </a>
-              {ctaPrice && (
-                <div className="text-gray-900 flex items-center gap-1">
-                  <span className="text-base font-semibold">From {ctaPrice}</span>
-                  <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
-                </div>
-              )}
+                className="mb-0"
+              />
             </div>
-            <NeedAssistanceCTA
-              textColor="text-black"
-              analyticsContext="online_notary_service_hero"
-              onTrack={(ctaText, destination, elementId) => {
-                trackWithAnalytics('cta', 'online_notary_service_hero', null, pathname, { ctaText, destination, elementId })
-              }}
-            />
             <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
               <div className="flex items-center gap-2">
                 <IconWorld />

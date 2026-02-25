@@ -1455,6 +1455,36 @@
   }
 }
 
+/* Glow bleu infini sur le texte Need assistance */
+@keyframes textGlowBlue {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.6), 0 0 16px rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 12px rgba(59, 130, 246, 0.8), 0 0 24px rgba(59, 130, 246, 0.5);
+  }
+}
+
+.need-assistance-glow {
+  animation: textGlowBlue 2.5s ease-in-out infinite;
+  transition: text-shadow 0.3s ease, transform 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .need-assistance-glow {
+    animation: none;
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+  }
+}
+
+/* Effet au survol : glow renforcé + léger déplacement */
+button:hover .need-assistance-glow,
+.need-assistance-cta:hover .need-assistance-glow {
+  animation: textGlowBlue 2.5s ease-in-out infinite;
+  text-shadow: 0 0 16px rgba(59, 130, 246, 0.9), 0 0 32px rgba(59, 130, 246, 0.6) !important;
+  transform: translateX(3px);
+}
+
 @keyframes pulse {
   0%, 100% {
     opacity: 1;

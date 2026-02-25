@@ -97,35 +97,27 @@ const Hero = memo(() => {
               {t('hero.subtitle')}
             </p>
 
-            <a 
-              id="hero-cta"
-              href={getFormUrl(currency)} 
-              className="text-base lg:text-lg mb-6 lg:mb-8 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
-              style={{ 
-                display: 'inline-flex', 
-                flexDirection: 'row', 
-                alignItems: 'center', 
-                gap: '8px',
-                whiteSpace: 'nowrap'
-              }}
-              onClick={() => {
-                loadAnalytics();
-                safeTrack(trackCTAClick, 'hero', null, window.location.pathname, {
-                  ctaText: t('nav.notarizeNow'),
-                  destination: getFormUrl(currency),
-                  elementId: 'hero_primary'
-                });
-                // Track GTM event (uniquement sur pages non-services)
-                trackCTAToForm('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
-                // Track GTM event (uniquement sur pages services)
-                trackCTAToFormOnService('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
-              }}
-            >
-              <IconOpenNew />
-              <span style={{ whiteSpace: 'nowrap' }}>{t('nav.notarizeNow')}</span>
-            </a>
+            <div className="flex flex-col items-start gap-4 mb-8 lg:mb-12">
+              <a 
+                id="hero-cta"
+                href={getFormUrl(currency)} 
+                className="text-base lg:text-lg text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                onClick={() => {
+                  loadAnalytics();
+                  safeTrack(trackCTAClick, 'hero', null, window.location.pathname, {
+                    ctaText: t('nav.notarizeNow'),
+                    destination: getFormUrl(currency),
+                    elementId: 'hero_primary'
+                  });
+                  trackCTAToForm('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
+                  trackCTAToFormOnService('hero', pathname, t('nav.notarizeNow'), getFormUrl(currency), 'hero_primary', null, currency);
+                }}
+              >
+                <IconOpenNew />
+                <span style={{ whiteSpace: 'nowrap' }}>{t('nav.notarizeNow')}</span>
+              </a>
 
-            <NeedAssistanceCTA
+              <NeedAssistanceCTA
               textColor="text-white"
               analyticsContext="hero"
               onTrack={(ctaText, destination, elementId) => {
@@ -136,7 +128,9 @@ const Hero = memo(() => {
                   elementId
                 });
               }}
+              className="mb-0"
             />
+            </div>
 
             {/* Features - CSS responsive uniquement */}
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-8 mt-6 lg:mt-8">

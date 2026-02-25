@@ -452,53 +452,54 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               {service.short_description || service.description}
             </p>
 
-            <div className="flex flex-row flex-wrap items-center gap-3 mb-6 lg:mb-8">
-              <a 
-                id="hero-cta"
-                href={formUrl} 
-                className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
-                onClick={(e) => {
-                  e.preventDefault()
-                  const ctaCopy = service.cta || t('nav.notarizeNow')
-                  const destination = formUrl
-                  
-                  trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
-                    ctaText: ctaCopy,
-                    destination,
-                    elementId: 'service_detail_hero'
-                  })
-                  // Track GTM event (uniquement sur pages services)
-                  trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
-                  // Rediriger après le tracking pour laisser le temps à GTM d'envoyer l'événement
-                  setTimeout(() => {
-                    window.location.href = destination
-                  }, 100)
-                }}
-              >
-                <IconOpenNew />
-                <span className="btn-text inline-block">
-                  {service.cta || t('nav.notarizeNow')}
-                </span>
-              </a>
-              {ctaPrice && (
-                <div className="text-gray-900 flex items-center gap-1">
-                  <span className="text-base font-semibold">{ctaPrice}</span>
-                  <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
-                </div>
-              )}
-            </div>
+            <div className="flex flex-col items-start gap-4 mb-8 lg:mb-12">
+              <div className="flex flex-row flex-wrap items-center gap-3">
+                <a 
+                  id="hero-cta"
+                  href={formUrl} 
+                  className="text-base lg:text-lg text-white flex-shrink-0 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all inline-flex items-center gap-2"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const ctaCopy = service.cta || t('nav.notarizeNow')
+                    const destination = formUrl
+                    
+                    trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                      ctaText: ctaCopy,
+                      destination,
+                      elementId: 'service_detail_hero'
+                    })
+                    trackCTAToFormOnService('service_detail_hero', pathname, ctaCopy, destination, 'service_detail_hero', service?.service_id || serviceId, currency)
+                    setTimeout(() => {
+                      window.location.href = destination
+                    }, 100)
+                  }}
+                >
+                  <IconOpenNew />
+                  <span className="btn-text inline-block">
+                    {service.cta || t('nav.notarizeNow')}
+                  </span>
+                </a>
+                {ctaPrice && (
+                  <div className="text-gray-900 flex items-center gap-1">
+                    <span className="text-base font-semibold">{ctaPrice}</span>
+                    <span className="text-xs font-normal text-gray-600">{t('services.perDocument')} - no hidden fee</span>
+                  </div>
+                )}
+              </div>
 
-            <NeedAssistanceCTA
-              textColor="text-black"
-              analyticsContext="service_detail_hero"
-              onTrack={(ctaText, destination, elementId) => {
-                trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
-                  ctaText,
-                  destination,
-                  elementId
-                })
-              }}
-            />
+              <NeedAssistanceCTA
+                textColor="text-black"
+                analyticsContext="service_detail_hero"
+                onTrack={(ctaText, destination, elementId) => {
+                  trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                    ctaText,
+                    destination,
+                    elementId
+                  })
+                }}
+                className="mb-0"
+              />
+            </div>
 
             {/* Features */}
             <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">

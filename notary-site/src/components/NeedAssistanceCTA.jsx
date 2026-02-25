@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { Icon } from '@iconify/react'
 import { openCrispChat } from '@/utils/crisp'
 
 const CHAT_CTA_IMG_1 = '/images/chat-cta.webp'
@@ -33,7 +34,7 @@ export default function NeedAssistanceCTA({
     <button
       type="button"
       onClick={handleClick}
-      className={`inline-flex items-center gap-2 text-sm lg:text-base font-medium underline decoration-1 underline-offset-1 mb-8 lg:mb-12 hover:opacity-80 transition-opacity ${textColor} ${className}`.trim()}
+      className={`need-assistance-cta inline-flex items-center gap-2 text-sm lg:text-base font-medium mb-8 lg:mb-12 transition-all duration-200 ${textColor} ${className}`.trim()}
     >
       <div className="flex items-center -space-x-2">
         <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-white shadow-md flex-shrink-0 z-10">
@@ -43,7 +44,8 @@ export default function NeedAssistanceCTA({
           <Image src={CHAT_CTA_IMG_2} alt="" fill className="object-cover" sizes="40px" />
         </div>
       </div>
-      <span>{ctaText}</span>
+      <span className="need-assistance-glow">{ctaText}</span>
+      <Icon icon="si:arrow-right-fill" className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0 -rotate-45" />
     </button>
   )
 }
