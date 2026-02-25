@@ -66,17 +66,20 @@ const ChatCTA = () => {
       className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden relative"
       style={{ 
         backgroundColor: bgColor,
-        backgroundImage: 'url(/images/dots-pattern.svg)',
-        backgroundSize: '4px 4px',
-        backgroundRepeat: 'repeat',
+        backgroundImage: 'radial-gradient(#c8c8d0 0.8px, transparent 0.8px), radial-gradient(#c8c8d0 0.8px, #FFFFFF 0.8px)',
+        backgroundSize: '32px 32px',
+        backgroundPosition: '0 0, 16px 16px',
       }}
     >
-      {/* Jointure en dégradé vers le bloc suivant (HowItWorks) */}
+      {/* Dégradé en haut */}
       <div 
-        className="absolute inset-x-0 bottom-0 h-20 md:h-28 pointer-events-none z-[5]"
-        style={{
-          background: `linear-gradient(to bottom, transparent, ${nextSectionBg})`,
-        }}
+        className="absolute inset-x-0 top-0 h-32 pointer-events-none z-[5]"
+        style={{ background: `linear-gradient(to bottom, ${bgColor}, transparent)` }}
+      />
+      {/* Dégradé en bas vers le bloc suivant */}
+      <div 
+        className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-[5]"
+        style={{ background: `linear-gradient(to bottom, transparent, ${nextSectionBg})` }}
       />
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         

@@ -55,7 +55,13 @@ const IconOpenNewLarge = memo(() => (
 ));
 
 // Icônes pour le menu mobile
-// material-symbols:list-rounded - icône de liste arrondie
+// gg:menu-left - icône menu hamburger (css.gg)
+const IconMenuLeft = memo(({ className = 'w-5 h-5' }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M2 5.995c0-.55.446-.995.995-.995h8.01a.995.995 0 0 1 0 1.99h-8.01A.995.995 0 0 1 2 5.995M2 12c0-.55.446-.995.995-.995h18.01a.995.995 0 1 1 0 1.99H2.995A.995.995 0 0 1 2 12m.995 5.01a.995.995 0 0 0 0 1.99h12.01a.995.995 0 0 0 0-1.99z" />
+  </svg>
+));
+// material-symbols:list-rounded - icône de liste arrondie (utilisée dans le menu ouvert)
 const IconListRounded = memo(() => (
   <svg className="w-5 h-5 text-blue-600 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
     <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/>
@@ -609,24 +615,23 @@ const Navbar = memo(() => {
               </a>
             </div>
 
-            {/* Animated Hamburger Menu Button - MOBILE ONLY (hidden on md+ et quand le menu est ouvert) */}
-            <button
-              onClick={toggleMenu}
-              className={`navbar-burger flex md:hidden relative z-[60] w-8 h-8 flex-col items-center justify-center focus:outline-none overflow-visible ${isMenuOpen ? 'hidden' : ''}`}
-              aria-label="Toggle menu"
-            >
-              <div className="w-4 h-4 flex flex-col justify-center items-center relative">
-                <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute bg-gray-900 top-0`}
-                ></span>
-                <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 absolute opacity-100 scale-100 bg-gray-900 top-1/2 -translate-y-1/2`}
-                ></span>
-                <span
-                  className={`w-full h-0.5 rounded-full transition-all duration-300 origin-center absolute bg-gray-900 bottom-0`}
-                ></span>
+            {/* Droite mobile: sélecteurs + séparateur + menu - justifiés à droite */}
+            <div className={`flex md:hidden items-center justify-end gap-1 ml-auto ${isMenuOpen ? 'hidden' : ''}`}>
+              <div className="w-10 h-10 flex items-center justify-center">
+                <LanguageSelector isWhite={false} mobileModal={true} />
               </div>
-            </button>
+              <div className="w-10 h-10 flex items-center justify-center">
+                <CurrencySelector isWhite={false} mobileModal={true} />
+              </div>
+              <div className="w-px h-5 flex-shrink-0 bg-gray-300" aria-hidden="true" />
+              <button
+                onClick={toggleMenu}
+                className="navbar-burger relative z-[60] w-8 h-8 flex items-center justify-center focus:outline-none overflow-visible text-gray-900"
+                aria-label="Toggle menu"
+              >
+                <IconMenuLeft className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
         </div>
@@ -766,16 +771,6 @@ const Navbar = memo(() => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </a>
-            </div>
-
-            {/* Sélecteurs Langue et Devise */}
-            <div className="flex items-center gap-3 mt-6 px-4">
-              <div className="flex-1 border border-gray-300 rounded-lg bg-white h-12 flex items-center">
-                <LanguageSelector />
-              </div>
-              <div className="flex-1 border border-gray-300 rounded-lg bg-white h-12 flex items-center">
-                <CurrencySelector />
-              </div>
             </div>
 
             {/* Liens Contact et Connexion */}

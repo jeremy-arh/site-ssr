@@ -78,42 +78,33 @@ const getFlagComponent = (lang) => {
   return FLAG_COMPONENTS[lang] || FlagGB;
 };
 
-const LanguageSelector = ({ isWhite = false }) => {
+const LanguageSelector = ({ isWhite = false, mobileModal = false }) => {
   const { language, setLanguage, supportedLanguages } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState({ top: 0, left: 0 });
   const buttonRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  // Ferme le dropdown si on clique en dehors
   useEffect(() => {
+    if (mobileModal) return;
     const handleClickOutside = (event) => {
       const isClickOnButton = buttonRef.current && buttonRef.current.contains(event.target);
       const isClickOnDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
-      
-      if (!isClickOnButton && !isClickOnDropdown) {
-        setIsOpen(false);
-      }
+      if (!isClickOnButton && !isClickOnDropdown) setIsOpen(false);
     };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen]);
+    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isOpen, mobileModal]);
 
   const handleToggle = () => {
+    if (mobileModal) {
+      setIsOpen(true);
+      return;
+    }
     if (!isOpen && buttonRef.current) {
-      // Utiliser requestAnimationFrame pour éviter les forced layouts
       requestAnimationFrame(() => {
         const rect = buttonRef.current.getBoundingClientRect();
-        setPosition({
-          top: rect.bottom + 8,
-          left: rect.left
-        });
+        setPosition({ top: rect.bottom + 8, left: rect.left });
         setIsOpen(true);
       });
     } else {
@@ -122,11 +113,18 @@ const LanguageSelector = ({ isWhite = false }) => {
   };
 
   const handleLanguageChange = (newLanguage) => {
-    // Fermer le dropdown immédiatement
     setIsOpen(false);
-    // Changer la langue (cela va déclencher un rechargement de page)
     setLanguage(newLanguage);
   };
+
+  useEffect(() => {
+    if (mobileModal && isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileModal, isOpen]);
 
   return (
     <div className="relative w-full h-full">
@@ -157,21 +155,48 @@ const LanguageSelector = ({ isWhite = false }) => {
         </svg>
       </button>
 
-      {isOpen && createPortal(
-        <div 
+      {mobileModal && isOpen && createPortal(
+        <div ref={dropdownRef} className="fixed inset-0 z-[99999] bg-white flex flex-col">
+          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900">Language</h3>
+            <button onClick={() => setIsOpen(false)} className="p-2 -m-2" aria-label="Close">
+              <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18" strokeWidth={2} />
+                <line x1="6" y1="6" x2="18" y2="18" strokeWidth={2} />
+              </svg>
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto py-2">
+            {supportedLanguages.map((lang) => (
+              <button
+                key={lang}
+                onClick={() => handleLanguageChange(lang)}
+                className={`w-full text-left px-4 py-4 text-base hover:bg-gray-50 transition-colors flex items-center gap-3 ${
+                  language === lang ? 'bg-gray-50 font-semibold' : ''
+                }`}
+              >
+                {(() => {
+                  const FlagComponent = getFlagComponent(lang);
+                  return <FlagComponent />;
+                })()}
+                <span>{LANGUAGE_NAMES[lang]}</span>
+                {language === lang && (
+                  <svg className="w-5 h-5 ml-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {!mobileModal && isOpen && createPortal(
+        <div
           ref={dropdownRef}
           className="fixed bg-white rounded-lg shadow-xl py-1 border border-gray-200"
-          style={{ 
-            top: position.top,
-            left: position.left,
-            width: typeof window !== 'undefined' && window.innerWidth >= 768 
-              ? '200px' 
-              : (buttonRef.current?.offsetWidth || 'auto'),
-            minWidth: typeof window !== 'undefined' && window.innerWidth >= 768 
-              ? '200px' 
-              : (buttonRef.current?.offsetWidth || 'auto'),
-            zIndex: 99999
-          }}
+          style={{ top: position.top, left: position.left, width: '200px', minWidth: '200px', zIndex: 99999 }}
         >
           {supportedLanguages.map((lang) => (
             <button
@@ -187,12 +212,7 @@ const LanguageSelector = ({ isWhite = false }) => {
               })()}
               <span>{LANGUAGE_NAMES[lang]}</span>
               {language === lang && (
-                <svg
-                  className="w-4 h-4 ml-auto text-gray-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="w-4 h-4 ml-auto text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               )}

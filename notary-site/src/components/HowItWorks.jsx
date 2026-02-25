@@ -802,14 +802,24 @@ const HowItWorks = memo(() => {
     {/* CTA - section séparée, fond blanc + points comme ChatCTA */}
     <section 
       id="ready-to-start"
-      className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden relative animate-fade-in animation-delay-1000"
+      className="chat-cta-section py-28 md:py-36 lg:py-44 w-full overflow-hidden relative animate-fade-in animation-delay-1000"
       style={{ 
         backgroundColor: '#FFFFFF',
-        backgroundImage: 'url(/images/dots-pattern.svg)',
-        backgroundSize: '4px 4px',
-        backgroundRepeat: 'repeat',
+        backgroundImage: 'radial-gradient(#c8c8d0 0.8px, transparent 0.8px), radial-gradient(#c8c8d0 0.8px, #FFFFFF 0.8px)',
+        backgroundSize: '32px 32px',
+        backgroundPosition: '0 0, 16px 16px',
       }}
     >
+      {/* Dégradé en haut vers HowItWorks (gray-50) */}
+      <div
+        className="absolute inset-x-0 top-0 h-48 pointer-events-none z-[5]"
+        style={{ background: 'linear-gradient(to bottom, #F9FAFB, transparent)' }}
+      />
+      {/* Dégradé en bas vers FAQ (gray-50) */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-48 pointer-events-none z-[5]"
+        style={{ background: 'linear-gradient(to bottom, transparent, #F9FAFB)' }}
+      />
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex flex-col items-center justify-center text-center">
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
