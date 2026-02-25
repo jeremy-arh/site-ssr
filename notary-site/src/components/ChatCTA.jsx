@@ -58,7 +58,6 @@ const ChatCTA = () => {
 
   const content = translations[language] || translations.en;
 
-  const dotColor = '#9CA3AF'; // Gris bien visible (gray-400)
   const bgColor = '#FFFFFF';
   const nextSectionBg = '#F9FAFB'; // gray-50 (HowItWorks)
 
