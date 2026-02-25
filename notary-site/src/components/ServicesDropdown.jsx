@@ -48,8 +48,11 @@ const ServicesDropdown = ({ isMobile = false }) => {
       });
     });
 
+    // Tri alphabétique des sections et des items dans chaque section
+    sections.sort((a, b) => a.title.localeCompare(b.title, language));
+    sections.forEach(s => s.items.sort((a, b) => a.label.localeCompare(b.label, language)));
     return sections;
-  }, [formattedServices]);
+  }, [formattedServices, language]);
 
   // Calculer la position du menu - exactement au bas de la navbar
   useEffect(() => {

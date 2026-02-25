@@ -39,14 +39,16 @@ const Footer = memo(() => {
     // Filtrer les services actifs qui doivent apparaître dans la liste
     const activeServices = servicesIndexData.filter(s => s.show_in_list === true);
     
-    // Formater selon la langue
-    return activeServices.map(service => {
-      const nameKey = language === 'en' ? 'name' : `name_${language}`;
-      return {
-        service_id: service.service_id,
-        name: service[nameKey] || service.name
-      };
-    });
+    // Formater selon la langue et trier par ordre alphabétique
+    return activeServices
+      .map(service => {
+        const nameKey = language === 'en' ? 'name' : `name_${language}`;
+        return {
+          service_id: service.service_id,
+          name: service[nameKey] || service.name
+        };
+      })
+      .sort((a, b) => (a.name || '').localeCompare(b.name || '', language));
   }, [language]);
 
   return (

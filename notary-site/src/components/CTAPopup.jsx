@@ -169,7 +169,7 @@ const CTAPopup = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={handleContactClick}
-              className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all whitespace-nowrap"
+              className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all whitespace-nowrap"
             >
               {t('ctaPopup.contact')}
             </button>
@@ -177,7 +177,7 @@ const CTAPopup = () => {
             <div className="flex-1 flex flex-row flex-wrap items-center gap-2 sm:flex-col sm:items-center sm:gap-1">
               <button
                 onClick={handleCTAClick}
-                className="flex-1 min-w-0 px-6 py-3 bg-black text-white font-medium rounded-lg cursor-pointer hover:bg-gray-900 transition-all whitespace-nowrap inline-flex items-center justify-center gap-2 flex-shrink-0"
+                className="flex-1 min-w-0 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg cursor-pointer hover:bg-blue-700 transition-all whitespace-nowrap inline-flex items-center justify-center gap-2 flex-shrink-0"
               >
                 <IconOpenNew />
                 <span className="inline-block">

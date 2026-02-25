@@ -12,6 +12,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { formatServiceForLanguage } from '../utils/services';
 import { removeLanguageFromPath, SUPPORTED_LANGUAGES } from '../utils/language';
 import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
+import { openCrispChat } from '../utils/crisp';
 // NOTE: Ne plus utiliser Supabase côté client - utiliser les données SSR
 import servicesData from '../../public/data/services.json';
 
@@ -779,28 +780,13 @@ const Navbar = memo(() => {
             {/* Liens Contact et Connexion */}
             <div className="mt-6 space-y-2 px-4">
               <a
-                href={getLocalizedPath('/#contact')}
+                href="#"
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
-                  const localizedPath = getLocalizedPath('/#contact');
-                  window.history.pushState(null, '', localizedPath);
-                  setTimeout(() => {
-                    const element = document.getElementById('contact');
-                    if (element) {
-                      requestAnimationFrame(() => {
-                        const offset = 100;
-                        const elementPosition = element.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.scrollY - offset;
-                        window.scrollTo({
-                          top: offsetPosition,
-                          behavior: 'smooth'
-                        });
-                      });
-                    }
-                  }, 300);
+                  openCrispChat();
                   loadAnalytics();
-                  safeTrack(trackNavigationClick, t('common.contactUs'), localizedPath, {
+                  safeTrack(trackNavigationClick, t('common.contactUs'), 'crisp_chat', {
                     label: t('common.contactUs'),
                     pagePath: pathname,
                     section: 'navbar_mobile'

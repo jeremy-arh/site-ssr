@@ -7,6 +7,7 @@ import { useCurrency } from '../contexts/CurrencyContext';
 import { getFormUrl } from '../utils/formUrl';
 import { useTranslation } from '../hooks/useTranslation';
 import { trackCTAToForm, trackCTAToFormOnService } from '../utils/gtm';
+import NeedAssistanceCTA from './NeedAssistanceCTA';
 
 // URL Cloudflare - Next.js Image gère automatiquement le responsive
 const HERO_IMG = 'https://imagedelivery.net/l2xsuW0n52LVdJ7j0fQ5lA/c0b5e153-57d6-453d-ce9e-4a3bda3fe600/f=webp,q=80';
@@ -99,7 +100,7 @@ const Hero = memo(() => {
             <a 
               id="hero-cta"
               href={getFormUrl(currency)} 
-              className="text-base lg:text-lg mb-8 lg:mb-12 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
+              className="text-base lg:text-lg mb-6 lg:mb-8 text-white bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition-all"
               style={{ 
                 display: 'inline-flex', 
                 flexDirection: 'row', 
@@ -123,6 +124,19 @@ const Hero = memo(() => {
               <IconOpenNew />
               <span style={{ whiteSpace: 'nowrap' }}>{t('nav.notarizeNow')}</span>
             </a>
+
+            <NeedAssistanceCTA
+              textColor="text-white"
+              analyticsContext="hero"
+              onTrack={(ctaText, destination, elementId) => {
+                loadAnalytics();
+                safeTrack(trackCTAClick, 'hero', null, typeof window !== 'undefined' ? window.location.pathname : '', {
+                  ctaText,
+                  destination,
+                  elementId
+                });
+              }}
+            />
 
             {/* Features - CSS responsive uniquement */}
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-8 mt-6 lg:mt-8">

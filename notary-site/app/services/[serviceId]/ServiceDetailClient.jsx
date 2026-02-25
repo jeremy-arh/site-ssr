@@ -18,13 +18,15 @@ import { useTranslation } from '@/hooks/useTranslation'
 import { useLanguage } from '@/contexts/LanguageContext'
 // Les données sont pré-formatées côté serveur, plus besoin de formatServiceForLanguage
 import PriceDisplay from '@/components/PriceDisplay'
-import { fuzzySearchServices } from '@/utils/fuzzySearch'
+import ServiceCard from '@/components/ServiceCard'
+import ServicesGridBlock from '@/components/ServicesGridBlock'
 import dynamic from 'next/dynamic'
 import { trackCTAToFormOnService } from '@/utils/gtm'
 
 // Importer HowItWorks et FAQ normalement pour qu'ils soient toujours dans le DOM (nécessaire pour la navigation)
 import HowItWorks from '@/components/HowItWorks'
 import FAQ from '@/components/FAQ'
+import NeedAssistanceCTA from '@/components/NeedAssistanceCTA'
 
 // Différer les autres composants non-critiques pour réduire le JS initial
 const MobileCTA = dynamic(() => import('@/components/MobileCTA'), { ssr: true })
@@ -201,219 +203,6 @@ const WhatIsContent = memo(({ service, t }) => {
         <div className="blog-content" dangerouslySetInnerHTML={{ __html: contentWithoutFirstH2 }} />
       </div>
     </>
-  )
-})
-
-// Other Services Section Component - memoized pour éviter re-renders
-// Design identique à la homepage (Services.jsx)
-// Other Services Section Component - Design identique à la homepage avec recherche et catégories
-const OtherServicesSection = memo(({ relatedServicesData, language }) => {
-  const { t } = useTranslation()
-  const { getLocalizedPath } = useLanguage()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-
-  // Les services liés sont déjà pré-formatés côté serveur
-  const relatedServices = useMemo(() => relatedServicesData || [], [relatedServicesData])
-
-  // Extraire toutes les catégories uniques avec leurs libellés traduits
-  const categories = useMemo(() => {
-    const categoryMap = new Map()
-    
-    relatedServices.forEach(service => {
-      const categoryRef = service.category || 'general'
-      const categoryLabel = service.category_label || categoryRef
-      
-      if (!categoryMap.has(categoryRef)) {
-        categoryMap.set(categoryRef, {
-          ref: categoryRef,
-          label: categoryLabel,
-        })
-      }
-    })
-    
-    return Array.from(categoryMap.values())
-      .sort((a, b) => a.label.localeCompare(b.label, language))
-  }, [relatedServices, language])
-
-  // Filtrer par catégorie d'abord, puis recherche
-  const filteredServices = useMemo(() => {
-    let filtered = relatedServices
-    
-    // Filtrer par catégorie
-    if (selectedCategory !== 'all') {
-      filtered = filtered.filter(service => (service.category || 'general') === selectedCategory)
-    }
-    
-    // Ensuite appliquer la recherche floue
-    return fuzzySearchServices(filtered, searchQuery)
-  }, [selectedCategory, searchQuery, relatedServices])
-
-  if (relatedServices.length === 0) {
-    return null
-  }
-
-  return (
-    <section id="services" className="py-20 px-4 sm:px-[30px] bg-white overflow-hidden">
-      <div className="max-w-[1300px] mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">{t('serviceDetail.relatedServices')}</h2>
-
-        {/* Barre de recherche */}
-        <div className="mb-6 max-w-2xl mx-auto px-1 md:px-0">
-          <div className="relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value)
-              }}
-              placeholder={t('services.searchPlaceholder') || 'Search services...'}
-              className="w-full px-5 py-4 pl-12 pr-4 text-gray-900 bg-white border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-gray-400 transition-all duration-300 text-base placeholder-gray-400"
-            />
-            <svg
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-            {searchQuery && (
-              <button
-                onClick={() => {
-                  setSearchQuery('')
-                }}
-                className="absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label="Clear search"
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Filtre par catégorie */}
-        {categories.length > 0 && (
-          <div className="mb-8 flex flex-wrap justify-center gap-2 px-1 md:px-0">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                selectedCategory === 'all'
-                  ? 'bg-black text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {t('services.categories.all') || 'All'}
-            </button>
-            {categories.map((category) => (
-              <button
-                key={category.ref}
-                onClick={() => setSelectedCategory(category.ref)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  selectedCategory === category.ref
-                    ? 'bg-black text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Message si aucun résultat */}
-        {filteredServices.length === 0 ? (
-          <div className="text-center py-20">
-            {searchQuery ? (
-              <div className="max-w-md mx-auto">
-                <svg
-                  className="w-16 h-16 mx-auto text-gray-300 mb-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-                <p className="text-gray-600 text-lg mb-2">
-                  {t('services.noResults') || 'No services found'}
-                </p>
-                <p className="text-gray-500 text-sm">
-                  {t('services.tryDifferentSearch') || 'Try a different search term'}
-                </p>
-              </div>
-            ) : (
-              <p className="text-gray-600 text-lg">{t('services.noServices')}</p>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredServices.filter(s => s && s.service_id).map((service) => {
-              const servicePath = `/services/${service.service_id}`
-              const localizedPath = getLocalizedPath ? getLocalizedPath(servicePath) : servicePath
-              const finalPath = localizedPath || servicePath
-              
-              const handleServiceClick = (e) => {
-                e.preventDefault();
-                trackWithAnalytics('service', service.service_id, service.name, 'service_detail_other_services');
-                // Forcer un rechargement complet de la page
-                window.location.href = finalPath;
-              };
-              
-              return (
-                <Link
-                  key={service.id || service.service_id}
-                  href={finalPath}
-                  className="group block bg-gray-50 rounded-2xl p-6 hover:shadow-2xl transition-all duration-500 border border-gray-200 transform hover:-translate-y-2 scroll-slide-up h-full flex flex-col"
-                  onClick={handleServiceClick}
-                >
-                  <div className="mb-4">
-                    <h3 className="text-xl font-bold text-gray-900">{service.list_title || service.name}</h3>
-                  </div>
-
-                  <p className="text-gray-600 mb-6 min-h-[60px] leading-relaxed flex-1">{service.short_description || service.description}</p>
-
-                  <div className="flex flex-col gap-3 mt-auto items-center pt-4 border-t border-gray-200">
-                    <div className="inline-flex items-center gap-2 group-hover:gap-3 transition-all justify-center text-sm font-semibold text-black underline underline-offset-4 decoration-2">
-                      <span className="btn-text inline-block">{t('services.learnMore')}</span>
-                      <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </div>
-                    {service.base_price && (
-                      <div className="flex items-center gap-2 justify-center">
-                        <PriceDisplay price={service.base_price} priceUsd={service.price_usd} priceGbp={service.price_gbp} showFrom className="text-lg font-bold text-gray-900" />
-                      </div>
-                    )}
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        )}
-      </div>
-    </section>
   )
 })
 
@@ -663,7 +452,7 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               {service.short_description || service.description}
             </p>
 
-            <div className="flex flex-row flex-wrap items-center gap-3 mb-8 lg:mb-12">
+            <div className="flex flex-row flex-wrap items-center gap-3 mb-6 lg:mb-8">
               <a 
                 id="hero-cta"
                 href={formUrl} 
@@ -698,6 +487,18 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
                 </div>
               )}
             </div>
+
+            <NeedAssistanceCTA
+              textColor="text-black"
+              analyticsContext="service_detail_hero"
+              onTrack={(ctaText, destination, elementId) => {
+                trackWithAnalytics('cta', 'service_detail_hero', service?.service_id || serviceId, pathname, {
+                  ctaText,
+                  destination,
+                  elementId
+                })
+              }}
+            />
 
             {/* Features */}
             <div className="flex flex-col xl:flex-row items-start xl:items-center gap-3 xl:gap-6">
@@ -1052,7 +853,11 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       </section>
 
       {/* Other Services Section */}
-      <OtherServicesSection relatedServicesData={relatedServicesData} language={language} />
+      <ServicesGridBlock
+        services={relatedServicesData || []}
+        title={t('serviceDetail.relatedServices')}
+        analyticsContext="service_detail_other_services"
+      />
 
       {/* FAQ Section */}
       <FAQ faqsData={faqsData || null} />

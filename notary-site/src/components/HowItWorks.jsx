@@ -656,7 +656,7 @@ const HowItWorks = memo(() => {
       <div className="max-w-[1300px] mx-auto">
         {/* Mobile Header */}
         <div className="text-center mb-8 md:hidden px-2">
-          <div className="inline-block px-3 py-1.5 bg-black text-white rounded-full text-sm font-semibold mb-3 scroll-fade-in">
+          <div className="inline-block px-3 py-1.5 bg-blue-600 text-white rounded-full text-sm font-semibold mb-3 scroll-fade-in">
             {t('howItWorks.badge')}
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 scroll-slide-up">
@@ -672,7 +672,7 @@ const HowItWorks = memo(() => {
           {/* Sticky Left Column - Title & Subtitle */}
           <div className="hiw-sticky-left">
             <div className="mb-6">
-              <div className="inline-block px-4 py-2 bg-black text-white rounded-full text-sm font-semibold mb-6 scroll-fade-in">
+              <div className="inline-block px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold mb-6 scroll-fade-in">
                 {t('howItWorks.badge')}
               </div>
             </div>
@@ -830,7 +830,7 @@ const HowItWorks = memo(() => {
           </p>
           <a
             href={getFormUrl(currency, currentServiceId)}
-            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-lg text-base md:text-lg"
+            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg text-base md:text-lg"
             onClick={() => {
               loadAnalytics();
               safeTrack(trackCTAClick, 'how_it_works', currentServiceId, pathname, {

@@ -134,6 +134,14 @@ export default async function sitemap() {
       })
     }
 
+    // Page Online Notary Service (landing page pour campagnes - notary online, notary service)
+    allUrls.push({
+      url: `${baseUrl}/online-notary-service`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.85,
+    })
+
     // Pages légales exclues du sitemap (noindex, nofollow)
     // Les pages terms-conditions et privacy-policy ne sont pas incluses dans le sitemap
 

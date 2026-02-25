@@ -11,7 +11,7 @@ const IconChat = () => (
   </svg>
 );
 
-const ChatCTA = () => {
+const ChatCTA = ({ title: customTitle }) => {
   const { language } = useTranslation();
 
   // Ouvrir le chat Crisp en utilisant la fonction utilitaire robuste
@@ -57,6 +57,7 @@ const ChatCTA = () => {
   };
 
   const content = translations[language] || translations.en;
+  const displayTitle = customTitle ? `${content.title} ${customTitle}` : content.title;
 
   const bgColor = '#FFFFFF';
   const nextSectionBg = '#F9FAFB'; // gray-50 (HowItWorks)
@@ -109,13 +110,13 @@ const ChatCTA = () => {
           </div>
           
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 md:mb-6">
-            {content.title}
+            {displayTitle}
           </h3>
           <p className="text-gray-600 text-sm md:text-base lg:text-lg mb-6 md:mb-8 max-w-xl">
             {content.text}
           </p>
           <button
-            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200 shadow-lg text-base md:text-lg"
+            className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-lg text-base md:text-lg"
             onClick={handleOpenChat}
           >
             <IconChat />

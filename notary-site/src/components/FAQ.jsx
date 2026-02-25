@@ -118,7 +118,7 @@ const FAQ = ({ faqsData = null }) => {
     <section id="faq" className="py-16 md:py-20 px-2 md:px-6 bg-gray-50 overflow-hidden">
       <div className="max-w-[1300px] mx-auto">
         <div className="text-center mb-10">
-          <div className="inline-block px-3 py-2 bg-black text-white rounded-full text-sm font-semibold mb-3 scroll-fade-in">
+          <div className="inline-block px-3 py-2 bg-blue-600 text-white rounded-full text-sm font-semibold mb-3 scroll-fade-in">
             {t('faq.title')}
           </div>
         </div>
@@ -201,7 +201,7 @@ const FAQ = ({ faqsData = null }) => {
               </p>
               <button
                 onClick={openCrispChat}
-                className="inline-block px-5 py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-all duration-300 transform hover:scale-105"
+                className="inline-block px-5 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
               >
                 Contact us
               </button>
