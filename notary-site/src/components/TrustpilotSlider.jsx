@@ -8,8 +8,8 @@ const TrustpilotSlider = ({ serverLanguage }) => {
   const { t } = useTranslation(serverLanguage);
   const scrollRef = useRef(null);
 
-  // Données des auteurs Trustpilot (non traduites)
-  const reviewAuthors = [
+  // Données des auteurs Trustpilot (non traduites) - stable reference via useMemo
+  const reviewAuthors = useMemo(() => [
     {
       id: 1,
       rating: 5,
@@ -91,7 +91,7 @@ const TrustpilotSlider = ({ serverLanguage }) => {
       reviewKey: 'review9',
       avatar: "https://ui-avatars.com/api/?name=Ulvi&background=F97316&color=fff&size=80&bold=true"
     },
-  ];
+  ], []);
 
   // Combiner les données auteurs avec les traductions
   const reviews = useMemo(() => {

@@ -3,8 +3,8 @@ import { getServices } from '@/lib/supabase-server'
 import { formatServicesForLanguage } from '@/utils/services'
 import { DEFAULT_LANGUAGE } from '@/utils/language'
 
+/* eslint-disable react-refresh/only-export-components -- Next.js page exports dynamic + metadata */
 export const dynamic = 'force-dynamic'
-
 export const metadata = {
   title: 'Online Notary Service | Notarize Documents Online in Minutes',
   description: 'Professional online notary service. Get your documents notarized online 24/7. Fast, secure, and legally recognized worldwide. Certified true copies, affidavits, apostilles & more.',
