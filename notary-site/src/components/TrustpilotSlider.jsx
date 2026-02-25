@@ -102,9 +102,6 @@ const TrustpilotSlider = ({ serverLanguage }) => {
     }));
   }, [t]);
 
-  // Mot traduit pour "avis"
-  const reviewsWord = t('trustpilot.reviewsWord');
-
   // Dupliquer les avis pour créer l'effet de défilement infini
   const duplicatedReviews = useMemo(() => [...reviews, ...reviews, ...reviews], [reviews]);
 
@@ -218,7 +215,7 @@ const TrustpilotSlider = ({ serverLanguage }) => {
                     {/* Nom et infos */}
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 text-sm">{review.author}</p>
-                      <p className="text-gray-500 text-xs">{review.country} • {review.reviewCount} {reviewsWord}</p>
+                      <p className="text-gray-500 text-xs">{review.country}</p>
                     </div>
                   </div>
 

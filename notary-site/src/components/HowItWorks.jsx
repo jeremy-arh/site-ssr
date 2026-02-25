@@ -811,14 +811,17 @@ const HowItWorks = memo(() => {
           maxWidth: '100vw'
         }}
       >
-        {/* Vagues décoratives */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-30" preserveAspectRatio="none" viewBox="0 0 1440 560">
-          <path d="M0,160 C320,220 420,100 720,160 C1020,220 1120,100 1440,160 L1440,0 L0,0 Z" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
-          <path d="M0,240 C320,300 420,180 720,240 C1020,300 1120,180 1440,240" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
-          <path d="M0,320 C320,380 420,260 720,320 C1020,380 1120,260 1440,320" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
-          <path d="M0,400 C320,460 420,340 720,400 C1020,460 1120,340 1440,400" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
-          <path d="M0,480 C320,540 420,420 720,480 C1020,540 1120,420 1440,480 L1440,560 L0,560 Z" fill="none" stroke="#9ca3af" strokeWidth="1.5"/>
-        </svg>
+        {/* Motif de points avec dégradé haut/bas */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{ 
+            opacity: 0.8,
+            backgroundImage: 'radial-gradient(#e1e1e3 0.2px, #f3f4f6 0.2px)',
+            backgroundSize: '4px 4px',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
+          }}
+        />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
             {t('howItWorks.ctaTitle')}

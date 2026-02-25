@@ -58,9 +58,34 @@ const ChatCTA = () => {
 
   const content = translations[language] || translations.en;
 
+  const dotColor = '#9CA3AF'; // Gris bien visible (gray-400)
+  const bgColor = '#FFFFFF';
+  const nextSectionBg = '#F9FAFB'; // gray-50 (HowItWorks)
+
   return (
-    <section className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden" style={{ backgroundColor: '#F6F4F1' }}>
-      <div className="max-w-4xl mx-auto px-6">
+    <section 
+      className="chat-cta-section py-16 md:py-24 lg:py-32 w-full overflow-hidden relative"
+      style={{ backgroundColor: bgColor }}
+    >
+      {/* Couche BG avec points */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{ 
+          opacity: 0.8,
+          backgroundImage: 'radial-gradient(#e1e1e3 0.2px, #FFFFFF 0.2px)',
+          backgroundSize: '4px 4px',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
+        }}
+      />
+      {/* Jointure en dégradé vers le bloc suivant (HowItWorks) */}
+      <div 
+        className="absolute inset-x-0 bottom-0 h-20 md:h-28 pointer-events-none z-[5]"
+        style={{
+          background: `linear-gradient(to bottom, transparent, ${nextSectionBg})`,
+        }}
+      />
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
         
         {/* Contenu central */}
         <div className="flex flex-col items-center justify-center text-center">
