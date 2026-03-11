@@ -226,94 +226,39 @@ if (typeof window !== 'undefined') {
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [_isScrolled, setIsScrolled] = useState(false);
-  const [_isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [_isAtTop, setIsAtTop] = useState(true); // Commencer à true pour l'effet initial
   const [isHeroCTAOutOfView, setIsHeroCTAOutOfView] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [_isDesktop, setIsDesktop] = useState(false); // Pour gérer la visibilité responsive
   const [ctaText, setCtaText] = useState('');
   const [servicePrice, setServicePrice] = useState(null);
   const [servicePriceUsd, setServicePriceUsd] = useState(null);
   const [servicePriceGbp, setServicePriceGbp] = useState(null);
-  const [_formattedPrice, setFormattedPrice] = useState('');
+  // formattedPrice calculé à la demande dans le JSX via les states de prix
   const [currentServiceId, setCurrentServiceId] = useState(null);
+
+  // useRef pour lastScrollY : pas besoin de re-render, évite la race condition
+  const lastScrollYRef = useRef(0);
+
   const pathname = usePathname();
   const { formatPrice, currency } = useCurrency();
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
-  
-  // Créer la fonction scrollToSection avec accès aux dépendances
+
+  // isServicePage calculé une seule fois par changement de pathname
+  const onServicePage = useMemo(() => {
+    const pathWithoutLang = removeLanguageFromPath(pathname);
+    return pathWithoutLang.startsWith('/services/') && pathWithoutLang !== '/services';
+  }, [pathname]);
+
+  // scrollToSection inline dans le useCallback — pas besoin de factory externe
   const scrollToSection = useCallback(
     (sectionId) => createScrollToSection(getLocalizedPath, pathname)(sectionId),
     [getLocalizedPath, pathname]
   );
-  
-  // Marquer comme monté et détecter desktop pour éviter les différences d'hydratation
-  useEffect(() => {
-    setIsMounted(true);
-    // Détecter si on est sur desktop
-    const checkDesktop = () => setIsDesktop(window.innerWidth >= 768);
-    checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
-  }, []);
-
-  // Initialiser isAtTop au montage (seulement pour le scroll)
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    if (dimensionsCached) {
-      setIsAtTop(cachedScrollY === 0);
-    } else {
-      const checkDimensions = () => {
-        cachedScrollY = window.scrollY;
-        dimensionsCached = true;
-        setIsAtTop(cachedScrollY === 0);
-      };
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(checkDimensions, { timeout: 100 });
-      } else {
-        setTimeout(checkDimensions, 50);
-      }
-    }
-  }, [isMounted]);
-  // Note: Navbar is outside specific Route elements, so useParams is not reliable here
-  
-  // Helper function to check if we're on a service detail page (with or without language prefix)
-  const isServicePage = useCallback(() => {
-    const pathWithoutLang = removeLanguageFromPath(pathname);
-    return pathWithoutLang.startsWith('/services/') && pathWithoutLang !== '/services';
-  }, [pathname]);
-  
-  // Vérifier si on est sur une page service (utilisé via isServicePage() directement)
-  const _isOnServicePage = isServicePage();
 
   const handleScroll = useCallback(() => {
-    // Utiliser le cache pour éviter les forced layouts
     const currentScrollY = window.scrollY;
-    cachedScrollY = currentScrollY; // Mettre à jour le cache
-    
-    setIsScrolled(currentScrollY > 50);
-    setIsAtTop(currentScrollY === 0);
-
-    // Masquer/afficher la navbar au scroll
-    if (typeof window !== 'undefined') {
-      if (currentScrollY <= 50) {
-        // Toujours afficher en haut de page
-        setIsHeaderVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling down - masquer
-        setIsHeaderVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling up - afficher
-        setIsHeaderVisible(true);
-      }
-    }
-
-    setLastScrollY(currentScrollY);
-  }, [lastScrollY]);
+    cachedScrollY = currentScrollY;
+    lastScrollYRef.current = currentScrollY;
+  }, []);
 
   const toggleMenu = useCallback(() => {
     setIsMenuOpen(prev => !prev);
@@ -324,7 +269,6 @@ const Navbar = memo(() => {
   }, []);
 
   useEffect(() => {
-    // Appeler handleScroll immédiatement pour détecter la position initiale
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -441,23 +385,6 @@ const Navbar = memo(() => {
     }
   }, [pathname, language]);
 
-  // Formatage du prix - EUR, USD, GBP = prix fixes depuis la DB
-  useEffect(() => {
-    if (!servicePrice) {
-      setFormattedPrice('');
-      return;
-    }
-    
-    if (currency === 'EUR') {
-      setFormattedPrice(`${servicePrice}€`);
-    } else if (currency === 'USD' && servicePriceUsd != null) {
-      setFormattedPrice(`$${Number(servicePriceUsd).toFixed(2)}`);
-    } else if (currency === 'GBP' && servicePriceGbp != null) {
-      setFormattedPrice(`£${Number(servicePriceGbp).toFixed(2)}`);
-    } else {
-      formatPrice(servicePrice).then(setFormattedPrice);
-    }
-  }, [servicePrice, servicePriceUsd, servicePriceGbp, currency, formatPrice]);
 
   // Sur page service et en haut = header transparent avec texte blanc
   // Note: on utilise isOnServicePage directement (pas isMounted) pour éviter le flash au premier rendu
@@ -497,7 +424,7 @@ const Navbar = memo(() => {
               {/* Desktop Navigation links - Left aligned with logo */}
               <div className="navbar-desktop hidden md:flex items-center gap-1 lg:gap-3 xl:gap-4 flex-shrink-0 overflow-visible relative">
                 <a 
-                  href={isServicePage() ? '#services' : getLocalizedPath('/#services')} 
+                  href={onServicePage ? '#services' : getLocalizedPath('/#services')} 
                   className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
@@ -519,7 +446,7 @@ const Navbar = memo(() => {
                   {t('nav.services')}
                 </a>
                 <a 
-                  href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
+                  href={onServicePage ? '#how-it-works' : getLocalizedPath('/#how-it-works')} 
                   className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
@@ -541,7 +468,7 @@ const Navbar = memo(() => {
                   {t('nav.howItWorks')}
                 </a>
                 <a 
-                  href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')} 
+                  href={onServicePage ? '#faq' : getLocalizedPath('/#faq')} 
                   className="nav-link text-xs lg:text-sm whitespace-nowrap text-black"
                   onClick={(e) => {
                     e.preventDefault();
@@ -698,7 +625,7 @@ const Navbar = memo(() => {
             <div className="space-y-0">
               {/* Lien Services */}
               <a
-                href={isServicePage() ? '#services' : getLocalizedPath('/#services')}
+                href={onServicePage ? '#services' : getLocalizedPath('/#services')}
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
@@ -724,7 +651,7 @@ const Navbar = memo(() => {
                 </svg>
               </a>
               <a
-                href={isServicePage() ? '#how-it-works' : getLocalizedPath('/#how-it-works')}
+                href={onServicePage ? '#how-it-works' : getLocalizedPath('/#how-it-works')}
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();
@@ -750,7 +677,7 @@ const Navbar = memo(() => {
                 </svg>
               </a>
               <a
-                href={isServicePage() ? '#faq' : getLocalizedPath('/#faq')}
+                href={onServicePage ? '#faq' : getLocalizedPath('/#faq')}
                 onClick={(e) => {
                   e.preventDefault();
                   closeMenu();

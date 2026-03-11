@@ -1,65 +1,41 @@
+import { useMemo, useCallback } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../i18n/translations';
 
-/**
- * Hook pour utiliser les traductions
- * @param {string} serverLanguage - Langue serveur optionnelle (prioritaire pour éviter le flash)
- * @returns {object} - { t: fonction de traduction, language: langue utilisée }
- */
+// Résout une clé pointée dans un objet de traduction avec fallback anglais
+const resolveKey = (obj, keys, fallback, key) => {
+  let value = obj;
+  for (const k of keys) {
+    if (value && typeof value === 'object') {
+      value = value[k];
+    } else {
+      return fallback || key;
+    }
+  }
+  return value !== undefined && value !== null ? value : (fallback || key);
+};
+
 export const useTranslation = (serverLanguage) => {
   const { language: contextLanguage } = useLanguage();
-  // Utiliser la langue serveur en priorité pour éviter le flash côté client
   const language = serverLanguage || contextLanguage;
 
-  const t = (key, fallback = '') => {
-    // Protection contre les clés undefined ou null
-    if (!key || typeof key !== 'string') {
-      return fallback || '';
-    }
+  // Objet de traductions pré-fusionné : langue cible avec fallback anglais
+  // Recalculé uniquement quand la langue change
+  const langTranslations = useMemo(() => {
+    return translations[language] || translations['en'];
+  }, [language]);
+
+  // t() stable : ne change que si langTranslations ou language change
+  const t = useCallback((key, fallback = '') => {
+    if (!key || typeof key !== 'string') return fallback || '';
     const keys = key.split('.');
-    let value = translations[language];
-
-    // Si la langue n'existe pas, utiliser l'anglais par défaut
-    if (!value) {
-      value = translations['en'];
+    const result = resolveKey(langTranslations, keys, fallback, key);
+    // Fallback anglais si la clé n'existe pas dans la langue cible
+    if ((result === fallback || result === key) && language !== 'en') {
+      return resolveKey(translations['en'], keys, fallback, key);
     }
-
-    for (const k of keys) {
-      if (value && typeof value === 'object' && value !== null) {
-        value = value[k];
-      } else {
-        // Si la valeur n'existe pas, essayer avec l'anglais
-        if (language !== 'en') {
-          let enValue = translations['en'];
-          for (const enKey of keys) {
-            if (enValue && typeof enValue === 'object' && enValue !== null) {
-              enValue = enValue[enKey];
-            } else {
-              return fallback || key;
-            }
-          }
-          return enValue || fallback || key;
-        }
-        return fallback || key;
-      }
-    }
-
-    // Si la valeur est undefined/null et qu'on n'est pas en anglais, essayer l'anglais
-    if ((value === undefined || value === null) && language !== 'en') {
-      let enValue = translations['en'];
-      for (const k of keys) {
-        if (enValue && typeof enValue === 'object' && enValue !== null) {
-          enValue = enValue[k];
-        } else {
-          return fallback || key;
-        }
-      }
-      return enValue || fallback || key;
-    }
-
-    return value !== undefined && value !== null ? value : (fallback || key);
-  };
+    return result;
+  }, [langTranslations, language]);
 
   return { t, language };
 };
-

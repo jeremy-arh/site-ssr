@@ -7,17 +7,15 @@ import { LanguageProvider } from '@/contexts/LanguageContext'
 import Navbar from '@/components/Navbar'
 import { useScrollAnimation } from '@/hooks/useScrollAnimation'
 
-// Lazy load composants non-critiques pour réduire le TBT
-// Footer est toujours below-the-fold
-const Footer = dynamic(() => import('@/components/Footer'), { 
-  ssr: true, // Garder SSR pour SEO
-  loading: () => <footer className="bg-gray-900 min-h-[300px]" /> // Placeholder pour éviter CLS
+const Footer = dynamic(() => import('@/components/Footer'), {
+  ssr: true,
+  loading: () => <footer className="bg-gray-900 min-h-[300px]" />
 })
 
-// Ces composants ne sont jamais visibles au premier rendu
 const ScrollToTop = dynamic(() => import('@/components/ScrollToTop'), { ssr: false })
 const CTAPopup = dynamic(() => import('@/components/CTAPopup'), { ssr: false })
 const GclidTracker = dynamic(() => import('@/components/GclidTracker'), { ssr: false })
+// SegmentPageTracker gère les page views sur changement de route (analytics.page() déjà retiré du snippet)
 const SegmentPageTracker = dynamic(() => import('@/components/SegmentPageTracker'), { ssr: false })
 
 function ProvidersContent({ children }) {
@@ -40,51 +38,48 @@ function ProvidersContent({ children }) {
   )
 }
 
-// NOTE: Les scripts analytics (GTM, Plausible, Crisp, Segment) sont maintenant chargés
-// via Partytown dans layout.jsx avec strategy="worker" pour exécution dans un Web Worker
-// SegmentPageTracker track les changements de route pour les pages vues dans Next.js
-
-// Service Worker pour cache des images - enregistrement différé
 function useServiceWorker() {
   useEffect(() => {
     if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return
 
-    // Enregistrer après le chargement complet de la page (ne pas bloquer le LCP)
+    if (process.env.NODE_ENV === 'development') {
+      // En dev : désinscrire tout SW existant pour éviter le cache
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((r) => r.unregister())
+      })
+      return
+    }
+
     const registerSW = () => {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then((registration) => {
-          // Mise à jour automatique en arrière-plan
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing
             if (newWorker) {
               newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // Nouvelle version disponible - activer au prochain refresh
-                  console.log('[SW] Nouvelle version disponible')
-                }
+                // Nouvelle version disponible — sera activée au prochain rechargement
               })
             }
           })
         })
-        .catch((error) => {
-          console.warn('[SW] Erreur d\'enregistrement:', error)
+        .catch(() => {
+          // Échec silencieux : le SW est une optimisation, pas une fonctionnalité critique
         })
     }
 
-    // Attendre que la page soit complètement chargée
+    const delay = requestIdleCallback
+      ? (fn) => requestIdleCallback(fn, { timeout: 3000 })
+      : (fn) => setTimeout(fn, 3000)
+
     if (document.readyState === 'complete') {
-      // Différer encore plus pour ne pas impacter les métriques
-      requestIdleCallback ? requestIdleCallback(registerSW) : setTimeout(registerSW, 3000)
+      delay(registerSW)
     } else {
-      window.addEventListener('load', () => {
-        requestIdleCallback ? requestIdleCallback(registerSW) : setTimeout(registerSW, 3000)
-      }, { once: true })
+      window.addEventListener('load', () => delay(registerSW), { once: true })
     }
   }, [])
 }
 
 export default function Providers({ children }) {
-  // Enregistrer le Service Worker pour cache des images
   useServiceWorker()
 
   return (
@@ -95,4 +90,3 @@ export default function Providers({ children }) {
     </CurrencyProvider>
   )
 }
-

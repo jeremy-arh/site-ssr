@@ -24,16 +24,10 @@
     position: relative;
   }
 
-  /* Empêcher le scroll horizontal sur tous les éléments */
-  * {
-    max-width: 100%;
-  }
-
-  /* Exception pour les éléments qui doivent pouvoir dépasser (sliders, etc.) */
-  .infinite-scroll-container,
-  .animate-scroll-infinite,
-  [style*="width: fit-content"] {
-    max-width: none;
+  /* Empêcher le scroll horizontal uniquement sur html/body — pas de règle * globale
+     (elle causait des bugs de rendu sur les boutons CTA et sliders) */
+  html, body {
+    overflow-x: hidden;
   }
 
   h1, h2 {
@@ -391,10 +385,7 @@
     height: 100% !important;
   }
 
-  /* Empêcher les images de causer des shifts */
-  img {
-    content-visibility: auto;
-  }
+  /* content-visibility: auto sur img supprimé — peut faire rater le précache de l'image LCP */
 
   /* Stabiliser la navbar */
   nav {
@@ -596,13 +587,7 @@
     z-index: 2;
   }
 
-  /* Animation for glassy effect - DÉSACTIVÉE pour éviter le CLS */
-  /* Les animations avec box-shadow et border-color ne sont pas composited */
-  @keyframes glassy-enhance {
-    0%, 100% {
-      opacity: 1;
-    }
-  }
+  /* glassy-enhance supprimé : keyframe vide (0%,100% opacity:1), animation infinie sans effet */
 
   /* Glassy style for header and floating CTA buttons */
   /* Optimisé : backdrop-filter désactivé sur mobile pour les performances */
@@ -646,7 +631,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
         inset 0 -1px 0 rgba(255, 255, 255, 0.1),
         0 2px 4px rgba(0, 0, 0, 0.3);
-      animation: glassy-enhance 5s ease-out infinite;
+      /* animation: glassy-enhance supprimée (keyframe vide) */
     }
   }
 
@@ -710,12 +695,7 @@
     }
   }
 
-  /* Animation for blue glassy effect - DÉSACTIVÉE pour éviter le CLS */
-  @keyframes glassy-enhance-blue {
-    0%, 100% {
-      opacity: 1;
-    }
-  }
+  /* glassy-enhance-blue supprimé : keyframe vide, animation infinie sans effet */
 
   /* Glassy style for blue CTA buttons */
   /* Optimisé : backdrop-filter désactivé sur mobile pour les performances */
@@ -758,7 +738,7 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.2),
         inset 0 -1px 0 rgba(255, 255, 255, 0.1),
         0 2px 4px rgba(0, 0, 0, 0.3);
-      animation: glassy-enhance-blue 5s ease-out infinite;
+      /* animation: glassy-enhance-blue supprimée (keyframe vide) */
     }
   }
 
@@ -1249,9 +1229,9 @@
       animation: ripple 0.8s ease-out !important;
     }
 
-    /* Contain pour isolation */
+    /* contain: layout uniquement — contain:content inclut paint et bloque les éléments fixed enfants */
     section {
-      contain: content;
+      contain: layout;
     }
   }
 

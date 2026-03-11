@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -13,7 +14,6 @@
   "dependencies": {
     "@builder.io/partytown": "^0.10.2",
     "@iconify/react": "^6.0.2",
-    "critters": "^0.0.25",
     "@supabase/supabase-js": "^2.76.1",
     "next": "^15.1.0",
     "react": "^19.1.1",

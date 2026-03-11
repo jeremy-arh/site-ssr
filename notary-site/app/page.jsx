@@ -3,10 +3,9 @@ import HomeClient from './HomeClient'
 import { DEFAULT_LANGUAGE } from '@/utils/language'
 import { formatServicesForLanguage } from '@/utils/services'
 
-// Forcer le rendu dynamique (SSR) - pas de prerendering statique
-export const dynamic = 'force-dynamic'
+// ISR : revalidation toutes les heures — évite force-dynamic (3 requêtes Supabase à chaque visite)
+export const revalidate = 3600
 
-// Métadonnées avec canonical et hreflang
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata = {
   alternates: {
@@ -24,14 +23,22 @@ export const metadata = {
 }
 
 export default async function Home() {
-  const [blogPostsData, servicesData, faqsData] = await Promise.all([
-    getBlogPosts(),
-    getServices(),
-    getFAQs(),
-  ])
+  let blogPostsData = []
+  let servicesData = []
+  let faqsData = []
+
+  try {
+    ;[blogPostsData, servicesData, faqsData] = await Promise.all([
+      getBlogPosts(),
+      getServices(),
+      getFAQs(),
+    ])
+  } catch (error) {
+    // Supabase indisponible : la page s'affiche avec des données vides plutôt qu'un 500
+    console.error('[page.jsx] Erreur Supabase:', error)
+  }
 
   const recentPosts = blogPostsData.slice(0, 3)
-  // Pré-formater les données côté serveur
   const formattedServices = formatServicesForLanguage(servicesData, DEFAULT_LANGUAGE)
 
   return (
