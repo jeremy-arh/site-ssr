@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, memo } from 'react';
 import { usePathname } from 'next/navigation';
 import { useCurrency } from '../contexts/CurrencyContext';
 import CurrencySelector from './CurrencySelector';

@@ -22,7 +22,7 @@ export default function NeedAssistanceCTA({
   onTrack,
   className = '',
 }) {
-  const ctaText = 'Need assistance ? Speak with an expert.'
+  const ctaText = 'Need assistance ? Speak with a notary.'
   const elementId = `${analyticsContext.replace(/\s/g, '_')}_cta`
 
   const handleClick = () => {

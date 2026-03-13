@@ -440,10 +440,12 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
       <section data-hero className="relative flex flex-col lg:flex-row overflow-x-hidden w-full max-w-full">
         {/* Colonne gauche - Texte sur fond beige, centré verticalement */}
         <div 
-          className="w-full lg:w-1/2 flex flex-col items-start px-6 sm:px-12 lg:px-16 py-16 lg:py-0 service-hero-left-column" 
+          className="w-full lg:w-1/2 flex flex-col items-start px-6 sm:px-12 lg:px-16 service-hero-left-column"
           style={{ backgroundColor: '#F7F5F2' }}
         >
-          <div className="w-full">
+          {/* Spacer haut — flex:1 pousse le contenu vers le centre */}
+          <div style={{ flex: 1 }} />
+          <div className="w-full py-16 lg:py-12">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl text-gray-900 mb-4 lg:mb-6 leading-tight">
               {service.page_h1 || service.name}
             </h1>
@@ -519,6 +521,8 @@ export default function ServiceDetailClient({ serviceData, relatedServicesData, 
               </div>
             </div>
           </div>
+          {/* Spacer bas — symétrique du spacer haut */}
+          <div style={{ flex: 1 }} />
         </div>
 
         {/* Colonne droite - Image (masquée sur mobile, visible uniquement sur lg+) */}

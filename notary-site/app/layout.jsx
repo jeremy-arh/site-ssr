@@ -47,8 +47,8 @@ export default async function RootLayout({ children }) {
             img{max-width:100%;height:auto;display:block}
             button{font:inherit;cursor:pointer;border:none;background:none}
 
-            /* Hero */
-            [data-hero]{margin-top:80px;padding-top:0;margin-bottom:0;padding-bottom:0;min-height:calc(100vh - 80px);display:flex;flex-direction:column;contain:layout style}
+            /* Hero — flex-direction NON forcé ici : géré par Tailwind (flex-col / lg:flex-row selon la page) */
+            [data-hero]{margin-top:80px;padding-top:0;margin-bottom:0;padding-bottom:0;min-height:calc(100vh - 80px);display:flex;contain:layout style}
             [data-hero]>div{flex:1;width:100%;position:relative;display:flex;flex-direction:column}
             @media(min-width:640px){[data-hero]{margin-top:82px;min-height:calc(100vh - 82px)}}
             @media(min-width:768px){[data-hero]{min-height:calc(100vh - 96px)!important;margin-top:96px;margin-bottom:0;padding-bottom:0}}

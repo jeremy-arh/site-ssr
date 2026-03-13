@@ -227,7 +227,7 @@
     padding-top: 0;
     min-height: calc(100vh - 80px);
     display: flex;
-    flex-direction: column;
+    /* flex-direction géré par Tailwind (flex-col / lg:flex-row selon la page) */
   }
 
   /* Tablet: 34px (top banner) + 60px (navbar) = 82px */
