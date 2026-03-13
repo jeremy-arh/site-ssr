@@ -205,40 +205,18 @@ const createScrollToSection = (getLocalizedPath, pathname) => {
   };
 };
 
-// Cacher le scroll pour éviter les forced layouts répétés
-let cachedScrollY = 0;
-let dimensionsCached = false;
-
-// Initialiser le scroll de façon différée pour ne pas bloquer le rendu initial
-if (typeof window !== 'undefined') {
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => {
-      cachedScrollY = window.scrollY;
-      dimensionsCached = true;
-    }, { timeout: 100 });
-  } else {
-    setTimeout(() => {
-      cachedScrollY = window.scrollY;
-      dimensionsCached = true;
-    }, 50);
-  }
-}
 
 const Navbar = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHeroCTAOutOfView, setIsHeroCTAOutOfView] = useState(false);
   const [ctaText, setCtaText] = useState('');
-  const [servicePrice, setServicePrice] = useState(null);
-  const [servicePriceUsd, setServicePriceUsd] = useState(null);
-  const [servicePriceGbp, setServicePriceGbp] = useState(null);
-  // formattedPrice calculé à la demande dans le JSX via les states de prix
   const [currentServiceId, setCurrentServiceId] = useState(null);
 
   // useRef pour lastScrollY : pas besoin de re-render, évite la race condition
   const lastScrollYRef = useRef(0);
 
   const pathname = usePathname();
-  const { formatPrice, currency } = useCurrency();
+  const { currency } = useCurrency();
   const { t } = useTranslation();
   const { language, getLocalizedPath } = useLanguage();
 
@@ -255,9 +233,7 @@ const Navbar = memo(() => {
   );
 
   const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    cachedScrollY = currentScrollY;
-    lastScrollYRef.current = currentScrollY;
+    lastScrollYRef.current = window.scrollY;
   }, []);
 
   const toggleMenu = useCallback(() => {
@@ -365,22 +341,11 @@ const Navbar = memo(() => {
       if (serviceData) {
         const formattedService = formatServiceForLanguage(serviceData, language);
         setCtaText(formattedService.cta || '');
-        const price = formattedService.base_price;
-        setServicePrice(price != null && price !== '' && price !== undefined ? price : null);
-        setServicePriceUsd(serviceData.price_usd ?? null);
-        setServicePriceGbp(serviceData.price_gbp ?? null);
       } else {
         setCtaText('');
-        setServicePrice(null);
-        setServicePriceUsd(null);
-        setServicePriceGbp(null);
       }
     } else {
-      // Reset to default if not on blog/service detail page
       setCtaText('');
-      setServicePrice(null);
-      setServicePriceUsd(null);
-      setServicePriceGbp(null);
       setCurrentServiceId(null);
     }
   }, [pathname, language]);
